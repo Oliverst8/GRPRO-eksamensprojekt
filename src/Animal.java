@@ -1,7 +1,7 @@
 import itumulator.world.World;
 
-abstract class Animal extends Organism {
-abstract class Animal extends Organism{
+public abstract class Animal extends Organism {
+public abstract class Animal extends Organism{
     public Animal() {
         
     }

@@ -1,4 +1,4 @@
-abstract class Organism {
+public abstract class Organism {
     private int age;
     private int health;
 

@@ -1,11 +1,27 @@
-abstract class Organism {
+import itumulator.simulator.Actor;
+import itumulator.world.World;
+
+abstract class Organism implements Actor {
     private int age;
+    private int health;
 
     public Organism() {
-        age = 0;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void grow() {
-        age++;
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void die(World world) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int getAge() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int getHealth() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

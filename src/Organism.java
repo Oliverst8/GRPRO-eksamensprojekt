@@ -3,7 +3,7 @@ import itumulator.world.World;
 
 abstract class Organism implements Actor {
     private int age;
-    private int health;
+    private int health; //0 is empty, and 100 is full
 
     /**
      * Creates a new organism

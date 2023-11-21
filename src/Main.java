@@ -1,9 +1,11 @@
 import itumulator.executable.Program;
 import itumulator.world.World;
 
+
 public class Main {
 
     public static void main(String[] args) {
+
         int size = 3; // størrelsen af vores 'map' (dette er altid kvadratisk)
         int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
         int display_size = 800; // skærm opløsningen (i px)

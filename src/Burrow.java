@@ -1,9 +1,10 @@
+import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 
 import java.util.List;
 
-public class Burrow implements NonBlocking {
+public class Burrow implements Actor, NonBlocking {
     private List<Location> entries;
 
     /**

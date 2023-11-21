@@ -1,4 +1,4 @@
-abstract class Animal extends Organism {
+abstract class Animal extends Organism{
     public Animal() {
         
     }
@@ -7,8 +7,7 @@ abstract class Animal extends Organism {
 
     }
 
-    @Override
-    public void act() {
+    public void move() {
 
     }
 }

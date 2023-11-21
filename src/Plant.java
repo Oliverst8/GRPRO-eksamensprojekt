@@ -1,3 +1,3 @@
-public class Plant extends Organism {
+public abstract class Plant extends Organism {
     
 }

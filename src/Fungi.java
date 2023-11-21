@@ -1,4 +1,4 @@
-abstract class Fungi extends Organism {
+public abstract class Fungi extends Organism {
     public Fungi() {
         
     }

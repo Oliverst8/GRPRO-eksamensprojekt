@@ -1,7 +1,4 @@
-import itumulator.simulator.Actor;
-import itumulator.world.World;
-
-abstract class Organism implements Actor {
+abstract class Organism {
     private int age;
     private int health;
 

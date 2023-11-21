@@ -1,5 +1,5 @@
 abstract class Animal extends Organism{
-    Animal() {
+    public Animal() {
         
     }
 

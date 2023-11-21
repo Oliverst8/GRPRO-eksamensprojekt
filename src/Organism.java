@@ -1,7 +1,7 @@
 abstract class Organism {
     private int age;
 
-    Organism() {
+    public Organism() {
         age = 0;
     }
 

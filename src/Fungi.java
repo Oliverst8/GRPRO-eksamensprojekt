@@ -1,5 +1,5 @@
 abstract class Fungi extends Organism {
-    Fungi() {
+    public Fungi() {
         
     }
 

@@ -1,5 +1,5 @@
 abstract class Herbivore extends Animal{
-    Herbivore() {
+    public Herbivore() {
         
     }
 }

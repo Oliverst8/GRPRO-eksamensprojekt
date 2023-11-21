@@ -1,3 +1,5 @@
+import itumulator.world.World;
+
 abstract class Animal extends Organism {
     public Animal() {
         
@@ -8,7 +10,7 @@ abstract class Animal extends Organism {
     }
 
     @Override
-    public void act() {
+    public void act(World world) {
 
     }
 }

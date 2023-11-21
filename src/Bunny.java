@@ -1,4 +1,5 @@
 import itumulator.executable.DisplayInformation;
+import itumulator.world.Location;
 import itumulator.world.World;
 
 public class Bunny extends Animal {
@@ -25,12 +26,29 @@ public class Bunny extends Animal {
      * - It has a chance to leave it burrow, the chance scales with hunger (The lower the hunger the higher the chance of leaving)
      * - If its in burrow chance to reproduce the chance scales with hunger (The higher the hunger the higher the chance of reproducing)
      * - If its in the burrow small chance to dig more entries to the burrow
-     * - If out of borrow chance to move towards grass
+     * - If out of borrow chance to move towards grass (If there is grass within 5 tiles)
      * @param world providing details of the position on which the actor is currently located and much more.
      */
     @Override
     public void act(World world) {
 
+    }
+
+    /**
+     * Throw IllegalArgumentException if world is null or radius is less then 2
+     * Finds the nearest grass to this bunny
+     * @return the location of the nearest grass
+     */
+    private Location findnearestGrass(World world, int radius){
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Throws IllegalArgumentException if world or location is null
+     * Moves towards location by one tile
+     */
+    private void moveTowards(Location location, World world){
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**

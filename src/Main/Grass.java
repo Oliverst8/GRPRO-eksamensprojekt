@@ -1,5 +1,6 @@
 package Main;
 
+import itumulator.executable.DisplayInformation;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
@@ -43,5 +44,10 @@ public class Grass extends Plant implements NonBlocking {
     @Override
     protected Color getColor() {
         return Color.green;
+    }
+
+    @Override
+    public String getPNGPath(){
+        return getType();
     }
 }

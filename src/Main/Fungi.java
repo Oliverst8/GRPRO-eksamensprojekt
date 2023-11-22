@@ -1,7 +1,5 @@
 package Main;
 
-import java.awt.*;
-
 public abstract class Fungi extends Organism {
     public Fungi( String foodType) {
         super(foodType);

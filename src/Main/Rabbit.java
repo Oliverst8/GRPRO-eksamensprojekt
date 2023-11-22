@@ -138,7 +138,7 @@ public class Rabbit extends Animal {
 
     @Override
     public String getType(){
-        return "rabbit-large";
+        return "rabbit";
     }
 
     @Override

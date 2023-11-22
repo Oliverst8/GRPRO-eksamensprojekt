@@ -1,11 +1,7 @@
 package Main;
 
-import itumulator.executable.DisplayInformation;
-import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.simulator.Actor;
 import itumulator.world.World;
-
-import java.awt.*;
 
 public abstract class Organism extends ObjectsOnMap implements Actor {
     protected int age;
@@ -14,7 +10,6 @@ public abstract class Organism extends ObjectsOnMap implements Actor {
 
     private boolean day;
 
-<<<<<<< HEAD
     protected int adultAge;
 
     public int getEnergyLossPerDay() {
@@ -23,8 +18,6 @@ public abstract class Organism extends ObjectsOnMap implements Actor {
 
     protected int energyLossPerDay;
 
-=======
->>>>>>> 8c3d0559f3cea860600d103151ec247dabc662ad
     /**
      * Creates a new organism
      * Initialises age to 0
@@ -75,7 +68,6 @@ public abstract class Organism extends ObjectsOnMap implements Actor {
         return energy - (energyLossPerDay*(Math.max(0,getAge()-getAdultAge())));
     }
 
-<<<<<<< HEAD
     /**
      * Removes energy
      * @param amount
@@ -88,8 +80,6 @@ public abstract class Organism extends ObjectsOnMap implements Actor {
         this.energy = energy;
     }
 
-=======
->>>>>>> 8c3d0559f3cea860600d103151ec247dabc662ad
     protected boolean isDay() {
         return day;
     }
@@ -102,7 +92,14 @@ public abstract class Organism extends ObjectsOnMap implements Actor {
 
     @Override
     protected String getPNGPath(){
-        return getType();
+        StringBuilder path = new StringBuilder();
+
+        path.append(getType());
+
+        if(age >= adultAge) path.append("-large");
+        else path.append("-small");
+
+        return path.toString();
     }
 
     public int getAdultAge() {

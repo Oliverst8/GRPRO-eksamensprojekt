@@ -3,8 +3,6 @@ package Main;
 import itumulator.world.Location;
 import itumulator.world.World;
 
-import java.awt.*;
-
 public abstract class Animal extends Organism {
 
     private int hunger; //0 is empty, and 100 is full

@@ -1,9 +1,7 @@
 package test;
 
-import Main.Burrow;
 import Main.Rabbit;
 import itumulator.executable.Program;
-import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
 
@@ -14,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class OrganismTest {
 

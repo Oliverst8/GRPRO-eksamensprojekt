@@ -14,13 +14,11 @@ public abstract class Organism implements Actor, DynamicDisplayInformationProvid
     /**
      * Creates a new organism
      * Initialises age to 0
-     * Initialises health to 100
      * Initialises the food type
      * Initialises energy to 100
      */
     public Organism(String foodType) {
         age = 0;
-        health = 100;
         this.foodType = foodType;
         energy = 100;
     }
@@ -48,13 +46,6 @@ public abstract class Organism implements Actor, DynamicDisplayInformationProvid
     }
 
     /**
-     * @return current health
-     */
-    public int getHealth() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
      *
      * @return the food type of the organism
      */
@@ -76,4 +67,6 @@ public abstract class Organism implements Actor, DynamicDisplayInformationProvid
     public DisplayInformation getInformation() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    abstract Organism reproduce();
 }

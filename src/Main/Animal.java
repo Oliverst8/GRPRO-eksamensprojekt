@@ -48,6 +48,10 @@ public abstract class Animal extends Organism {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    protected Animal reproduce(){
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     /**
      * If energy is less then 100
      * - Removes 10 hunger and adds 10 energy

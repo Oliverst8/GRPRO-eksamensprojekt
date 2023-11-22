@@ -1,5 +1,6 @@
 package Main;
 
+import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.World;
 

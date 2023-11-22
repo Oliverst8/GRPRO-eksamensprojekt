@@ -1,6 +1,5 @@
 package Main;
 
-import itumulator.executable.DisplayInformation;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
@@ -32,7 +31,7 @@ public class Grass extends Plant implements NonBlocking {
      * Create a new piece of grass next to this one
      * subtract 25 energy
      */
-    private void spread(){
+    private void spread() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -45,6 +44,4 @@ public class Grass extends Plant implements NonBlocking {
     protected Color getColor() {
         return Color.green;
     }
-
-
 }

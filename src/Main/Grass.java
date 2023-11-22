@@ -53,8 +53,4 @@ public class Grass extends Plant {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
-    Organism reproduce() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }

@@ -1,6 +1,8 @@
+package Main;
+
 public abstract class Fungi extends Organism {
     public Fungi() {
-        super("Fungi");
+        super("Main.Fungi");
         throw new UnsupportedOperationException("Not supported yet.");
 
     }

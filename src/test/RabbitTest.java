@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import Main.Rabbit;
 
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertEquals;
 
 class RabbitTest {
 
@@ -30,6 +31,11 @@ class RabbitTest {
         assertThrows(NullPointerException.class, () -> {
             rabbit.act(null);
         });
+    }
+
+    @Test
+    void testConstructorAdultAge(){
+        assertEquals(3, rabbit.getAdultAge());
     }
 
     /**

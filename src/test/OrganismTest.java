@@ -6,11 +6,15 @@ import itumulator.executable.Program;
 import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OrganismTest {
 
@@ -69,9 +73,47 @@ public class OrganismTest {
      */
     @Test
     void testOrganismConstructorAge(){
-        Assertions.assertEquals(0,rabbit.getAge());
+        Assertions.assertEquals(0, rabbit.getAge());
     }
 
+    @Test
+    void testGrowOnce(){
+        rabbit.grow();
+        assertEquals(1,rabbit.getAge());
+    }
+
+    @Test
+    void testGrowTwice(){
+        rabbit.grow();
+        rabbit.grow();
+        assertEquals(2,rabbit.getAge());
+    }
+
+    @Test
+    void testGetEnergy(){
+        for (int i = 0; i < 12; i++) {
+            rabbit.grow();
+        }
+    }
+
+    @Test
+    void getEnergyAdultOrganism() {
+        rabbit.grow();
+        rabbit.grow();
+        rabbit.grow();
+        assertEquals(100 - (rabbit.getEnergyLossPerDay()*(Math.max(0,rabbit.getAge()-rabbit.getAdultAge()))),rabbit.getEnergy());
+    }
+
+    @Test
+    void getEnergyChildOrganism() {
+        assertEquals(100 - (rabbit.getEnergyLossPerDay()*(Math.max(0,rabbit.getAge()-rabbit.getAdultAge()))),rabbit.getEnergy());
+    }
+
+    @Test
+    void getEnergyFor12daysOld() {
+        Rabbit rabbit = new Rabbit(12);
+        assertEquals(100 - (rabbit.getEnergyLossPerDay()*(Math.max(0,rabbit.getAge()-rabbit.getAdultAge()))),rabbit.getEnergy());
+    }
 
     @AfterEach
     void tearDown() {

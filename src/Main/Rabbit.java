@@ -17,6 +17,14 @@ public class Rabbit extends Animal {
     public Rabbit(){
         super(new String[]{"plant", "fruit"});
         inBurrow = false;
+        adultAge = 3;
+    }
+
+    public Rabbit(int age){
+        super(new String[]{"plant", "fruit"});
+        inBurrow = false;
+        adultAge = 3;
+        this.age = age;
     }
 
     /**

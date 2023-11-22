@@ -8,14 +8,19 @@ import itumulator.world.World;
 import java.awt.*;
 
 public abstract class Organism extends ObjectsOnMap implements Actor {
-    private int age;
+    protected int age;
     private String foodType; //The type of food the organism is
     private int energy; //0 is empty, and 100 is full
 
     private boolean day;
 
+    protected int adultAge;
 
+    public int getEnergyLossPerDay() {
+        return energyLossPerDay;
+    }
 
+    protected int energyLossPerDay;
 
     /**
      * Creates a new organism
@@ -27,13 +32,14 @@ public abstract class Organism extends ObjectsOnMap implements Actor {
         age = 0;
         this.foodType = foodType;
         energy = 100;
+        energyLossPerDay = 5;
     }
 
     /**
      * Adds 1 to age
      */
     public void grow() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        age++;
     }
 
     /**
@@ -63,13 +69,20 @@ public abstract class Organism extends ObjectsOnMap implements Actor {
      * @return the current amount of energy
      */
     public int getEnergy(){
-        return energy;
+        return energy - (energyLossPerDay*(Math.max(0,getAge()-getAdultAge())));
     }
 
+    /**
+     * Removes energy
+     * @param amount
+     */
+    public void RemoveEnergy(int amount){
+        setEnergy(Math.max(0,getEnergy()-amount));
+    }
 
-
-
-
+    public void setEnergy(int energy){
+        this.energy = energy;
+    }
 
     protected boolean isDay() {
         return day;
@@ -79,8 +92,14 @@ public abstract class Organism extends ObjectsOnMap implements Actor {
         this.day = day;
     }
 
+
+
     @Override
     protected String getPNGPath(){
         return getType();
+    }
+
+    public int getAdultAge() {
+        return adultAge;
     }
 }

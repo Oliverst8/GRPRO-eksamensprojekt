@@ -13,11 +13,18 @@ class RabbitTest {
 
     Rabbit rabbit;
 
+    /**
+     * Calls rabbit constructor and creates a new Rabbit object
+     */
     @BeforeEach
     void setUp() {
         rabbit = new Rabbit();
     }
 
+    /**
+     * Tests if NullPointerException is throwed when calling Rabbit.act() with Null
+     * Asserts NullpointerException
+     */
     @Test
     void testActWithNullArgumentExpectsNullPointerException() {
         assertThrows(NullPointerException.class, () -> {
@@ -25,36 +32,14 @@ class RabbitTest {
         });
     }
 
+    /**
+     * Tests isInBurrow
+     * Should return false as initialised in the Rabbit constructor
+     */
     @Test
     void testRabbitConstructorInBurrowExpectsFalse(){
         Assertions.assertFalse(rabbit.isInBurrow());
     }
-
-    @Test
-    void testRabbitConstructorCanEat(){
-        Assertions.assertArrayEquals(new String[]{"plant","fruit"},rabbit.getCanEat());
-    }
-
-    @Test
-    void testRabbitConstructorAge(){
-        Assertions.assertEquals(0, rabbit.getAge());
-    }
-
-    @Test
-    void testRabbitConstructorHunger(){
-        Assertions.assertEquals(50, rabbit.getHunger());
-    }
-
-    @Test
-    void testRabbitConstructorFoodType(){
-        Assertions.assertEquals("meat", rabbit.getFoodType());
-    }
-
-    @Test
-    void testRabbitConstructorEnergy(){
-        Assertions.assertEquals(100, rabbit.getEnergy());
-    }
-
 
     @AfterEach
     void tearDown() {

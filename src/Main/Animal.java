@@ -13,7 +13,7 @@ public abstract class Animal extends Organism {
 
     /**
      * Initialises hunger to 50
-     * Initialises food type to meat
+     * Initialises food type to that the animal itself is to meat
      * Initialises the food that can be eaten
      */
     public Animal( String[] canEat) {
@@ -55,7 +55,8 @@ public abstract class Animal extends Organism {
     }
 
     /**
-     * If energy is less then 100
+     *
+     * If energy is less than 100
      * - Removes 10 hunger and adds 10 energy
      */
     protected void sleep(){

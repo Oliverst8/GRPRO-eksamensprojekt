@@ -1,3 +1,6 @@
+package Main;
+
+import itumulator.executable.DisplayInformation;
 import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.simulator.Actor;
 import itumulator.world.World;
@@ -16,7 +19,10 @@ public abstract class Organism implements Actor, DynamicDisplayInformationProvid
      * Initialises energy to 100
      */
     public Organism(String foodType) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        age = 0;
+        health = 100;
+        this.foodType = foodType;
+        energy = 100;
     }
 
     /**
@@ -38,7 +44,7 @@ public abstract class Organism implements Actor, DynamicDisplayInformationProvid
      * @return current age
      */
     public int getAge() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return age;
     }
 
     /**
@@ -48,7 +54,26 @@ public abstract class Organism implements Actor, DynamicDisplayInformationProvid
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     *
+     * @return the food type of the organism
+     */
     public String getFoodType(){
+        return foodType;
+    }
+
+    /**
+     * @return the current amount of energy
+     */
+    public int getEnergy(){
+        return energy;
+    }
+
+    /**
+     * @return the display information of the object
+     */
+    @Override
+    public DisplayInformation getInformation() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

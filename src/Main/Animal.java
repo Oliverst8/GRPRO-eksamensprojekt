@@ -1,3 +1,6 @@
+package Main;
+
+import itumulator.world.Location;
 import itumulator.world.World;
 
 public abstract class Animal extends Organism {
@@ -13,7 +16,8 @@ public abstract class Animal extends Organism {
      */
     public Animal(String[] canEat) {
         super("Meat");
-        throw new UnsupportedOperationException("Not supported yet.");
+        hunger = 50;
+        this.canEat = canEat;
     }
 
     /**
@@ -22,6 +26,25 @@ public abstract class Animal extends Organism {
      * @param food the food to be eaten
      */
     protected void eat(Organism food) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Throw IllegalArgumentException if world is null or radius is less then 2
+     * Finds the nearest object of the type object to this animal
+     * @return the location of the nearest grass
+     */
+    protected Location findNearest(World world, int radius, Object object){
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Finds the distance between two objects
+     * @param world the world the animal is in
+     * @param location2 the location of the second object
+     * @return the distance between two object
+     */
+    private double distance(World world, Location location2) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -35,5 +58,9 @@ public abstract class Animal extends Organism {
 
     public int getHunger() {
         return hunger;
+    }
+
+    public String[] getCanEat(){
+        return canEat;
     }
 }

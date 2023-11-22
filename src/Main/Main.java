@@ -1,4 +1,7 @@
+package Main;
+
 import itumulator.executable.Program;
+import itumulator.world.Location;
 import itumulator.world.World;
 
 public class Main {
@@ -17,6 +20,10 @@ public class Main {
         for (int i = 0; i < 200; i++) {
             program.simulate();
         } // kører 200 runder, altså kaldes 'act' 200 gange for alle placerede aktører
-      
+
+
+
+
+
     }
 }

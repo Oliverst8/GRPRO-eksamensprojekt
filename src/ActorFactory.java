@@ -1,4 +1,5 @@
 import itumulator.simulator.Actor;
+import itumulator.world.Location;
 import itumulator.world.World;
 
 public class ActorFactory {
@@ -32,7 +33,13 @@ public class ActorFactory {
 
     private void place(World world) {
         for (int i = 0; i < amount; i++) {
-            world.place(actor);
+            world.setTile(new Location(),actor);
+        }
+    }
+
+    private void place(World world, Location location) {
+        for (int i = 0; i < amount; i++) {
+            world.setTile(location, actor);
         }
     }
 }

@@ -1,11 +1,12 @@
 package Main;
 
 import itumulator.executable.DisplayInformation;
+import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import java.awt.*;
 
-public class Grass extends Plant {
+public class Grass extends Plant implements NonBlocking {
 
 
     /**
@@ -45,12 +46,5 @@ public class Grass extends Plant {
         return Color.green;
     }
 
-    /**
-     * @return image of grass
-     */
-    @Override
-    public DisplayInformation getInformation() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
 }

@@ -69,6 +69,4 @@ public abstract class Animal extends Organism {
     public String[] getCanEat(){
         return canEat;
     }
-
-
 }

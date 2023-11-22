@@ -21,6 +21,8 @@ public class Input {
 
             while (sc.hasNextLine()) {
                 String object[] = sc.nextLine().split(" ");
+
+                if (object.length != 2) continue; // Skip if line is blank
                 
                 int amount;
 

@@ -45,14 +45,6 @@ public class Grass extends Plant {
         return Color.green;
     }
 
-    /**
-     * @return image of grass
-     */
-    @Override
-    public DisplayInformation getInformation() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     @Override
     Organism reproduce() {
         throw new UnsupportedOperationException("Not supported yet.");

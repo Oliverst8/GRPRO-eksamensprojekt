@@ -14,9 +14,6 @@ public abstract class Organism extends ObjectsOnMap implements Actor {
 
     private boolean day;
 
-
-
-
     /**
      * Creates a new organism
      * Initialises age to 0
@@ -65,11 +62,6 @@ public abstract class Organism extends ObjectsOnMap implements Actor {
     public int getEnergy(){
         return energy;
     }
-
-
-
-
-
 
     protected boolean isDay() {
         return day;

@@ -5,11 +5,17 @@ import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.simulator.Actor;
 import itumulator.world.World;
 
-public abstract class Organism implements Actor, DynamicDisplayInformationProvider {
+import java.awt.*;
+
+public abstract class Organism extends ObjectsOnMap implements Actor {
     private int age;
-    private int health; //0 is empty, and 100 is full
     private String foodType; //The type of food the organism is
     private int energy; //0 is empty, and 100 is full
+
+    private boolean day;
+
+
+
 
     /**
      * Creates a new organism
@@ -60,13 +66,21 @@ public abstract class Organism implements Actor, DynamicDisplayInformationProvid
         return energy;
     }
 
-    /**
-     * @return the display information of the object
-     */
-    @Override
-    public DisplayInformation getInformation() {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+
+
+
+
+    protected boolean isDay() {
+        return day;
     }
 
-    abstract Organism reproduce();
+    protected void setDay(boolean day) {
+        this.day = day;
+    }
+
+    @Override
+    protected String getPNGPath(){
+        return getType();
+    }
 }

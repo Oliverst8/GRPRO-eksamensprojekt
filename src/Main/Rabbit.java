@@ -3,7 +3,9 @@ package Main;
 import itumulator.world.Location;
 import itumulator.world.World;
 
-public class Bunny extends Animal {
+import java.awt.*;
+
+public class Rabbit extends Animal {
 
     private Burrow burrow;
     private boolean inBurrow;
@@ -12,8 +14,8 @@ public class Bunny extends Animal {
      * Initilises the food to the bunny can eat to plant and fruits
      * Initialises inBurrow to false
      */
-    public Bunny(){
-        super(new String[]{"Main.Plant", "Fruit"});
+    public Rabbit(){
+        super(new String[]{"plant", "fruit"});
         inBurrow = false;
     }
 
@@ -26,13 +28,19 @@ public class Bunny extends Animal {
      */
     @Override
     public void act(World world) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(world == null) throw new NullPointerException("world cant be null");
+
+        setDay(world.isDay());
+
+        if (isDay()) dayBehavior();
+        else nightBehavior();
     }
 
     /**
      * If it does not have a burrow:
      * - It checks what takes less energy, a make a burrow, or go to an exiting one (If they are equal it goes to the closest one)
      * - If it does have one it moves towards its burrow if it isnt in it, otherwise it does nothing
+     * At the end call the grow method
      */
     private void nightBehavior() {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -118,5 +126,15 @@ public class Bunny extends Animal {
      */
     public boolean isInBurrow(){
         return inBurrow;
+    }
+
+    @Override
+    public String getType(){
+        return "rabbit";
+    }
+
+    @Override
+    public Color getColor(){
+        return Color.red;
     }
 }

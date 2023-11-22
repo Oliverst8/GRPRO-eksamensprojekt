@@ -1,5 +1,7 @@
 package Main;
 
+import java.awt.*;
+
 public abstract class Plant extends Organism {
 
     /**

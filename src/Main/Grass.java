@@ -3,6 +3,8 @@ package Main;
 import itumulator.executable.DisplayInformation;
 import itumulator.world.World;
 
+import java.awt.*;
+
 public class Grass extends Plant {
 
 
@@ -10,7 +12,7 @@ public class Grass extends Plant {
      * Sets the food type to plant
      */
     public Grass() {
-        super("Main.Plant");
+        super("plant");
     }
 
     /**
@@ -33,11 +35,26 @@ public class Grass extends Plant {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    protected String getType() {
+        return "grass";
+    }
+
+    @Override
+    protected Color getColor() {
+        return Color.green;
+    }
+
     /**
      * @return image of grass
      */
     @Override
     public DisplayInformation getInformation() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    Organism reproduce() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

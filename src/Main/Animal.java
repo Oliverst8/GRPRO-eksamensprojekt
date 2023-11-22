@@ -3,6 +3,8 @@ package Main;
 import itumulator.world.Location;
 import itumulator.world.World;
 
+import java.awt.*;
+
 public abstract class Animal extends Organism {
 
     private int hunger; //0 is empty, and 100 is full
@@ -14,8 +16,8 @@ public abstract class Animal extends Organism {
      * Initialises food type to meat
      * Initialises the food that can be eaten
      */
-    public Animal(String[] canEat) {
-        super("Meat");
+    public Animal( String[] canEat) {
+        super("meat");
         hunger = 50;
         this.canEat = canEat;
     }
@@ -48,6 +50,10 @@ public abstract class Animal extends Organism {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    protected Animal reproduce(World world, Animal animal1, Animal animal2){
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     /**
      * If energy is less then 100
      * - Removes 10 hunger and adds 10 energy
@@ -63,4 +69,6 @@ public abstract class Animal extends Organism {
     public String[] getCanEat(){
         return canEat;
     }
+
+
 }

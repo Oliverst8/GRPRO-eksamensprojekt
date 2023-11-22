@@ -6,6 +6,7 @@ import java.util.Random;
 
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
+import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 public class ObjectFactory {
@@ -59,7 +60,7 @@ public class ObjectFactory {
 
         do{    
             location = new Location(r.nextInt(world.getSize()),r.nextInt(world.getSize()));
-        } while (!world.isTileEmpty(location));    
+        } while (!world.isTileEmpty(location) || (object instanceof NonBlocking && world.containsNonBlocking(location)));    
 
 
         world.setTile(location, object);

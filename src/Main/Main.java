@@ -21,27 +21,7 @@ public class Main {
         // Generates the objects in the world
         for (String object : input.getObjects().keySet()) {
             for (int i = 0; i < input.getObjects().get(object); i++) {
-                try {
-                    ObjectFactory.generate(world, object);
-                } catch (ClassNotFoundException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println(e.getStackTrace());
-                } catch (NoSuchMethodException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println(e.getStackTrace());
-                } catch (IllegalAccessException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println(e.getStackTrace());
-                } catch (InvocationTargetException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println(e.getStackTrace());
-                } catch (InstantiationException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println(e.getStackTrace());
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    System.out.println(e.getStackTrace());
-                }
+                ObjectFactory.generate(world, object);
             }
         }
 

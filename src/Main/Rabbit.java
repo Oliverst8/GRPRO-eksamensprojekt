@@ -40,37 +40,51 @@ public class Rabbit extends Animal {
 
         setDay(world.isDay());
 
-        if (isDay()) dayBehavior();
-        else nightBehavior();
+        if (isDay()) dayBehavior(world);
+        else nightBehavior(world);
     }
 
     /**
+     * If the bunny is sleeping make it run the sleep method
      * If it does not have a burrow:
      * - It checks what takes less energy, a make a burrow, or go to an exiting one (If they are equal it goes to the closest one)
-     * - If it does have one it moves towards its burrow if it isnt in it, otherwise it does nothing
-     * At the end call the grow method
+     * If it does have one it moves towards its burrow if it isnt in it, otherwise it does nothing
      */
-    private void nightBehavior() {
+    private void nightBehavior(World world) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
-     * - It has a chance to leave it burrow, the chance scales with hunger (The lower the hunger the higher the chance of leaving)
-     * - If its in burrow chance to reproduce the chance scales with hunger (The higher the hunger the higher the chance of reproducing)
-     * - If its in the burrow small chance to dig more entries to the burrow
-     * - If out of borrow chance to move towards grass (If there is grass within 5 tiles)
+     * - Set sleeping to false if its true, and call the grow method
+     * - If its in a burrow, check if it can reproduce
+     * -    It can reproduce if there are two rabbits in the burrow, and they both have enough energy
+     * - If it cant reproduce it tries to dig more entries to the burrow (If it has enough energy)
+     * - If it exits burrow
+     * - If out of borrow moves towards grass
      */
-    private void dayBehavior() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private void dayBehavior(World world) {
+        if(sleeping){
+            sleeping = false;
+            grow();
+        }
+        if(inBurrow){
+            //If its in a burrow, check if it can reproduce
+            //     * -    It can reproduce if there are two rabbits in the burrow, and they both have enough energy
+            //     * - If it cant reproduce it tries to dig more entries to the burrow (If it has enough energy)
+            //     * - If it exits burrow
+        } else {
+            Location nearestGrass = findNearest(world,4,new Grass());
+            if (nearestGrass != null) {
+                if(distance(world, nearestGrass) == 0){
+                    if(getHunger() < 100) eat((Grass) world.getNonBlocking(nearestGrass), world);
+                }else {
+                    moveTowards(nearestGrass, world);
+                }
+            }
+        }
     }
 
-    /**
-     * Throws IllegalArgumentException if world or location is null
-     * Moves towards location by one tile
-     */
-    private void moveTowards(Location location, World world){
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+
 
     /**
      * Throws Main.IllegalOperationException if dig is called when the bunny already has a burrow

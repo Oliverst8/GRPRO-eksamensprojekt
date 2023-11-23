@@ -37,18 +37,18 @@ public class ObjectFactory {
         className = className.substring(0, 1).toUpperCase() + className.substring(1);
         className = "Main." + className;
         
-        // Load the class dynamically
+        // Finds the type of class based on the className string
         Class<?> clazz = Class.forName(className);
 
-        // Get the constructor with the specified parameter types
+        // Makes a list of the parameter types that are in the constructor
         Class<?>[] parameterTypes = new Class[constructorArgs.length];
         for (int i = 0; i < constructorArgs.length; i++) {
             parameterTypes[i] = constructorArgs[i].getClass();
         }
-
+        //Find the constructor that has the matching parameters found earlier
         Constructor<?> constructor = clazz.getConstructor(parameterTypes);
 
-        // Create an instance using the specified constructor and arguments
+        // Creates the an instance of the object, using the constructer arguments and returns it
         return constructor.newInstance(constructorArgs);
     }
 

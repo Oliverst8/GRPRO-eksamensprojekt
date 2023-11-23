@@ -1,5 +1,6 @@
 package test;
 
+import Main.ObjectFactory;
 import Main.Rabbit;
 import itumulator.executable.Program;
 import itumulator.world.World;
@@ -11,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class OrganismTest {
 
@@ -91,6 +92,26 @@ public class OrganismTest {
         for (int i = 0; i < 12; i++) {
             rabbit.grow();
         }
+    }
+
+    @Test
+    void dieWithNullArgumentExpectsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> {
+            rabbit.die(null);
+        });
+    }
+
+    @Test
+    void dieExpectsAnimalToBeRemoved() {
+        Rabbit rabbit1 = null;
+        try{
+            rabbit1 = (Rabbit) ObjectFactory.generate(world, "Rabbit");
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        rabbit1.die(world);
+        assertFalse(world.getEntities().containsKey(rabbit1));
+
     }
 
     @Test

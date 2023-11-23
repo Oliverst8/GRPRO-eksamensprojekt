@@ -39,11 +39,13 @@ public abstract class Organism extends ObjectsOnMap implements Actor {
     }
 
     /**
+     * @throws NullPointerException if world is null
      * Kills this organism
      * @param world current world
      */
     public void die(World world) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(world == null) throw new NullPointerException("World cant be null");
+        world.delete(this);
     }
 
     /**
@@ -72,7 +74,7 @@ public abstract class Organism extends ObjectsOnMap implements Actor {
      * Removes energy
      * @param amount
      */
-    public void RemoveEnergy(int amount){
+    public void removeEnergy(int amount){
         setEnergy(Math.max(0,getEnergy()-amount));
     }
 

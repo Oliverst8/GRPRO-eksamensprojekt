@@ -1,6 +1,12 @@
 package test;
 
+import Main.Burrow;
+import Main.Grass;
+import Main.ObjectFactory;
 import Main.Rabbit;
+import itumulator.executable.Program;
+import itumulator.world.Location;
+import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AnimalTest {
 
+    Program program;
+    World world;
     Rabbit rabbit;
 
     /**
@@ -19,7 +27,13 @@ public class AnimalTest {
      */
     @BeforeEach
     void setUp() {
+        int size = 3; // størrelsen af vores 'map' (dette er altid kvadratisk)
+        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
+        int display_size = 800; // skærm opløsningen (i px)
+        program = new Program(size, display_size, delay); // opret et nyt program
+        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         rabbit = new Rabbit();
+
     }
 
     /**

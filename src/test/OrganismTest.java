@@ -1,6 +1,6 @@
 package test;
 
-import Main.Organism;
+
 import Main.Rabbit;
 import itumulator.executable.Program;
 import itumulator.world.World;

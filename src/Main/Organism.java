@@ -73,7 +73,7 @@ public abstract class Organism extends ObjectsOnMap implements Actor {
      * Removes energy
      * @param amount
      */
-    public void RemoveEnergy(int amount){
+    public void removeEnergy(int amount){
         setEnergy(Math.max(0,getEnergy()-amount));
     }
 

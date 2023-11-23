@@ -4,6 +4,7 @@ import itumulator.world.Location;
 import itumulator.world.World;
 
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 
 public class Rabbit extends Animal {
 
@@ -16,12 +17,14 @@ public class Rabbit extends Animal {
      */
     public Rabbit(){
         super(new String[]{"plant", "fruit"});
+        burrow = null;
         inBurrow = false;
         adultAge = 3;
     }
 
     public Rabbit(int age){
         super(new String[]{"plant", "fruit"});
+        burrow = null;
         inBurrow = false;
         adultAge = 3;
         this.age = age;
@@ -77,8 +80,10 @@ public class Rabbit extends Animal {
      * If The bunny has at least 25 energy:
      * - calls makeBurrow()
      */
-    private void dig() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private void dig(World world) {
+        if(getEnergy()-25 > 0 ){
+        makeBurrow(world);
+        }
     }
 
     /**
@@ -86,17 +91,31 @@ public class Rabbit extends Animal {
      *      *      * - Initialises burrow variable to newly created burrow
      *      *      * - Subtracts 25 energy
      */
-    private void makeBurrow() {
+    private void makeBurrow(World world) {
+        try {
+            setBurrow((Burrow) ObjectFactory.generate(world,"Burrow"));
 
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException  e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+    removeEnergy(25);
     }
 
     /**
      * Throws Main.IllegalOperationException if the bunny has no burrow
      * If the bunny does not have 50 energy return;
-     * - calls makeBurrow()
+     * - makes entrance to burrow
+     * - removes 50 energy
      */
-    private void expandBurrow() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private void expandBurrow(Location location, World world) {
+        if(burrow == null){throw new IllegalArgumentException("Bunny cant expand a nonexistent burrow. Burrow is null");}
+        if(getEnergy()-50 < 0){
+            return;
+        } else {
+            burrow.addEntry(location,world);
+            removeEnergy(50);
+        }
     }
 
     /**
@@ -106,7 +125,12 @@ public class Rabbit extends Animal {
      * removes the bunny from the world
      */
     private void enterBurrow(World world) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(inBurrow) {
+            throw new IllegalOperationException("Cant enter a burrow, if its already in one");
+        }
+        if(world == null){throw new IllegalArgumentException("World is null");}
+        inBurrow = true;
+        burrow.addRabbit(this);
     }
 
     /**
@@ -116,7 +140,12 @@ public class Rabbit extends Animal {
      * Adds the bunny to the world in the location of a random burrow entry
      */
     private void exitBurrow(World world) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(!inBurrow){
+            throw new IllegalOperationException("Cant exit a burrow, if its not in one");
+        }
+        if(world == null){throw new IllegalArgumentException("World is null");}
+        inBurrow = false;
+        burrow.removeRabbit(this);
     }
 
     /**
@@ -126,7 +155,10 @@ public class Rabbit extends Animal {
      * @param burrow The burrow which the bunny should make its own
      */
     private void setBurrow(Burrow burrow) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(burrow == null){throw new IllegalArgumentException("Burrow cant be null");}
+        if(this.burrow != null){throw new IllegalOperationException("Bunny already has a burrow");}
+        this.burrow = burrow;
+
     }
 
     /**

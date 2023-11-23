@@ -1,6 +1,5 @@
 package Main;
 
-import itumulator.executable.DisplayInformation;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
 

@@ -4,6 +4,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
+import javax.management.RuntimeErrorException;
+
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
@@ -37,8 +39,6 @@ public class ObjectFactory {
         className = className.toLowerCase();
         className = className.substring(0, 1).toUpperCase() + className.substring(1);
         className = "Main." + className;
-        
-        Constructor<?> constructor;
 
         try {
             // Finds the type of class based on the className string
@@ -51,7 +51,7 @@ public class ObjectFactory {
             }
 
             //Find the constructor that has the matching parameters found earlier
-            constructor = clazz.getConstructor(parameterTypes);
+            Constructor<?> constructor = clazz.getConstructor(parameterTypes);
 
             // Creates the an instance of the object, using the constructer arguments and returns it
             return constructor.newInstance(constructorArgs);
@@ -78,8 +78,8 @@ public class ObjectFactory {
             System.out.println(e.getStackTrace());
         }
 
-        // If we get here, we didn't find the class in the Main package
-        return null;
+        // Failsafe
+        throw new RuntimeErrorException(null, "Could not generate object: " + className);
     }
 
     private static void place(World world, Object object) {

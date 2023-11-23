@@ -15,18 +15,29 @@ public class Hole extends InAnimate implements NonBlocking {
      * @param location the location of the hole
      */
     public Hole(Location location){
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(location == null){ throw new NullPointerException("location of the hole cant be null");}
+        this.location = location;
     }
 
+    /**
+     * @return the location of the Hole object
+     */
     public Location getLocation() {
         return location;
     }
 
+    /**
+     *
+     * @return the type of the Hole object as hole
+     */
     @Override
     protected String getType() {
         return "hole";
     }
 
+    /**
+     * @return the color of the hole object
+     */
     @Override
     protected Color getColor() {
         return new Color(150, 75, 0);

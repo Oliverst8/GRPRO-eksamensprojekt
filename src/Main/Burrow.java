@@ -66,7 +66,7 @@ public class Burrow {
      * @return a list of Locations of the entries the burrow has
      */
     public List<Hole> getEntries(){
-        throw new UnsupportedOperationException("Not supported yet.");
+        return entries;
     }
 
     /**
@@ -75,6 +75,9 @@ public class Burrow {
      * @param entry
      */
     public void addEntry(Location entry, World world){
+        if (world == null) throw new NullPointerException("World cant be null");
+        if (entry == null) throw new NullPointerException("Location cant be null");
+        
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

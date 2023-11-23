@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import Main.Burrow;
 
@@ -24,6 +25,8 @@ class BurrowTest {
     World world;
     Burrow burrow;
 
+    Location location;
+
     @BeforeEach
     void setUp() {
         int size = 3; // størrelsen af vores 'map' (dette er altid kvadratisk)
@@ -31,7 +34,8 @@ class BurrowTest {
         int display_size = 800; // skærm opløsningen (i px)
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
-        burrow = new Burrow(world, new Location(0,0));
+        Location location = new Location(0,0);
+        burrow = new Burrow(world,location);
     }
 
     @Test
@@ -44,10 +48,14 @@ class BurrowTest {
 
     @Test
     void testBurrowConstructorWithLocationArgument() {
-        List<Hole> expected = new ArrayList<>();
-        Location location = new Location(0,0);
-        expected.add(new Hole(location));
-        assertEquals(expected, new Burrow(world, location).getEntries());
+
+
+        Location testLocation = new Location(60,60);
+        Burrow testBurrow = new Burrow(world, testLocation);
+        List<Hole> holes = testBurrow.getEntries();
+        Location burrowLocation = holes.get(0).getLocation();
+
+        assertEquals(testLocation,burrowLocation);
     }
 
     @Test
@@ -109,9 +117,23 @@ class BurrowTest {
     }
 
     @Test
-    void addTestEntryWith() {
+    void addTestEntryWithNullWorldArgumentExpectsNullPointerException() {
+    World testWorld = null;
+        assertThrows(NullPointerException.class, () -> {
+            burrow.addEntry(location, testWorld);
+        });
     }
-
+    void addTestEntryWithNullLocationArgumentExpectsNullPointerException() {
+        Location testLocation = null;
+        assertThrows(NullPointerException.class, () -> {
+            burrow.addEntry(testLocation, world);
+        });
+    }
+    @Test
+    void addTestEntryExpectsThatEntryIsAddedToEntries(){
+        System.out.println(burrow.getEntries());
+        assertFalse(burrow.getEntries().isEmpty());
+    }
     @AfterEach
     void tearDown() {
     }

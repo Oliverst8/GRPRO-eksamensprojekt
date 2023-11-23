@@ -78,13 +78,15 @@ public class Burrow {
     public void addEntry(Location entry, World world){
         if (world == null) throw new NullPointerException("World cant be null");
         if (entry == null) throw new NullPointerException("Location cant be null");
-        Hole hole = null;
+
         try {
-           hole = (Hole) ObjectFactory.generate(world,entry,"Hole");
+           Hole hole = (Hole) ObjectFactory.generate(world,entry,"Hole",entry);
            entries.add(hole);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException  e) {
-            throw new RuntimeException(e.getMessage());
+            System.out.println(e.getMessage());
         }
+
+
     }
 
     /**

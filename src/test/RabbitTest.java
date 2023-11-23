@@ -1,5 +1,6 @@
 package test;
 
+import Main.Burrow;
 import Main.Grass;
 import Main.ObjectFactory;
 import itumulator.executable.Program;
@@ -24,7 +25,7 @@ class RabbitTest {
      */
     @BeforeEach
     void setUp() {
-        int size = 3; // størrelsen af vores 'map' (dette er altid kvadratisk)
+        int size = 20; // størrelsen af vores 'map' (dette er altid kvadratisk)
         int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
         int display_size = 800; // skærm opløsningen (i px)
         program = new Program(size, display_size, delay); // opret et nyt program
@@ -61,7 +62,18 @@ class RabbitTest {
     void testActDayBehaviorExpectingToMoveTowardsGrassWithOnly1GrassInWorldXValue() {
         Rabbit rabbit1 = initialiseGrassAndRabbitOnWorld(new Location(0,0),new Location(1,1));
         program.simulate();
-        assertEquals(1, world.getLocation(rabbit1).getX());
+        int actual = world.getLocation(rabbit1).getX();
+        assertEquals(1, actual);
+
+    }
+
+    @Test
+    void testActDayBehaviorExpectingToMoveTowardsGrassWithOnly1GrassInWorldXValueTwice() {
+        Rabbit rabbit1 = initialiseGrassAndRabbitOnWorld(new Location(0,0),new Location(3,3));
+        rabbit.setHunger(99);
+        program.simulate();
+        program.simulate();
+        assertEquals(2, world.getLocation(rabbit1).getX());
 
     }
 
@@ -69,14 +81,15 @@ class RabbitTest {
     void testActDayBehaviorExpectingToMoveTowardsGrassWithOnly1GrassInWorldYValue() {
         Rabbit rabbit1 = initialiseGrassAndRabbitOnWorld(new Location(0,0),new Location(1,1));
         program.simulate();
-        assertEquals(1, world.getLocation(rabbit1).getY());
+        int acutal = world.getLocation(rabbit1).getY();
+        assertEquals(1, acutal);
 
     }
 
     @Test
     void testActDayBehaviorExpectingToMoveTowardsGrassAlreadyOnGrassX() {
         Rabbit rabbit1 = initialiseGrassAndRabbitOnWorld(new Location(1,1),new Location(1,1));
-        rabbit1.setHunger(100);
+        rabbit1.setHunger(99);
         program.simulate();
         assertEquals(1, world.getLocation(rabbit1).getX());
 
@@ -94,7 +107,7 @@ class RabbitTest {
     @Test
     void testActDayBehaviorExpectingToMoveTowardsGrassAlreadyOnGrassY() {
         Rabbit rabbit1 = initialiseGrassAndRabbitOnWorld(new Location(1,1),new Location(1,1));
-        rabbit1.setHunger(100);
+        rabbit1.setHunger(99);
         program.simulate();
         assertEquals(1, world.getLocation(rabbit1).getY());
 
@@ -152,6 +165,32 @@ class RabbitTest {
             program.simulate();
         }
         assertEquals(expectedHunger,rabbit.getHunger());
+    }
+
+    @Test
+    void testActDayBehaviorExpectsToMoveTowardsBurrowAndNotEnter() {
+
+        Burrow burrow = new Burrow(world, new Location(2,2));
+        Rabbit rabbit = new Rabbit(3, burrow);
+        world.setTile(new Location(0,0),rabbit);
+        rabbit.setHunger(100);
+        program.simulate();
+        assertEquals(new Location(1,1),world.getLocation(rabbit));
+
+    }
+
+    @Test
+    void testActDayBehaviorExpectsToMoveTowardsBurrowAndEnter() {
+
+        Burrow burrow = new Burrow(world, new Location(2,2));
+        Rabbit rabbit = new Rabbit(3, burrow);
+        world.setTile(new Location(0,0),rabbit);
+        rabbit.setHunger(100);
+        program.simulate();
+        program.simulate();
+        program.simulate();
+        assertTrue(rabbit.isInBurrow());
+
     }
 
     @AfterEach

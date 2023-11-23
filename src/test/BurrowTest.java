@@ -1,6 +1,7 @@
 package test;
 
 import Main.Hole;
+import Main.ObjectFactory;
 import Main.Rabbit;
 import itumulator.executable.Program;
 import itumulator.world.Location;
@@ -80,6 +81,33 @@ class BurrowTest {
     }
 
     @Test
+    void testgetAdultRabbits0adults() {
+        Rabbit rabbit = new Rabbit(2, burrow);
+        burrow.addRabbit(rabbit);
+        assertEquals(0, burrow.getAdultRabbitsInside().size());
+    }
+
+    @Test
+    void testgetAdultRabbits1adults() {
+        Rabbit rabbit = new Rabbit(2, burrow);
+        Rabbit rabbit1 = new Rabbit(3, burrow);
+        burrow.addRabbit(rabbit);
+        burrow.addRabbit(rabbit1);
+        assertEquals(1, burrow.getAdultRabbitsInside().size());
+    }
+
+    @Test
+    void testgetAdultRabbits2adults() {
+        Rabbit rabbit = new Rabbit(2, burrow);
+        Rabbit rabbit1 = new Rabbit(3, burrow);
+        Rabbit rabbit2 = new Rabbit(4, burrow);
+        burrow.addRabbit(rabbit);
+        burrow.addRabbit(rabbit1);
+        burrow.addRabbit(rabbit2);
+        assertEquals(2, burrow.getAdultRabbitsInside().size());
+    }
+
+    @Test
     void testAddRabbitWithNullArgumentExpectsNullPointerException() {
         Rabbit rabbit = null;
         assertThrows(NullPointerException.class, () -> {
@@ -94,6 +122,24 @@ class BurrowTest {
             burrow.removeRabbit(rabbit);
         });
 
+    }
+
+    @Test
+    void testClosestLocationIfThereIs1Entry(){
+        Location location = new Location(1,1);
+        Location rabbitLocation = new Location(0,0);
+        Burrow burrow = new Burrow(world, location);
+        assertEquals(location, burrow.findNearestEntry(rabbitLocation));
+    }
+
+    @Test
+    void testClosestLocationIfThereIs2Entries(){
+        Location location = new Location(2,2);
+        Location location1 = new Location(1,1);
+        Location rabbitLocation = new Location(0,0);
+        Burrow burrow = new Burrow(world, location);
+        burrow.addEntry(location1, world);
+        assertEquals(location1, burrow.findNearestEntry(rabbitLocation));
     }
 
     @Test

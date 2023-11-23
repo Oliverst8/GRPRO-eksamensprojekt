@@ -2,6 +2,7 @@ package Main;
 
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
+import itumulator.world.World;
 
 import java.awt.*;
 
@@ -42,5 +43,7 @@ public class Hole extends InAnimate implements NonBlocking {
     protected Color getColor() {
         return new Color(150, 75, 0);
     }
+
+
 
 }

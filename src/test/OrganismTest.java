@@ -1,8 +1,10 @@
 package test;
 
+import Main.Burrow;
 import Main.ObjectFactory;
 import Main.Rabbit;
 import itumulator.executable.Program;
+import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
 
@@ -129,7 +131,7 @@ public class OrganismTest {
 
     @Test
     void getEnergyFor12daysOld() {
-        Rabbit rabbit = new Rabbit(12);
+        Rabbit rabbit = new Rabbit(12, new Burrow(world, new Location(0,0)));
         assertEquals(100 - (rabbit.getEnergyLossPerDay()*(Math.max(0,rabbit.getAge()-rabbit.getAdultAge()))),rabbit.getEnergy());
     }
 

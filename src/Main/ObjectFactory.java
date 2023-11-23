@@ -32,6 +32,7 @@ public class ObjectFactory {
         return object;
     }
 
+    //Skrevet i samarbejde med chatgpt
     private static Object generateHelper(String className, Object... constructorArgs) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         className = className.toLowerCase();
         className = className.substring(0, 1).toUpperCase() + className.substring(1);

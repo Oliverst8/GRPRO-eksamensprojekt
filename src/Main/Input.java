@@ -41,7 +41,7 @@ public class Input {
             }
             sc.close();
         } catch (FileNotFoundException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
     }
 

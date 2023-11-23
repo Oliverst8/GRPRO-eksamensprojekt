@@ -5,6 +5,8 @@ import itumulator.world.World;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Random;
 
 public class Rabbit extends Animal {
 
@@ -22,9 +24,9 @@ public class Rabbit extends Animal {
         adultAge = 3;
     }
 
-    public Rabbit(int age){
+    public Rabbit(int age, Burrow burrow){
         super(new String[]{"plant", "fruit"});
-        burrow = null;
+        setBurrow(burrow);
         inBurrow = false;
         adultAge = 3;
         this.age = age;
@@ -48,13 +50,36 @@ public class Rabbit extends Animal {
     }
 
     /**
+     * No test written
      * If the bunny is sleeping make it run the sleep method
      * If it does not have a burrow:
      * - It checks what takes less energy, a make a burrow, or go to an exiting one (If they are equal it goes to the closest one)
      * If it does have one it moves towards its burrow if it isnt in it, otherwise it does nothing
      */
     private void nightBehavior(World world) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(inBurrow) sleeping = true;
+        if(sleeping){
+            sleep();
+            return;
+        }
+        if(burrow != null){
+            seekBurrow(world);
+            return;
+        }
+        dig(world);
+
+    }
+
+    /**
+     * Moves the bunny towards the closet hole entrance to its burrow
+     * If the bunny stands on the burrow it will enter it
+     * @param world
+     */
+    private void seekBurrow(World world){
+        Location nearestEntry = burrow.findNearestEntry(world.getCurrentLocation());
+        if(distance(world, nearestEntry) != 0) moveTowards(nearestEntry, world);
+        double test = distance(world, nearestEntry);
+        if(distance(world, nearestEntry) == 0) enterBurrow(world);
     }
 
     /**
@@ -63,7 +88,8 @@ public class Rabbit extends Animal {
      * -    It can reproduce if there are two rabbits in the burrow, and they both have enough energy
      * - If it cant reproduce it tries to dig more entries to the burrow (If it has enough energy)
      * - If it exits burrow
-     * - If out of borrow moves towards grass
+     * - If out of borrow and hunger isnt full moves towards grass
+     * - Otherwise
      */
     private void dayBehavior(World world) {
         if(sleeping){
@@ -75,14 +101,32 @@ public class Rabbit extends Animal {
             //     * -    It can reproduce if there are two rabbits in the burrow, and they both have enough energy
             //     * - If it cant reproduce it tries to dig more entries to the burrow (If it has enough energy)
             //     * - If it exits burrow
-        } else {
-            Location nearestGrass = findNearest(world,4,new Grass());
-            if (nearestGrass != null) {
-                if(distance(world, nearestGrass) == 0){
-                    if(getHunger() < 100) eat((Grass) world.getNonBlocking(nearestGrass), world);
-                }else {
-                    moveTowards(nearestGrass, world);
+            if(getEnergy() > 80 && burrow.getAdultRabbitsInside().size() >= 2){
+                for(Rabbit otherRabbit : burrow.getAdultRabbitsInside()){
+                    if(otherRabbit != this && otherRabbit.getEnergy() > 80){
+                        reproduce(world, this, otherRabbit);
+                        return;
+                    }
                 }
+            }
+            if(getEnergy() > 60){
+                System.out.println("Expanding burrow, not implemented called from daybehavior");
+                return;
+            }
+            exitBurrow(world);
+        } else {
+            if(getHunger() < 100) {
+                Location nearestGrass = findNearest(world, 4, new Grass());
+                if (nearestGrass != null) {
+                    if (distance(world, nearestGrass) == 0) {
+                        eat((Grass) world.getNonBlocking(nearestGrass), world);
+                    } else {
+                        moveTowards(nearestGrass, world);
+                    }
+                }
+            } else{
+                if(burrow != null ) seekBurrow(world);
+                else dig(world);
             }
         }
     }
@@ -97,6 +141,7 @@ public class Rabbit extends Animal {
     private void dig(World world) {
         if(getEnergy()-25 > 0 ){
         makeBurrow(world);
+        enterBurrow(world);
         }
     }
 
@@ -107,10 +152,12 @@ public class Rabbit extends Animal {
      */
     private void makeBurrow(World world) {
         try {
-            setBurrow((Burrow) ObjectFactory.generate(world,"Burrow"));
+            setBurrow((Burrow) ObjectFactory.generate(world,"Burrow", world, world.getCurrentLocation()));
 
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException  e) {
-            throw new RuntimeException(e.getMessage());
+        } catch(NoSuchMethodException e){
+            System.out.println("No such method: " + e.getMessage());
+        }catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException  e) {
+            System.out.println(e.getMessage());
         }
 
     removeEnergy(25);
@@ -137,14 +184,18 @@ public class Rabbit extends Animal {
      * Throws IllegalArgumentException if world is null
      * Sets inBurrow to true
      * removes the bunny from the world
+     * When entering a burrow the rabbit goes to sleep
      */
-    private void enterBurrow(World world) {
+    public void enterBurrow(World world) {
         if(inBurrow) {
             throw new IllegalOperationException("Cant enter a burrow, if its already in one");
         }
         if(world == null){throw new IllegalArgumentException("World is null");}
+        if(burrow == null) throw new NullPointerException("Burrow cant be null");
         inBurrow = true;
         burrow.addRabbit(this);
+        world.remove(this);
+        sleeping = true;
     }
 
     /**
@@ -160,6 +211,8 @@ public class Rabbit extends Animal {
         if(world == null){throw new IllegalArgumentException("World is null");}
         inBurrow = false;
         burrow.removeRabbit(this);
+        List<Hole> entries = burrow.getEntries();
+        world.setTile(entries.get(new Random().nextInt(entries.size())).getLocation(),this);
     }
 
     /**

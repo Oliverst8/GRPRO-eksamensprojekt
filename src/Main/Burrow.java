@@ -80,10 +80,10 @@ public class Burrow {
         if (entry == null) throw new NullPointerException("Location cant be null");
         Hole hole = null;
         try {
-           hole = (Hole) ObjectFactory.generate(world,entry,"Hole");
+           hole = (Hole) ObjectFactory.generate(world,entry,"Hole", entry);
            entries.add(hole);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException  e) {
-            throw new RuntimeException(e.getMessage());
+            System.out.println("Cant generate hole: " + e.getMessage());
         }
     }
 
@@ -92,6 +92,44 @@ public class Burrow {
      */
     public List<Rabbit> getRabbitsInside(){
         return rabbitsInside;
+    }
+
+    public List<Rabbit> getAdultRabbitsInside(){
+        List<Rabbit> adultRabbits = new ArrayList<>();
+        for(Rabbit rabbit : rabbitsInside){
+            if(rabbit.getAge() >= rabbit.getAdultAge()){
+                adultRabbits.add(rabbit);
+            }
+        }
+        return adultRabbits;
+    }
+
+    /**
+     *
+     * @param rabbitLocation the location of the rabbit
+     * @return the closest entry, returns null if there is no entry found
+     */
+    public Location findNearestEntry(Location rabbitLocation) {
+        Location closestEntryLocation = null;
+        double minDist = Double.MAX_VALUE;
+        for(Hole entry : entries){
+            double distance = distance(rabbitLocation, entry.getLocation());
+            if(minDist > distance){
+                minDist = distance;
+                closestEntryLocation = entry.getLocation();
+            }
+        }
+        return closestEntryLocation;
+    }
+
+    /**
+     * Finds the distance between two objects
+     * @param location1 the first location
+     * @param location2 the location of the second object
+     * @return the distance between two object
+     */
+    private double distance(Location location1, Location location2) {
+        return Math.sqrt(Math.pow(location1.getX() - location2.getX(), 2) + Math.pow(location1.getY() - location2.getY(), 2));
     }
 
 }

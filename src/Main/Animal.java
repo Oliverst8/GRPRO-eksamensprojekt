@@ -106,12 +106,14 @@ public abstract class Animal extends Organism {
 
     /**
      * Throws IllegalArgumentException if world or location is null
+     * Returns without doing anything if the object is already standing on the location
      * Moves towards location by one tile
      * Remove 10 energy
      */
     protected void moveTowards(Location location, World world){
         if(world == null) throw new NullPointerException("World argument cant be null");
         if(location == null) throw new NullPointerException("Location argument cant be null");
+        if(world.getCurrentLocation().getX() == location.getX() && world.getCurrentLocation().getY() == location.getY()) throw new IllegalArgumentException("Animal is already there");
         int x = makeNumberOneCloser(world.getCurrentLocation().getX(), location.getX());
         int y = makeNumberOneCloser(world.getCurrentLocation().getY(), location.getY());
 
@@ -137,7 +139,10 @@ public abstract class Animal extends Organism {
      * Set sleeping to true
      */
     protected void sleep(){
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(hunger > 10){
+            removeHunger(10);
+            addEnergy(10);
+        }
     }
 
     public double getHunger() {
@@ -150,6 +155,10 @@ public abstract class Animal extends Organism {
 
     public void addHunger(double hunger){
         this.hunger = Math.max(100, this.hunger + hunger);
+    }
+
+    public void removeHunger(double unger){
+        this.hunger = Math.min(0, this.hunger + hunger);
     }
 
     public String[] getCanEat(){

@@ -3,6 +3,7 @@ package Main;
 import itumulator.world.Location;
 import itumulator.world.World;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class Burrow {
      * @return a list of Locations of the entries the burrow has
      */
     public List<Hole> getEntries(){
-        throw new UnsupportedOperationException("Not supported yet.");
+        return entries;
     }
 
     /**
@@ -75,7 +76,15 @@ public class Burrow {
      * @param entry
      */
     public void addEntry(Location entry, World world){
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (world == null) throw new NullPointerException("World cant be null");
+        if (entry == null) throw new NullPointerException("Location cant be null");
+        Hole hole = null;
+        try {
+           hole = (Hole) ObjectFactory.generate(world,entry,"Hole");
+           entries.add(hole);
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException  e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     /**

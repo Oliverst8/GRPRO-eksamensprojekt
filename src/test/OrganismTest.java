@@ -40,7 +40,7 @@ public class OrganismTest {
      *Tests die() from within Organism class
      *Asserts NoSuchElementException when trying to access getAge of the object
      */
-    void testOrganismConstructorDie(){
+    void testOrganismDie(){
         rabbit.die(world);
         Assertions.assertThrows(NoSuchElementException.class, () -> {
             rabbit.getAge();
@@ -52,7 +52,7 @@ public class OrganismTest {
      * Because foodtype set to meat in Animals Constructor
      */
     @Test
-    void testOrganismConstructorFoodType(){
+    void testOrganismFoodType(){
         Assertions.assertEquals("meat", rabbit.getFoodType());
     }
 
@@ -61,7 +61,7 @@ public class OrganismTest {
      * assertEquals 100 as initialised in Organism Constructor
      */
     @Test
-    void testOrganismConstructorEnergy(){
+    void testOrganismEnergy(){
         Assertions.assertEquals(100, rabbit.getEnergy());
     }
 
@@ -70,7 +70,7 @@ public class OrganismTest {
      * assertEquals 0 as initialised in Organism Constructor
      */
     @Test
-    void testOrganismConstructorAge(){
+    void testOrganismAge(){
         Assertions.assertEquals(0, rabbit.getAge());
     }
 

@@ -29,7 +29,7 @@ public class AnimalTest {
     @BeforeEach
     void setUp() {
         int size = 3; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
+        int delay = 1; // forsinkelsen mellem hver skridt af simulationen (i ms)
         int display_size = 800; // skærm opløsningen (i px)
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!

@@ -53,7 +53,7 @@ public abstract class Animal extends Organism {
      * Finds the nearest object of the type object to this animal
      * @return the location of the nearest object (except itself) in radius, returns null if there is no such object
      */
-    protected Location findNearest(World world, int radius, Object object){
+    protected Location findNearest(World world, int radius, Class<?> object){
 
         if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
         if(world == null || object == null) throw new NullPointerException("Arguments cant be null");
@@ -74,10 +74,15 @@ public abstract class Animal extends Organism {
 
             Class<?> tileObject;
 
-            if(object instanceof NonBlocking) tileObject = world.getNonBlocking(tile).getClass();
-            else tileObject = world.getTile(tile).getClass();
+            if(Helper.doesArrayContain(object.getInterfaces(), NonBlocking.class)) {
+                try{
+                    tileObject = world.getNonBlocking(tile).getClass();
+                } catch (IllegalArgumentException e){
+                    continue;
+                }
+            } else tileObject = world.getTile(tile).getClass();
 
-            if(tileObject.equals(object.getClass())){ //Check if the tile is the same object as object in parameter
+            if(tileObject.equals(object)){ //Check if the tile is the same object as object in parameter
 
                 double distance = distance(world, tile);
 

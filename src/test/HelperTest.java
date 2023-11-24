@@ -26,6 +26,29 @@ class HelperTest {
     }
 
     @Test
+    void testDoesArrayContainItDoesMultipleElements(){
+        assertTrue(Helper.doesArrayContain(new Object[]{"27",3},"27"));
+    }
+    @Test
+    void testDoesArrayContainItDoesOneElements(){
+        assertTrue(Helper.doesArrayContain(new Object[]{"27"},"27"));
+    }
+    @Test
+    void testDoesArrayContainItDoesNotMultipleElements(){
+        assertFalse(Helper.doesArrayContain(new Object[]{"27",3},"28"));
+    }
+
+    @Test
+    void testDoesArrayContainItDoesNooneElements(){
+        assertFalse(Helper.doesArrayContain(new Object[]{"27"},"28"));
+    }
+
+    @Test
+    void testDoesArrayContainItDoesNoElements(){
+        assertFalse(Helper.doesArrayContain(new Object[]{},"28"));
+    }
+
+    @Test
     void isThereAnEmptyLocationInWorldAllowNonBlockingWtihNoObjectsInWorldExpectsTrue(){
         int size = 1; // størrelsen af vores 'map' (dette er altid kvadratisk)
         int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)

@@ -26,7 +26,7 @@ class RabbitTest {
     @BeforeEach
     void setUp() {
         int size = 20; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
+        int delay = 1; // forsinkelsen mellem hver skridt af simulationen (i ms)
         int display_size = 800; // skærm opløsningen (i px)
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
@@ -115,13 +115,8 @@ class RabbitTest {
 
 
     private Rabbit initialiseGrassAndRabbitOnWorld(Location rabbitLocation, Location grassLocation) {
-        Rabbit rabbit = null;
-        try{
-            rabbit = (Rabbit) ObjectFactory.generate(world, rabbitLocation, "rabbit");
-            ObjectFactory.generate(world, grassLocation, "grass");
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-        }
+        Rabbit rabbit =  rabbit = (Rabbit) ObjectFactory.generate(world, rabbitLocation, "rabbit");
+        ObjectFactory.generate(world, grassLocation, "grass");
         return rabbit;
     }
 
@@ -191,6 +186,15 @@ class RabbitTest {
         program.simulate();
         assertTrue(rabbit.isInBurrow());
 
+    }
+
+    @Test
+    void testDaysBehaviorWhereRabbitsneedsToGoToGrassButThereIsAlreadyAnObjectExpectsRabbitToStayInSameSpot() {
+        Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
+        Rabbit rabbit2 = initialiseRabbitOnWorld(new Location(1,1));
+        initialiseGrassOnWorld(new Location(1,1));
+        program.simulate();
+        assertEquals(new Location(0,0),world.getLocation(rabbit1));
     }
 
     @AfterEach

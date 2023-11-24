@@ -7,9 +7,9 @@ import java.awt.*;
 
 public class Hole extends InAnimate implements NonBlocking {
 
-    Location location;
+    private Location location;
 
-
+    private final Burrow burrow;
     /**
      * Throws NullPointerException if the argument is null
      * Sets the location of the hole
@@ -19,6 +19,14 @@ public class Hole extends InAnimate implements NonBlocking {
     public Hole(Location location){
         if(location == null){ throw new NullPointerException("location of the hole cant be null");}
         this.location = location;
+        burrow = null;
+    }
+
+    public Hole(Location location, Burrow burrow){
+        if(location == null){ throw new NullPointerException("location of the hole cant be null");}
+        if(burrow == null){ throw new NullPointerException("Burrow cant be null");}
+        this.location = location;
+        this.burrow = burrow;
     }
 
     /**
@@ -45,6 +53,8 @@ public class Hole extends InAnimate implements NonBlocking {
         return new Color(150, 75, 0);
     }
 
-
+    public Burrow getBurrow(){
+        return burrow;
+    }
 
 }

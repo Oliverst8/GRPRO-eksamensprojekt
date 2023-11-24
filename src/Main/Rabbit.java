@@ -83,13 +83,15 @@ public class Rabbit extends Animal {
             if(shouldRabbitDig(world)){
                 dig(world);
             } else{
-                //Set burrow to the nearest burrow
+                setBurrow( ((Hole) world.getNonBlocking(findNearest(world, 5, Hole.class))).getBurrow());
+                seekBurrow(world);
             }
         }
     }
 
     private boolean shouldRabbitDig(World world){
-        Location nearestBurrow = findNearest(world, 5, new Burrow(world));
+        Location nearestBurrow = findNearest(world, 5, Burrow.class);
+        if(nearestBurrow == null) return true;
         return !(distance(world, nearestBurrow) * 5 > 25);
     }
 
@@ -114,10 +116,6 @@ public class Rabbit extends Animal {
             grow();
         }
         if(inBurrow){
-            //If its in a burrow, check if it can reproduce
-            //     * -    It can reproduce if there are two rabbits in the burrow, and they both have enough energy
-            //     * - If it cant reproduce it tries to dig more entries to the burrow (If it has enough energy)
-            //     * - If it exits burrow
             if(getEnergy() > 80 && burrow.getAdultRabbitsInside().size() >= 2){
                 for(Rabbit otherRabbit : burrow.getAdultRabbitsInside()){
                     if(otherRabbit != this && otherRabbit.getEnergy() > 80){
@@ -133,7 +131,8 @@ public class Rabbit extends Animal {
             exitBurrow(world);
         } else {
             if(getHunger() < 100) {
-                Location nearestGrass = findNearest(world, 4, new Grass());
+                Location nearestGrass = findNearest(world, 4, Grass.class);
+                if(world.getTile(nearestGrass) != null) nearestGrass = null;
                 if (nearestGrass != null) {
                     if (distance(world, nearestGrass) == 0) {
                         eat((Grass) world.getNonBlocking(nearestGrass), world);

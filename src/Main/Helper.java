@@ -10,6 +10,13 @@ import java.util.Random;
 public class Helper {
     private Helper(){}
 
+    public static boolean doesArrayContain(Object[] array, Object value){
+        for(Object arrayValue : array){
+            if(arrayValue.equals(value)) return true;
+        }
+        return false;
+    }
+
     /**
      *
      * @param world the world that needs to be locked in

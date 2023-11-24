@@ -81,7 +81,7 @@ public class Burrow {
         
         Hole hole;
         
-        hole = (Hole) ObjectFactory.generate(world,entry,"Hole", entry);
+        hole = (Hole) ObjectFactory.generate(world,entry,"Hole", entry, this);
         entries.add(hole);
     }
 

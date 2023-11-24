@@ -120,7 +120,7 @@ public class Rabbit extends Animal {
                 expandBurrow(world);
                 return;
             }
-            exitBurrow(world);
+            if(getHunger() < 100) exitBurrow(world);
         } else {
             if(getHunger() < 100) {
                 Location nearestGrass = findNearest(world, 4, Grass.class);

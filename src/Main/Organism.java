@@ -106,7 +106,10 @@ public abstract class Organism extends Entity implements Actor{
         if (isDay()) dayBehavior(world);
         else nightBehavior(world);
 
-        if(getEnergy() == 0) die(world);
+        if(getEnergy() == 0) {
+            System.out.println(this + " is out of energy dying");
+            die(world);
+        }
     }
 
     @Override

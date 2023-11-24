@@ -132,8 +132,9 @@ public class Rabbit extends Animal {
         } else {
             if(getHunger() < 100) {
                 Location nearestGrass = findNearest(world, 4, Grass.class);
-                if(world.getTile(nearestGrass) != null) nearestGrass = null;
                 if (nearestGrass != null) {
+                    Object grassTileObject = world.getTile(nearestGrass);
+                    if(!(grassTileObject instanceof Grass || grassTileObject == this)) return;
                     if (distance(world, nearestGrass) == 0) {
                         eat((Grass) world.getNonBlocking(nearestGrass), world);
                     } else {

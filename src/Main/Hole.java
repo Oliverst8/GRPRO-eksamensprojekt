@@ -14,6 +14,7 @@ public class Hole extends InAnimate implements NonBlocking {
      * Throws NullPointerException if the argument is null
      * Sets the location of the hole
      * @param location the location of the hole
+     * @throws NullPointerException if the parameter location is null
      */
     public Hole(Location location){
         if(location == null){ throw new NullPointerException("location of the hole cant be null");}

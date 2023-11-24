@@ -39,17 +39,7 @@ public class Rabbit extends Animal {
      * If its day it calls day behavior
      * @param world providing details of the position on which the actor is currently located and much more.
      */
-    @Override
-    public void act(World world) {
-        if(world == null) throw new NullPointerException("world cant be null");
 
-        setDay(world.isDay());
-
-        if (isDay()) dayBehavior(world);
-        else nightBehavior(world);
-
-        if(getEnergy() == 0) die(world);
-    }
 
     /**
      * No test written
@@ -58,7 +48,8 @@ public class Rabbit extends Animal {
      * - It checks what takes less energy, a make a burrow, or go to an exiting one (If they are equal it goes to the closest one)
      * If it does have one it moves towards its burrow if it isnt in it, otherwise it does nothing
      */
-    private void nightBehavior(World world) {
+    @Override
+    protected void nightBehavior(World world) {
         if(inBurrow) sleeping = true;
         if(sleeping){
             sleep();
@@ -110,7 +101,8 @@ public class Rabbit extends Animal {
      * - If out of borrow and hunger isnt full moves towards grass
      * - Otherwise
      */
-    private void dayBehavior(World world) {
+    @Override
+    protected void dayBehavior(World world) {
         if(sleeping){
             sleeping = false;
             grow();

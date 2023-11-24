@@ -21,10 +21,7 @@ public class Grass extends Plant implements NonBlocking {
      * Chance to spread scales with energy (The more energy the higer chance of spreading)
      * @param world providing details of the position on which the actor is currently located and much more.
      */
-    @Override
-    public void act(World world) {
 
-    }
 
     /**
      * If the energy level is below 25 throw Main.IllegalOperationException
@@ -43,6 +40,16 @@ public class Grass extends Plant implements NonBlocking {
     @Override
     protected Color getColor() {
         return Color.green;
+    }
+
+    @Override
+    void dayBehavior(World world) {
+
+    }
+
+    @Override
+    void nightBehavior(World world) {
+
     }
 
     @Override

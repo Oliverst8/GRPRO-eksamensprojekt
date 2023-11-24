@@ -93,7 +93,21 @@ public abstract class Organism extends Entity implements Actor{
         this.day = day;
     }
 
+    abstract void dayBehavior(World world);
 
+    abstract void nightBehavior(World world);
+
+    @Override
+    public void act(World world) {
+        if(world == null) throw new NullPointerException("world cant be null");
+
+        setDay(world.isDay());
+
+        if (isDay()) dayBehavior(world);
+        else nightBehavior(world);
+
+        if(getEnergy() == 0) die(world);
+    }
 
     @Override
     protected String getPNGPath(){

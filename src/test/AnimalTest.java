@@ -8,10 +8,11 @@ import itumulator.executable.Program;
 import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -42,7 +43,7 @@ public class AnimalTest {
      */
     @Test
     void testAnimalConstructorCanEat(){
-        Assertions.assertArrayEquals(new String[]{"plant","fruit"},rabbit.getCanEat());
+        assertArrayEquals(new String[]{"plant","fruit"},rabbit.getCanEat());
     }
 
     /**
@@ -51,7 +52,7 @@ public class AnimalTest {
      */
     @Test
     void testAnimalConstructorHunger(){
-        Assertions.assertEquals(50, rabbit.getHunger());
+        assertEquals(50, rabbit.getHunger());
     }
 
 

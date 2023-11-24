@@ -1,16 +1,11 @@
 package Main;
 
-import itumulator.world.World;
-
-public abstract class InAnimate extends ObjectsOnMap{
+public abstract class InAnimate extends Entity {
     @Override
     protected String getPNGPath(){
         return getType();
     }
 
-    @Override
-    public void act(World world){
 
-    }
 
 }

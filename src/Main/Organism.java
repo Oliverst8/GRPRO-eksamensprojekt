@@ -3,7 +3,7 @@ package Main;
 import itumulator.simulator.Actor;
 import itumulator.world.World;
 
-public abstract class Organism extends ObjectsOnMap {
+public abstract class Organism extends Entity implements Actor{
     protected int age;
     private String foodType; //The type of food the organism is
     private int energy; //0 is empty, and 100 is full

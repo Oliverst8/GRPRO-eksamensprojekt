@@ -47,6 +47,8 @@ public class Rabbit extends Animal {
 
         if (isDay()) dayBehavior(world);
         else nightBehavior(world);
+
+        if(getEnergy() == 0) die(world);
     }
 
     /**
@@ -76,9 +78,24 @@ public class Rabbit extends Animal {
      * @param world
      */
     private void seekBurrow(World world){
+        if(burrow != null) moveTowardsOwnBurrow(world);
+        else {
+            if(shouldRabbitDig(world)){
+                dig(world);
+            } else{
+                //Set burrow to the nearest burrow
+            }
+        }
+    }
+
+    private boolean shouldRabbitDig(World world){
+        Location nearestBurrow = findNearest(world, 5, new Burrow(world));
+        return !(distance(world, nearestBurrow) * 5 > 25);
+    }
+
+    private void moveTowardsOwnBurrow(World world){
         Location nearestEntry = burrow.findNearestEntry(world.getCurrentLocation());
         if(distance(world, nearestEntry) != 0) moveTowards(nearestEntry, world);
-        double test = distance(world, nearestEntry);
         if(distance(world, nearestEntry) == 0) enterBurrow(world);
     }
 
@@ -110,7 +127,7 @@ public class Rabbit extends Animal {
                 }
             }
             if(getEnergy() > 60){
-                System.out.println("Expanding burrow, not implemented called from daybehavior");
+                expandBurrow(world);
                 return;
             }
             exitBurrow(world);
@@ -125,8 +142,7 @@ public class Rabbit extends Animal {
                     }
                 }
             } else{
-                if(burrow != null ) seekBurrow(world);
-                else dig(world);
+                seekBurrow(world);
             }
         }
     }
@@ -151,16 +167,8 @@ public class Rabbit extends Animal {
      *      *      * - Subtracts 25 energy
      */
     private void makeBurrow(World world) {
-        try {
-            setBurrow((Burrow) ObjectFactory.generate(world,"Burrow", world, world.getCurrentLocation()));
-
-        } catch(NoSuchMethodException e){
-            System.out.println("No such method: " + e.getMessage());
-        }catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException  e) {
-            System.out.println(e.getMessage());
-        }
-
-    removeEnergy(25);
+        setBurrow((Burrow) ObjectFactory.generate(world,"Burrow", world, world.getCurrentLocation()));
+        removeEnergy(25);
     }
 
     /**
@@ -169,12 +177,11 @@ public class Rabbit extends Animal {
      * - makes entrance to burrow
      * - removes 50 energy
      */
-    private void expandBurrow(Location location, World world) {
+    private void expandBurrow(World world) {
         if(burrow == null){throw new IllegalArgumentException("Bunny cant expand a nonexistent burrow. Burrow is null");}
-        if(getEnergy()-50 < 0){
-            return;
-        } else {
-            burrow.addEntry(location,world);
+        if(getEnergy()-50 > 0) {
+            Location location = Helper.findNonBlockingEmptyLocation(world);
+            burrow.addEntry(location, world);
             removeEnergy(50);
         }
     }

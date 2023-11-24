@@ -9,6 +9,7 @@ public class Hole extends InAnimate implements NonBlocking {
 
     Location location;
 
+
     /**
      * Throws NullPointerException if the argument is null
      * Sets the location of the hole

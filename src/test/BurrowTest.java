@@ -51,12 +51,12 @@ class BurrowTest {
     void testBurrowConstructorWithLocationArgument() {
 
 
-        Location testLocation = new Location(60,60);
-        Burrow testBurrow = new Burrow(world, testLocation);
+        Location expected = new Location(2,2);
+        Burrow testBurrow = new Burrow(world, expected);
         List<Hole> holes = testBurrow.getEntries();
-        Location burrowLocation = holes.get(0).getLocation();
+        Location actual = holes.get(0).getLocation();
 
-        assertEquals(testLocation,burrowLocation);
+        assertEquals(expected,actual);
     }
 
     @Test

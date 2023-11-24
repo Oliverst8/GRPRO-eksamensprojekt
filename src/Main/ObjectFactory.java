@@ -2,7 +2,7 @@ package Main;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Random;
+import java.util.Arrays;
 
 import javax.management.RuntimeErrorException;
 
@@ -12,6 +12,12 @@ import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 public class ObjectFactory {
+
+
+    private ObjectFactory(){
+
+    }
+
     public static Object generate(World world, String className, Object... constructorArgs) {
 
         Object object = generateHelper(className, constructorArgs);
@@ -27,7 +33,7 @@ public class ObjectFactory {
 
         Object object = generateHelper(className, constructorArgs);
 
-        if (object instanceof Actor) {
+        if (object instanceof Entity) {
             place(world, object, location);
         }
         
@@ -60,22 +66,22 @@ public class ObjectFactory {
         } catch (NoSuchMethodException e) {
             System.out.println("No such constructor: " + className);
             System.out.println(e.getMessage());
-            System.out.println(e.getStackTrace());
+            System.out.println(Arrays.toString(e.getStackTrace()));
         } catch (IllegalAccessException e) {
             System.out.println("No access to constructor" + className);
             System.out.println(e.getMessage());
-            System.out.println(e.getStackTrace());
+            System.out.println(Arrays.toString(e.getStackTrace()));
         } catch (InvocationTargetException e) {
             System.out.println("Could not invoke constructor: " + className);
             System.out.println(e.getMessage());
-            System.out.println(e.getStackTrace());
+            System.out.println(Arrays.toString(e.getStackTrace()));
         } catch (InstantiationException e) {
             System.out.println("Could not instantiate class: " + className);
             System.out.println(e.getMessage());
-            System.out.println(e.getStackTrace());
+            System.out.println(Arrays.toString(e.getStackTrace()));
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println(e.getStackTrace());
+            System.out.println(Arrays.toString(e.getStackTrace()));
         }
 
         // Failsafe
@@ -84,13 +90,12 @@ public class ObjectFactory {
 
     private static void place(World world, Object object) {
         
-        Random r = new Random();
+
 
         Location location;
 
-        do{    
-            location = new Location(r.nextInt(world.getSize()),r.nextInt(world.getSize()));
-        } while (!world.isTileEmpty(location) || (object instanceof NonBlocking && world.containsNonBlocking(location)));    
+        if(object instanceof NonBlocking) location = Helper.findNonBlockingEmptyLocation(world);
+        else location = Helper.findEmptyLocation(world);
 
 
         world.setTile(location, object);

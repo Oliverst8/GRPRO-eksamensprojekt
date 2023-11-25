@@ -1,9 +1,14 @@
 package Main;
 
+import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import java.awt.*;
+import java.util.Random;
+import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Grass extends Plant implements NonBlocking {
 
@@ -28,8 +33,17 @@ public class Grass extends Plant implements NonBlocking {
      * Create a new piece of grass next to this one
      * subtract 25 energy
      */
-    private void spread() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private void spread(World world) {
+        if(getEnergy()<25){
+            throw new IllegalOperationException("Grass doesnt have energy to spread");
+        }
+        Set<Location> surroundingTiles = world.getEmptySurroundingTiles();
+        List<Location> locationsList = new ArrayList<>(surroundingTiles);
+        if(locationsList.size() <= 0) return;
+        int randomIndex = new Random().nextInt(locationsList.size());
+        Location randomLocation = locationsList.get(randomIndex);
+        ObjectFactory.generate(world,randomLocation,"Grass", randomLocation, this);
+        removeEnergy(25);
     }
 
     @Override

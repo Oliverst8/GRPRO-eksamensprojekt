@@ -56,6 +56,11 @@ public class Grass extends Plant implements NonBlocking {
         return Color.green;
     }
 
+    /**
+     * Calls photosynthesis
+     *
+     * @param world
+     */
     @Override
     void dayBehavior(World world) {
 

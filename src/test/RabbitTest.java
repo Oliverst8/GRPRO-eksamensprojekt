@@ -197,6 +197,50 @@ class RabbitTest {
         assertEquals(new Location(0,0),world.getLocation(rabbit1));
     }
 
+    /**
+     * New rabbit gets 100 energy in constructor
+     * Its night, has no burrow, digs new
+     * digs cost 25 energy
+     */
+    @Test
+    void testNightBehaviourWhereRabbitNeedsToSleepButHasNoBurrow(){
+
+        Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
+        world.setNight();
+        program.simulate();
+        assertEquals(75,rabbit1.getEnergy());
+    }
+
+    @Test
+    void testNightBehaviourWhereRabbitHasBurrowButIsNotInside(){
+        Burrow burrow = new Burrow(world, new Location(2,2));
+        Rabbit rabbit = new Rabbit(3, burrow);
+        world.setTile(new Location(0,0),rabbit);
+        world.setNight();
+        assertFalse(rabbit.isInBurrow());
+        program.simulate(); //move towards burrow
+        program.simulate(); //move towards burrow
+        program.simulate(); //enter burrow
+        assertTrue(rabbit.isInBurrow());
+
+    }
+
+    @Test
+    void testNightBehaviorIfRabbitSleepsInsideBurrow(){
+        Burrow burrow = new Burrow(world, new Location(0,0));
+        Rabbit rabbit = new Rabbit(3, burrow);
+        world.setTile(new Location(0,0),rabbit);
+        assertFalse(world.isNight()); //Its not night
+        assertEquals(50,rabbit.getHunger());//hunger should be 50 as initialised in the constructor
+        world.setNight();
+        assertTrue(world.isNight());
+        program.simulate(); //move towards burrow
+        assertTrue(rabbit.isInBurrow()); //is inside burrow
+        rabbit.setEnergy(90);
+        program.simulate();
+        assertEquals(100,rabbit.getEnergy()); //Animal.sleep() adds 10 energy gets called in nightBehaviour if sleeping is true
+    }
+
     @AfterEach
     void tearDown() {
     }

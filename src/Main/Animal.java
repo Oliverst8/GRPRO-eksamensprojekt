@@ -144,7 +144,7 @@ public abstract class Animal extends Organism {
      * Set sleeping to true
      */
     protected void sleep(){
-        if(getEnergy()<100 && hunger > 10){
+        if(hunger > 10){
             removeHunger(10);
 
             addEnergy(10);

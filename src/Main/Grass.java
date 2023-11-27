@@ -20,12 +20,6 @@ public class Grass extends Plant implements NonBlocking {
         super("plant");
     }
 
-    /**
-     * If day:
-     * - Calls photosynthesis
-     * Chance to spread scales with energy (The more energy the higer chance of spreading)
-     * @param world providing details of the position on which the actor is currently located and much more.
-     */
 
 
     /**
@@ -57,18 +51,23 @@ public class Grass extends Plant implements NonBlocking {
     }
 
     /**
-     * Calls photosynthesis
      *
-     * @param world
+     * Calls photosynthesis
+     * Chance to spread scales with energy (The more energy the higer chance of spreading)
+     * @param world providing details of the position on which the actor is currently located and much more.
      */
     @Override
     void dayBehavior(World world) {
-
+    int random = new Random().nextInt(100-getEnergy());
+    photosynthesis();
+    if(random<10){
+        spread(world);
+        }
     }
 
     @Override
     void nightBehavior(World world) {
-
+    decay();
     }
 
     @Override

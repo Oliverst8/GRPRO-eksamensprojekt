@@ -22,6 +22,7 @@ public class AnimalTest {
     World world;
     Rabbit rabbit;
 
+    double hungerMod;
     /**
      * Calls rabbit constructor that
      * Calls super constructor that creates an Animal Object
@@ -34,6 +35,7 @@ public class AnimalTest {
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         rabbit = new Rabbit();
+        hungerMod = 10;
 
     }
 
@@ -56,8 +58,24 @@ public class AnimalTest {
     }
 
 
+    @Test
+    void testAnimalSetHunger(){
 
+        rabbit.setHunger(hungerMod);
+        assertEquals(10,rabbit.getHunger());
+    }
 
+    @Test
+    void testAnimalAddHunger(){
+        rabbit.addHunger(hungerMod);
+        assertEquals(100,rabbit.getHunger());
+    }
+
+    @Test
+    void testAnimalRemoveHunger(){
+        rabbit.removeHunger(hungerMod);
+        assertEquals(0,rabbit.getHunger());
+    }
     @AfterEach
     void tearDown() {
     }

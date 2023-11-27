@@ -162,7 +162,7 @@ public abstract class Animal extends Organism {
         this.hunger = Math.max(100, this.hunger + hunger);
     }
 
-    public void removeHunger(double unger){
+    public void removeHunger(double hunger){
         this.hunger = Math.min(0, this.hunger + hunger);
     }
 

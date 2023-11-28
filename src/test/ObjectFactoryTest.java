@@ -26,14 +26,14 @@ class ObjectFactoryTest {
 
     @Test
     void testgenerateWithoutLocation() {
-        Rabbit rabbit = (Rabbit) ObjectFactory.generate(world, "rabbit");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, "rabbit");
         assertTrue(rabbit instanceof Rabbit);
     }
 
     @Test
     void testgenerateWithLocation() {
         Location location = new Location(1,1);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generate(world, location,"rabbit");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location,"rabbit");
         assertEquals(new Location(1,1),world.getLocation(rabbit));
     }
 

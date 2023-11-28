@@ -43,7 +43,7 @@ public class OrganismTest {
     @Test
     void testOrganismDie(){
         Location rabbitLocation = new Location(1,1);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generate(world, rabbitLocation, "rabbit");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, rabbitLocation, "rabbit");
         rabbit.die(world);
         assertThrows(IllegalArgumentException.class, () -> {
             rabbit.die(world);
@@ -133,7 +133,7 @@ public class OrganismTest {
 
     @Test
     void getEnergyFor12daysOld() {
-        Rabbit rabbit = new Rabbit(12, new Burrow(world, new Location(0,0)));
+        Rabbit rabbit = new Rabbit(12, new Burrow(world, new Location(0,0)), false);
         assertEquals(100 - (rabbit.getEnergyLossPerDay()*(Math.max(0,rabbit.getAge()-rabbit.getAdultAge()))),rabbit.getEnergy());
     }
 

@@ -22,10 +22,11 @@ public abstract class Plant extends Organism {
      * Add 10 energy
      * else do nothing
      */
-    protected void photosynthesis(){
-        if(!isDay()){
+    protected void photosynthesis() {
+        if(!isDay()) {
             throw new IllegalOperationException("Cant make photosynthesis in the night");
         }
+
         addEnergy(10);
     }
 }

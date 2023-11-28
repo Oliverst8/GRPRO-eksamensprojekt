@@ -122,5 +122,4 @@ public class Program {
     public void setDisplayInformation(Class cl, DisplayInformation di){
         c.setDisplayInformation(cl, di);
     }
-
 }

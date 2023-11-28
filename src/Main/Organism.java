@@ -3,7 +3,7 @@ package Main;
 import itumulator.simulator.Actor;
 import itumulator.world.World;
 
-public abstract class Organism extends Entity implements Actor{
+public abstract class Organism extends Entity implements Actor {
     protected int age;
     private String foodType; //The type of food the organism is
     private int energy; //0 is empty, and 100 is full
@@ -59,14 +59,14 @@ public abstract class Organism extends Entity implements Actor{
      *
      * @return the food type of the organism
      */
-    public String getFoodType(){
+    public String getFoodType() {
         return foodType;
     }
 
     /**
      * @return the current amount of energy
      */
-    public int getEnergy(){
+    public int getEnergy() {
         return energy - (energyLossPerDay*(Math.max(0,getAge()-getAdultAge())));
     }
 
@@ -74,14 +74,14 @@ public abstract class Organism extends Entity implements Actor{
      * Removes energy
      * @param amount
      */
-    public void removeEnergy(int amount){
-        setEnergy(Math.max(0,getEnergy()-amount));
+    public void removeEnergy(int amount) {
+        setEnergy(Math.max(0, getEnergy()-amount));
     }
-    public void addEnergy(int amount){
-        setEnergy(Math.min(100,getEnergy()+amount));
+    public void addEnergy(int amount) {
+        setEnergy(Math.min(100, getEnergy()+amount));
     }
 
-    public void setEnergy(int energy){
+    public void setEnergy(int energy) {
         this.energy = energy;
     }
 
@@ -103,7 +103,7 @@ public abstract class Organism extends Entity implements Actor{
 
         setDay(world.isDay());
 
-        if (isDay()) dayBehavior(world);
+        if(isDay()) dayBehavior(world);
         else nightBehavior(world);
 
         if(getEnergy() == 0) {
@@ -113,7 +113,7 @@ public abstract class Organism extends Entity implements Actor{
     }
 
     @Override
-    protected String getPNGPath(){
+    protected String getPNGPath() {
         StringBuilder path = new StringBuilder();
 
         path.append(getType());

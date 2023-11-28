@@ -17,14 +17,16 @@ public class Hole extends InAnimate implements NonBlocking {
      * @throws NullPointerException if the parameter location is null
      */
     public Hole(Location location){
-        if(location == null){ throw new NullPointerException("location of the hole cant be null");}
+        if(location == null) throw new NullPointerException("location of the hole cant be null");
+
         this.location = location;
         burrow = null;
     }
 
     public Hole(Location location, Burrow burrow){
-        if(location == null){ throw new NullPointerException("location of the hole cant be null");}
-        if(burrow == null){ throw new NullPointerException("Burrow cant be null");}
+        if(location == null) throw new NullPointerException("location of the hole cant be null");
+        if(burrow == null) throw new NullPointerException("Burrow cant be null");
+
         this.location = location;
         this.burrow = burrow;
     }
@@ -56,5 +58,4 @@ public class Hole extends InAnimate implements NonBlocking {
     public Burrow getBurrow(){
         return burrow;
     }
-
 }

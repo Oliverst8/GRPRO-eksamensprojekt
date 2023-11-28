@@ -2,15 +2,17 @@ package test;
 
 import Main.Burrow;
 import Main.Grass;
-import Main.ObjectFactory;
+import Main.Rabbit;
+
+import spawn.ObjectFactory;
+
 import itumulator.executable.Program;
 import itumulator.world.Location;
 import itumulator.world.World;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import Main.Rabbit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -80,7 +82,6 @@ class RabbitTest {
         program.simulate();
         program.simulate();
         assertEquals(2, world.getLocation(rabbit1).getX());
-
     }
 
     @Test
@@ -162,9 +163,11 @@ class RabbitTest {
         Rabbit rabbit = initialiseRabbitOnWorld(new Location(0,0));
         Grass grass = initialiseGrassOnWorld(new Location(2,2));
         double expectedHunger = Math.max(100, rabbit.getHunger()+(0.5*grass.getEnergy()));
+
         for (int i = 0; i < 3; i++) {
             program.simulate();
         }
+
         assertEquals(expectedHunger,rabbit.getHunger());
     }
 
@@ -192,8 +195,8 @@ class RabbitTest {
         world.setTile(new Location(0,0),rabbit);
         rabbit.setHunger(100);
         program.simulate();
-        assertEquals(new Location(1,1),world.getLocation(rabbit));
 
+        assertEquals(new Location(1,1),world.getLocation(rabbit));
     }
 
     @Test

@@ -2,6 +2,9 @@ package Main;
 
 import itumulator.executable.Program;
 import itumulator.world.World;
+import spawn.Input;
+import spawn.ObjectFactory;
+import spawn.SpawningObject;
 
 public class Main {
 
@@ -17,9 +20,12 @@ public class Main {
         World world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
 
         // Generates the objects in the world
-        for (String object : input.getObjects().keySet()) {
-            for (int i = 0; i < input.getObjects().get(object); i++) {
-                ObjectFactory.generateOnMap(world, object);
+        for (SpawningObject object : input.getObjects()) {
+            if(object.getLocation() != null) {
+                ObjectFactory.generateOnMap(world, object.getLocation(), object.getClassName());
+                continue;
+            } else {
+                ObjectFactory.generateOnMap(world, object.getClassName());
             }
         }
 

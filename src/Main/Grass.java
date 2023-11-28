@@ -3,14 +3,13 @@ package Main;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
+import spawn.ObjectFactory;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
 public class Grass extends Plant implements NonBlocking {
-
-
     /**
      * Sets the food type to plant
      */
@@ -18,17 +17,14 @@ public class Grass extends Plant implements NonBlocking {
         super("plant");
     }
 
-
-
     /**
      * If the energy level is below 25 throw Main.IllegalOperationException
      * Create a new piece of grass next to this one
      * subtract 25 energy
      */
     private void spread(World world) {
-        if(getEnergy()<25){
-            throw new IllegalOperationException("Grass doesnt have energy to spread");
-        }
+        if(getEnergy()<25) throw new IllegalOperationException("Grass doesnt have energy to spread");
+        
         Set<Location> surroundingTiles = world.getEmptySurroundingTiles();
         List<Location> locationsList = new LinkedList<>(surroundingTiles);
         int randomIndex;
@@ -78,7 +74,6 @@ public class Grass extends Plant implements NonBlocking {
     void nightBehavior(World world) {
     decay();
     }
-
 
     @Override
     public String getPNGPath(){

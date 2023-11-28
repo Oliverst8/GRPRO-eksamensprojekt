@@ -1,4 +1,4 @@
-package Main;
+package spawn;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -8,42 +8,50 @@ import java.util.Map;
 
 import javax.management.RuntimeErrorException;
 
-import itumulator.simulator.Actor;
+import Main.Entity;
+import Main.Helper;
+
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 public class ObjectFactory {
+    private ObjectFactory() {}
 
-
-    private ObjectFactory(){
-
-    }
+    private static String[] requiresWorld = {"burrow"};
 
     public static Object generateOffMap(World world, String className, Object... constructorArgs){
+        if (Helper.doesArrayContain(requiresWorld, className)) {
+            constructorArgs = prependArray(constructorArgs, world);
+        }
+
         Object object = generateHelper(className, constructorArgs);
+
         world.add(object);
+
         return object;
     }
 
     public static Object generateOnMap(World world, String className, Object... constructorArgs) {
+        if (Helper.doesArrayContain(requiresWorld, className)) {
+            constructorArgs = prependArray(constructorArgs, world);
+        }
 
         Object object = generateHelper(className, constructorArgs);
 
-        if (object instanceof Entity) {
-            place(world, object);
-        }
+        if (object instanceof Entity) place(world, object);
 
         return object;
     }
 
     public static Object generateOnMap(World world, Location location, String className, Object... constructorArgs) {
-
+        if (Helper.doesArrayContain(requiresWorld, className)) {
+            constructorArgs = prependArray(constructorArgs, world);
+        }
+        
         Object object = generateHelper(className, constructorArgs);
 
-        if (object instanceof Entity) {
-            place(world, object, location);
-        }
+        if (object instanceof Entity) place(world, object, location);
         
         return object;
     }
@@ -83,7 +91,7 @@ public class ObjectFactory {
         } catch (ClassNotFoundException e) {
             System.out.println("Class not found: " + className);
         } catch (NoSuchMethodException e) {
-            System.out.println("No such constructor: " + className);
+            System.out.println("No such constructor in: " + className);
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
         } catch (IllegalAccessException e) {
@@ -108,19 +116,26 @@ public class ObjectFactory {
     }
 
     private static void place(World world, Object object) {
-        
-
-
         Location location;
 
         if(object instanceof NonBlocking) location = Helper.findNonBlockingEmptyLocation(world);
         else location = Helper.findEmptyLocation(world);
-
 
         world.setTile(location, object);
     }
 
     private static void place(World world, Object object, Location location) {
         world.setTile(location, object);
+    }
+
+    private static Object[] prependArray(Object[] array, Object object) {
+        Object[] newArray = new Object[array.length + 1];
+        newArray[0] = object;
+
+        for(int i = 0; i < array.length; i++) {
+            newArray[i + 1] = array[i];
+        }
+
+        return newArray;
     }
 }

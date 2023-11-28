@@ -135,7 +135,9 @@ public abstract class Animal extends Organism {
         if(world.getCurrentLocation().getX() == location.getX() && world.getCurrentLocation().getY() == location.getY()) throw new IllegalArgumentException("Animal is already there");
         int x = makeNumberOneCloser(world.getCurrentLocation().getX(), location.getX());
         int y = makeNumberOneCloser(world.getCurrentLocation().getY(), location.getY());
-
+        if(!world.isTileEmpty(new Location(x,y))){
+        return;
+        }
         world.move(this, new Location(x,y));
         removeEnergy(10);
     }

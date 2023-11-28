@@ -36,7 +36,7 @@ public class Grass extends Plant implements NonBlocking {
         if(locationsList.size() <= 0) return;
         int randomIndex = new Random().nextInt(locationsList.size());
         Location randomLocation = locationsList.get(randomIndex);
-        ObjectFactory.generate(world,randomLocation,"Grass", randomLocation, this);
+        ObjectFactory.generateOnMap(world,randomLocation,"Grass", randomLocation, this);
         removeEnergy(25);
     }
 

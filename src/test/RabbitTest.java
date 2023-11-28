@@ -166,7 +166,7 @@ class RabbitTest {
     void testActDayBehaviorExpectsToMoveTowardsBurrowAndNotEnter() {
 
         Burrow burrow = new Burrow(world, new Location(2,2));
-        Rabbit rabbit = new Rabbit(3, burrow);
+        Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         rabbit.setHunger(100);
         program.simulate();
@@ -178,7 +178,7 @@ class RabbitTest {
     void testActDayBehaviorExpectsToMoveTowardsBurrowAndEnter() {
 
         Burrow burrow = new Burrow(world, new Location(2,2));
-        Rabbit rabbit = new Rabbit(3, burrow);
+        Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         rabbit.setHunger(100);
         program.simulate();
@@ -214,7 +214,7 @@ class RabbitTest {
     @Test
     void testNightBehaviourWhereRabbitHasBurrowButIsNotInside(){
         Burrow burrow = new Burrow(world, new Location(2,2));
-        Rabbit rabbit = new Rabbit(3, burrow);
+        Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         world.setNight();
         assertFalse(rabbit.isInBurrow());
@@ -228,7 +228,7 @@ class RabbitTest {
     @Test
     void testNightBehaviorIfRabbitSleepsInsideBurrow(){
         Burrow burrow = new Burrow(world, new Location(0,0));
-        Rabbit rabbit = new Rabbit(3, burrow);
+        Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         assertFalse(world.isNight()); //Its not night
         assertEquals(50,rabbit.getHunger());//hunger should be 50 as initialised in the constructor

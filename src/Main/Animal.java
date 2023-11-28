@@ -86,7 +86,7 @@ public abstract class Animal extends Organism {
                 }
             } else tileObject = world.getTile(tile).getClass();
 
-            if(tileObject.equals(object)) { //Check if the tile is the same object as object in parameter
+            if(tileObject.equals(object)){ //Check if the tile is the same object as object in parameter
 
                 double distance = distance(world, tile);
 
@@ -132,9 +132,11 @@ public abstract class Animal extends Organism {
 
         int x = makeNumberOneCloser(world.getCurrentLocation().getX(), location.getX());
         int y = makeNumberOneCloser(world.getCurrentLocation().getY(), location.getY());
-
-        if(!world.isTileEmpty(new Location(x,y))) return;
-        
+        if(!world.isTileEmpty(new Location(x,y))){
+            if(world.isTileEmpty(new Location(x,world.getCurrentLocation().getY()))) y = world.getCurrentLocation().getY();
+            else if (world.isTileEmpty(new Location(world.getCurrentLocation().getX(),y))) x = world.getCurrentLocation().getX();
+            else return;
+        }
         world.move(this, new Location(x,y));
         removeEnergy(10);
     }

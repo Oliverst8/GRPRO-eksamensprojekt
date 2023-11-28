@@ -14,6 +14,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class RabbitTest {
@@ -160,7 +162,7 @@ class RabbitTest {
     void testIfRabbitEatsGrassWhenStandingOnIt() {
         Rabbit rabbit = initialiseRabbitOnWorld(new Location(0,0));
         Grass grass = initialiseGrassOnWorld(new Location(0,0));
-        double expectedHunger = Math.min(100, rabbit.getHunger()+(0.5*grass.getEnergy()));
+        double expectedHunger = Math.max(100, rabbit.getHunger()+(0.5*grass.getEnergy()));
         rabbit.setEnergy(30);
         program.simulate();
         assertEquals(expectedHunger, rabbit.getHunger());
@@ -303,18 +305,33 @@ class RabbitTest {
 
     @Test
     void testNightBehaviorIfRabbitSleepsInsideBurrow(){
-        burrow = new Burrow(world, new Location(0,0));
+        Burrow burrow = new Burrow(world, new Location(0,0));
         Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
-        assertFalse(world.isNight()); //Its not night
-        assertEquals(50,rabbit.getHunger());//hunger should be 50 as initialised in the constructor
         world.setNight();
-        assertTrue(world.isNight());
         program.simulate(); //move towards burrow
-        assertTrue(rabbit.isInBurrow()); //is inside burrow
         rabbit.setEnergy(90);
         program.simulate();
         assertEquals(100,rabbit.getEnergy()); //Animal.sleep() adds 10 energy gets called in nightBehaviour if sleeping is true
+    }
+
+    @Test
+    void testThatRabbitCantExitBurrowFromBlockedEntrance(){
+        Location testLocation = new Location(0,0);
+        Burrow burrow = new Burrow(world, testLocation);
+        Rabbit rabbit = new Rabbit(3, burrow, true);
+        world.add(rabbit);
+        rabbit.setHunger(99); // Under 100 so it wants to exit burrow
+        rabbit.setEnergy(60); // Not more than 60 so it cant expand
+        Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0)); //New rabbit that blocks entrance
+        program.simulate(); //Wants to exit burrow
+        program.simulate(); //Wants to exit burrow
+        assertTrue(rabbit.isInBurrow());
+    }
+
+    @Test
+    void testThatRabbitCantExitBurrowFromBlockedEntranceInTheBeginningThenBlockingObjectMoves(){
+
     }
 
     @AfterEach

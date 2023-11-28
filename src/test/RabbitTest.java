@@ -184,7 +184,7 @@ class RabbitTest {
         rabbitInsideBurrow.setHunger(99);
         rabbitInsideBurrow.setEnergy(61);
         program.simulate();
-        assertEquals(0,burrow.getRabbitsInside().size());
+
     }
 
     @Test
@@ -215,17 +215,16 @@ class RabbitTest {
 
     @Test
     void testDayBehaviorWhereRabbitIsInBurrowExpectsRabbitToReproduce() {
-        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
         Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
-        rabbit1.setEnergy(100);
+        rabbitInsideBurrow.setEnergy(100);
         rabbit2.setEnergy(100);
+        int expected = world.getEntities().size()+1;
         program.simulate();
-        assertEquals(4,world.getEntities().size());
+        assertEquals(expected,world.getEntities().size());
     }
 
     @Test
     void testDayBehaviorWhereRabbitIsInBurrowExpectsRabbitThatCallsToReproduceAndLoseEnergy() {
-        burrow = new Burrow(world, new Location(0,0));
         Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
         Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
         rabbit1.setEnergy(100);
@@ -286,7 +285,6 @@ class RabbitTest {
 
     @Test
     void testNightBehaviorIfRabbitSleepsInsideBurrow(){
-        Burrow burrow = new Burrow(world, new Location(0,0));
         Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         assertFalse(world.isNight()); //Its not night

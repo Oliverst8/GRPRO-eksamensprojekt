@@ -23,16 +23,21 @@ public class Grass extends Plant implements NonBlocking {
      * subtract 25 energy
      */
     private void spread(World world) {
-        if(getEnergy()<25) throw new IllegalOperationException("Grass doesnt have energy to spread");
-        
+        if(getEnergy()<25){
+            throw new IllegalOperationException("Grass doesnt have energy to spread");
+        }
         Set<Location> surroundingTiles = world.getEmptySurroundingTiles();
-        List<Location> locationsList = new ArrayList<>(surroundingTiles);
+        List<Location> locationsList = new LinkedList<>(surroundingTiles);
+        int randomIndex;
+        Location randomLocation;
+        do{
+            if(locationsList.size() <= 0) return;
+            randomIndex = new Random().nextInt(locationsList.size());
+            randomLocation = locationsList.get(randomIndex);
+            if(world.getTile(randomLocation) != null) locationsList.remove(randomIndex);
+        } while(world.getTile(randomLocation) != null);
+        ObjectFactory.generateOnMap(world,randomLocation,"Grass");
 
-        if(locationsList.size() <= 0) return;
-        int randomIndex = new Random().nextInt(locationsList.size());
-
-        Location randomLocation = locationsList.get(randomIndex);
-        ObjectFactory.generateOnMap(world,randomLocation,"Grass", randomLocation, this);
         removeEnergy(25);
     }
 

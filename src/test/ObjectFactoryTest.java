@@ -1,7 +1,6 @@
 package test;
 
 import Main.Burrow;
-import Main.ObjectFactory;
 import Main.Rabbit;
 import itumulator.executable.Program;
 import itumulator.world.Location;

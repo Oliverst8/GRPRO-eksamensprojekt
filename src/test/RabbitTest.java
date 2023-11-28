@@ -115,15 +115,15 @@ class RabbitTest {
 
 
     private Rabbit initialiseGrassAndRabbitOnWorld(Location rabbitLocation, Location grassLocation) {
-        Rabbit rabbit =  rabbit = (Rabbit) ObjectFactory.generate(world, rabbitLocation, "rabbit");
-        ObjectFactory.generate(world, grassLocation, "grass");
+        Rabbit rabbit =  rabbit = (Rabbit) ObjectFactory.generateOnMap(world, rabbitLocation, "rabbit");
+        ObjectFactory.generateOnMap(world, grassLocation, "grass");
         return rabbit;
     }
 
     private Rabbit initialiseRabbitOnWorld(Location rabbitLocation) {
         Rabbit rabbit = null;
         try{
-            rabbit = (Rabbit) ObjectFactory.generate(world, rabbitLocation, "rabbit");
+            rabbit = (Rabbit) ObjectFactory.generateOnMap(world, rabbitLocation, "rabbit");
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -133,7 +133,7 @@ class RabbitTest {
     private Grass initialiseGrassOnWorld(Location grassLocation) {
         Grass grass = null;
         try{
-            grass = (Grass) ObjectFactory.generate(world, grassLocation, "grass");
+            grass = (Grass) ObjectFactory.generateOnMap(world, grassLocation, "grass");
         } catch (Exception e){
             System.out.println(e.getMessage());
         }

@@ -107,7 +107,7 @@ public class OrganismTest {
     void dieExpectsAnimalToBeRemoved() {
         Rabbit rabbit1 = null;
         try{
-            rabbit1 = (Rabbit) ObjectFactory.generate(world, "Rabbit");
+            rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world, "Rabbit");
         } catch(Exception e){
             System.out.println(e.getMessage());
         }

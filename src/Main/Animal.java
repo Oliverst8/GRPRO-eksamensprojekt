@@ -105,8 +105,15 @@ public abstract class Animal extends Organism {
         return Math.sqrt(Math.pow(world.getCurrentLocation().getX() - location2.getX(), 2) + Math.pow(world.getCurrentLocation().getY() - location2.getY(), 2));
     }
 
-    protected Animal reproduce(World world, Animal animal1, Animal animal2){
-        throw new UnsupportedOperationException("Not supported yet.");
+    abstract void produceOffSpring(World world);
+    protected void reproduce(World world, Animal animal1, Animal animal2) throws cantReproduceException{
+        if(animal1.getAge() < animal1.getAdultAge()) throw new cantReproduceException(animal1, animal2);
+        if(animal2.getAge() < animal2.getAdultAge()) throw new cantReproduceException(animal1, animal2);
+        if(!animal1.getClass().equals(animal2.getClass())) throw new cantReproduceException(animal1, animal2);
+        if(!(animal1.getEnergy() > 50 && animal2.getEnergy() > 50)) throw new cantReproduceException(animal1, animal2);
+        animal1.removeEnergy(50);
+        animal2.removeEnergy(50);
+        produceOffSpring(world);
     }
 
     /**

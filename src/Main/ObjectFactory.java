@@ -18,18 +18,24 @@ public class ObjectFactory {
 
     }
 
-    public static Object generate(World world, String className, Object... constructorArgs) {
+    public static Object generateOffMap(World world, String className, Object... constructorArgs){
+        Object object = generateHelper(className, constructorArgs);
+        world.add(object);
+        return object;
+    }
+
+    public static Object generateOnMap(World world, String className, Object... constructorArgs) {
 
         Object object = generateHelper(className, constructorArgs);
 
-        if (object instanceof Actor) {
+        if (object instanceof Entity) {
             place(world, object);
         }
 
         return object;
     }
 
-    public static Object generate(World world, Location location, String className, Object... constructorArgs) {
+    public static Object generateOnMap(World world, Location location, String className, Object... constructorArgs) {
 
         Object object = generateHelper(className, constructorArgs);
 

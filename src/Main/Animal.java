@@ -28,10 +28,9 @@ public abstract class Animal extends Organism {
 
     /**
      * Checks if the object that the function is called from can eat a type of food
-     * Returns true if String food is inside of canEat of the animal
      * Returns false if not
-     * @param food
-     * @return
+     * @param food String with food
+     * @return true if String food is inside of canEat of the animal
      */
     private boolean canIEat(String food){
         for(String edibleFood : canEat){
@@ -114,24 +113,14 @@ public abstract class Animal extends Organism {
     }
 
     abstract void produceOffSpring(World world);
-    protected void reproduce(World world, Animal animal1, Animal animal2) throws cantReproduceException{
-        if(animal1.getAge() < animal1.getAdultAge()) throw new cantReproduceException(animal1, animal2);
-        if(animal2.getAge() < animal2.getAdultAge()) throw new cantReproduceException(animal1, animal2);
-        if(!animal1.getClass().equals(animal2.getClass())) throw new cantReproduceException(animal1, animal2);
-        if(!(animal1.getEnergy() > 50 && animal2.getEnergy() > 50)) throw new cantReproduceException(animal1, animal2);
+    protected void reproduce(World world, Animal animal1, Animal animal2) throws cantReproduceException {
+        if (animal1.getAge() < animal1.getAdultAge()) throw new cantReproduceException(animal1, animal2);
+        if (animal2.getAge() < animal2.getAdultAge()) throw new cantReproduceException(animal1, animal2);
+        if (!animal1.getClass().equals(animal2.getClass())) throw new cantReproduceException(animal1, animal2);
+        if (!(animal1.getEnergy() > 50 && animal2.getEnergy() > 50)) throw new cantReproduceException(animal1, animal2);
         animal1.removeEnergy(50);
         animal2.removeEnergy(50);
         produceOffSpring(world);
-    /**
-     *
-     * @param world
-     * @param animal1 subtracts 50 energy from this object
-     * @param animal2 subtracts 50 energy from this object
-     * Adds a new Animal of the same kind as the two Animal params to the world
-     * @return
-     */
-    protected Animal reproduce(World world, Animal animal1, Animal animal2){
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
@@ -162,8 +151,7 @@ public abstract class Animal extends Organism {
         else return actual;
     }
 
-    /**
-     *
+    /*
      * If energy is less than 100
      * - Removes 10 hunger and adds 10 energy
      * Set sleeping to true
@@ -185,7 +173,7 @@ public abstract class Animal extends Organism {
         this.hunger = hunger;
     }
 
-    /**
+    /*
      * Adds hunger
      * @param hunger gets added to current hunger
      * returns the smallest number between 100 and this.hunger + @param hunger
@@ -194,7 +182,7 @@ public abstract class Animal extends Organism {
         this.hunger = Math.max(100, this.hunger + hunger);
     }
 
-    /**
+    /*
      * Removes hunger
      * @param hunger get subtracted from current hunger
      * returns the biggest number between 0 and this.hunger + hunger
@@ -203,7 +191,7 @@ public abstract class Animal extends Organism {
         this.hunger = Math.min(0, this.hunger + hunger);
     }
 
-    /**
+    /*
      * @return String array of canEat of the object
      */
     public String[] getCanEat(){

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import Main.Rabbit;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,8 +37,7 @@ class RabbitTest {
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         rabbit = new Rabbit();
-        burrow = new Burrow(world, new Location(0,0));
-        rabbitInsideBurrow = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
+
     }
 
     /**
@@ -84,7 +83,6 @@ class RabbitTest {
         program.simulate();
         program.simulate();
         assertEquals(2, world.getLocation(rabbit1).getX());
-
     }
 
     @Test
@@ -176,6 +174,8 @@ class RabbitTest {
 
     @Test
     void testDayBehaviorExpectsRabbitToExitHole(){
+        burrow = new Burrow(world, new Location(0,0));
+        rabbitInsideBurrow = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
         rabbitInsideBurrow.setHunger(99);
         rabbitInsideBurrow.setEnergy(60);
         program.simulate();
@@ -184,6 +184,8 @@ class RabbitTest {
     @Test
     void testDayBehaviorExpectsRabbitToDigAnotherEntrance(){
         //Igang
+        burrow = new Burrow(world, new Location(0,0));
+        rabbitInsideBurrow = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
         rabbitInsideBurrow.setHunger(99);
         rabbitInsideBurrow.setEnergy(61);
         program.simulate();
@@ -200,7 +202,6 @@ class RabbitTest {
         program.simulate();
 
         assertEquals(new Location(1,1),world.getLocation(rabbit));
-
     }
 
     @Test
@@ -219,6 +220,8 @@ class RabbitTest {
 
     @Test
     void testDayBehaviorWhereRabbitIsInBurrowExpectsRabbitToReproduce() {
+        burrow = new Burrow(world, new Location(0,0));
+        rabbitInsideBurrow = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
         Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
         rabbitInsideBurrow.setEnergy(100);
         rabbit2.setEnergy(100);
@@ -229,6 +232,7 @@ class RabbitTest {
 
     @Test
     void testDayBehaviorWhereRabbitIsInBurrowExpectsRabbitThatCallsToReproduceAndLoseEnergy() {
+        burrow = new Burrow(world, new Location(0,0));
         Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
         Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
         rabbit1.setEnergy(100);
@@ -240,6 +244,8 @@ class RabbitTest {
 
     @Test
     void testDayBehaviorWhereRabbitIsInBurrowExpectsRabbitThatDosentCallToReproduceAndLoseEnergy() {
+        burrow = new Burrow(world, new Location(0,0));
+        rabbitInsideBurrow = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
         Rabbit rabbit1 = rabbitInsideBurrow;
         Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
         rabbit1.setEnergy(100);
@@ -279,6 +285,7 @@ class RabbitTest {
         Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         world.setNight();
+        assertFalse(rabbit.isInBurrow());
         program.simulate(); //move towards burrow
         program.simulate(); //move towards burrow
         program.simulate(); //enter burrow

@@ -1,10 +1,12 @@
 package test;
 
-import Main.ObjectFactory;
+import Main.Burrow;
 import Main.Rabbit;
 import itumulator.executable.Program;
 import itumulator.world.Location;
 import itumulator.world.World;
+import spawn.ObjectFactory;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +37,19 @@ class ObjectFactoryTest {
         Location location = new Location(1,1);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location,"rabbit");
         assertEquals(new Location(1,1),world.getLocation(rabbit));
+    }
+
+    @Test
+    void generateRabbitWith3ConstructorArgumentsExpectsRabbit(){
+        Burrow burrow = new Burrow(world, new Location(0,0));
+        assertInstanceOf(Rabbit.class, (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true));
+    }
+
+    @Test
+    void generateRabbitWtih0ConstructorArgumentsExpectsRabbit(){
+        Burrow burrow = new Burrow(world, new Location(0,0));
+        Rabbit expected = new Rabbit();
+        assertInstanceOf(Rabbit.class,(Rabbit) ObjectFactory.generateOffMap(world, "rabbit") );
     }
 
     @AfterEach

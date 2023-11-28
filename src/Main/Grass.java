@@ -3,14 +3,13 @@ package Main;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
+import spawn.ObjectFactory;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
 public class Grass extends Plant implements NonBlocking {
-
-
     /**
      * Sets the food type to plant
      */
@@ -77,7 +76,6 @@ public class Grass extends Plant implements NonBlocking {
     void nightBehavior(World world) {
     decay();
     }
-
 
     @Override
     public String getPNGPath(){

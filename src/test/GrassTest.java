@@ -1,7 +1,9 @@
 package test;
 
 import Main.Grass;
-import Main.ObjectFactory;
+
+import spawn.ObjectFactory;
+
 import itumulator.executable.Program;
 import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;

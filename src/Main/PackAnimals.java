@@ -1,4 +1,3 @@
 package Main;
 
-public interface PackAnimals {
-}
+public interface PackAnimals {}

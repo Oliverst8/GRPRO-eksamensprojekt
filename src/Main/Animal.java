@@ -59,7 +59,7 @@ public abstract class Animal extends Organism {
      * Finds the nearest object of the type object to this animal
      * @return the location of the nearest object (except itself) in radius, returns null if there is no such object
      */
-    protected Location findNearest(World world, int radius, Class<?> object){
+    protected Location findNearest(World world, int radius, Class<?> object) {
 
         if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
         if(world == null || object == null) throw new NullPointerException("Arguments cant be null");
@@ -76,7 +76,7 @@ public abstract class Animal extends Organism {
 
         if(standingOnObject != null) surrondingTiles.add(world.getLocation(standingOnObject)); //If the animal is standing on an object, adds it location to the set
 
-        for (Location tile : surrondingTiles) {
+        for(Location tile : surrondingTiles) {
             if(world.getTile(tile) == null) continue;
 
             Class<?> tileObject;
@@ -113,6 +113,7 @@ public abstract class Animal extends Organism {
     }
 
     abstract void produceOffSpring(World world);
+    
     protected void reproduce(World world, Animal animal1, Animal animal2) throws cantReproduceException {
         if (animal1.getAge() < animal1.getAdultAge()) throw new cantReproduceException(animal1, animal2);
         if (animal2.getAge() < animal2.getAdultAge()) throw new cantReproduceException(animal1, animal2);
@@ -129,10 +130,11 @@ public abstract class Animal extends Organism {
      * Moves towards location by one tile
      * Remove 10 energy
      */
-    protected void moveTowards(Location location, World world){
+    protected void moveTowards(Location location, World world) {
         if(world == null) throw new NullPointerException("World argument cant be null");
         if(location == null) throw new NullPointerException("Location argument cant be null");
         if(world.getCurrentLocation().getX() == location.getX() && world.getCurrentLocation().getY() == location.getY()) throw new IllegalArgumentException("Animal is already there");
+
         int x = makeNumberOneCloser(world.getCurrentLocation().getX(), location.getX());
         int y = makeNumberOneCloser(world.getCurrentLocation().getY(), location.getY());
         if(!world.isTileEmpty(new Location(x,y))){
@@ -163,17 +165,15 @@ public abstract class Animal extends Organism {
     protected void sleep(){
         if(hunger > 10){
             removeHunger(10);
-
             addEnergy(10);
         }
-
     }
 
     public double getHunger() {
         return hunger;
     }
 
-    public void setHunger(double hunger){
+    public void setHunger(double hunger) {
         this.hunger = hunger;
     }
 

@@ -1,12 +1,20 @@
 package test;
 
-import Main.*;
+import Main.Burrow;
+import Main.Grass;
+import Main.Rabbit;
+
+import spawn.ObjectFactory;
+
 import itumulator.executable.Program;
 import itumulator.world.Location;
 import itumulator.world.World;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import Main.Rabbit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,6 +23,8 @@ class RabbitTest {
     Program program;
     World world;
     Rabbit rabbit;
+    Burrow burrow;
+    Rabbit rabbitInsideBurrow;
 
     /**
      * Calls rabbit constructor and creates a new Rabbit object
@@ -27,6 +37,8 @@ class RabbitTest {
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         rabbit = new Rabbit();
+        burrow = new Burrow(world, new Location(0,0));
+        rabbitInsideBurrow = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
     }
 
     /**
@@ -154,10 +166,28 @@ class RabbitTest {
         Rabbit rabbit = initialiseRabbitOnWorld(new Location(0,0));
         Grass grass = initialiseGrassOnWorld(new Location(2,2));
         double expectedHunger = Math.max(100, rabbit.getHunger()+(0.5*grass.getEnergy()));
+
         for (int i = 0; i < 3; i++) {
             program.simulate();
         }
+
         assertEquals(expectedHunger,rabbit.getHunger());
+    }
+
+    @Test
+    void testDayBehaviorExpectsRabbitToExitHole(){
+        rabbitInsideBurrow.setHunger(99);
+        rabbitInsideBurrow.setEnergy(60);
+        program.simulate();
+        assertEquals(0,burrow.getRabbitsInside().size());
+    }
+    @Test
+    void testDayBehaviorExpectsRabbitToDigAnotherEntrance(){
+        //Igang
+        rabbitInsideBurrow.setHunger(99);
+        rabbitInsideBurrow.setEnergy(61);
+        program.simulate();
+
     }
 
     @Test
@@ -168,6 +198,7 @@ class RabbitTest {
         world.setTile(new Location(0,0),rabbit);
         rabbit.setHunger(100);
         program.simulate();
+
         assertEquals(new Location(1,1),world.getLocation(rabbit));
 
     }
@@ -187,6 +218,38 @@ class RabbitTest {
     }
 
     @Test
+    void testDayBehaviorWhereRabbitIsInBurrowExpectsRabbitToReproduce() {
+        Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
+        rabbitInsideBurrow.setEnergy(100);
+        rabbit2.setEnergy(100);
+        int expected = world.getEntities().size()+1;
+        program.simulate();
+        assertEquals(expected,world.getEntities().size());
+    }
+
+    @Test
+    void testDayBehaviorWhereRabbitIsInBurrowExpectsRabbitThatCallsToReproduceAndLoseEnergy() {
+        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
+        Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
+        rabbit1.setEnergy(100);
+        rabbit2.setEnergy(100);
+        int expectedEnergy = rabbit1.getEnergy()-50;
+        program.simulate();
+        assertEquals(expectedEnergy, rabbit1.getEnergy());
+    }
+
+    @Test
+    void testDayBehaviorWhereRabbitIsInBurrowExpectsRabbitThatDosentCallToReproduceAndLoseEnergy() {
+        Rabbit rabbit1 = rabbitInsideBurrow;
+        Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
+        rabbit1.setEnergy(100);
+        rabbit2.setEnergy(100);
+        int expectedEnergy = rabbit2.getEnergy()-50;
+        program.simulate();
+        assertEquals(expectedEnergy, rabbit2.getEnergy());
+    }
+
+    @Test
     void testDaysBehaviorWhereRabbitsneedsToGoToGrassButThereIsAlreadyAnObjectExpectsRabbitToStayInSameSpot() {
         Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
         Rabbit rabbit2 = initialiseRabbitOnWorld(new Location(1,1));
@@ -203,6 +266,7 @@ class RabbitTest {
      */
     @Test
     void testNightBehaviourWhereRabbitNeedsToSleepButHasNoBurrow(){
+
         Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
         world.setNight();
         program.simulate();

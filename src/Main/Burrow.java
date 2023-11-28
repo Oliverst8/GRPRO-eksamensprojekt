@@ -2,6 +2,7 @@ package Main;
 
 import itumulator.world.Location;
 import itumulator.world.World;
+import spawn.ObjectFactory;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -19,9 +20,10 @@ public class Burrow {
      * Creates a hole with the entry, and adds it to the list
      * @param entry The first entry location of the burrow
      */
-    public Burrow(World world, Location entry){
+    public Burrow(World world, Location entry) {
         if(entry == null) throw new NullPointerException("Entry cant be null");
-        if (world == null) throw new NullPointerException("World cant be null");
+        if(world == null) throw new NullPointerException("World cant be null");
+
         entries = new ArrayList<>();
         rabbitsInside = new LinkedList<>();
         addEntry(entry, world);
@@ -34,8 +36,9 @@ public class Burrow {
      * Creates a random location
      * Makes a hole with the location, and adds it to the list
      */
-    public Burrow(World world){
+    public Burrow(World world) {
         if (world == null) throw new NullPointerException("World cant be null");
+
         entries = new ArrayList<>();
         rabbitsInside = new LinkedList<>();
         Random random = new Random();
@@ -65,7 +68,7 @@ public class Burrow {
     /**
      * @return a list of Locations of the entries the burrow has
      */
-    public List<Hole> getEntries(){
+    public List<Hole> getEntries() {
         return entries;
     }
 
@@ -74,7 +77,7 @@ public class Burrow {
      * Otherwise makes a hole and adds it to the list of entries
      * @param entry
      */
-    public void addEntry(Location entry, World world){
+    public void addEntry(Location entry, World world) {
         if (world == null) throw new NullPointerException("World cant be null");
         if (entry == null) throw new NullPointerException("Location cant be null");
 
@@ -86,17 +89,19 @@ public class Burrow {
     /**
      * @return the list of rabbits inside the burrow
      */
-    public List<Rabbit> getRabbitsInside(){
+    public List<Rabbit> getRabbitsInside() {
         return rabbitsInside;
     }
 
-    public List<Rabbit> getAdultRabbitsInside(){
+    public List<Rabbit> getAdultRabbitsInside() {
         List<Rabbit> adultRabbits = new ArrayList<>();
-        for(Rabbit rabbit : rabbitsInside){
-            if(rabbit.getAge() >= rabbit.getAdultAge()){
+
+        for(Rabbit rabbit : rabbitsInside) {
+            if(rabbit.getAge() >= rabbit.getAdultAge()) {
                 adultRabbits.add(rabbit);
             }
         }
+
         return adultRabbits;
     }
 
@@ -109,13 +114,15 @@ public class Burrow {
     public Location findNearestEntry(Location rabbitLocation) {
         Location closestEntryLocation = null;
         double minDist = Double.MAX_VALUE;
-        for(Hole entry : entries){
+
+        for(Hole entry : entries) {
             double distance = distance(rabbitLocation, entry.getLocation());
-            if(minDist > distance){
+            if(minDist > distance) {
                 minDist = distance;
                 closestEntryLocation = entry.getLocation();
             }
         }
+
         return closestEntryLocation;
     }
 
@@ -128,5 +135,4 @@ public class Burrow {
     private double distance(Location location1, Location location2) {
         return Math.sqrt(Math.pow(location1.getX() - location2.getX(), 2) + Math.pow(location1.getY() - location2.getY(), 2));
     }
-
 }

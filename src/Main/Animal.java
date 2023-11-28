@@ -26,8 +26,14 @@ public abstract class Animal extends Organism {
         sleeping = false;
     }
 
-    private boolean canIEat(String food) {
-        for(String edibleFood : canEat) {
+    /**
+     * Checks if the object that the function is called from can eat a type of food
+     * Returns false if not
+     * @param food String with food
+     * @return true if String food is inside of canEat of the animal
+     */
+    private boolean canIEat(String food){
+        for(String edibleFood : canEat){
             if(food.equals(edibleFood)) return true;
         }
         return false;
@@ -65,6 +71,7 @@ public abstract class Animal extends Organism {
         Object standingOnObject;
 
         if(world.containsNonBlocking(world.getCurrentLocation())) standingOnObject = world.getNonBlocking(world.getCurrentLocation()); //Gets the nonblocking object the animal is standing on if its standing on one
+
         else standingOnObject = null;
 
         if(standingOnObject != null) surrondingTiles.add(world.getLocation(standingOnObject)); //If the animal is standing on an object, adds it location to the set
@@ -105,8 +112,16 @@ public abstract class Animal extends Organism {
         return Math.sqrt(Math.pow(world.getCurrentLocation().getX() - location2.getX(), 2) + Math.pow(world.getCurrentLocation().getY() - location2.getY(), 2));
     }
 
-    protected Animal reproduce(World world, Animal animal1, Animal animal2) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    abstract void produceOffSpring(World world);
+    
+    protected void reproduce(World world, Animal animal1, Animal animal2) throws cantReproduceException {
+        if (animal1.getAge() < animal1.getAdultAge()) throw new cantReproduceException(animal1, animal2);
+        if (animal2.getAge() < animal2.getAdultAge()) throw new cantReproduceException(animal1, animal2);
+        if (!animal1.getClass().equals(animal2.getClass())) throw new cantReproduceException(animal1, animal2);
+        if (!(animal1.getEnergy() > 50 && animal2.getEnergy() > 50)) throw new cantReproduceException(animal1, animal2);
+        animal1.removeEnergy(50);
+        animal2.removeEnergy(50);
+        produceOffSpring(world);
     }
 
     /**
@@ -122,7 +137,9 @@ public abstract class Animal extends Organism {
 
         int x = makeNumberOneCloser(world.getCurrentLocation().getX(), location.getX());
         int y = makeNumberOneCloser(world.getCurrentLocation().getY(), location.getY());
-
+        if(!world.isTileEmpty(new Location(x,y))){
+        return;
+        }
         world.move(this, new Location(x,y));
         removeEnergy(10);
     }
@@ -138,8 +155,7 @@ public abstract class Animal extends Organism {
         else return actual;
     }
 
-    /**
-     *
+    /*
      * If energy is less than 100
      * - Removes 10 hunger and adds 10 energy
      * Set sleeping to true
@@ -159,15 +175,28 @@ public abstract class Animal extends Organism {
         this.hunger = hunger;
     }
 
-    public void addHunger(double hunger) {
+    /*
+     * Adds hunger
+     * @param hunger gets added to current hunger
+     * returns the smallest number between 100 and this.hunger + @param hunger
+     */
+    public void addHunger(double hunger){
         this.hunger = Math.max(100, this.hunger + hunger);
     }
 
-    public void removeHunger(double hunger) {
+    /*
+     * Removes hunger
+     * @param hunger get subtracted from current hunger
+     * returns the biggest number between 0 and this.hunger + hunger
+     */
+    public void removeHunger(double hunger){
         this.hunger = Math.min(0, this.hunger + hunger);
     }
 
-    public String[] getCanEat() {
+    /*
+     * @return String array of canEat of the object
+     */
+    public String[] getCanEat(){
         return canEat;
     }
 }

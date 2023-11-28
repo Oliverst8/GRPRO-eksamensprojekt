@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class Rabbit extends Animal {
     private Burrow burrow;
-    private boolean inBurrow;
+    private boolean inBurrow = false;
 
     /**
      * A rabbit that is not in a burrow
@@ -20,22 +20,25 @@ public class Rabbit extends Animal {
         super(new String[]{"plant", "fruit"});
 
         burrow = null;
-        inBurrow = false;
         adultAge = 3;
     }
 
     /**
      * A rabbit that is in a burrow
      * @param age the age of the rabbit
-     * @param burrow the burrow that the rabbit is in
+     * @param burrow the burrow that the rabbit belongs to
+     * @param inBurrow if the rabbit is in its burrow
      */
-    public Rabbit(int age, Burrow burrow) {
+    public Rabbit(int age, Burrow burrow, boolean inBurrow){
         super(new String[]{"plant", "fruit"});
 
         setBurrow(burrow);
-        inBurrow = false;
         adultAge = 3;
         this.age = age;
+        if(inBurrow) {
+            this.inBurrow = true;
+            burrow.addRabbit(this);
+        }
     }
 
     /**
@@ -90,6 +93,10 @@ public class Rabbit extends Animal {
         if(distance(world, nearestEntry) == 0) enterBurrow(world);
     }
 
+    protected void produceOffSpring(World world) {
+        Rabbit rabbitChild = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 0, burrow, true);
+    }
+
     /**
      * - Set sleeping to false if its true, and call the grow method
      * - If its in a burrow, check if it can reproduce
@@ -110,7 +117,11 @@ public class Rabbit extends Animal {
             if(getEnergy() > 80 && burrow.getAdultRabbitsInside().size() >= 2){
                 for(Rabbit otherRabbit : burrow.getAdultRabbitsInside()){
                     if(otherRabbit != this && otherRabbit.getEnergy() > 80){
-                        reproduce(world, this, otherRabbit);
+                        try{
+                            reproduce(world, this, otherRabbit);
+                        } catch (cantReproduceException e){
+                            e.printInformation();
+                        }
                         return;
                     }
                 }
@@ -156,7 +167,7 @@ public class Rabbit extends Animal {
      *      *      * - Subtracts 25 energy
      */
     private void makeBurrow(World world) {
-        setBurrow((Burrow) ObjectFactory.generate(world,"Burrow", world, world.getCurrentLocation()));
+        setBurrow((Burrow) ObjectFactory.generateOnMap(world,"Burrow", world, world.getCurrentLocation()));
         removeEnergy(25);
     }
 
@@ -190,7 +201,6 @@ public class Rabbit extends Animal {
         inBurrow = true;
         burrow.addRabbit(this);
         world.remove(this);
-        sleeping = true;
     }
 
     /**

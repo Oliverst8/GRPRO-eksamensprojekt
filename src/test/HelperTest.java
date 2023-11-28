@@ -66,7 +66,7 @@ class HelperTest {
         int display_size = 800; // skærm opløsningen (i px)
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
-        ObjectFactory.generate(world, "grass");
+        ObjectFactory.generateOnMap(world, "grass");
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, false));
     }
 
@@ -77,7 +77,7 @@ class HelperTest {
         int display_size = 800; // skærm opløsningen (i px)
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
-        ObjectFactory.generate(world, "grass");
+        ObjectFactory.generateOnMap(world, "grass");
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, false));
     }
 
@@ -88,7 +88,7 @@ class HelperTest {
         int display_size = 800; // skærm opløsningen (i px)
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
-        ObjectFactory.generate(world, "grass");
+        ObjectFactory.generateOnMap(world, "grass");
         assertFalse(Helper.isThereAnEmptyLocationInWorld(world, true));
     }
 
@@ -99,8 +99,8 @@ class HelperTest {
         int display_size = 800; // skærm opløsningen (i px)
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
-        ObjectFactory.generate(world, "grass");
-        ObjectFactory.generate(world, "grass");
+        ObjectFactory.generateOnMap(world, "grass");
+        ObjectFactory.generateOnMap(world, "grass");
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, true));
     }
 
@@ -113,7 +113,7 @@ class HelperTest {
         int display_size = 800; // skærm opløsningen (i px)
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
-        ObjectFactory.generate(world, "rabbit");
+        ObjectFactory.generateOnMap(world, "rabbit");
         assertThrows(NoEmptyLocationException.class, () -> {
            Helper.findEmptyLocation(world);
         });
@@ -126,7 +126,7 @@ class HelperTest {
         int display_size = 800; // skærm opløsningen (i px)
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
-        ObjectFactory.generate(world, "grass");
+        ObjectFactory.generateOnMap(world, "grass");
         assertThrows(NoEmptyLocationException.class, () -> {
             Helper.findNonBlockingEmptyLocation(world);
         });

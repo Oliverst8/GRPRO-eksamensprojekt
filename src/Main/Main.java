@@ -22,10 +22,10 @@ public class Main {
         // Generates the objects in the world
         for (SpawningObject object : input.getObjects()) {
             if(object.getLocation() != null) {
-                ObjectFactory.generate(world, object.getLocation(), object.getClassName());
+                ObjectFactory.generateOnMap(world, object.getLocation(), object.getClassName());
                 continue;
             } else {
-                ObjectFactory.generate(world, object.getClassName());
+                ObjectFactory.generateOnMap(world, object.getClassName());
             }
         }
 

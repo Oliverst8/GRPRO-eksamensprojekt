@@ -2,16 +2,17 @@ package test;
 
 import Main.Burrow;
 import Main.Grass;
+import Main.Rabbit;
+
+import spawn.ObjectFactory;
+
 import itumulator.executable.Program;
 import itumulator.world.Location;
 import itumulator.world.World;
-import spawn.ObjectFactory;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import Main.Rabbit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,7 +62,9 @@ class RabbitTest {
 
     @Test
     void testActDayBehaviorExpectingToMoveTowardsGrassWithOnly1GrassInWorldXValue() {
-        Rabbit rabbit1 = initialiseGrassAndRabbitOnWorld(new Location(0,0),new Location(1,1));
+        Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
+        Grass grass = initialiseGrassOnWorld(new Location(1,1));
+        grass.setEnergy(10);
         program.simulate();
         int actual = world.getLocation(rabbit1).getX();
         assertEquals(1, actual);
@@ -75,7 +78,6 @@ class RabbitTest {
         program.simulate();
         program.simulate();
         assertEquals(2, world.getLocation(rabbit1).getX());
-
     }
 
     @Test
@@ -116,15 +118,15 @@ class RabbitTest {
 
 
     private Rabbit initialiseGrassAndRabbitOnWorld(Location rabbitLocation, Location grassLocation) {
-        Rabbit rabbit = (Rabbit) ObjectFactory.generate(world, rabbitLocation, "rabbit");
-        ObjectFactory.generate(world, grassLocation, "grass");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, rabbitLocation, "rabbit");
+        ObjectFactory.generateOnMap(world, grassLocation, "grass");
         return rabbit;
     }
 
     private Rabbit initialiseRabbitOnWorld(Location rabbitLocation) {
         Rabbit rabbit = null;
         try{
-            rabbit = (Rabbit) ObjectFactory.generate(world, rabbitLocation, "rabbit");
+            rabbit = (Rabbit) ObjectFactory.generateOnMap(world, rabbitLocation, "rabbit");
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -134,7 +136,7 @@ class RabbitTest {
     private Grass initialiseGrassOnWorld(Location grassLocation) {
         Grass grass = null;
         try{
-            grass = (Grass) ObjectFactory.generate(world, grassLocation, "grass");
+            grass = (Grass) ObjectFactory.generateOnMap(world, grassLocation, "grass");
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -157,9 +159,11 @@ class RabbitTest {
         Rabbit rabbit = initialiseRabbitOnWorld(new Location(0,0));
         Grass grass = initialiseGrassOnWorld(new Location(2,2));
         double expectedHunger = Math.max(100, rabbit.getHunger()+(0.5*grass.getEnergy()));
+
         for (int i = 0; i < 3; i++) {
             program.simulate();
         }
+
         assertEquals(expectedHunger,rabbit.getHunger());
     }
 
@@ -167,19 +171,19 @@ class RabbitTest {
     void testActDayBehaviorExpectsToMoveTowardsBurrowAndNotEnter() {
 
         Burrow burrow = new Burrow(world, new Location(2,2));
-        Rabbit rabbit = new Rabbit(3, burrow);
+        Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         rabbit.setHunger(100);
         program.simulate();
-        assertEquals(new Location(1,1),world.getLocation(rabbit));
 
+        assertEquals(new Location(1,1),world.getLocation(rabbit));
     }
 
     @Test
     void testActDayBehaviorExpectsToMoveTowardsBurrowAndEnter() {
 
         Burrow burrow = new Burrow(world, new Location(2,2));
-        Rabbit rabbit = new Rabbit(3, burrow);
+        Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         rabbit.setHunger(100);
         program.simulate();
@@ -193,7 +197,8 @@ class RabbitTest {
     void testDaysBehaviorWhereRabbitsneedsToGoToGrassButThereIsAlreadyAnObjectExpectsRabbitToStayInSameSpot() {
         Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
         Rabbit rabbit2 = initialiseRabbitOnWorld(new Location(1,1));
-        initialiseGrassOnWorld(new Location(1,1));
+        Grass grass = initialiseGrassOnWorld(new Location(1,1));
+        grass.setEnergy(10);
         program.simulate();
         assertEquals(new Location(0,0),world.getLocation(rabbit1));
     }
@@ -215,7 +220,7 @@ class RabbitTest {
     @Test
     void testNightBehaviourWhereRabbitHasBurrowButIsNotInside(){
         Burrow burrow = new Burrow(world, new Location(2,2));
-        Rabbit rabbit = new Rabbit(3, burrow);
+        Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         world.setNight();
         assertFalse(rabbit.isInBurrow());
@@ -229,7 +234,7 @@ class RabbitTest {
     @Test
     void testNightBehaviorIfRabbitSleepsInsideBurrow(){
         Burrow burrow = new Burrow(world, new Location(0,0));
-        Rabbit rabbit = new Rabbit(3, burrow);
+        Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         assertFalse(world.isNight()); //Its not night
         assertEquals(50,rabbit.getHunger());//hunger should be 50 as initialised in the constructor

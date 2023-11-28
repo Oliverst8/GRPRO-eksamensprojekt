@@ -9,7 +9,6 @@ import javax.management.RuntimeErrorException;
 import Main.Entity;
 import Main.Helper;
 
-import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
@@ -19,23 +18,35 @@ public class ObjectFactory {
 
     private static String[] requiresWorld = {"burrow"};
 
-    public static Object generate(World world, String className, Object... constructorArgs) {
+    public static Object generateOffMap(World world, String className, Object... constructorArgs){
         if (Helper.doesArrayContain(requiresWorld, className)) {
             constructorArgs = prependArray(constructorArgs, world);
         }
 
         Object object = generateHelper(className, constructorArgs);
 
-        if (object instanceof Actor) place(world, object);
+        world.add(object);
 
         return object;
     }
 
-    public static Object generate(World world, Location location, String className, Object... constructorArgs) {
+    public static Object generateOnMap(World world, String className, Object... constructorArgs) {
         if (Helper.doesArrayContain(requiresWorld, className)) {
             constructorArgs = prependArray(constructorArgs, world);
         }
 
+        Object object = generateHelper(className, constructorArgs);
+
+        if (object instanceof Entity) place(world, object);
+
+        return object;
+    }
+
+    public static Object generateOnMap(World world, Location location, String className, Object... constructorArgs) {
+        if (Helper.doesArrayContain(requiresWorld, className)) {
+            constructorArgs = prependArray(constructorArgs, world);
+        }
+        
         Object object = generateHelper(className, constructorArgs);
 
         if (object instanceof Entity) place(world, object, location);

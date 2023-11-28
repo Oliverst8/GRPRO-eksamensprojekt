@@ -57,7 +57,7 @@ public class Burrow {
     }
 
     /**
-     * Remove a rabbit from the burrows
+     * Removes parameter rabbit to the list of rabbits inside the burrow
      * @throws NullPointerException if argument is null
      */
     public void removeRabbit(Rabbit rabbit) {
@@ -80,10 +80,9 @@ public class Burrow {
     public void addEntry(Location entry, World world) {
         if (world == null) throw new NullPointerException("World cant be null");
         if (entry == null) throw new NullPointerException("Location cant be null");
-        
-        Hole hole;
-        
-        hole = (Hole) ObjectFactory.generate(world,entry,"Hole", entry, this);
+
+        Hole hole = (Hole) ObjectFactory.generateOnMap(world,entry,"Hole", entry, this);
+
         entries.add(hole);
     }
 
@@ -110,6 +109,7 @@ public class Burrow {
      *
      * @param rabbitLocation the location of the rabbit
      * @return the closest entry, returns null if there is no entry found
+     * returns closestEntryLocation if there is a entrance
      */
     public Location findNearestEntry(Location rabbitLocation) {
         Location closestEntryLocation = null;

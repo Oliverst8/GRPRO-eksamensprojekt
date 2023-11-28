@@ -5,7 +5,7 @@ import itumulator.world.World;
 
 import java.awt.*;
 import java.util.List;
-import java.util.Random;
+
 
 public class Rabbit extends Animal {
 
@@ -33,7 +33,7 @@ public class Rabbit extends Animal {
         }
     }
 
-    /**
+    /*
      * Throws IllegalArgumentException if world is null
      * Act check if its night or day
      * If its night it calls night behavior
@@ -216,10 +216,21 @@ public class Rabbit extends Animal {
             throw new IllegalOperationException("Cant exit a burrow, if its not in one");
         }
         if(world == null){throw new IllegalArgumentException("World is null");}
+        List<Hole> entries = burrow.getEntries();
+        Location freeLocation = null;
+        for(int i = 0; i<entries.size();i++){
+            Hole tempHole = entries.get(i);
+            if(!world.isTileEmpty(tempHole.getLocation()) && freeLocation == null){
+            i++;
+            }
+            freeLocation = tempHole.getLocation();
+            i = entries.size();
+        }
+
         inBurrow = false;
         burrow.removeRabbit(this);
-        List<Hole> entries = burrow.getEntries();
-        world.setTile(entries.get(new Random().nextInt(entries.size())).getLocation(),this);
+
+        world.setTile(freeLocation,this);
     }
 
     /**

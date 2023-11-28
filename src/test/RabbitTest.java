@@ -241,6 +241,16 @@ class RabbitTest {
         assertEquals(100,rabbit.getEnergy()); //Animal.sleep() adds 10 energy gets called in nightBehaviour if sleeping is true
     }
 
+    @Test
+    void testThatRabbitCantExitBurrowFromBlockedEntrance(){
+        Burrow burrow = new Burrow(world, new Location(2,2));
+        Rabbit rabbit = new Rabbit(3, burrow, false);
+        world.setTile(new Location(2,2),rabbit);
+        rabbit.enterBurrow(world);
+        assertTrue(rabbit.isInBurrow());
+
+    }
+
     @AfterEach
     void tearDown() {
     }

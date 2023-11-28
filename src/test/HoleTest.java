@@ -18,6 +18,8 @@ class HoleTest {
 
     Location location;
     Hole hole;
+
+    Burrow burrow;
     @BeforeEach
     void setUp() {
         int size = 3; // størrelsen af vores 'map' (dette er altid kvadratisk)
@@ -25,8 +27,9 @@ class HoleTest {
         int display_size = 800; // skærm opløsningen (i px)
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
-        location = new Location(69,69);
+        location = new Location(0,0);
         hole = new Hole(location);
+        burrow = new Burrow(world, location);
     }
 
     /**
@@ -49,6 +52,13 @@ class HoleTest {
         Location expectedLocation = new Location(60,60);
         Hole constructorHole = new Hole(expectedLocation);
         assertEquals(expectedLocation,constructorHole.getLocation());
+    }
+    @Test
+    void testHoleConstructorWithLocationAndBurrowArgument(){
+        Location expectedLocation = new Location(60,60);
+        Hole constructorHole = new Hole(expectedLocation,burrow);
+        assertEquals(expectedLocation,constructorHole.getLocation());
+        assertEquals(burrow,constructorHole.getBurrow());
     }
 
     /**

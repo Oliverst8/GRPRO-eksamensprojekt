@@ -14,13 +14,18 @@ public abstract class Plant extends Organism {
      * Degrades the current health by 10
      */
     protected void decay() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        removeEnergy(10);
     }
 
     /**
+     * Check if its day, if its day ->
      * Add 10 energy
+     * else do nothing
      */
     protected void photosynthesis(){
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(!isDay()){
+            throw new IllegalOperationException("Cant make photosynthesis in the night");
+        }
+        addEnergy(10);
     }
 }

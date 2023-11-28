@@ -107,7 +107,7 @@ public abstract class Organism extends Entity implements Actor{
         else nightBehavior(world);
 
         if(getEnergy() == 0) {
-            System.out.println(this + " is out of energy dying");
+            System.out.println(this + " is out of energy and dying");
             die(world);
         }
     }

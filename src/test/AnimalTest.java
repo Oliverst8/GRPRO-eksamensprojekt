@@ -1,11 +1,7 @@
 package test;
 
-import Main.Burrow;
-import Main.Grass;
-import Main.ObjectFactory;
 import Main.Rabbit;
 import itumulator.executable.Program;
-import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
 
@@ -13,8 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AnimalTest {
 
@@ -22,6 +16,7 @@ public class AnimalTest {
     World world;
     Rabbit rabbit;
 
+    double hungerMod;
     /**
      * Calls rabbit constructor that
      * Calls super constructor that creates an Animal Object
@@ -34,6 +29,7 @@ public class AnimalTest {
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         rabbit = new Rabbit();
+        hungerMod = 10;
 
     }
 
@@ -56,8 +52,24 @@ public class AnimalTest {
     }
 
 
+    @Test
+    void testAnimalSetHunger(){
 
+        rabbit.setHunger(hungerMod);
+        assertEquals(10,rabbit.getHunger());
+    }
 
+    @Test
+    void testAnimalAddHunger(){
+        rabbit.addHunger(hungerMod);
+        assertEquals(100,rabbit.getHunger());
+    }
+
+    @Test
+    void testAnimalRemoveHunger(){
+        rabbit.removeHunger(hungerMod);
+        assertEquals(0,rabbit.getHunger());
+    }
     @AfterEach
     void tearDown() {
     }

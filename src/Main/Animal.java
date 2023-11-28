@@ -153,8 +153,10 @@ public abstract class Animal extends Organism {
     protected void sleep(){
         if(hunger > 10){
             removeHunger(10);
+
             addEnergy(10);
         }
+
     }
 
     public double getHunger() {
@@ -169,7 +171,7 @@ public abstract class Animal extends Organism {
         this.hunger = Math.max(100, this.hunger + hunger);
     }
 
-    public void removeHunger(double unger){
+    public void removeHunger(double hunger){
         this.hunger = Math.min(0, this.hunger + hunger);
     }
 

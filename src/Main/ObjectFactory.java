@@ -46,27 +46,24 @@ public class ObjectFactory {
         return object;
     }
 
-    // Writen together with ChatGPT
+
     private static Object generateHelper(String className, Object... constructorArgs) {
         className = className.toLowerCase();
         className = className.substring(0, 1).toUpperCase() + className.substring(1);
         className = "Main." + className;
 
         try {
-            // Finds the type of class based on the className string
-            Class<?> clazz = Class.forName(className);
+            Class<?> objectClass = Class.forName(className);
 
-            // Get the constructor with the specified parameter types
-            Class<?>[] parameterTypes = new Class[constructorArgs.length];
-            for (int i = 0; i < constructorArgs.length; i++) {
-                parameterTypes[i] = constructorArgs[i].getClass();
+            Class<?>[] parameters = new Class[constructorArgs.length];
+            for(int i = 0; i < parameters.length; i++){
+                parameters[i] = constructorArgs[i].getClass();
             }
 
-            //Find the constructor that has the matching parameters found earlier
-            Constructor<?> constructor = clazz.getConstructor(parameterTypes);
+            Constructor<?> objectConstructor = objectClass.getConstructor(parameters);
 
-            // Creates the an instance of the object, using the constructer arguments and returns it
-            return constructor.newInstance(constructorArgs);
+            return objectConstructor.newInstance(constructorArgs);
+
         } catch (ClassNotFoundException e) {
             System.out.println("Class not found: " + className);
         } catch (NoSuchMethodException e) {

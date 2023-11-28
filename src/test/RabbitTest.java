@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -265,6 +266,24 @@ class RabbitTest {
         assertEquals(new Location(0,0),world.getLocation(rabbit1));
     }
 
+    @Test
+    void testDaysBehaviorWhereRabbitNeedsToGoToGrassButThereIsAnObjectInTheWayInTheShortestRoute(){
+
+        Rabbit rabbit2 = initialiseRabbitOnWorld(new Location(1,1));
+        Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
+        Grass grass = initialiseGrassOnWorld(new Location(2,2));
+        program.simulate();
+        Location expLocation1 = new Location(1, 0);
+        Location expLocation2 = new Location(0,1);
+        Boolean checker = false;
+        if(expLocation1.equals(world.getLocation(rabbit1)) || expLocation2.equals(world.getLocation(rabbit1))){
+            checker = true;
+        }
+        assertTrue(checker);
+
+
+    }
+
     /**
      * New rabbit gets 100 energy in constructor
      * Its night, has no burrow, digs new
@@ -306,6 +325,16 @@ class RabbitTest {
     }
 
     @Test
+    void testThatRabbitCanStandOnANonBlockableObject(){
+        Location testLocation = new Location(0,0);
+        Burrow burrow = new Burrow(world, testLocation);
+        Rabbit rabbit = new Rabbit(3, burrow, true);
+        world.add(rabbit);
+        Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
+        program.simulate();
+        assertEquals(world.getLocation(rabbit1), testLocation);
+    }
+    @Test
     void testThatRabbitCantExitBurrowFromBlockedEntrance(){
         Location testLocation = new Location(0,0);
         Burrow burrow = new Burrow(world, testLocation);
@@ -317,11 +346,6 @@ class RabbitTest {
         program.simulate(); //Wants to exit burrow
         program.simulate(); //Wants to exit burrow
         assertTrue(rabbit.isInBurrow());
-    }
-
-    @Test
-    void testThatRabbitCantExitBurrowFromBlockedEntranceInTheBeginningThenBlockingObjectMoves(){
-
     }
 
     @AfterEach

@@ -30,6 +30,7 @@ public class Grass extends Plant implements NonBlocking {
             throw new IllegalOperationException("Grass doesnt have energy to spread");
         }
         Set<Location> surroundingTiles = world.getEmptySurroundingTiles();
+<<<<<<< HEAD
         List<Location> locationsList = new LinkedList<>(surroundingTiles);
         int randomIndex;
         Location randomLocation;
@@ -40,6 +41,13 @@ public class Grass extends Plant implements NonBlocking {
             if(world.getTile(randomLocation) != null) locationsList.remove(randomIndex);
         } while(world.getTile(randomLocation) != null);
         ObjectFactory.generateOnMap(world,randomLocation,"Grass");
+=======
+        List<Location> locationsList = new ArrayList<>(surroundingTiles);
+        if(locationsList.size() <= 0) return;
+        int randomIndex = new Random().nextInt(locationsList.size());
+        Location randomLocation = locationsList.get(randomIndex);
+        ObjectFactory.generateOnMap(world,randomLocation,"Grass", randomLocation, this);
+>>>>>>> 3e3ddbe14fb3d7647af1ca43ef384925b1a20d76
         removeEnergy(25);
     }
 
@@ -67,10 +75,18 @@ public class Grass extends Plant implements NonBlocking {
         }
     }
 
+    /**
+     *
+     * Calls spread
+     * Calls photosynthesis
+     * Bliver kaldt 10 gange på en dag
+     * @param world providing details of the position on which the actor is currently located and much more.
+     */
     @Override
     void nightBehavior(World world) {
     decay();
     }
+
 
     @Override
     public String getPNGPath(){

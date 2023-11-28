@@ -77,10 +77,7 @@ public class Grass extends Plant implements NonBlocking {
     decay();
     }
 
-    /**
-     * Calls decay
-     * @param world
-     */
+
     @Override
     public String getPNGPath(){
         return getType();

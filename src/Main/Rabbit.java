@@ -10,7 +10,7 @@ import java.util.Random;
 public class Rabbit extends Animal {
 
     private Burrow burrow;
-    private boolean inBurrow;
+    private boolean inBurrow = false;
 
     /**
      * Initilises the food to the bunny can eat to plant and fruits
@@ -19,16 +19,18 @@ public class Rabbit extends Animal {
     public Rabbit(){
         super(new String[]{"plant", "fruit"});
         burrow = null;
-        inBurrow = false;
         adultAge = 3;
     }
 
     public Rabbit(int age, Burrow burrow, boolean inBurrow){
         super(new String[]{"plant", "fruit"});
         setBurrow(burrow);
-        this.inBurrow = inBurrow;
         adultAge = 3;
         this.age = age;
+        if(inBurrow) {
+            this.inBurrow = true;
+            burrow.addRabbit(this);
+        }
     }
 
     /**
@@ -201,7 +203,6 @@ public class Rabbit extends Animal {
         inBurrow = true;
         burrow.addRabbit(this);
         world.remove(this);
-        sleeping = true;
     }
 
     /**

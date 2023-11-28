@@ -8,10 +8,11 @@ import java.util.Random;
 public class Helper {
     private Helper(){}
 
-    public static boolean doesArrayContain(Object[] array, Object value){
-        for(Object arrayValue : array){
+    public static boolean doesArrayContain(Object[] array, Object value) {
+        for(Object arrayValue : array) {
             if(arrayValue.equals(value)) return true;
         }
+
         return false;
     }
 
@@ -20,7 +21,7 @@ public class Helper {
      * @param world the world that needs to be locked in
      * @return and a location where there is no object that isnt nonBlocking
      */
-    public static Location findEmptyLocation(World world){
+    public static Location findEmptyLocation(World world) {
         return findNonFilledLocation(world, false);
     }
 
@@ -30,8 +31,8 @@ public class Helper {
             for (int j = 0; j < worldTiles[i].length; j++) {
                 if(nonBlockingNotAllowed){
                     if(worldTiles[i][j][0] == null && worldTiles[i][j][1] == null) return true;
-                } else{
-                    if(worldTiles[i][j][1] == null) return true;
+                } else if(worldTiles[i][j][1] == null) {
+                    return true;
                 }
             }
         }
@@ -47,11 +48,14 @@ public class Helper {
      */
     private static Location findNonFilledLocation(World world, boolean nonBlockingNotAllowed){
         if(!isThereAnEmptyLocationInWorld(world, nonBlockingNotAllowed)) throw new NoEmptyLocationException();
+
         Random r = new Random();
         Location location;
+
         do{
             location = new Location(r.nextInt(world.getSize()),r.nextInt(world.getSize()));
         } while (!world.isTileEmpty(location) || (nonBlockingNotAllowed && world.containsNonBlocking(location)));
+
         return location;
     }
 

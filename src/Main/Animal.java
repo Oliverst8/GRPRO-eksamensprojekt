@@ -26,8 +26,8 @@ public abstract class Animal extends Organism {
         sleeping = false;
     }
 
-    private boolean canIEat(String food){
-        for(String edibleFood : canEat){
+    private boolean canIEat(String food) {
+        for(String edibleFood : canEat) {
             if(food.equals(edibleFood)) return true;
         }
         return false;
@@ -53,7 +53,7 @@ public abstract class Animal extends Organism {
      * Finds the nearest object of the type object to this animal
      * @return the location of the nearest object (except itself) in radius, returns null if there is no such object
      */
-    protected Location findNearest(World world, int radius, Class<?> object){
+    protected Location findNearest(World world, int radius, Class<?> object) {
 
         if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
         if(world == null || object == null) throw new NullPointerException("Arguments cant be null");
@@ -69,7 +69,7 @@ public abstract class Animal extends Organism {
 
         if(standingOnObject != null) surrondingTiles.add(world.getLocation(standingOnObject)); //If the animal is standing on an object, adds it location to the set
 
-        for (Location tile : surrondingTiles) {
+        for(Location tile : surrondingTiles) {
             if(world.getTile(tile) == null) continue;
 
             Class<?> tileObject;
@@ -82,7 +82,7 @@ public abstract class Animal extends Organism {
                 }
             } else tileObject = world.getTile(tile).getClass();
 
-            if(tileObject.equals(object)){ //Check if the tile is the same object as object in parameter
+            if(tileObject.equals(object)) { //Check if the tile is the same object as object in parameter
 
                 double distance = distance(world, tile);
 
@@ -105,7 +105,7 @@ public abstract class Animal extends Organism {
         return Math.sqrt(Math.pow(world.getCurrentLocation().getX() - location2.getX(), 2) + Math.pow(world.getCurrentLocation().getY() - location2.getY(), 2));
     }
 
-    protected Animal reproduce(World world, Animal animal1, Animal animal2){
+    protected Animal reproduce(World world, Animal animal1, Animal animal2) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -115,10 +115,11 @@ public abstract class Animal extends Organism {
      * Moves towards location by one tile
      * Remove 10 energy
      */
-    protected void moveTowards(Location location, World world){
+    protected void moveTowards(Location location, World world) {
         if(world == null) throw new NullPointerException("World argument cant be null");
         if(location == null) throw new NullPointerException("Location argument cant be null");
         if(world.getCurrentLocation().getX() == location.getX() && world.getCurrentLocation().getY() == location.getY()) throw new IllegalArgumentException("Animal is already there");
+
         int x = makeNumberOneCloser(world.getCurrentLocation().getX(), location.getX());
         int y = makeNumberOneCloser(world.getCurrentLocation().getY(), location.getY());
 
@@ -146,29 +147,27 @@ public abstract class Animal extends Organism {
     protected void sleep(){
         if(hunger > 10){
             removeHunger(10);
-
             addEnergy(10);
         }
-
     }
 
     public double getHunger() {
         return hunger;
     }
 
-    public void setHunger(double hunger){
+    public void setHunger(double hunger) {
         this.hunger = hunger;
     }
 
-    public void addHunger(double hunger){
+    public void addHunger(double hunger) {
         this.hunger = Math.max(100, this.hunger + hunger);
     }
 
-    public void removeHunger(double hunger){
+    public void removeHunger(double hunger) {
         this.hunger = Math.min(0, this.hunger + hunger);
     }
 
-    public String[] getCanEat(){
+    public String[] getCanEat() {
         return canEat;
     }
 }

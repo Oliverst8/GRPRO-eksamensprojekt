@@ -1,4 +1,4 @@
-package Main;
+package spawn;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -6,40 +6,42 @@ import java.util.Arrays;
 
 import javax.management.RuntimeErrorException;
 
+import Main.Entity;
+import Main.Helper;
+
 import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 public class ObjectFactory {
+    private ObjectFactory() {}
 
-
-    private ObjectFactory(){
-
-    }
+    private static String[] requiresWorld = {"burrow"};
 
     public static Object generate(World world, String className, Object... constructorArgs) {
+        if (Helper.doesArrayContain(requiresWorld, className)) {
+            constructorArgs = prependArray(constructorArgs, world);
+        }
 
         Object object = generateHelper(className, constructorArgs);
 
-        if (object instanceof Actor) {
-            place(world, object);
-        }
+        if (object instanceof Actor) place(world, object);
 
         return object;
     }
 
     public static Object generate(World world, Location location, String className, Object... constructorArgs) {
+        if (Helper.doesArrayContain(requiresWorld, className)) {
+            constructorArgs = prependArray(constructorArgs, world);
+        }
 
         Object object = generateHelper(className, constructorArgs);
 
-        if (object instanceof Entity) {
-            place(world, object, location);
-        }
+        if (object instanceof Entity) place(world, object, location);
         
         return object;
     }
-
 
     private static Object generateHelper(String className, Object... constructorArgs) {
         className = className.toLowerCase();
@@ -50,7 +52,7 @@ public class ObjectFactory {
             Class<?> objectClass = Class.forName(className);
 
             Class<?>[] parameters = new Class[constructorArgs.length];
-            for(int i = 0; i < parameters.length; i++){
+            for(int i = 0; i < parameters.length; i++) {
                 parameters[i] = constructorArgs[i].getClass();
             }
 
@@ -61,7 +63,7 @@ public class ObjectFactory {
         } catch (ClassNotFoundException e) {
             System.out.println("Class not found: " + className);
         } catch (NoSuchMethodException e) {
-            System.out.println("No such constructor: " + className);
+            System.out.println("No such constructor in: " + className);
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
         } catch (IllegalAccessException e) {
@@ -86,19 +88,26 @@ public class ObjectFactory {
     }
 
     private static void place(World world, Object object) {
-        
-
-
         Location location;
 
         if(object instanceof NonBlocking) location = Helper.findNonBlockingEmptyLocation(world);
         else location = Helper.findEmptyLocation(world);
-
 
         world.setTile(location, object);
     }
 
     private static void place(World world, Object object, Location location) {
         world.setTile(location, object);
+    }
+
+    private static Object[] prependArray(Object[] array, Object object) {
+        Object[] newArray = new Object[array.length + 1];
+        newArray[0] = object;
+
+        for(int i = 0; i < array.length; i++) {
+            newArray[i + 1] = array[i];
+        }
+
+        return newArray;
     }
 }

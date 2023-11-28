@@ -5,7 +5,4 @@ public abstract class InAnimate extends Entity {
     protected String getPNGPath(){
         return getType();
     }
-
-
-
 }

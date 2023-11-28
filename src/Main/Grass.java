@@ -70,7 +70,7 @@ public class Grass extends Plant implements NonBlocking {
      * Calls spread
      * Calls photosynthesis
      * Bliver kaldt 10 gange på en dag
-     * @param world
+     * @param world providing details of the position on which the actor is currently located and much more.
      */
     @Override
     void nightBehavior(World world) {

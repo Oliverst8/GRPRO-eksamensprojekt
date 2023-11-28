@@ -5,10 +5,8 @@ import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import java.awt.*;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.List;
-import java.util.ArrayList;
 
 public class Grass extends Plant implements NonBlocking {
 
@@ -32,11 +30,24 @@ public class Grass extends Plant implements NonBlocking {
             throw new IllegalOperationException("Grass doesnt have energy to spread");
         }
         Set<Location> surroundingTiles = world.getEmptySurroundingTiles();
+<<<<<<< HEAD
+        List<Location> locationsList = new LinkedList<>(surroundingTiles);
+        int randomIndex;
+        Location randomLocation;
+        do{
+            if(locationsList.size() <= 0) return;
+            randomIndex = new Random().nextInt(locationsList.size());
+            randomLocation = locationsList.get(randomIndex);
+            if(world.getTile(randomLocation) != null) locationsList.remove(randomIndex);
+        } while(world.getTile(randomLocation) != null);
+        ObjectFactory.generateOnMap(world,randomLocation,"Grass");
+=======
         List<Location> locationsList = new ArrayList<>(surroundingTiles);
         if(locationsList.size() <= 0) return;
         int randomIndex = new Random().nextInt(locationsList.size());
         Location randomLocation = locationsList.get(randomIndex);
         ObjectFactory.generateOnMap(world,randomLocation,"Grass", randomLocation, this);
+>>>>>>> 3e3ddbe14fb3d7647af1ca43ef384925b1a20d76
         removeEnergy(25);
     }
 
@@ -53,14 +64,13 @@ public class Grass extends Plant implements NonBlocking {
     /**
      *
      * Calls photosynthesis
-     * Chance to spread scales with energy (The more energy the higer chance of spreading)
+     * Will spread if the grass has more then or 50 energy
      * @param world providing details of the position on which the actor is currently located and much more.
      */
     @Override
     void dayBehavior(World world) {
-    int random = new Random().nextInt(100-getEnergy());
     photosynthesis();
-    if(random<10){
+    if(getEnergy() >= 50){
         spread(world);
         }
     }

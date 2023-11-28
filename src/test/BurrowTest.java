@@ -88,15 +88,15 @@ class BurrowTest {
 
     @Test
     void testgetAdultRabbits0adults() {
-        Rabbit rabbit = new Rabbit(2, burrow);
+        Rabbit rabbit = new Rabbit(2, burrow, false);
         burrow.addRabbit(rabbit);
         assertEquals(0, burrow.getAdultRabbitsInside().size());
     }
 
     @Test
     void testgetAdultRabbits1adults() {
-        Rabbit rabbit = new Rabbit(2, burrow);
-        Rabbit rabbit1 = new Rabbit(3, burrow);
+        Rabbit rabbit = new Rabbit(2, burrow, false);
+        Rabbit rabbit1 = new Rabbit(3, burrow, false);
         burrow.addRabbit(rabbit);
         burrow.addRabbit(rabbit1);
         assertEquals(1, burrow.getAdultRabbitsInside().size());
@@ -104,9 +104,9 @@ class BurrowTest {
 
     @Test
     void testgetAdultRabbits2adults() {
-        Rabbit rabbit = new Rabbit(2, burrow);
-        Rabbit rabbit1 = new Rabbit(3, burrow);
-        Rabbit rabbit2 = new Rabbit(4, burrow);
+        Rabbit rabbit = new Rabbit(2, burrow, false);
+        Rabbit rabbit1 = new Rabbit(3, burrow, false);
+        Rabbit rabbit2 = new Rabbit(4, burrow, false);
         burrow.addRabbit(rabbit);
         burrow.addRabbit(rabbit1);
         burrow.addRabbit(rabbit2);

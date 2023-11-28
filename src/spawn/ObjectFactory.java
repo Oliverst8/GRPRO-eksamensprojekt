@@ -83,7 +83,6 @@ public class ObjectFactory {
                 parameters[i] = convertToPrimitiveTypeIfThereIsOne(constructorArgs[i].getClass());
             }
 
-
             Constructor<?> objectConstructor = objectClass.getConstructor(parameters);
 
             return objectConstructor.newInstance(constructorArgs);

@@ -46,7 +46,6 @@ public abstract class Animal extends Organism {
      * @param food the food to be eaten
      */
     protected void eat(Organism food, World world) {
-        if(food == null) throw new NullPointerException("Food cant be null");
         if(canIEat(food.getFoodType())){
             addHunger(0.5 * food.getEnergy());
             food.die(world);
@@ -60,9 +59,7 @@ public abstract class Animal extends Organism {
      * @return the location of the nearest object (except itself) in radius, returns null if there is no such object
      */
     protected Location findNearest(World world, int radius, Class<?> object) {
-
         if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
-        if(world == null || object == null) throw new NullPointerException("Arguments cant be null");
 
         Location nearestObject = null;
         double smallestDistance = Integer.MAX_VALUE;
@@ -131,15 +128,13 @@ public abstract class Animal extends Organism {
      * Remove 10 energy
      */
     protected void moveTowards(Location location, World world) {
-        if(world == null) throw new NullPointerException("World argument cant be null");
-        if(location == null) throw new NullPointerException("Location argument cant be null");
         if(world.getCurrentLocation().getX() == location.getX() && world.getCurrentLocation().getY() == location.getY()) throw new IllegalArgumentException("Animal is already there");
 
         int x = makeNumberOneCloser(world.getCurrentLocation().getX(), location.getX());
         int y = makeNumberOneCloser(world.getCurrentLocation().getY(), location.getY());
-        if(!world.isTileEmpty(new Location(x,y))){
-        return;
-        }
+
+        if(!world.isTileEmpty(new Location(x,y))) return;
+        
         world.move(this, new Location(x,y));
         removeEnergy(10);
     }
@@ -160,8 +155,8 @@ public abstract class Animal extends Organism {
      * - Removes 10 hunger and adds 10 energy
      * Set sleeping to true
      */
-    protected void sleep(){
-        if(hunger > 10){
+    protected void sleep() {
+        if(hunger > 10) {
             removeHunger(10);
             addEnergy(10);
         }
@@ -178,7 +173,6 @@ public abstract class Animal extends Organism {
     /*
      * Adds hunger
      * @param hunger gets added to current hunger
-     * returns the smallest number between 100 and this.hunger + @param hunger
      */
     public void addHunger(double hunger){
         this.hunger = Math.max(100, this.hunger + hunger);
@@ -187,7 +181,6 @@ public abstract class Animal extends Organism {
     /*
      * Removes hunger
      * @param hunger get subtracted from current hunger
-     * returns the biggest number between 0 and this.hunger + hunger
      */
     public void removeHunger(double hunger){
         this.hunger = Math.min(0, this.hunger + hunger);

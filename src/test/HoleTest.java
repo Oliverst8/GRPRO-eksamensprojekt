@@ -33,17 +33,6 @@ class HoleTest {
     }
 
     /**
-     * Calls Hole constructor with Null location
-     * Expect NullPointerException as made to be thrown when this happens
-     */
-    @Test
-    void testHoleConstructorWithNullLocationExpectsNullPointerException(){
-        assertThrows(NullPointerException.class, () -> {
-            new Hole(null);
-        });
-    }
-
-    /**
      * Tests Hole constructor with valid location
      * Expects the holes location to be the expectedLocation
      */

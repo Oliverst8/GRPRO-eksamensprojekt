@@ -115,7 +115,7 @@ class RabbitTest {
 
 
     private Rabbit initialiseGrassAndRabbitOnWorld(Location rabbitLocation, Location grassLocation) {
-        Rabbit rabbit =  rabbit = (Rabbit) ObjectFactory.generate(world, rabbitLocation, "rabbit");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generate(world, rabbitLocation, "rabbit");
         ObjectFactory.generate(world, grassLocation, "grass");
         return rabbit;
     }

@@ -1,7 +1,5 @@
 package Main;
 
-import java.lang.reflect.InvocationTargetException;
-
 import itumulator.executable.Program;
 import itumulator.world.World;
 

@@ -1,7 +1,6 @@
 package test;
 
 import Main.Hole;
-import Main.ObjectFactory;
 import Main.Rabbit;
 import itumulator.executable.Program;
 import itumulator.world.Location;
@@ -15,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import Main.Burrow;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

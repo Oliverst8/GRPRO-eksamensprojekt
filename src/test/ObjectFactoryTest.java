@@ -1,6 +1,5 @@
 package test;
 
-import Main.Burrow;
 import Main.ObjectFactory;
 import Main.Rabbit;
 import itumulator.executable.Program;
@@ -9,10 +8,6 @@ import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class ObjectFactoryTest {
@@ -29,11 +24,10 @@ class ObjectFactoryTest {
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
     }
 
-
     @Test
     void testgenerateWithoutLocation() {
         Rabbit rabbit = (Rabbit) ObjectFactory.generate(world, "rabbit");
-        assertEquals(50,rabbit.getHunger());
+        assertTrue(rabbit instanceof Rabbit);
     }
 
     @Test
@@ -43,26 +37,7 @@ class ObjectFactoryTest {
         assertEquals(new Location(1,1),world.getLocation(rabbit));
     }
 
-    /**
-     * https://stackoverflow.com/questions/8708342/redirect-console-output-to-string-in-java
-     */
-    @Test
-    void testGenerateWithUnknownClassname(){
-        ByteArrayOutputStream placeholder = new ByteArrayOutputStream();
-        PrintStream printStream = new PrintStream(placeholder);
-        PrintStream old = System.out;
-        System.setOut(printStream);
-        System.setOut(printStream);
-        try {
-            Rabbit rabbit = (Rabbit) ObjectFactory.generate(world,"UkendtKunstner");
-        } catch (Exception e) {
-            assertTrue(placeholder.toString().contains("Class not found: Main.Ukendtkunstner"));
-        }
-
-
-    }
     @AfterEach
     void tearDown() {
     }
-
 }

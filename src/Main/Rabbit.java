@@ -4,7 +4,6 @@ import itumulator.world.Location;
 import itumulator.world.World;
 
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Random;
 

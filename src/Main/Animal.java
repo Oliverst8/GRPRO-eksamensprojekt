@@ -26,6 +26,13 @@ public abstract class Animal extends Organism {
         sleeping = false;
     }
 
+    /**
+     * Checks if the object that the function is called from can eat a type of food
+     * Returns true if String food is inside of canEat of the animal
+     * Returns false if not
+     * @param food
+     * @return
+     */
     private boolean canIEat(String food){
         for(String edibleFood : canEat){
             if(food.equals(edibleFood)) return true;
@@ -48,7 +55,7 @@ public abstract class Animal extends Organism {
     }
 
     /**
-     * @throws IllegalArgumentException if radius is less then 2
+     * @throws IllegalArgumentException if radius is less than 2
      * @throws NullPointerException if the world or object is null
      * Finds the nearest object of the type object to this animal
      * @return the location of the nearest object (except itself) in radius, returns null if there is no such object
@@ -61,10 +68,11 @@ public abstract class Animal extends Organism {
         Location nearestObject = null;
         double smallestDistance = Integer.MAX_VALUE;
 
-        Set<Location> surrondingTiles = world.getSurroundingTiles(radius); //Document tation says empty tiles but code says it dosent matter
+        Set<Location> surrondingTiles = world.getSurroundingTiles(radius); //Documentation says empty tiles but code says it dosent matter
         Object standingOnObject;
 
         if(world.containsNonBlocking(world.getCurrentLocation())) standingOnObject = world.getNonBlocking(world.getCurrentLocation()); //Gets the nonblocking object the animal is standing on if its standing on one
+
         else standingOnObject = null;
 
         if(standingOnObject != null) surrondingTiles.add(world.getLocation(standingOnObject)); //If the animal is standing on an object, adds it location to the set
@@ -105,6 +113,14 @@ public abstract class Animal extends Organism {
         return Math.sqrt(Math.pow(world.getCurrentLocation().getX() - location2.getX(), 2) + Math.pow(world.getCurrentLocation().getY() - location2.getY(), 2));
     }
 
+    /**
+     *
+     * @param world
+     * @param animal1 subtracts 50 energy from this object
+     * @param animal2 subtracts 50 energy from this object
+     * Adds a new Animal of the same kind as the two Animal params to the world
+     * @return
+     */
     protected Animal reproduce(World world, Animal animal1, Animal animal2){
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -113,7 +129,7 @@ public abstract class Animal extends Organism {
      * Throws IllegalArgumentException if world or location is null
      * Returns without doing anything if the object is already standing on the location
      * Moves towards location by one tile
-     * Remove 10 energy
+     * Remove 10 energy from the object that moves towards something
      */
     protected void moveTowards(Location location, World world){
         if(world == null) throw new NullPointerException("World argument cant be null");
@@ -138,18 +154,15 @@ public abstract class Animal extends Organism {
     }
 
     /**
-     *
      * If energy is less than 100
      * - Removes 10 hunger and adds 10 energy
      * Set sleeping to true
      */
     protected void sleep(){
-        if(hunger > 10){
+        if(getEnergy()<100 && getHunger()>10){
             removeHunger(10);
-
             addEnergy(10);
         }
-
     }
 
     public double getHunger() {
@@ -160,14 +173,27 @@ public abstract class Animal extends Organism {
         this.hunger = hunger;
     }
 
+    /**
+     * Adds hunger
+     * @param hunger gets added to current hunger
+     * returns the smallest number between 100 and this.hunger + @param hunger
+     */
     public void addHunger(double hunger){
-        this.hunger = Math.max(100, this.hunger + hunger);
+        this.hunger = Math.min(100, this.hunger + hunger);
     }
 
+    /**
+     * Removes hunger
+     * @param hunger get subtracted from current hunger
+     * returns the biggest number between 0 and this.hunger + hunger
+     */
     public void removeHunger(double hunger){
-        this.hunger = Math.min(0, this.hunger + hunger);
+        this.hunger = Math.max(0, this.hunger + hunger);
     }
 
+    /**
+     * @return String array of canEat of the object
+     */
     public String[] getCanEat(){
         return canEat;
     }

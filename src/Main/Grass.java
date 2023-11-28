@@ -65,11 +65,22 @@ public class Grass extends Plant implements NonBlocking {
         }
     }
 
+    /**
+     *
+     * Calls spread
+     * Calls photosynthesis
+     * Bliver kaldt 10 gange på en dag
+     * @param world
+     */
     @Override
     void nightBehavior(World world) {
     decay();
     }
 
+    /**
+     * Calls decay
+     * @param world
+     */
     @Override
     public String getPNGPath(){
         return getType();

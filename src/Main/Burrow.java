@@ -45,7 +45,7 @@ public class Burrow {
     }
 
     /**
-     * Add a rabbit to the burrow
+     * Adds parameter rabbit to the list of rabbits inside the burrow
      * @throws NullPointerException if argument is null
      * @param rabbit
      */
@@ -55,7 +55,7 @@ public class Burrow {
     }
 
     /**
-     * Remove a rabbit from the burrows
+     * Removes parameter rabbit to the list of rabbits inside the burrow
      * @throws NullPointerException if argument is null
      */
     public void removeRabbit(Rabbit rabbit) {
@@ -73,15 +73,14 @@ public class Burrow {
     /**
      * Throws IllegalArgumentException if argument is null
      * Otherwise makes a hole and adds it to the list of entries
-     * @param entry
+     * @param entry location
+     * @param world world
      */
     public void addEntry(Location entry, World world){
         if (world == null) throw new NullPointerException("World cant be null");
         if (entry == null) throw new NullPointerException("Location cant be null");
-        
-        Hole hole;
-        
-        hole = (Hole) ObjectFactory.generate(world,entry,"Hole", entry, this);
+
+        Hole hole = (Hole) ObjectFactory.generate(world,entry,"Hole", entry, this);
         entries.add(hole);
     }
 
@@ -92,6 +91,14 @@ public class Burrow {
         return rabbitsInside;
     }
 
+    /**
+     * Getter for adult rabbits inside
+     * Initialises a new ArrayList of type rabbit
+     * Checks every object in rabbits inside
+     * if the age of the rabbit inside is at minimum equal to adult age.
+     * Adds the rabbit to the list of adultRabbits
+     * @return adultRabbits list
+     */
     public List<Rabbit> getAdultRabbitsInside(){
         List<Rabbit> adultRabbits = new ArrayList<>();
         for(Rabbit rabbit : rabbitsInside){
@@ -103,9 +110,9 @@ public class Burrow {
     }
 
     /**
-     *
      * @param rabbitLocation the location of the rabbit
      * @return the closest entry, returns null if there is no entry found
+     * returns closestEntryLocation if there is a entrance
      */
     public Location findNearestEntry(Location rabbitLocation) {
         Location closestEntryLocation = null;

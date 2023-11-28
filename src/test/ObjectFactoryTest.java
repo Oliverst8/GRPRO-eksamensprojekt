@@ -1,5 +1,6 @@
 package test;
 
+import Main.Burrow;
 import Main.ObjectFactory;
 import Main.Rabbit;
 import itumulator.executable.Program;
@@ -35,6 +36,19 @@ class ObjectFactoryTest {
         Location location = new Location(1,1);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location,"rabbit");
         assertEquals(new Location(1,1),world.getLocation(rabbit));
+    }
+
+    @Test
+    void generateRabbitWith3ConstructorArgumentsExpectsRabbit(){
+        Burrow burrow = new Burrow(world, new Location(0,0));
+        assertInstanceOf(Rabbit.class, (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true));
+    }
+
+    @Test
+    void generateRabbitWtih0ConstructorArgumentsExpectsRabbit(){
+        Burrow burrow = new Burrow(world, new Location(0,0));
+        Rabbit expected = new Rabbit();
+        assertInstanceOf(Rabbit.class,(Rabbit) ObjectFactory.generateOffMap(world, "rabbit") );
     }
 
     @AfterEach

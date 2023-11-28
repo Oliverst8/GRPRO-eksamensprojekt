@@ -2,6 +2,7 @@ package Main;
 
 import itumulator.world.Location;
 import itumulator.world.World;
+import spawn.ObjectFactory;
 
 import java.awt.*;
 import java.util.List;

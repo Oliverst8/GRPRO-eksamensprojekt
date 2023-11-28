@@ -78,7 +78,8 @@ public class Burrow {
         if (world == null) throw new NullPointerException("World cant be null");
         if (entry == null) throw new NullPointerException("Location cant be null");
 
-        Hole hole = (Hole) ObjectFactory.generate(world,entry,"Hole", entry, this);
+        Hole hole = (Hole) ObjectFactory.generateOnMap(world,entry,"Hole", entry, this);
+
         entries.add(hole);
     }
 

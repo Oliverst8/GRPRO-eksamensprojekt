@@ -55,7 +55,7 @@ public abstract class Animal extends Organism {
     }
 
     /**
-     * @throws IllegalArgumentException if radius is less than 2
+     * @throws IllegalArgumentException if radius is less then 2
      * @throws NullPointerException if the world or object is null
      * Finds the nearest object of the type object to this animal
      * @return the location of the nearest object (except itself) in radius, returns null if there is no such object
@@ -68,7 +68,7 @@ public abstract class Animal extends Organism {
         Location nearestObject = null;
         double smallestDistance = Integer.MAX_VALUE;
 
-        Set<Location> surrondingTiles = world.getSurroundingTiles(radius); //Documentation says empty tiles but code says it dosent matter
+        Set<Location> surrondingTiles = world.getSurroundingTiles(radius); //Document tation says empty tiles but code says it dosent matter
         Object standingOnObject;
 
         if(world.containsNonBlocking(world.getCurrentLocation())) standingOnObject = world.getNonBlocking(world.getCurrentLocation()); //Gets the nonblocking object the animal is standing on if its standing on one
@@ -113,6 +113,15 @@ public abstract class Animal extends Organism {
         return Math.sqrt(Math.pow(world.getCurrentLocation().getX() - location2.getX(), 2) + Math.pow(world.getCurrentLocation().getY() - location2.getY(), 2));
     }
 
+    abstract void produceOffSpring(World world);
+    protected void reproduce(World world, Animal animal1, Animal animal2) throws cantReproduceException{
+        if(animal1.getAge() < animal1.getAdultAge()) throw new cantReproduceException(animal1, animal2);
+        if(animal2.getAge() < animal2.getAdultAge()) throw new cantReproduceException(animal1, animal2);
+        if(!animal1.getClass().equals(animal2.getClass())) throw new cantReproduceException(animal1, animal2);
+        if(!(animal1.getEnergy() > 50 && animal2.getEnergy() > 50)) throw new cantReproduceException(animal1, animal2);
+        animal1.removeEnergy(50);
+        animal2.removeEnergy(50);
+        produceOffSpring(world);
     /**
      *
      * @param world
@@ -129,7 +138,7 @@ public abstract class Animal extends Organism {
      * Throws IllegalArgumentException if world or location is null
      * Returns without doing anything if the object is already standing on the location
      * Moves towards location by one tile
-     * Remove 10 energy from the object that moves towards something
+     * Remove 10 energy
      */
     protected void moveTowards(Location location, World world){
         if(world == null) throw new NullPointerException("World argument cant be null");
@@ -154,15 +163,18 @@ public abstract class Animal extends Organism {
     }
 
     /**
+     *
      * If energy is less than 100
      * - Removes 10 hunger and adds 10 energy
      * Set sleeping to true
      */
     protected void sleep(){
-        if(getEnergy()<100 && getHunger()>10){
+        if(hunger > 10){
             removeHunger(10);
+
             addEnergy(10);
         }
+
     }
 
     public double getHunger() {
@@ -179,7 +191,7 @@ public abstract class Animal extends Organism {
      * returns the smallest number between 100 and this.hunger + @param hunger
      */
     public void addHunger(double hunger){
-        this.hunger = Math.min(100, this.hunger + hunger);
+        this.hunger = Math.max(100, this.hunger + hunger);
     }
 
     /**
@@ -188,7 +200,7 @@ public abstract class Animal extends Organism {
      * returns the biggest number between 0 and this.hunger + hunger
      */
     public void removeHunger(double hunger){
-        this.hunger = Math.max(0, this.hunger + hunger);
+        this.hunger = Math.min(0, this.hunger + hunger);
     }
 
     /**

@@ -11,14 +11,12 @@ class GrassTest {
     @BeforeEach
     void setUp() {
     }
+    
     @Test
     void grassTest() {
     }
 
-
     @AfterEach
     void tearDown() {
     }
-
-
 }

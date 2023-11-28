@@ -1,11 +1,7 @@
 package test;
 
-import Main.Burrow;
-import Main.Grass;
-import Main.ObjectFactory;
 import Main.Rabbit;
 import itumulator.executable.Program;
-import itumulator.world.Location;
 import itumulator.world.World;
 import org.junit.jupiter.api.AfterEach;
 
@@ -13,8 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AnimalTest {
 

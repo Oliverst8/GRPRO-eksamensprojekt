@@ -1,7 +1,5 @@
 package Main;
 
-import java.lang.reflect.InvocationTargetException;
-
 import itumulator.executable.Program;
 import itumulator.world.World;
 
@@ -21,7 +19,7 @@ public class Main {
         // Generates the objects in the world
         for (String object : input.getObjects().keySet()) {
             for (int i = 0; i < input.getObjects().get(object); i++) {
-                ObjectFactory.generate(world, object);
+                ObjectFactory.generateOnMap(world, object);
             }
         }
 

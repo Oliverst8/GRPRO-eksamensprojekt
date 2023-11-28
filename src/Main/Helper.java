@@ -1,10 +1,8 @@
 package Main;
 
 import itumulator.world.Location;
-import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
-import java.util.Map;
 import java.util.Random;
 
 public class Helper {
@@ -65,5 +63,4 @@ public class Helper {
     public static Location findNonBlockingEmptyLocation(World world){
         return findNonFilledLocation(world, true);
     }
-
 }

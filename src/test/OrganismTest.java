@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.NoSuchElementException;
-
 import static org.junit.Assert.*;
 
 public class OrganismTest {
@@ -111,7 +109,7 @@ public class OrganismTest {
     void dieExpectsAnimalToBeRemoved() {
         Rabbit rabbit1 = null;
         try{
-            rabbit1 = (Rabbit) ObjectFactory.generate(world, "Rabbit");
+            rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world, "Rabbit");
         } catch(Exception e){
             System.out.println(e.getMessage());
         }

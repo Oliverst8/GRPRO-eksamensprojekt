@@ -3,7 +3,6 @@ package Main;
 import itumulator.world.Location;
 import itumulator.world.World;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +44,7 @@ public class Burrow {
     }
 
     /**
-     * Adds parameter rabbit to the list of rabbits inside the burrow
+     * Add a rabbit to the burrow
      * @throws NullPointerException if argument is null
      * @param rabbit
      */
@@ -73,8 +72,7 @@ public class Burrow {
     /**
      * Throws IllegalArgumentException if argument is null
      * Otherwise makes a hole and adds it to the list of entries
-     * @param entry location
-     * @param world world
+     * @param entry
      */
     public void addEntry(Location entry, World world){
         if (world == null) throw new NullPointerException("World cant be null");
@@ -91,14 +89,6 @@ public class Burrow {
         return rabbitsInside;
     }
 
-    /**
-     * Getter for adult rabbits inside
-     * Initialises a new ArrayList of type rabbit
-     * Checks every object in rabbits inside
-     * if the age of the rabbit inside is at minimum equal to adult age.
-     * Adds the rabbit to the list of adultRabbits
-     * @return adultRabbits list
-     */
     public List<Rabbit> getAdultRabbitsInside(){
         List<Rabbit> adultRabbits = new ArrayList<>();
         for(Rabbit rabbit : rabbitsInside){
@@ -110,6 +100,7 @@ public class Burrow {
     }
 
     /**
+     *
      * @param rabbitLocation the location of the rabbit
      * @return the closest entry, returns null if there is no entry found
      * returns closestEntryLocation if there is a entrance

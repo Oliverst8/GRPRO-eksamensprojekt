@@ -2,7 +2,7 @@ package test;
 
 import Main.Grass;
 
-import itumulator.world.Location;
+
 import spawn.ObjectFactory;
 
 import itumulator.executable.Program;
@@ -11,9 +11,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 

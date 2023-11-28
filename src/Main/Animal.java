@@ -136,7 +136,9 @@ public abstract class Animal extends Organism {
         int x = makeNumberOneCloser(world.getCurrentLocation().getX(), location.getX());
         int y = makeNumberOneCloser(world.getCurrentLocation().getY(), location.getY());
         if(!world.isTileEmpty(new Location(x,y))){
-        return;
+            if(world.isTileEmpty(new Location(x,world.getCurrentLocation().getY()))) y = world.getCurrentLocation().getY();
+            else if (world.isTileEmpty(new Location(world.getCurrentLocation().getX(),y))) x = world.getCurrentLocation().getX();
+            else return;
         }
         world.move(this, new Location(x,y));
         removeEnergy(10);

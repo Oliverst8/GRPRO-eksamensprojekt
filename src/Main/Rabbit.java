@@ -218,19 +218,19 @@ public class Rabbit extends Animal {
         if(world == null){throw new IllegalArgumentException("World is null");}
         List<Hole> entries = burrow.getEntries();
         Location freeLocation = null;
+
         for(int i = 0; i<entries.size();i++){
             Hole tempHole = entries.get(i);
-            if(!world.isTileEmpty(tempHole.getLocation()) && freeLocation == null){
-            i++;
+            if(world.isTileEmpty(tempHole.getLocation())){
+                freeLocation = tempHole.getLocation();
+                break;
             }
-            freeLocation = tempHole.getLocation();
-            i = entries.size();
         }
-
+        if(freeLocation == null) return;
         inBurrow = false;
         burrow.removeRabbit(this);
-
         world.setTile(freeLocation,this);
+
     }
 
     /**

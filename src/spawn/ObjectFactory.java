@@ -3,6 +3,8 @@ package spawn;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.management.RuntimeErrorException;
 
@@ -54,6 +56,20 @@ public class ObjectFactory {
         return object;
     }
 
+    private static Class<?> convertToPrimitiveTypeIfThereIsOne(Class<?> preConvertedClass){
+        Map<Class<?>, Class<?>> classMap = new HashMap<>();
+        classMap.put(Integer.class, int.class);
+        classMap.put(Boolean.class, boolean.class);
+        classMap.put(Long.class, long.class);
+        classMap.put(Short.class, short.class);
+        classMap.put(Byte.class, byte.class);
+        classMap.put(Float.class, float.class);
+        classMap.put(Double.class, double.class);
+        classMap.put(Character.class, char.class);
+        return classMap.getOrDefault(preConvertedClass,preConvertedClass);
+    }
+
+
     private static Object generateHelper(String className, Object... constructorArgs) {
         className = className.toLowerCase();
         className = className.substring(0, 1).toUpperCase() + className.substring(1);
@@ -63,9 +79,10 @@ public class ObjectFactory {
             Class<?> objectClass = Class.forName(className);
 
             Class<?>[] parameters = new Class[constructorArgs.length];
-            for(int i = 0; i < parameters.length; i++) {
-                parameters[i] = constructorArgs[i].getClass();
+            for(int i = 0; i < parameters.length; i++){
+                parameters[i] = convertToPrimitiveTypeIfThereIsOne(constructorArgs[i].getClass());
             }
+
 
             Constructor<?> objectConstructor = objectClass.getConstructor(parameters);
 

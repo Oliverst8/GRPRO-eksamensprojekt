@@ -21,6 +21,8 @@ class RabbitTest {
     Program program;
     World world;
     Rabbit rabbit;
+    Burrow burrow;
+    Rabbit rabbitInsideBurrow;
 
     /**
      * Calls rabbit constructor and creates a new Rabbit object
@@ -33,6 +35,8 @@ class RabbitTest {
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         rabbit = new Rabbit();
+        burrow = new Burrow(world, new Location(0,0));
+        rabbitInsideBurrow = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
     }
 
     /**
@@ -168,6 +172,22 @@ class RabbitTest {
     }
 
     @Test
+    void testDayBehaviorExpectsRabbitToExitHole(){
+        rabbitInsideBurrow.setHunger(99);
+        rabbitInsideBurrow.setEnergy(60);
+        program.simulate();
+        assertEquals(0,burrow.getRabbitsInside().size());
+    }
+    @Test
+    void testDayBehaviorExpectsRabbitToDigAnotherEntrance(){
+        //Igang
+        rabbitInsideBurrow.setHunger(99);
+        rabbitInsideBurrow.setEnergy(61);
+        program.simulate();
+        assertEquals(0,burrow.getRabbitsInside().size());
+    }
+
+    @Test
     void testActDayBehaviorExpectsToMoveTowardsBurrowAndNotEnter() {
 
         Burrow burrow = new Burrow(world, new Location(2,2));
@@ -191,6 +211,39 @@ class RabbitTest {
         program.simulate();
         assertTrue(rabbit.isInBurrow());
 
+    }
+
+    @Test
+    void testDayBehaviorWhereRabbitIsInBurrowExpectsRabbitToReproduce() {
+        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
+        Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
+        rabbit1.setEnergy(100);
+        rabbit2.setEnergy(100);
+        program.simulate();
+        assertEquals(4,world.getEntities().size());
+    }
+
+    @Test
+    void testDayBehaviorWhereRabbitIsInBurrowExpectsRabbitThatCallsToReproduceAndLoseEnergy() {
+        burrow = new Burrow(world, new Location(0,0));
+        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
+        Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
+        rabbit1.setEnergy(100);
+        rabbit2.setEnergy(100);
+        int expectedEnergy = rabbit1.getEnergy()-50;
+        program.simulate();
+        assertEquals(expectedEnergy, rabbit1.getEnergy());
+    }
+
+    @Test
+    void testDayBehaviorWhereRabbitIsInBurrowExpectsRabbitThatDosentCallToReproduceAndLoseEnergy() {
+        Rabbit rabbit1 = rabbitInsideBurrow;
+        Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
+        rabbit1.setEnergy(100);
+        rabbit2.setEnergy(100);
+        int expectedEnergy = rabbit2.getEnergy()-50;
+        program.simulate();
+        assertEquals(expectedEnergy, rabbit2.getEnergy());
     }
 
     @Test

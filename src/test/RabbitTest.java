@@ -67,6 +67,16 @@ class RabbitTest {
     }
 
     @Test
+    void testIfRabbitAgesAfterNight() {
+        Rabbit rabbit = (Rabbit) initialiseRabbitOnWorld(new Location(0,0));
+        for (int i = 0; i < 30; i++) {
+            rabbit.setEnergy(100);
+            program.simulate();
+        }
+        assertEquals(1,rabbit.getAge());
+    }
+
+    @Test
     void testActDayBehaviorExpectingToMoveTowardsGrassWithOnly1GrassInWorldXValue() {
         Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
         Grass grass = initialiseGrassOnWorld(new Location(1,1));
@@ -184,13 +194,13 @@ class RabbitTest {
     }
     @Test
     void testDayBehaviorExpectsRabbitToDigAnotherEntrance(){
-        //Igang
         burrow = new Burrow(world, new Location(0,0));
         rabbitInsideBurrow = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
         rabbitInsideBurrow.setHunger(99);
         rabbitInsideBurrow.setEnergy(61);
+        int expectedEntraceAmount = burrow.getEntries().size()+1;
         program.simulate();
-
+        assertEquals(expectedEntraceAmount,burrow.getEntries().size());
     }
 
     @Test

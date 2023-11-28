@@ -126,26 +126,24 @@ public class Rabbit extends Animal {
                     }
                 }
             }
-            if(getEnergy() > 60){
+            if(getEnergy() > 60) {
                 expandBurrow(world);
                 return;
             }
             if(getHunger() < 100) exitBurrow(world);
-        } else {
-            if(getHunger() < 100) {
-                Location nearestGrass = findNearest(world, 4, Grass.class);
-                if (nearestGrass != null) {
-                    Object grassTileObject = world.getTile(nearestGrass);
-                    if(!(grassTileObject instanceof Grass || grassTileObject == this)) return;
-                    if (distance(world, nearestGrass) == 0) {
-                        eat((Grass) world.getNonBlocking(nearestGrass), world);
-                    } else {
-                        moveTowards(nearestGrass, world);
-                    }
+        } else if(getHunger() < 100) {
+            Location nearestGrass = findNearest(world, 4, Grass.class);
+            if (nearestGrass != null) {
+                Object grassTileObject = world.getTile(nearestGrass);
+                if(!(grassTileObject instanceof Grass || grassTileObject == this)) return;
+                if (distance(world, nearestGrass) == 0) {
+                    eat((Grass) world.getNonBlocking(nearestGrass), world);
+                } else {
+                    moveTowards(nearestGrass, world);
                 }
-            } else{
-                seekBurrow(world);
             }
+        } else{
+            seekBurrow(world);
         }
     }
 
@@ -180,7 +178,6 @@ public class Rabbit extends Animal {
      * - removes 50 energy
      */
     private void expandBurrow(World world) {
-        if(burrow == null) throw new IllegalArgumentException("Bunny cant expand a nonexistent burrow. Burrow is null");
         if(getEnergy()-50 > 0) {
             Location location = Helper.findNonBlockingEmptyLocation(world);
             burrow.addEntry(location, world);
@@ -197,8 +194,6 @@ public class Rabbit extends Animal {
      */
     public void enterBurrow(World world) {
         if(inBurrow) throw new IllegalOperationException("Cant enter a burrow, if its already in one");
-        if(world == null) throw new IllegalArgumentException("World is null");
-        if(burrow == null) throw new NullPointerException("Burrow cant be null");
 
         inBurrow = true;
         burrow.addRabbit(this);
@@ -228,7 +223,6 @@ public class Rabbit extends Animal {
         }
         if(freeLocation == null) return;
         if(!inBurrow) throw new IllegalOperationException("Cant exit a burrow, if its not in one");
-        if(world == null) throw new IllegalArgumentException("World is null");
 
         inBurrow = false;
         burrow.removeRabbit(this);
@@ -243,8 +237,6 @@ public class Rabbit extends Animal {
      * @param burrow The burrow which the bunny should make its own
      */
     private void setBurrow(Burrow burrow) {
-        if(burrow == null) throw new IllegalArgumentException("Burrow cant be null");
-        if(this.burrow != null) throw new IllegalOperationException("Bunny already has a burrow");
         this.burrow = burrow;
 
     }

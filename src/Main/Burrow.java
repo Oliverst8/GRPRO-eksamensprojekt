@@ -48,20 +48,16 @@ public class Burrow {
 
     /**
      * Add a rabbit to the burrow
-     * @throws NullPointerException if argument is null
      * @param rabbit
      */
     public void addRabbit(Rabbit rabbit) {
-        if(rabbit == null) throw new NullPointerException("Rabbit cant be null");
         rabbitsInside.add(rabbit);
     }
 
     /**
      * Removes parameter rabbit to the list of rabbits inside the burrow
-     * @throws NullPointerException if argument is null
      */
     public void removeRabbit(Rabbit rabbit) {
-        if(rabbit == null) throw new NullPointerException("Rabbit cant be null");
         rabbitsInside.remove(rabbit);
     }
 
@@ -78,9 +74,6 @@ public class Burrow {
      * @param entry
      */
     public void addEntry(Location entry, World world) {
-        if (world == null) throw new NullPointerException("World cant be null");
-        if (entry == null) throw new NullPointerException("Location cant be null");
-
         Hole hole = (Hole) ObjectFactory.generateOnMap(world,entry,"Hole", entry, this);
 
         entries.add(hole);

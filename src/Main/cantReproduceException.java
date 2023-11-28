@@ -19,6 +19,5 @@ public class cantReproduceException extends Exception{
         System.out.println(animal1 + " " + animal2 + " cant reproduce");
         printInformation(animal1);
         printInformation(animal2);
-
     }
 }

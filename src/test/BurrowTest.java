@@ -114,24 +114,7 @@ class BurrowTest {
     }
 
     @Test
-    void testAddRabbitWithNullArgumentExpectsNullPointerException() {
-        Rabbit rabbit = null;
-        assertThrows(NullPointerException.class, () -> {
-            burrow.addRabbit(rabbit);
-        });
-    }
-
-    @Test
-    void testRemoveRabbitWithNullArgumentExpectsNullPointerException() {
-        Rabbit rabbit = null;
-        assertThrows(NullPointerException.class, () -> {
-            burrow.removeRabbit(rabbit);
-        });
-
-    }
-
-    @Test
-    void testClosestLocationIfThereIs1Entry(){
+    void testClosestLocationIfThereIs1Entry() {
         Location location = new Location(1,1);
         Location rabbitLocation = new Location(0,0);
         Burrow burrow = new Burrow(world, location);
@@ -139,7 +122,7 @@ class BurrowTest {
     }
 
     @Test
-    void testClosestLocationIfThereIs2Entries(){
+    void testClosestLocationIfThereIs2Entries() {
         Location location = new Location(2,2);
         Location location1 = new Location(1,1);
         Location rabbitLocation = new Location(0,0);
@@ -161,26 +144,12 @@ class BurrowTest {
     }
 
     @Test
-    void addTestEntryWithNullWorldArgumentExpectsNullPointerException() {
-    World testWorld = null;
-        assertThrows(NullPointerException.class, () -> {
-            burrow.addEntry(location, testWorld);
-        });
-    }
-    void addTestEntryWithNullLocationArgumentExpectsNullPointerException() {
-        Location testLocation = null;
-        assertThrows(NullPointerException.class, () -> {
-            burrow.addEntry(testLocation, world);
-        });
-    }
-    @Test
-    void addTestEntryExpectsThatEntryIsAddedToEntries(){
+    void addTestEntryExpectsThatEntryIsAddedToEntries() {
         System.out.println(burrow.getEntries());
         assertFalse(burrow.getEntries().isEmpty());
     }
+
     @AfterEach
     void tearDown() {
     }
-
-
 }

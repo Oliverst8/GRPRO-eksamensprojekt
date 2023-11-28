@@ -23,19 +23,20 @@ public class Grass extends Plant implements NonBlocking {
      * subtract 25 energy
      */
     private void spread(World world) {
-        if(getEnergy()<25){
-            throw new IllegalOperationException("Grass doesnt have energy to spread");
-        }
+        if(getEnergy()<25) throw new IllegalOperationException("Grass doesnt have energy to spread");
+        
         Set<Location> surroundingTiles = world.getEmptySurroundingTiles();
         List<Location> locationsList = new LinkedList<>(surroundingTiles);
         int randomIndex;
         Location randomLocation;
+
         do{
             if(locationsList.size() <= 0) return;
             randomIndex = new Random().nextInt(locationsList.size());
             randomLocation = locationsList.get(randomIndex);
             if(world.getTile(randomLocation) != null) locationsList.remove(randomIndex);
         } while(world.getTile(randomLocation) != null);
+
         ObjectFactory.generateOnMap(world,randomLocation,"Grass");
 
         removeEnergy(25);
@@ -59,9 +60,9 @@ public class Grass extends Plant implements NonBlocking {
      */
     @Override
     void dayBehavior(World world) {
-    photosynthesis();
-    if(getEnergy() >= 50){
-        spread(world);
+        photosynthesis();
+        if(getEnergy() >= 50) {
+            spread(world);
         }
     }
 
@@ -74,11 +75,11 @@ public class Grass extends Plant implements NonBlocking {
      */
     @Override
     void nightBehavior(World world) {
-    decay();
+        decay();
     }
 
     @Override
-    public String getPNGPath(){
+    public String getPNGPath() {
         return getType();
     }
 }

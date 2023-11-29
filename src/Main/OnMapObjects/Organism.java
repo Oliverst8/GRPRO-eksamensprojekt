@@ -1,5 +1,6 @@
-package Main;
+package Main.OnMapObjects;
 
+import Main.Entity;
 import itumulator.simulator.Actor;
 import itumulator.world.World;
 
@@ -39,13 +40,11 @@ public abstract class Organism extends Entity implements Actor {
     }
 
     /**
-     * @throws NullPointerException if world is null
      * Kills this organism
      * @param world current world
      */
     public void die(World world) {
-        if(world == null) throw new NullPointerException("World cant be null");
-        world.delete(this);
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
@@ -59,14 +58,14 @@ public abstract class Organism extends Entity implements Actor {
      *
      * @return the food type of the organism
      */
-    public String getFoodType() {
+    public String getFoodType(){
         return foodType;
     }
 
     /**
      * @return the current amount of energy
      */
-    public int getEnergy() {
+    public int getEnergy(){
         return energy - (energyLossPerDay*(Math.max(0,getAge()-getAdultAge())));
     }
 
@@ -74,14 +73,11 @@ public abstract class Organism extends Entity implements Actor {
      * Removes energy
      * @param amount
      */
-    public void removeEnergy(int amount) {
-        setEnergy(Math.max(0, getEnergy()-amount));
-    }
-    public void addEnergy(int amount) {
-        setEnergy(Math.min(100, getEnergy()+amount));
+    public void RemoveEnergy(int amount){
+        setEnergy(Math.max(0,getEnergy()-amount));
     }
 
-    public void setEnergy(int energy) {
+    public void setEnergy(int energy){
         this.energy = energy;
     }
 
@@ -93,35 +89,11 @@ public abstract class Organism extends Entity implements Actor {
         this.day = day;
     }
 
-    abstract void dayBehavior(World world);
 
-    abstract void nightBehavior(World world);
 
     @Override
-    public void act(World world) {
-        if(world == null) throw new NullPointerException("world cant be null");
-
-        setDay(world.isDay());
-
-        if(isDay()) dayBehavior(world);
-        else nightBehavior(world);
-
-        if(getEnergy() == 0) {
-            System.out.println(this + " is out of energy and dying");
-            die(world);
-        }
-    }
-
-    @Override
-    protected String getPNGPath() {
-        StringBuilder path = new StringBuilder();
-
-        path.append(getType());
-
-        if(age >= adultAge) path.append("-large");
-        else path.append("-small");
-
-        return path.toString();
+    protected String getPNGPath(){
+        return getType();
     }
 
     public int getAdultAge() {

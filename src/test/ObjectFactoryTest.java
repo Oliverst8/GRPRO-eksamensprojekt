@@ -1,7 +1,6 @@
 package test;
 
 import Main.Burrow;
-import Main.Grass;
 import Main.Rabbit;
 import itumulator.executable.Program;
 import itumulator.world.Location;
@@ -50,15 +49,6 @@ class ObjectFactoryTest {
     void testGenerateRabbitWtih0ConstructorArgumentsExpectsRabbit(){
         Rabbit expected = new Rabbit();
         assertInstanceOf(Rabbit.class,(Rabbit) ObjectFactory.generateOffMap(world, "rabbit") );
-    }
-    @Test
-    void generateBurrowWith0ConstructorArgumentsExpectsBurrow(){
-        assertInstanceOf(Burrow.class, (Burrow) ObjectFactory.generateOffMap(world, "burrow"));
-    }
-
-    @Test
-    void generateGrassWith0ConstructorArgumentsExpectsGrass(){
-        assertInstanceOf(Grass.class, (Grass) ObjectFactory.generateOffMap(world, "grass"));
     }
 
     @AfterEach

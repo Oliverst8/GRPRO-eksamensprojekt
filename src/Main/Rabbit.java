@@ -16,7 +16,7 @@ public class Rabbit extends Animal {
      * Initilises the food to the bunny can eat to plant and fruits
      * Initialises inBurrow to false
      */
-    public Rabbit(){
+    public Rabbit() {
         super(new String[]{"plant", "fruit"});
         burrow = null;
         adultAge = 3;

@@ -40,13 +40,14 @@ class ObjectFactoryTest {
     }
 
     @Test
-    void testGenerateRabbitWith3ConstructorArgumentsExpectsRabbit(){
+    void generateRabbitWith3ConstructorArgumentsExpectsRabbit(){
         Burrow burrow = new Burrow(world, new Location(0,0));
         assertInstanceOf(Rabbit.class, (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true));
     }
 
     @Test
-    void testGenerateRabbitWtih0ConstructorArgumentsExpectsRabbit(){
+    void generateRabbitWtih0ConstructorArgumentsExpectsRabbit(){
+        Burrow burrow = new Burrow(world, new Location(0,0));
         Rabbit expected = new Rabbit();
         assertInstanceOf(Rabbit.class,(Rabbit) ObjectFactory.generateOffMap(world, "rabbit") );
     }

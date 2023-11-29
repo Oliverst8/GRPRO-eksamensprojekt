@@ -160,6 +160,8 @@ public abstract class Animal extends Organism {
      * Set sleeping to true
      */
     protected void sleep() {
+        sleeping = true;
+
         if(hunger > 10) {
             removeHunger(10);
             addEnergy(10);
@@ -195,5 +197,23 @@ public abstract class Animal extends Organism {
      */
     public String[] getCanEat(){
         return canEat;
+    }
+
+    public boolean isSleeping() {
+        return sleeping;
+    }
+
+    @Override
+    protected String getPNGPath() {
+        StringBuilder path = new StringBuilder();
+
+        path.append(getType());
+
+        if(age >= adultAge) path.append("-large");
+        else path.append("-small");
+
+        if(isSleeping()) path.append("-sleeping");
+
+        return path.toString();
     }
 }

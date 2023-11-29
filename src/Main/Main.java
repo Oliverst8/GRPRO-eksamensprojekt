@@ -9,11 +9,10 @@ import spawn.SpawningObject;
 public class Main {
 
     public static void main(String[] args) {
-
-        Input input = new Input("data/week1/tf1-1.txt");
+        Input input = new Input("data/week2/t2-5a.txt");
 
         int size = input.getSize(); // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
+        int delay = 500; // forsinkelsen mellem hver skridt af simulationen (i ms)
         int display_size = 1000; // skærm opløsningen (i px)
 
         Program program = new Program(size, display_size, delay); // opret et nyt program
@@ -22,7 +21,7 @@ public class Main {
         // Generates the objects in the world
         for (SpawningObject object : input.getObjects()) {
             if(object.getLocation() != null) {
-                ObjectFactory.generateOnMap(world, object.getLocation(), object.getClassName());
+                ObjectFactory.generateOnMap(world, object.getClassName(), object.getLocation());
                 continue;
             } else {
                 ObjectFactory.generateOnMap(world, object.getClassName());

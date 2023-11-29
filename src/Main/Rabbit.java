@@ -8,7 +8,6 @@ import java.awt.*;
 import java.util.List;
 
 public class Rabbit extends Animal {
-
     private Burrow burrow;
     private boolean inBurrow = false;
 

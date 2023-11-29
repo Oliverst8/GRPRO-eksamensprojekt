@@ -23,14 +23,14 @@ public class Grass extends Plant implements NonBlocking {
      * subtract 25 energy
      */
     private void spread(World world) {
-        if(getEnergy()<25) throw new IllegalOperationException("Grass doesnt have energy to spread");
+        if(getEnergy() < 25) throw new IllegalOperationException("Grass doesnt have energy to spread");
         
         Set<Location> surroundingTiles = world.getEmptySurroundingTiles();
         List<Location> locationsList = new LinkedList<>(surroundingTiles);
         int randomIndex;
         Location randomLocation;
 
-        do{
+        do {
             if(locationsList.size() <= 0) return;
             randomIndex = new Random().nextInt(locationsList.size());
             randomLocation = locationsList.get(randomIndex);

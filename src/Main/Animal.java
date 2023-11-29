@@ -32,8 +32,8 @@ public abstract class Animal extends Organism {
      * @param food String with food
      * @return true if String food is inside of canEat of the animal
      */
-    private boolean canIEat(String food){
-        for(String edibleFood : canEat){
+    private boolean canIEat(String food) {
+        for(String edibleFood : canEat) {
             if(food.equals(edibleFood)) return true;
         }
         return false;
@@ -132,11 +132,13 @@ public abstract class Animal extends Organism {
 
         int x = makeNumberOneCloser(world.getCurrentLocation().getX(), location.getX());
         int y = makeNumberOneCloser(world.getCurrentLocation().getY(), location.getY());
-        if(!world.isTileEmpty(new Location(x,y))){
+
+        if(!world.isTileEmpty(new Location(x,y))) {
             if(world.isTileEmpty(new Location(x,world.getCurrentLocation().getY()))) y = world.getCurrentLocation().getY();
             else if (world.isTileEmpty(new Location(world.getCurrentLocation().getX(),y))) x = world.getCurrentLocation().getX();
             else return;
         }
+
         world.move(this, new Location(x,y));
         removeEnergy(10);
     }

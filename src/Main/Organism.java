@@ -44,7 +44,6 @@ public abstract class Organism extends Entity implements Actor {
      * @param world current world
      */
     public void die(World world) {
-        if(world == null) throw new NullPointerException("World cant be null");
         world.delete(this);
     }
 
@@ -99,8 +98,6 @@ public abstract class Organism extends Entity implements Actor {
 
     @Override
     public void act(World world) {
-        if(world == null) throw new NullPointerException("world cant be null");
-
         setDay(world.isDay());
 
         if(isDay()) dayBehavior(world);

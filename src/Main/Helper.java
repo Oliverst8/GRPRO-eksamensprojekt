@@ -25,7 +25,7 @@ public class Helper {
         return findNonFilledLocation(world, false);
     }
 
-    public static boolean isThereAnEmptyLocationInWorld(World world, boolean nonBlockingNotAllowed){
+    public static boolean isThereAnEmptyLocationInWorld(World world, boolean nonBlockingNotAllowed) {
         Object[][][] worldTiles = world.getTiles();
         for (int i = 0; i < worldTiles.length; i++) {
             for (int j = 0; j < worldTiles[i].length; j++) {

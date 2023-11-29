@@ -17,12 +17,12 @@ public class Hole extends InAnimate implements NonBlocking {
      * @param location the location of the hole
      * @throws NullPointerException if the parameter location is null
      */
-    public Hole(Location location){
+    public Hole(Location location) {
         this.location = location;
         burrow = null;
     }
 
-    public Hole(Location location, Burrow burrow){
+    public Hole(Location location, Burrow burrow) {
         this.location = location;
         this.burrow = burrow;
     }
@@ -51,7 +51,7 @@ public class Hole extends InAnimate implements NonBlocking {
         return new Color(150, 75, 0);
     }
 
-    public Burrow getBurrow(){
+    public Burrow getBurrow() {
         return burrow;
     }
 }

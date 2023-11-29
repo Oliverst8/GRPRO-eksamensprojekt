@@ -47,8 +47,6 @@ class ObjectFactoryTest {
 
     @Test
     void generateRabbitWtih0ConstructorArgumentsExpectsRabbit(){
-        Burrow burrow = new Burrow(world, new Location(0,0));
-        Rabbit expected = new Rabbit();
         assertInstanceOf(Rabbit.class,(Rabbit) ObjectFactory.generateOffMap(world, "rabbit") );
     }
 

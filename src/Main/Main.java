@@ -14,7 +14,7 @@ public class Main {
 
         int size = input.getSize(); // størrelsen af vores 'map' (dette er altid kvadratisk)
         int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
+        int display_size = 1000; // skærm opløsningen (i px)
 
         Program program = new Program(size, display_size, delay); // opret et nyt program
         World world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!

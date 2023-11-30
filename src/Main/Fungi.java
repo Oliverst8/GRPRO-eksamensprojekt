@@ -1,8 +1,8 @@
 package Main;
 
 public abstract class Fungi extends Organism {
-    public Fungi(String foodType) {
-        super(foodType);
+    public Fungi() {
+        super();
         throw new UnsupportedOperationException("Not supported yet.");
 
     }

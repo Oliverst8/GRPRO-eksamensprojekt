@@ -7,7 +7,7 @@ import spawn.ObjectFactory;
 import java.awt.*;
 import java.util.List;
 
-public class Rabbit extends Animal {
+public class Rabbit extends Animal{
 
     private Burrow burrow;
     private boolean inBurrow = false;
@@ -17,13 +17,13 @@ public class Rabbit extends Animal {
      * Initialises inBurrow to false
      */
     public Rabbit(){
-        super(new String[]{"plant", "fruit"});
+        super(new Class[]{Grass.class});
         burrow = null;
         adultAge = 3;
     }
 
     public Rabbit(int age, Burrow burrow, boolean inBurrow) {
-        super(new String[]{"plant", "fruit"});
+        super(new Class[]{Grass.class});
         setBurrow(burrow);
         adultAge = 3;
         this.age = age;
@@ -84,7 +84,7 @@ public class Rabbit extends Animal {
     }
 
     protected void produceOffSpring(World world) {
-        Rabbit rabbitChild = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 0, burrow, true);
+        ObjectFactory.generateOffMap(world, "rabbit", 0, burrow, true);
     }
 
     /**

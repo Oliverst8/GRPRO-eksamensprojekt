@@ -1,5 +1,6 @@
 package test;
 
+import Main.Grass;
 import Main.Rabbit;
 import itumulator.executable.Program;
 import itumulator.world.World;
@@ -39,7 +40,7 @@ public class AnimalTest {
      */
     @Test
     void testAnimalConstructorCanEat(){
-        assertArrayEquals(new String[]{"plant","fruit"},rabbit.getCanEat());
+        assertTrue(rabbit.canIEat(Grass.class));
     }
 
     /**

@@ -9,12 +9,12 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class Grass extends Plant implements NonBlocking {
+public class Grass extends Plant implements NonBlocking, Consumable {
     /**
      * Sets the food type to plant
      */
     public Grass() {
-        super("plant");
+        super();
     }
 
     /**

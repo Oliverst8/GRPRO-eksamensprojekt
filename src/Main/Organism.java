@@ -3,9 +3,9 @@ package Main;
 import itumulator.simulator.Actor;
 import itumulator.world.World;
 
-public abstract class Organism extends Entity implements Actor {
+public abstract class Organism extends Entity implements Actor, Consumable {
     protected int age;
-    private String foodType; //The type of food the organism is
+
     private int energy; //0 is empty, and 100 is full
 
     private boolean day;
@@ -24,9 +24,8 @@ public abstract class Organism extends Entity implements Actor {
      * Initialises the food type
      * Initialises energy to 100
      */
-    public Organism(String foodType) {
+    public Organism() {
         age = 0;
-        this.foodType = foodType;
         energy = 100;
         energyLossPerDay = 5;
     }
@@ -54,13 +53,7 @@ public abstract class Organism extends Entity implements Actor {
         return age;
     }
 
-    /**
-     *
-     * @return the food type of the organism
-     */
-    public String getFoodType() {
-        return foodType;
-    }
+
 
     /**
      * @return the current amount of energy

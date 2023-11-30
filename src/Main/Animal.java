@@ -6,11 +6,11 @@ import itumulator.world.World;
 
 import java.util.Set;
 
-public abstract class Animal extends Organism {
+public abstract class Animal extends Organism implements Consumable{
 
     private double hunger; //0 is empty, and 100 is full
 
-    private final String[] canEat;
+    private final Class<? extends Consumable>[] canEat;
 
     protected boolean sleeping;
 
@@ -19,8 +19,8 @@ public abstract class Animal extends Organism {
      * Initialises food type to that the animal itself is to meat
      * Initialises the food that can be eaten
      */
-    public Animal( String[] canEat) {
-        super("meat");
+    public Animal( Class<? extends Consumable>[] canEat) {
+        super();
         hunger = 50;
         this.canEat = canEat;
         sleeping = false;
@@ -32,8 +32,8 @@ public abstract class Animal extends Organism {
      * @param food String with food
      * @return true if String food is inside of canEat of the animal
      */
-    private boolean canIEat(String food) {
-        for(String edibleFood : canEat) {
+    public boolean canIEat(Class<? extends Consumable> food) {
+        for(Class<? extends Consumable> edibleFood : canEat) {
             if(food.equals(edibleFood)) return true;
         }
         return false;
@@ -46,7 +46,7 @@ public abstract class Animal extends Organism {
      * @param food the food to be eaten
      */
     protected void eat(Organism food, World world) {
-        if(canIEat(food.getFoodType())){
+        if(canIEat(food.getClass())){
             addHunger(0.5 * food.getEnergy());
             food.die(world);
         }
@@ -193,7 +193,7 @@ public abstract class Animal extends Organism {
     /*
      * @return String array of canEat of the object
      */
-    public String[] getCanEat(){
+    public Class<? extends Consumable>[] getCanEat(){
         return canEat;
     }
 }

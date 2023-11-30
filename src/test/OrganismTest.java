@@ -1,6 +1,7 @@
 package test;
 
 import Main.Burrow;
+import Main.Consumable;
 import Main.Rabbit;
 import itumulator.executable.Program;
 import itumulator.world.Location;
@@ -58,7 +59,7 @@ public class OrganismTest {
      */
     @Test
     void testOrganismFoodType(){
-        Assertions.assertEquals("meat", rabbit.getFoodType());
+        Assertions.assertInstanceOf(Consumable.class, rabbit);
     }
 
     /**

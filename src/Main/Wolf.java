@@ -9,12 +9,12 @@ public class Wolf extends Animal{
     Pack pack;
 
     public Wolf() {
-        super(new String[]{"meat"});
+        super(new Class[]{Rabbit.class});
         pack = new Pack();
     }
 
     public Wolf(Pack pack){
-        super(new String[]{"meat"});
+        super(new Class[]{Rabbit.class});
         this.pack = pack;
     }
 

@@ -17,13 +17,13 @@ public class Rabbit extends Animal{
      * Initialises inBurrow to false
      */
     public Rabbit(){
-        super(new Class[]{Grass.class});
+        super(new Class[]{Grass.class}, 0);
         burrow = null;
         adultAge = 3;
     }
 
     public Rabbit(int age, Burrow burrow, boolean inBurrow) {
-        super(new Class[]{Grass.class});
+        super(new Class[]{Grass.class}, 0);
         setBurrow(burrow);
         adultAge = 3;
         this.age = age;
@@ -122,16 +122,7 @@ public class Rabbit extends Animal{
             }
             if(getHunger() < 100) exitBurrow(world);
         } else if(getHunger() < 100) {
-            Location nearestGrass = findNearest(world, 4, Grass.class);
-            if (nearestGrass != null) {
-                Object grassTileObject = world.getTile(nearestGrass);
-                if(!(grassTileObject instanceof Grass || grassTileObject == this)) return;
-                if (distance(world, nearestGrass) == 0) {
-                    eat((Grass) world.getNonBlocking(nearestGrass), world);
-                } else {
-                    moveTowards(nearestGrass, world);
-                }
-            }
+            hunt(world);
         } else{
             seekBurrow(world);
         }

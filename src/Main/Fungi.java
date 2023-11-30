@@ -2,7 +2,7 @@ package Main;
 
 public abstract class Fungi extends Organism {
     public Fungi() {
-        super();
+        super(-1);
         throw new UnsupportedOperationException("Not supported yet.");
 
     }

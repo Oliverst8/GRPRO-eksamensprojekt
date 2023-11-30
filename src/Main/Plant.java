@@ -3,8 +3,8 @@ package Main;
 public abstract class Plant extends Organism {
 
 
-    public Plant() {
-        super();
+    public Plant(int defaultStenght) {
+        super(defaultStenght);
     }
 
     /**

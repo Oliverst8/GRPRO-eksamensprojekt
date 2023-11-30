@@ -4,7 +4,7 @@ import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
-import java.util.Set;
+import java.util.*;
 
 public abstract class Animal extends Organism implements Consumable{
 
@@ -19,8 +19,8 @@ public abstract class Animal extends Organism implements Consumable{
      * Initialises food type to that the animal itself is to meat
      * Initialises the food that can be eaten
      */
-    public Animal( Class<? extends Consumable>[] canEat) {
-        super();
+    public Animal( Class<? extends Consumable>[] canEat, int defaultStrength) {
+        super(defaultStrength);
         hunger = 50;
         this.canEat = canEat;
         sleeping = false;
@@ -37,6 +37,50 @@ public abstract class Animal extends Organism implements Consumable{
             if(food.equals(edibleFood)) return true;
         }
         return false;
+    }
+
+    protected void hunt(World world){
+        Map<Location, Organism> prey = new HashMap<>();
+        for (Class<? extends Consumable> foodtype : canEat){
+            Location preyLocation = findNearest(world, 4, foodtype);
+            if(preyLocation == null) continue;
+            Organism currentPrey;
+            if(Helper.doesArrayContain(foodtype.getInterfaces(), NonBlocking.class)) currentPrey = (Organism) world.getNonBlocking(preyLocation);
+            else currentPrey = (Organism) world.getTile(preyLocation);
+
+            if(getstrengthWeight() >= currentPrey.getstrengthWeight()){
+                prey.put(preyLocation, currentPrey);
+            }
+        }
+        if(prey.isEmpty()) return;
+        Location closestPrey = new Location(-1,-1);
+        double closestDist = Double.MAX_VALUE;
+        for(Location currentPreyLocation : prey.keySet()){
+            double dist = distance(world, currentPreyLocation);
+            if(closestDist > dist){
+                closestPrey = currentPreyLocation;
+                closestDist = dist;
+            }
+        }
+        if(prey.get(closestPrey).getstrengthWeight() == -1){
+            if(closestDist == 0){
+                eat(prey.get(closestPrey), world);
+            } else {
+                moveTowards(closestPrey, world);
+            }
+        } else{
+            if(closestDist < 2){
+                Attack(world, prey.get(closestPrey));
+            } else{
+                moveTowards(closestPrey, world);
+            }
+        }
+
+
+    }
+
+    private void Attack(World world, Organism animal) {
+        throw new UnsupportedOperationException("Attack method not implemented yet");
     }
 
     /**
@@ -79,9 +123,9 @@ public abstract class Animal extends Organism implements Consumable{
             Class<?> tileObject;
 
             if(Helper.doesArrayContain(object.getInterfaces(), NonBlocking.class)) {
-                try{
+                if(world.containsNonBlocking(tile)) {
                     tileObject = world.getNonBlocking(tile).getClass();
-                } catch (IllegalArgumentException e){
+                } else {
                     continue;
                 }
             } else tileObject = world.getTile(tile).getClass();
@@ -122,7 +166,7 @@ public abstract class Animal extends Organism implements Consumable{
     }
 
     /**
-     * Throws IllegalArgumentException if world or location is null
+     * @throws IllegalArgumentException if the animal is already on the position;
      * Returns without doing anything if the object is already standing on the location
      * Moves towards location by one tile
      * Remove 10 energy

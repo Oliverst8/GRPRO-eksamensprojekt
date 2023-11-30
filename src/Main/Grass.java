@@ -14,7 +14,7 @@ public class Grass extends Plant implements NonBlocking, Consumable {
      * Sets the food type to plant
      */
     public Grass() {
-        super();
+        super(-1);
     }
 
     /**

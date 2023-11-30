@@ -12,6 +12,10 @@ public abstract class Organism extends Entity implements Actor, Consumable {
 
     protected int adultAge;
 
+    private boolean dead; //Contains data of weather or not the animal is dead
+
+    private int strengthWeight;
+
     public int getEnergyLossPerDay() {
         return energyLossPerDay;
     }
@@ -24,10 +28,25 @@ public abstract class Organism extends Entity implements Actor, Consumable {
      * Initialises the food type
      * Initialises energy to 100
      */
-    public Organism() {
+    public Organism(int defaultStrength) {
         age = 0;
         energy = 100;
         energyLossPerDay = 5;
+        dead = false;
+        setStrengthWeight(defaultStrength);
+    }
+
+    protected void setStrengthWeight(int strengthWeight){
+        this.strengthWeight = strengthWeight;
+    }
+
+    public int getstrengthWeight() {
+        if(dead) return -1;
+        return strengthWeight;
+    }
+
+    public boolean isDead() {
+        return dead;
     }
 
     /**
@@ -43,6 +62,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
      * @param world current world
      */
     public void die(World world) {
+        dead = true;
         world.delete(this);
     }
 

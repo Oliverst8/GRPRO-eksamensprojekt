@@ -82,24 +82,24 @@ class BurrowTest {
     @Test
     void testAddRabbit() {
         Rabbit rabbit = new Rabbit();
-        burrow.addRabbit(rabbit);
-        assertEquals(rabbit, burrow.getRabbitsInside().get(0));
+        burrow.addMember(rabbit);
+        assertEquals(rabbit, burrow.getMembers().get(0));
     }
 
     @Test
     void testgetAdultRabbits0adults() {
         Rabbit rabbit = new Rabbit(2, burrow, false);
-        burrow.addRabbit(rabbit);
-        assertEquals(0, burrow.getAdultRabbitsInside().size());
+        burrow.addMember(rabbit);
+        assertEquals(0, burrow.getAdultMembers().size());
     }
 
     @Test
     void testgetAdultRabbits1adults() {
         Rabbit rabbit = new Rabbit(2, burrow, false);
         Rabbit rabbit1 = new Rabbit(3, burrow, false);
-        burrow.addRabbit(rabbit);
-        burrow.addRabbit(rabbit1);
-        assertEquals(1, burrow.getAdultRabbitsInside().size());
+        burrow.addMember(rabbit);
+        burrow.addMember(rabbit1);
+        assertEquals(1, burrow.getAdultMembers().size());
     }
 
     @Test
@@ -107,10 +107,10 @@ class BurrowTest {
         Rabbit rabbit = new Rabbit(2, burrow, false);
         Rabbit rabbit1 = new Rabbit(3, burrow, false);
         Rabbit rabbit2 = new Rabbit(4, burrow, false);
-        burrow.addRabbit(rabbit);
-        burrow.addRabbit(rabbit1);
-        burrow.addRabbit(rabbit2);
-        assertEquals(2, burrow.getAdultRabbitsInside().size());
+        burrow.addMember(rabbit);
+        burrow.addMember(rabbit1);
+        burrow.addMember(rabbit2);
+        assertEquals(2, burrow.getAdultMembers().size());
     }
 
     @Test
@@ -135,12 +135,12 @@ class BurrowTest {
     void testRemoveRabbit() {
         Rabbit rabbit1 = new Rabbit();
         Rabbit rabbit2 = new Rabbit();
-        burrow.addRabbit(rabbit1);
-        burrow.addRabbit(rabbit2);
+        burrow.addMember(rabbit1);
+        burrow.addMember(rabbit2);
         List<Rabbit> expected = new LinkedList<>();
         expected.add(rabbit1);
-        burrow.removeRabbit(rabbit2);
-        assertEquals(expected, burrow.getRabbitsInside());
+        burrow.removeMember(rabbit2);
+        assertEquals(expected, burrow.getMembers());
     }
 
     @Test

@@ -67,4 +67,14 @@ public class Helper {
     public static Location findNonBlockingEmptyLocation(World world){
         return findNonFilledLocation(world, true);
     }
+
+    /**
+     * Finds the distance between two objects
+     * @param location1 the first location
+     * @param location2 the location of the second object
+     * @return the distance between two object
+     */
+    public static double distance(Location location1, Location location2) {
+        return Math.sqrt(Math.pow(location1.getX() - location2.getX(), 2) + Math.pow(location1.getY() - location2.getY(), 2));
+    }
 }

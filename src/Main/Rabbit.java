@@ -29,7 +29,7 @@ public class Rabbit extends Animal {
         this.age = age;
         if(inBurrow) {
             this.inBurrow = true;
-            burrow.addRabbit(this);
+            burrow.addMember(this);
         }
     }
 
@@ -104,8 +104,8 @@ public class Rabbit extends Animal {
         }
 
         if(inBurrow) {
-            if(getEnergy() > 80 && burrow.getAdultRabbitsInside().size() >= 2) {
-                for(Rabbit otherRabbit : burrow.getAdultRabbitsInside()){
+            if(getEnergy() > 80 && burrow.getAdultMembers().size() >= 2) {
+                for(Animal otherRabbit : burrow.getMembers()){
                     if(otherRabbit != this && otherRabbit.getEnergy() > 80) {
                         try{
                             reproduce(world, this, otherRabbit);
@@ -184,7 +184,7 @@ public class Rabbit extends Animal {
         if(inBurrow) throw new IllegalOperationException("Cant enter a burrow, if its already in one");
 
         inBurrow = true;
-        burrow.addRabbit(this);
+        burrow.addMember(this);
         world.remove(this);
     }
 
@@ -211,7 +211,7 @@ public class Rabbit extends Animal {
         if(freeLocation == null) return;
 
         inBurrow = false;
-        burrow.removeRabbit(this);
+        burrow.removeMember(this);
         world.setTile(freeLocation,this);
 
     }

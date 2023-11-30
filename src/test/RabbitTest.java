@@ -189,7 +189,7 @@ class RabbitTest {
         rabbitInsideBurrow.setHunger(99);
         rabbitInsideBurrow.setEnergy(60);
         program.simulate();
-        assertEquals(0,burrow.getRabbitsInside().size());
+        assertEquals(0,burrow.getMembers().size());
     }
     @Test
     void testDayBehaviorExpectsRabbitToDigAnotherEntrance(){

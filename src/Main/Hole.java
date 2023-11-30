@@ -10,6 +10,8 @@ public class Hole extends InAnimate implements NonBlocking {
     private Location location;
 
     private final Burrow burrow;
+
+    private final String pngType;
     
     /**
      * Throws NullPointerException if the argument is null
@@ -17,14 +19,16 @@ public class Hole extends InAnimate implements NonBlocking {
      * @param location the location of the hole
      * @throws NullPointerException if the parameter location is null
      */
-    public Hole(Location location) {
+    public Hole(Location location, String pngType) {
         this.location = location;
         burrow = null;
+        this.pngType = pngType;
     }
 
-    public Hole(Location location, Burrow burrow) {
+    public Hole(Location location, Burrow burrow, String pngType) {
         this.location = location;
         this.burrow = burrow;
+        this.pngType = pngType;
     }
 
     /**
@@ -40,7 +44,7 @@ public class Hole extends InAnimate implements NonBlocking {
      */
     @Override
     protected String getType() {
-        return "hole";
+        return pngType;
     }
 
     /**

@@ -10,7 +10,7 @@ public abstract class Animal extends Organism implements Consumable{
 
     private double hunger; //0 is empty, and 100 is full
 
-    private final Class<? extends Consumable>[] canEat;
+    private final Class<? extends Consumable>[] canEat; //Holdes the types of classes the animal can eat
 
     protected boolean sleeping;
 
@@ -19,8 +19,8 @@ public abstract class Animal extends Organism implements Consumable{
      * Initialises food type to that the animal itself is to meat
      * Initialises the food that can be eaten
      */
-    public Animal( Class<? extends Consumable>[] canEat, int defaultStrength) {
-        super(defaultStrength);
+    public Animal( Class<? extends Consumable>[] canEat, int defualtFoodChainValue) {
+        super(defualtFoodChainValue);
         hunger = 50;
         this.canEat = canEat;
         sleeping = false;
@@ -29,8 +29,8 @@ public abstract class Animal extends Organism implements Consumable{
     /**
      * Checks if the object that the function is called from can eat a type of food
      * Returns false if not
-     * @param food String with food
-     * @return true if String food is inside of canEat of the animal
+     * @param food The type of class that is trying to get eaten
+     * @return true if the class is in the list of classes the animal can eat
      */
     public boolean canIEat(Class<? extends Consumable> food) {
         for(Class<? extends Consumable> edibleFood : canEat) {
@@ -41,8 +41,10 @@ public abstract class Animal extends Organism implements Consumable{
 
     /**
      * @param world the world the animal is in
+     * @param radius the raidus to be looked for prey in
      * @return The closest prey of the animal
-     * @return null if there is no prey ind a location of 4
+     * @return null if there is no prey ind a location of radius
+     * An organism is only considered prey if its foodchainvalue is lower then the animal hunting for it, and the animal its that type of organism
      */
     protected Organism findPrey(World world, int radius) {
         Map<Location, Organism> prey = new HashMap<>();
@@ -71,17 +73,25 @@ public abstract class Animal extends Organism implements Consumable{
     }
 
     /**
-     * Finds the closest prey the animal can hunt
-     * If the distance to the cloest prey is 0, its get eaten
-     * If the strengthweight of the prey is -1, it moves towards it, otherwise it checks if it can attak it
-     * if it cant attack it, it moves towards it
+     Hunts the closet prey to the animal
      * @param world the world which the animal is on
      */
     protected void hunt(World world){
         huntPrey(world,findPrey(world, 4));
     }
 
-
+    /**
+     * Check weather or not the prey is something to be fought, or can already be eaten
+     * If the prey has a foodchainvalue of -1 that means that the animal needs to stand on it to eat it
+     * - If this is the case, checks if the animal is already on it, if it is it eats it, if not it moves towards it
+     * If the prey has a foodchainvalue of -2 that means that the animal needs to stand next to it to eat it
+     * - if this is the case, it checks if it stands next to it, if it does it eats it, if not it moves towards it
+     * Otherwise it check if it is close enough to attack
+     * - If it is it does
+     * - otherwise it moves towards the prey
+     * @param world the world the organisms are in
+     * @param prey the prey to be hunted nothing happens if null
+     */
     protected void huntPrey(World world, Organism prey){
         if(prey == null) return;
         Location preyLocation = world.getLocation(prey);
@@ -92,7 +102,13 @@ public abstract class Animal extends Organism implements Consumable{
             } else {
                 moveTowards(preyLocation, world);
             }
-        } else{
+        } else if(prey.getFoodChainValue() == -2){
+            if(distanteToPrey < 2){
+                eat(prey, world);
+            } else {
+                moveTowards(preyLocation, world);
+            }
+        }else{
             if(distanteToPrey < 2){
                 Attack(world, prey);
             } else{
@@ -101,6 +117,11 @@ public abstract class Animal extends Organism implements Consumable{
         }
     }
 
+    /**
+     *
+     * @param world
+     * @param animal
+     */
     private void Attack(World world, Organism animal) {
         throw new UnsupportedOperationException("Attack method not implemented yet");
     }
@@ -112,9 +133,25 @@ public abstract class Animal extends Organism implements Consumable{
      * @param food the food to be eaten
      */
     public void eat(Organism food, World world) {
-        if(canIEat(food.getClass())){
+        if(canIEat(food.getEntityClass())){
             addHunger(0.5 * food.getEnergy());
             food.die(world);
+        }
+    }
+
+    /**
+     * If the animal is in the world, it creates a carcuss of the animal in the animals location, and deletes the animal
+     * otherwise it just deletes the animal
+     * @param world current world
+     */
+    @Override
+    public void die(World world){
+        if(world.contains(this)){
+            Location carcassLocation = world.getLocation(this);
+            world.delete(this);
+            Carcass carcass = new Carcass(world,this, carcassLocation);
+        } else{
+            super.die(world);
         }
     }
 
@@ -142,15 +179,15 @@ public abstract class Animal extends Organism implements Consumable{
         for(Location tile : surrondingTiles) {
             if(world.getTile(tile) == null) continue;
 
-            Class<?> tileObject;
+            Class<? extends Entity> tileObject;
 
             if(Helper.doesArrayContain(object.getInterfaces(), NonBlocking.class)) {
                 if(world.containsNonBlocking(tile)) {
-                    tileObject = world.getNonBlocking(tile).getClass();
+                    tileObject =((Entity) world.getNonBlocking(tile)).getEntityClass();
                 } else {
                     continue;
                 }
-            } else tileObject = world.getTile(tile).getClass();
+            } else tileObject =((Entity) world.getTile(tile)).getEntityClass();
 
             if(tileObject.equals(object)){ //Check if the tile is the same object as object in parameter
 
@@ -176,14 +213,23 @@ public abstract class Animal extends Organism implements Consumable{
     }
 
     abstract void produceOffSpring(World world);
-    
+
+    /**
+     * @param world the world of the animals
+     * @param animal1 the first animal
+     * @param animal2 the second animal
+     * @throws cantReproduceException if the animals arent old if enough to breed
+     * @throws cantReproduceException if the animals arent the same type of animals
+     * @throws cantReproduceException if the animals dont have enough energy
+     */
     protected void reproduce(World world, Animal animal1, Animal animal2) throws cantReproduceException {
         if (animal1.getAge() < animal1.getAdultAge()) throw new cantReproduceException(animal1, animal2);
         if (animal2.getAge() < animal2.getAdultAge()) throw new cantReproduceException(animal1, animal2);
-        if (!animal1.getClass().equals(animal2.getClass())) throw new cantReproduceException(animal1, animal2);
+        if (!animal1.getEntityClass().equals(animal2.getEntityClass())) throw new cantReproduceException(animal1, animal2);
         if (!(animal1.getEnergy() > 50 && animal2.getEnergy() > 50)) throw new cantReproduceException(animal1, animal2);
         animal1.removeEnergy(50);
         animal2.removeEnergy(50);
+        animal2.skipTurn();
         produceOffSpring(world);
     }
 
@@ -227,7 +273,11 @@ public abstract class Animal extends Organism implements Consumable{
     }
 
 
-
+    /**
+     * Moves the animal on block away from a location
+     * @param world the world of the animal
+     * @param location the location to move away from
+     */
     protected void moveAwayFrom(World world, Location location){
         int x = makeNumberOneFurtherAway(world.getCurrentLocation().getX(), location.getX());
         int y = makeNumberOneFurtherAway(world.getCurrentLocation().getY(), location.getY());
@@ -236,12 +286,24 @@ public abstract class Animal extends Organism implements Consumable{
         world.move(this, new Location(x,y));
     }
 
-    protected int validateCordinate(World world, int cordinate){
-     int returnNumber = Math.min(world.getSize(), cordinate);
+    /**
+     * Makes it so a single coordinate is inside the world
+     * @param world the world the animal is in
+     * @param coordinate the coordinate to be checked
+     * @return the new coordinate that is in the world
+     */
+    protected int validateCordinate(World world, int coordinate){
+     int returnNumber = Math.min(world.getSize(), coordinate);
      returnNumber = Math.max(0, returnNumber);
      return returnNumber;
     }
 
+    /**
+     * Makes a number one further away from another
+     * @param actual the current number
+     * @param target the target to get furhter away from
+     * @return the new number
+     */
     protected  int makeNumberOneFurtherAway(int actual, int target){
         if(actual < target) return (actual - 1);
         else return (actual + 1);

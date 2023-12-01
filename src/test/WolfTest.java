@@ -37,7 +37,7 @@ public class WolfTest {
 
     @Test
     void testWolfConstructorWithPackExpectsNewPack() {
-        assertEquals(wolf.getPack(), new Wolf(wolf.getPack()).getPack());
+        assertEquals(wolf.getPack(), new Wolf(wolf.getPack(), 3, false).getPack());
     }
 
     @Test
@@ -51,7 +51,7 @@ public class WolfTest {
     @Test
     void testDayBehaviorExpectsFirstWolfToCreateDenAndSecondToEnter() {
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "wolf", wolf.getPack());
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "wolf", wolf.getPack(), 3, false);
         wolf.setHunger(100);
         wolf2.setHunger(100);
         program.simulate();
@@ -62,8 +62,8 @@ public class WolfTest {
 
     @Test
     void testDaybehaviorInDenExpectsWolfToReproduce(){
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "wolf", wolf.getPack());
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf", 5);
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "wolf", wolf.getPack(), 5, false);
         wolf.setHunger(100);
         wolf2.setHunger(100);
         program.simulate();
@@ -96,7 +96,7 @@ public class WolfTest {
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
         wolf.setHunger(100);
         program.simulate();
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,2), "wolf", wolf.getPack());
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,2), "wolf", wolf.getPack(), 3, false);
         wolf2.setHunger(100);
         program.simulate();
         program.simulate();
@@ -123,7 +123,7 @@ public class WolfTest {
     @Test
     void testDayBehaviorExpectsWolfsToCreateHuntingPackAndMoveTowardsRabbit() {
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "wolf", wolf.getPack());
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "wolf", wolf.getPack(), 3, false);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
         rabbit.skipTurn();
         double currentDistWolf1 = Helper.distance(world.getLocation(wolf),world.getLocation(rabbit));
@@ -137,9 +137,46 @@ public class WolfTest {
     }
 
     @Test
-    void testDayBehaviorExpectsWolfToAttack() {
+    void testDayBehaviorExpectsWolfToEatCarcuss(){
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (1,1),"Rabbit");
+        rabbit.die(world);
+        program.simulate();
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
+        wolf.setHunger(50);
+        double expectedEnergy = Math.min(100, wolf.getEnergy()+rabbit.getEnergy());
+        program.simulate();
+
+        assertEquals(expectedEnergy, wolf.getEnergy());
 
     }
+
+    @Test
+    void testDayBehaviorExpectsWolfToEatCarcussWhereEveryoneInHuntingPackGetsEnergy(){
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (1,1),"Rabbit");
+        rabbit.die(world);
+        program.simulate();
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,1), "wolf");
+        wolf.setHunger(50);
+        wolf2.setHunger(50);
+        program.simulate();
+        double expectedEnergyWolf1 = Math.min(100, wolf.getEnergy()+rabbit.getEnergy());
+        double expectedEnergyWolf2 = Math.min(100, wolf2.getEnergy()+rabbit.getEnergy());
+
+        assertEquals(expectedEnergyWolf1, wolf.getEnergy());
+        assertEquals(expectedEnergyWolf2, wolf2.getEnergy());
+
+    }
+
+    @Test
+    void testDayBehaviorExpectsWolfToAttack() {
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf", 5);
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
+        rabbit.skipTurn();
+        //Do something
+    }
+
+
 
 
 

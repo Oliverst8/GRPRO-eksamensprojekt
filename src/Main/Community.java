@@ -1,5 +1,8 @@
 package Main;
 
+import itumulator.world.Location;
+import itumulator.world.World;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,5 +46,20 @@ public abstract class Community {
 
         return adultMembers;
     }
+
+    protected Location findNearestEntity(World world, List<? extends Entity> enitities) {
+        Location closestEntityLocation = null;
+        double minDist = Double.MAX_VALUE;
+
+        for(Entity entity : enitities) {
+            double distance = Helper.distance(world.getCurrentLocation(), world.getLocation(entity));
+            if(minDist > distance) {
+                minDist = distance;
+                closestEntityLocation = world.getLocation(entity);
+            }
+        }
+        return closestEntityLocation;
+    }
+
 
 }

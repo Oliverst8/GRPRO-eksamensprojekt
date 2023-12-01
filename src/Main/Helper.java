@@ -75,6 +75,6 @@ public class Helper {
      * @return the distance between two object
      */
     public static double distance(Location location1, Location location2) {
-        return Math.sqrt(Math.pow(location1.getX() - location2.getX(), 2) + Math.pow(location1.getY() - location2.getY(), 2));
+        return Math.sqrt(Math.pow(Math.abs(location1.getX() - location2.getX()), 2) + Math.pow(Math.abs(location1.getY() - location2.getY()), 2));
     }
 }

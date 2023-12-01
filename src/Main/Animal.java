@@ -44,10 +44,10 @@ public abstract class Animal extends Organism implements Consumable{
      * @return The closest prey of the animal
      * @return null if there is no prey ind a location of 4
      */
-    protected Organism findPrey(World world) {
+    protected Organism findPrey(World world, int radius) {
         Map<Location, Organism> prey = new HashMap<>();
         for (Class<? extends Consumable> foodtype : canEat){
-            Location preyLocation = findNearest(world, 4, foodtype);
+            Location preyLocation = findNearest(world, radius, foodtype);
             if(preyLocation == null) continue;
             Organism currentPrey;
             if(Helper.doesArrayContain(foodtype.getInterfaces(), NonBlocking.class)) currentPrey = (Organism) world.getNonBlocking(preyLocation);
@@ -58,7 +58,7 @@ public abstract class Animal extends Organism implements Consumable{
             }
         }
         if(prey.isEmpty()) return null;
-        Location closestPrey = new Location(-1,-1);
+        Location closestPrey = null;
         double closestDist = Double.MAX_VALUE;
         for(Location currentPreyLocation : prey.keySet()){
             double dist = distance(world, currentPreyLocation);
@@ -78,7 +78,7 @@ public abstract class Animal extends Organism implements Consumable{
      * @param world the world which the animal is on
      */
     protected void hunt(World world){
-        huntPrey(world,findPrey(world));
+        huntPrey(world,findPrey(world, 4));
     }
 
 
@@ -111,7 +111,7 @@ public abstract class Animal extends Organism implements Consumable{
      * Adds energy if it can, and does nothing if not.
      * @param food the food to be eaten
      */
-    protected void eat(Organism food, World world) {
+    public void eat(Organism food, World world) {
         if(canIEat(food.getClass())){
             addHunger(0.5 * food.getEnergy());
             food.die(world);
@@ -194,19 +194,58 @@ public abstract class Animal extends Organism implements Consumable{
      * Remove 10 energy
      */
     protected void moveTowards(Location location, World world) {
-        if(world.getCurrentLocation().getX() == location.getX() && world.getCurrentLocation().getY() == location.getY()) throw new IllegalArgumentException("Animal is already there");
+        moveTowards(location, world, 1, this);
+    }
 
-        int x = makeNumberOneCloser(world.getCurrentLocation().getX(), location.getX());
-        int y = makeNumberOneCloser(world.getCurrentLocation().getY(), location.getY());
+    /**
+     * @throws IllegalArgumentException if the animal is already on the position;
+     * Returns without doing anything if the object is already standing on the location
+     * Moves towards location by amount of steps tiles
+     * Remove 10 energy
+     */
+    protected void moveTowards(Location location, World world, int amountOfSteps, Animal animal) {
+        Location newTile = world.getLocation(animal);
+        for(int i = 0; i < amountOfSteps; i++) {
+            if (newTile.getX() == location.getX() && newTile.getY() == location.getY())
+                throw new IllegalArgumentException("Animal is already there");
 
-        if(!world.isTileEmpty(new Location(x,y))) {
-            if(world.isTileEmpty(new Location(x,world.getCurrentLocation().getY()))) y = world.getCurrentLocation().getY();
-            else if (world.isTileEmpty(new Location(world.getCurrentLocation().getX(),y))) x = world.getCurrentLocation().getX();
-            else return;
+            int x = makeNumberOneCloser(newTile.getX(), location.getX());
+            int y = makeNumberOneCloser(newTile.getY(), location.getY());
+
+            if (!world.isTileEmpty(new Location(x, y))) {
+                if (world.isTileEmpty(new Location(x, newTile.getY()))) y = newTile.getY();
+                else if (world.isTileEmpty(new Location(newTile.getX(), y))) x = newTile.getX();
+                else break;
+            }
+            newTile = new Location(x,y);
+
+
         }
+        System.out.println(this + " moves from: " + world.getLocation(this) + " to: " + newTile);
+        world.move(this, newTile);
+        removeEnergy(10*amountOfSteps);
+    }
 
+
+
+    protected void moveAwayFrom(World world, Location location){
+        int x = makeNumberOneFurtherAway(world.getCurrentLocation().getX(), location.getX());
+        int y = makeNumberOneFurtherAway(world.getCurrentLocation().getY(), location.getY());
+        x = validateCordinate(world, x);
+        y = validateCordinate(world, y);
         world.move(this, new Location(x,y));
-        removeEnergy(10);
+    }
+
+    protected int validateCordinate(World world, int cordinate){
+     int returnNumber = Math.min(world.getSize(), cordinate);
+     returnNumber = Math.max(0, returnNumber);
+     return returnNumber;
+    }
+
+    protected  int makeNumberOneFurtherAway(int actual, int target){
+        if(actual < target) return (actual - 1);
+        else return (actual + 1);
+
     }
 
     /**

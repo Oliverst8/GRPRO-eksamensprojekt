@@ -97,7 +97,9 @@ class RabbitTest {
 
     @Test
     void testActDayBehaviorExpectingToMoveTowardsGrassWithOnly1GrassInWorldYValue() {
-        Rabbit rabbit1 = initialiseGrassAndRabbitOnWorld(new Location(0,0),new Location(1,1));
+        Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
+        Grass grass = initialiseGrassOnWorld(new Location(1,1));
+        grass.skipTurn();
         program.simulate();
         int acutal = world.getLocation(rabbit1).getY();
         assertEquals(1, acutal);

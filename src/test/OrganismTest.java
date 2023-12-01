@@ -2,6 +2,7 @@ package test;
 
 import Main.Burrow;
 import Main.Consumable;
+import Main.Grass;
 import Main.Rabbit;
 import itumulator.executable.Program;
 import itumulator.world.Location;
@@ -44,11 +45,11 @@ public class OrganismTest {
      */
     @Test
     void testOrganismDie(){
-        Location rabbitLocation = new Location(1,1);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, rabbitLocation, "rabbit");
-        rabbit.die(world);
+        Location grassLocation = new Location(1,1);
+        Grass grass = (Grass) ObjectFactory.generateOnMap(world, grassLocation, "grass");
+        grass.die(world);
         assertThrows(IllegalArgumentException.class, () -> {
-            rabbit.die(world);
+            grass.die(world);
         });
 
     }
@@ -108,15 +109,15 @@ public class OrganismTest {
     }
 
     @Test
-    void dieExpectsAnimalToBeRemoved() {
-        Rabbit rabbit1 = null;
+    void dieExpectsNONAnimalToBeRemoved() {
+        Grass grass = null;
         try{
-            rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world, "Rabbit");
+            grass = (Grass) ObjectFactory.generateOnMap(world, "grass");
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
-        rabbit1.die(world);
-        assertFalse(world.getEntities().containsKey(rabbit1));
+        grass.die(world);
+        assertFalse(world.contains(grass));
 
     }
 

@@ -89,7 +89,6 @@ public class Burrow extends Community{
                 closestEntryLocation = entry.getLocation();
             }
         }
-
         return closestEntryLocation;
     }
 

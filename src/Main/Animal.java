@@ -39,7 +39,12 @@ public abstract class Animal extends Organism implements Consumable{
         return false;
     }
 
-    protected void hunt(World world){
+    /**
+     * @param world the world the animal is in
+     * @return The closest prey of the animal
+     * @return null if there is no prey ind a location of 4
+     */
+    protected Organism findPrey(World world) {
         Map<Location, Organism> prey = new HashMap<>();
         for (Class<? extends Consumable> foodtype : canEat){
             Location preyLocation = findNearest(world, 4, foodtype);
@@ -48,11 +53,11 @@ public abstract class Animal extends Organism implements Consumable{
             if(Helper.doesArrayContain(foodtype.getInterfaces(), NonBlocking.class)) currentPrey = (Organism) world.getNonBlocking(preyLocation);
             else currentPrey = (Organism) world.getTile(preyLocation);
 
-            if(getstrengthWeight() >= currentPrey.getstrengthWeight()){
+            if(getFoodChainValue() >= currentPrey.getFoodChainValue()){
                 prey.put(preyLocation, currentPrey);
             }
         }
-        if(prey.isEmpty()) return;
+        if(prey.isEmpty()) return null;
         Location closestPrey = new Location(-1,-1);
         double closestDist = Double.MAX_VALUE;
         for(Location currentPreyLocation : prey.keySet()){
@@ -62,21 +67,38 @@ public abstract class Animal extends Organism implements Consumable{
                 closestDist = dist;
             }
         }
-        if(prey.get(closestPrey).getstrengthWeight() == -1){
-            if(closestDist == 0){
-                eat(prey.get(closestPrey), world);
+        return prey.get(closestPrey);
+    }
+
+    /**
+     * Finds the closest prey the animal can hunt
+     * If the distance to the cloest prey is 0, its get eaten
+     * If the strengthweight of the prey is -1, it moves towards it, otherwise it checks if it can attak it
+     * if it cant attack it, it moves towards it
+     * @param world the world which the animal is on
+     */
+    protected void hunt(World world){
+        huntPrey(world,findPrey(world));
+    }
+
+
+    protected void huntPrey(World world, Organism prey){
+        if(prey == null) return;
+        Location preyLocation = world.getLocation(prey);
+        double distanteToPrey = distance(world, preyLocation);
+        if(prey.getFoodChainValue() == -1){
+            if(distanteToPrey == 0){
+                eat(prey, world);
             } else {
-                moveTowards(closestPrey, world);
+                moveTowards(preyLocation, world);
             }
         } else{
-            if(closestDist < 2){
-                Attack(world, prey.get(closestPrey));
+            if(distanteToPrey < 2){
+                Attack(world, prey);
             } else{
-                moveTowards(closestPrey, world);
+                moveTowards(preyLocation, world);
             }
         }
-
-
     }
 
     private void Attack(World world, Organism animal) {

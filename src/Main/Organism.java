@@ -44,9 +44,20 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         this.foodChainValue = foodChainValue;
     }
 
+    /**
+     * @return the food chain value of the animal, and -1 if its dead
+     */
     public int getFoodChainValue() {
         if(dead) return -1;
         return foodChainValue;
+    }
+
+    /**
+     * @return the class of the object
+     */
+    @Override
+    public Class<? extends Organism> getEntityClass(){
+        return this.getClass();
     }
 
     public boolean isDead() {
@@ -129,6 +140,8 @@ public abstract class Organism extends Entity implements Actor, Consumable {
             die(world);
         }
     }
+
+
 
     public void skipTurn(){
         skipTurn = true;

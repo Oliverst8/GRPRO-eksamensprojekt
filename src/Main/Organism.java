@@ -10,17 +10,21 @@ public abstract class Organism extends Entity implements Actor, Consumable {
 
     private boolean day;
 
+    private boolean skipTurn = false;
+
     protected int adultAge;
 
     private boolean dead; //Contains data of weather or not the animal is dead
 
-    private int strengthWeight;
+    private int foodChainValue;
+
+    protected int energyLossPerDay;
 
     public int getEnergyLossPerDay() {
         return energyLossPerDay;
     }
 
-    protected int energyLossPerDay;
+
 
     /**
      * Creates a new organism
@@ -28,21 +32,21 @@ public abstract class Organism extends Entity implements Actor, Consumable {
      * Initialises the food type
      * Initialises energy to 100
      */
-    public Organism(int defaultStrength) {
+    public Organism(int defualtFoodChainValue) {
         age = 0;
         energy = 100;
         energyLossPerDay = 5;
         dead = false;
-        setStrengthWeight(defaultStrength);
+        setFoodChainValue(defualtFoodChainValue);
     }
 
-    protected void setStrengthWeight(int strengthWeight){
-        this.strengthWeight = strengthWeight;
+    protected void setFoodChainValue(int foodChainValue){
+        this.foodChainValue = foodChainValue;
     }
 
-    public int getstrengthWeight() {
+    public int getFoodChainValue() {
         if(dead) return -1;
-        return strengthWeight;
+        return foodChainValue;
     }
 
     public boolean isDead() {
@@ -112,6 +116,10 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     @Override
     public void act(World world) {
         setDay(world.isDay());
+        if(dead || skipTurn) {
+            skipTurn = false;
+            return;
+        }
 
         if(isDay()) dayBehavior(world);
         else nightBehavior(world);
@@ -120,6 +128,14 @@ public abstract class Organism extends Entity implements Actor, Consumable {
             System.out.println(this + " is out of energy and dying");
             die(world);
         }
+    }
+
+    public void skipTurn(){
+        skipTurn = true;
+    }
+
+    public void setSkipTurn(boolean skipTurn){
+        this.skipTurn = skipTurn;
     }
 
     @Override

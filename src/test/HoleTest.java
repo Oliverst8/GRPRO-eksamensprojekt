@@ -28,7 +28,7 @@ class HoleTest {
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         location = new Location(0,0);
-        hole = new Hole(location);
+        hole = new Hole(location, "hole-small");
         burrow = new Burrow(world, location);
     }
 
@@ -39,13 +39,13 @@ class HoleTest {
     @Test
     void testHoleConstructorWithLocationArgument(){
         Location expectedLocation = new Location(60,60);
-        Hole constructorHole = new Hole(expectedLocation);
+        Hole constructorHole = new Hole(expectedLocation, "hole-small");
         assertEquals(expectedLocation,constructorHole.getLocation());
     }
     @Test
     void testHoleConstructorWithLocationAndBurrowArgument(){
         Location expectedLocation = new Location(60,60);
-        Hole constructorHole = new Hole(expectedLocation,burrow);
+        Hole constructorHole = new Hole(expectedLocation,burrow, "hole-small");
         assertEquals(expectedLocation,constructorHole.getLocation());
         assertEquals(burrow,constructorHole.getBurrow());
     }

@@ -7,7 +7,7 @@ import spawn.ObjectFactory;
 import java.awt.*;
 import java.util.List;
 
-public class Rabbit extends Animal {
+public class Rabbit extends Animal{
 
     private Burrow burrow;
     private boolean inBurrow = false;
@@ -17,19 +17,19 @@ public class Rabbit extends Animal {
      * Initialises inBurrow to false
      */
     public Rabbit(){
-        super(new String[]{"plant", "fruit"});
+        super(new Class[]{Grass.class}, 0);
         burrow = null;
         adultAge = 3;
     }
 
     public Rabbit(int age, Burrow burrow, boolean inBurrow) {
-        super(new String[]{"plant", "fruit"});
+        super(new Class[]{Grass.class}, 0);
         setBurrow(burrow);
         adultAge = 3;
         this.age = age;
         if(inBurrow) {
             this.inBurrow = true;
-            burrow.addRabbit(this);
+            burrow.addMember(this);
         }
     }
 
@@ -84,7 +84,7 @@ public class Rabbit extends Animal {
     }
 
     protected void produceOffSpring(World world) {
-        Rabbit rabbitChild = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 0, burrow, true);
+        ObjectFactory.generateOffMap(world, "rabbit", 0, burrow, true);
     }
 
     /**
@@ -104,8 +104,8 @@ public class Rabbit extends Animal {
         }
 
         if(inBurrow) {
-            if(getEnergy() > 80 && burrow.getAdultRabbitsInside().size() >= 2) {
-                for(Rabbit otherRabbit : burrow.getAdultRabbitsInside()){
+            if(getEnergy() > 80 && burrow.getAdultMembers().size() >= 2) {
+                for(Animal otherRabbit : burrow.getMembers()){
                     if(otherRabbit != this && otherRabbit.getEnergy() > 80) {
                         try{
                             reproduce(world, this, otherRabbit);
@@ -122,16 +122,7 @@ public class Rabbit extends Animal {
             }
             if(getHunger() < 100) exitBurrow(world);
         } else if(getHunger() < 100) {
-            Location nearestGrass = findNearest(world, 4, Grass.class);
-            if (nearestGrass != null) {
-                Object grassTileObject = world.getTile(nearestGrass);
-                if(!(grassTileObject instanceof Grass || grassTileObject == this)) return;
-                if (distance(world, nearestGrass) == 0) {
-                    eat((Grass) world.getNonBlocking(nearestGrass), world);
-                } else {
-                    moveTowards(nearestGrass, world);
-                }
-            }
+            hunt(world);
         } else{
             seekBurrow(world);
         }
@@ -184,7 +175,7 @@ public class Rabbit extends Animal {
         if(inBurrow) throw new IllegalOperationException("Cant enter a burrow, if its already in one");
 
         inBurrow = true;
-        burrow.addRabbit(this);
+        burrow.addMember(this);
         world.remove(this);
     }
 
@@ -211,7 +202,7 @@ public class Rabbit extends Animal {
         if(freeLocation == null) return;
 
         inBurrow = false;
-        burrow.removeRabbit(this);
+        burrow.removeMember(this);
         world.setTile(freeLocation,this);
 
     }

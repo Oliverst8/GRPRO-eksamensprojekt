@@ -14,6 +14,13 @@ public abstract class Entity implements DynamicDisplayInformationProvider {
     protected abstract String getPNGPath();
 
     /**
+     * @return the class of the entity
+     */
+    public Class<? extends Entity> getEntityClass() {
+        return this.getClass();
+    }
+
+    /**
      * @return the display information of the object
      */
     @Override

@@ -75,7 +75,7 @@ public class Rabbit extends Animal{
 
     private void moveTowardsOwnBurrow(World world) {
         Location nearestEntry = burrow.findNearestEntry(world, world.getCurrentLocation());
-        if(distance(world, nearestEntry) != 0) moveTowards(nearestEntry, world);
+        if(distance(world, nearestEntry) != 0) moveTowards(world, nearestEntry);
         if(distance(world, nearestEntry) == 0) enterBurrow(world);
     }
 
@@ -152,7 +152,7 @@ public class Rabbit extends Animal{
     private void expandBurrow(World world) {
         if(getEnergy()-50 > 0) {
             Location location = Helper.findNonBlockingEmptyLocation(world);
-            burrow.addEntry(location, world);
+            burrow.addEntry(world, location);
             removeEnergy(50);
         }
     }

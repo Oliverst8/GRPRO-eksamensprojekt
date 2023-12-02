@@ -52,7 +52,7 @@ class BurrowTest {
         Location expected = new Location(2,2);
         Burrow testBurrow = new Burrow(world, expected);
         List<Hole> holes = testBurrow.getEntries();
-        Location actual = holes.get(0).getLocation();
+        Location actual = holes.get(0).getLocation(world);
 
         assertEquals(expected,actual);
     }
@@ -118,7 +118,7 @@ class BurrowTest {
         Location location = new Location(1,1);
         Location rabbitLocation = new Location(0,0);
         Burrow burrow = new Burrow(world, location);
-        assertEquals(location, burrow.findNearestEntry(rabbitLocation));
+        assertEquals(location, burrow.findNearestEntry(world, rabbitLocation));
     }
 
     @Test
@@ -127,8 +127,8 @@ class BurrowTest {
         Location location1 = new Location(1,1);
         Location rabbitLocation = new Location(0,0);
         Burrow burrow = new Burrow(world, location);
-        burrow.addEntry(location1, world);
-        assertEquals(location1, burrow.findNearestEntry(rabbitLocation));
+        burrow.addEntry(world, location1);
+        assertEquals(location1, burrow.findNearestEntry(world, rabbitLocation));
     }
 
     @Test

@@ -1,17 +1,18 @@
 package Main;
 
+import itumulator.world.World;
+import spawn.ObjectFactory;
 import itumulator.world.Location;
 
 public class Den extends Community{
 
     Hole den;
 
-    public Den(Location denLocation){
-        den = new Hole(denLocation,"hole");
+    public Den(World world, Location entry) {
+        den = (Hole) ObjectFactory.generateOnMap(world,entry,"Hole", this, "hole-small");
     }
 
-    public Location getLocation(){
-        return den.getLocation();
+    public Location getLocation(World world) {
+        return den.getLocation(world);
     }
-
 }

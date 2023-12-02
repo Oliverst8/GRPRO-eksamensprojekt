@@ -24,7 +24,7 @@ public class Burrow extends Community{
 
         entries = new ArrayList<>();
 
-        addEntry(entry, world);
+        addEntry(world, entry);
     }
 
     /**
@@ -41,7 +41,7 @@ public class Burrow extends Community{
         Random random = new Random();
         Location entryLocation = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
         
-        addEntry(entryLocation, world);
+        addEntry(world, entryLocation);
     }
 
     /**
@@ -56,7 +56,7 @@ public class Burrow extends Community{
      * Otherwise makes a hole and adds it to the list of entries
      * @param entry
      */
-    public void addEntry(Location entry, World world) {
+    public void addEntry(World world, Location entry) {
         Hole hole = (Hole) ObjectFactory.generateOnMap(world,entry,"Hole", this, "hole-small");
 
         entries.add(hole);
@@ -79,7 +79,7 @@ public class Burrow extends Community{
                 closestEntryLocation = entry.getLocation(world);
             }
         }
-        
+
         return closestEntryLocation;
     }
 }

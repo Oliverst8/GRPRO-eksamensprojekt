@@ -100,21 +100,21 @@ public abstract class Animal extends Organism implements Consumable{
         double distanteToPrey = distance(world, preyLocation);
         if(prey.getFoodChainValue() == -1){
             if(distanteToPrey == 0){
-                eat(prey, world);
+                eat(world, prey);
             } else {
-                moveTowards(preyLocation, world);
+                moveTowards(world, preyLocation);
             }
         } else if(prey.getFoodChainValue() == -2){
             if(distanteToPrey < 2){
-                eat(prey, world);
+                eat(world, prey);
             } else {
-                moveTowards(preyLocation, world);
+                moveTowards(world, preyLocation);
             }
         }else{
             if(distanteToPrey < 2){
                 Attack(world, prey);
             } else{
-                moveTowards(preyLocation, world);
+                moveTowards(world, preyLocation);
             }
         }
     }
@@ -134,7 +134,7 @@ public abstract class Animal extends Organism implements Consumable{
      * Adds energy if it can, and does nothing if not.
      * @param food the food to be eaten
      */
-    public void eat(Organism food, World world) {
+    public void eat(World world, Organism food) {
         if(canIEat(food.getEntityClass())){
             addHunger(0.5 * food.getEnergy());
             food.die(world);
@@ -241,8 +241,8 @@ public abstract class Animal extends Organism implements Consumable{
      * Moves towards location by one tile
      * Remove 10 energy
      */
-    protected void moveTowards(Location location, World world) {
-        moveTowards(location, world, 1, this);
+    protected void moveTowards(World world, Location location) {
+        moveTowards(world, location, 1, this);
     }
 
     /**
@@ -251,7 +251,7 @@ public abstract class Animal extends Organism implements Consumable{
      * Moves towards location by amount of steps tiles
      * Remove 10 energy
      */
-    protected void moveTowards(Location location, World world, int amountOfSteps, Animal animal) {
+    protected void moveTowards(World world, Location location, int amountOfSteps, Animal animal) {
         Location newTile = world.getLocation(animal);
         for(int i = 0; i < amountOfSteps; i++) {
             if (newTile.getX() == location.getX() && newTile.getY() == location.getY())
@@ -309,7 +309,6 @@ public abstract class Animal extends Organism implements Consumable{
     protected  int makeNumberOneFurtherAway(int actual, int target){
         if(actual < target) return (actual - 1);
         else return (actual + 1);
-
     }
 
     /**

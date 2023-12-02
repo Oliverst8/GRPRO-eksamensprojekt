@@ -2,12 +2,9 @@ package Main;
 
 public abstract class Plant extends Organism {
 
-    /**
-     * Sets the food type of the plant
-     * @param foodType
-     */
-    public Plant(String foodType) {
-        super(foodType);
+
+    public Plant(int defaultStenght) {
+        super(defaultStenght);
     }
 
     /**

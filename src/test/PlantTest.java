@@ -1,5 +1,6 @@
 package test;
 
+import Main.Consumable;
 import Main.Grass;
 import itumulator.executable.Program;
 import itumulator.world.World;
@@ -25,7 +26,7 @@ class PlantTest {
     @Test
     void testPlantConstructor() {
         Grass grass = new Grass();
-        assertEquals("plant",grass.getFoodType());
+        assertInstanceOf(Consumable.class, grass);
     }
     @AfterEach
     void tearDown() {

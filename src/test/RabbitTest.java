@@ -97,7 +97,9 @@ class RabbitTest {
 
     @Test
     void testActDayBehaviorExpectingToMoveTowardsGrassWithOnly1GrassInWorldYValue() {
-        Rabbit rabbit1 = initialiseGrassAndRabbitOnWorld(new Location(0,0),new Location(1,1));
+        Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
+        Grass grass = initialiseGrassOnWorld(new Location(1,1));
+        grass.skipTurn();
         program.simulate();
         int acutal = world.getLocation(rabbit1).getY();
         assertEquals(1, acutal);
@@ -189,7 +191,7 @@ class RabbitTest {
         rabbitInsideBurrow.setHunger(99);
         rabbitInsideBurrow.setEnergy(60);
         program.simulate();
-        assertEquals(0,burrow.getRabbitsInside().size());
+        assertEquals(0,burrow.getMembers().size());
     }
     @Test
     void testDayBehaviorExpectsRabbitToDigAnotherEntrance(){
@@ -266,13 +268,14 @@ class RabbitTest {
     }
 
     @Test
-    void testDaysBehaviorWhereRabbitsneedsToGoToGrassButThereIsAlreadyAnObjectExpectsRabbitToStayInSameSpot() {
+    void testDaysBehaviorWhereRabbitsneedsToGoToGrassButThereIsAlreadyAnObjectExpectsRabbitToMoveOneCloser() {
         Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
         Rabbit rabbit2 = initialiseRabbitOnWorld(new Location(1,1));
         Grass grass = initialiseGrassOnWorld(new Location(1,1));
         grass.setEnergy(10);
+        rabbit2.setSkipTurn(true);
         program.simulate();
-        assertEquals(new Location(0,0),world.getLocation(rabbit1));
+        assertEquals(new Location(1,0),world.getLocation(rabbit1));
     }
 
     /**

@@ -3,20 +3,28 @@ package Main;
 import itumulator.simulator.Actor;
 import itumulator.world.World;
 
-public abstract class Organism extends Entity implements Actor {
+public abstract class Organism extends Entity implements Actor, Consumable {
     protected int age;
-    private String foodType; //The type of food the organism is
+
     private int energy; //0 is empty, and 100 is full
 
     private boolean day;
 
+    private boolean skipTurn = false;
+
     protected int adultAge;
+
+    private boolean dead; //Contains data of weather or not the animal is dead
+
+    private int foodChainValue;
+
+    protected int energyLossPerDay;
 
     public int getEnergyLossPerDay() {
         return energyLossPerDay;
     }
 
-    protected int energyLossPerDay;
+
 
     /**
      * Creates a new organism
@@ -24,11 +32,36 @@ public abstract class Organism extends Entity implements Actor {
      * Initialises the food type
      * Initialises energy to 100
      */
-    public Organism(String foodType) {
+    public Organism(int defualtFoodChainValue) {
         age = 0;
-        this.foodType = foodType;
         energy = 100;
         energyLossPerDay = 5;
+        dead = false;
+        setFoodChainValue(defualtFoodChainValue);
+    }
+
+    protected void setFoodChainValue(int foodChainValue){
+        this.foodChainValue = foodChainValue;
+    }
+
+    /**
+     * @return the food chain value of the animal, and -1 if its dead
+     */
+    public int getFoodChainValue() {
+        if(dead) return -1;
+        return foodChainValue;
+    }
+
+    /**
+     * @return the class of the object
+     */
+    @Override
+    public Class<? extends Organism> getEntityClass(){
+        return this.getClass();
+    }
+
+    public boolean isDead() {
+        return dead;
     }
 
     /**
@@ -44,6 +77,7 @@ public abstract class Organism extends Entity implements Actor {
      * @param world current world
      */
     public void die(World world) {
+        dead = true;
         world.delete(this);
     }
 
@@ -54,13 +88,7 @@ public abstract class Organism extends Entity implements Actor {
         return age;
     }
 
-    /**
-     *
-     * @return the food type of the organism
-     */
-    public String getFoodType() {
-        return foodType;
-    }
+
 
     /**
      * @return the current amount of energy
@@ -99,6 +127,10 @@ public abstract class Organism extends Entity implements Actor {
     @Override
     public void act(World world) {
         setDay(world.isDay());
+        if(dead || skipTurn) {
+            skipTurn = false;
+            return;
+        }
 
         if(isDay()) dayBehavior(world);
         else nightBehavior(world);
@@ -107,6 +139,16 @@ public abstract class Organism extends Entity implements Actor {
             System.out.println(this + " is out of energy and dying");
             die(world);
         }
+    }
+
+
+
+    public void skipTurn(){
+        skipTurn = true;
+    }
+
+    public void setSkipTurn(boolean skipTurn){
+        this.skipTurn = skipTurn;
     }
 
     @Override

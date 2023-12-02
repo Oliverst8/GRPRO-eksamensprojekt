@@ -9,9 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class Burrow {
+public class Burrow extends Community{
     private List<Hole> entries;
-    private List<Rabbit> rabbitsInside;
 
     /**
      * @throws IllegalArgumentException if entry is null or world is null
@@ -21,11 +20,11 @@ public class Burrow {
      * @param entry The first entry location of the burrow
      */
     public Burrow(World world, Location entry) {
+        super();
         if(entry == null) throw new NullPointerException("Entry cant be null");
         if(world == null) throw new NullPointerException("World cant be null");
 
         entries = new ArrayList<>();
-        rabbitsInside = new LinkedList<>();
         addEntry(entry, world);
     }
 
@@ -37,29 +36,19 @@ public class Burrow {
      * Makes a hole with the location, and adds it to the list
      */
     public Burrow(World world) {
+        super();
         if (world == null) throw new NullPointerException("World cant be null");
 
         entries = new ArrayList<>();
-        rabbitsInside = new LinkedList<>();
+
         Random random = new Random();
         Location entryLocation = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
         addEntry(entryLocation, world);
     }
 
-    /**
-     * Add a rabbit to the burrow
-     * @param rabbit
-     */
-    public void addRabbit(Rabbit rabbit) {
-        rabbitsInside.add(rabbit);
-    }
 
-    /**
-     * Removes parameter rabbit to the list of rabbits inside the burrow
-     */
-    public void removeRabbit(Rabbit rabbit) {
-        rabbitsInside.remove(rabbit);
-    }
+
+
 
     /**
      * @return a list of Locations of the entries the burrow has
@@ -74,29 +63,14 @@ public class Burrow {
      * @param entry
      */
     public void addEntry(Location entry, World world) {
-        Hole hole = (Hole) ObjectFactory.generateOnMap(world,entry,"Hole", entry, this);
+        Hole hole = (Hole) ObjectFactory.generateOnMap(world,entry,"Hole", entry, this, "hole-small");
 
         entries.add(hole);
     }
 
-    /**
-     * @return the list of rabbits inside the burrow
-     */
-    public List<Rabbit> getRabbitsInside() {
-        return rabbitsInside;
-    }
 
-    public List<Rabbit> getAdultRabbitsInside() {
-        List<Rabbit> adultRabbits = new ArrayList<>();
 
-        for(Rabbit rabbit : rabbitsInside) {
-            if(rabbit.getAge() >= rabbit.getAdultAge()) {
-                adultRabbits.add(rabbit);
-            }
-        }
 
-        return adultRabbits;
-    }
 
     /**
      *
@@ -109,23 +83,14 @@ public class Burrow {
         double minDist = Double.MAX_VALUE;
 
         for(Hole entry : entries) {
-            double distance = distance(rabbitLocation, entry.getLocation());
+            double distance = Helper.distance(rabbitLocation, entry.getLocation());
             if(minDist > distance) {
                 minDist = distance;
                 closestEntryLocation = entry.getLocation();
             }
         }
-
         return closestEntryLocation;
     }
 
-    /**
-     * Finds the distance between two objects
-     * @param location1 the first location
-     * @param location2 the location of the second object
-     * @return the distance between two object
-     */
-    private double distance(Location location1, Location location2) {
-        return Math.sqrt(Math.pow(location1.getX() - location2.getX(), 2) + Math.pow(location1.getY() - location2.getY(), 2));
-    }
+
 }

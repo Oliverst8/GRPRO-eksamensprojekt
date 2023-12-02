@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Input input = new Input("data/week2/t2-1c.txt");
+        Input input = new Input("data/week1/t1-3a.txt");
 
         int size = input.getSize(); // størrelsen af vores 'map' (dette er altid kvadratisk)
         int delay = 500; // forsinkelsen mellem hver skridt af simulationen (i ms)

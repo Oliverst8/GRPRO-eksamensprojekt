@@ -69,7 +69,6 @@ public class ObjectFactory {
         return classMap.getOrDefault(preConvertedClass,preConvertedClass);
     }
 
-
     private static Object generateHelper(String className, Object... constructorArgs) {
         className = className.toLowerCase();
         className = className.substring(0, 1).toUpperCase() + className.substring(1);

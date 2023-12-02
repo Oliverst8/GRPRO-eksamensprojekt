@@ -1,5 +1,6 @@
 package Main;
 
+import itumulator.world.World;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 
@@ -7,40 +8,40 @@ import java.awt.*;
 
 public class Hole extends InAnimate implements NonBlocking {
 
-    private Location location;
-
     private final Burrow burrow;
 
     private final String pngType;
-    
+
     /**
-     * Throws NullPointerException if the argument is null
-     * Sets the location of the hole
-     * @param location the location of the hole
-     * @throws NullPointerException if the parameter location is null
+     * Initialises the hole
+     * @param pngType the image of the hole
      */
-    public Hole(Location location, String pngType) {
-        this.location = location;
+    public Hole(String pngType) {
         burrow = null;
         this.pngType = pngType;
     }
 
-    public Hole(Location location, Burrow burrow, String pngType) {
-        this.location = location;
+    /**
+     * Initialises the hole belonging to a burrow
+     * @param burrow the burrow the hole belongs to
+     * @param pngType the image of the hole
+     */
+    public Hole(Burrow burrow, String pngType) {
         this.burrow = burrow;
         this.pngType = pngType;
     }
 
     /**
-     * @return the location of the Hole object
+     * @return the location of the hole
+     * @param world the world the hole is in
+     * @return the location of the hole
      */
-    public Location getLocation() {
-        return location;
+    public Location getLocation(World world) {
+        return world.getLocation(this);
     }
 
     /**
-     *
-     * @return the type of the Hole object as hole
+     * @return the image of the hole
      */
     @Override
     protected String getType() {
@@ -55,6 +56,9 @@ public class Hole extends InAnimate implements NonBlocking {
         return new Color(150, 75, 0);
     }
 
+    /**
+     * @return the burrow the hole belongs to
+     */
     public Burrow getBurrow() {
         return burrow;
     }

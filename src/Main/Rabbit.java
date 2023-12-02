@@ -5,6 +5,7 @@ import itumulator.world.World;
 import spawn.ObjectFactory;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Rabbit extends Animal{
@@ -47,12 +48,7 @@ public class Rabbit extends Animal{
             sleep();
             return;
         }
-        if(burrow != null){
-            seekBurrow(world);
-            return;
-        }
-        dig(world);
-
+        seekBurrow(world);
     }
 
     /**
@@ -121,11 +117,25 @@ public class Rabbit extends Animal{
                 return;
             }
             if(getHunger() < 100) exitBurrow(world);
-        } else if(getHunger() < 100) {
-            hunt(world);
-        } else{
-            seekBurrow(world);
         }
+        else {
+            if(world.getSurroundingTiles(world.getLocation(this)).size()>world.getEmptySurroundingTiles(world.getLocation(this)).size()){
+               for(Location location : world.getSurroundingTiles(world.getLocation(this))){
+                   if(world.isTileEmpty(location)) return;
+                   Organism organism = (Organism) world.getTile(location);
+                   if(organism.getFoodChainValue()>this.getFoodChainValue()){
+                       moveAwayFrom(world,location);
+                   }
+               }
+            }
+            if(getHunger() < 100) {
+                hunt(world);
+            } else{
+                seekBurrow(world);
+            }
+
+        }
+
     }
 
     /**
@@ -191,14 +201,14 @@ public class Rabbit extends Animal{
         List<Hole> entries = burrow.getEntries();
         Location freeLocation = null;
 
-        for(int i = 0; i<entries.size();i++) {
-            Hole tempHole = entries.get(i);
-            if(world.isTileEmpty(tempHole.getLocation())) {
-                freeLocation = tempHole.getLocation();
-                break;
-            }
+        for(Hole tempHole : entries) {
+            if(!(freeLocation == null)) break;
+            List<Location> emptyLocations = new ArrayList<>();
+            if(world.isTileEmpty(tempHole.getLocation())) emptyLocations.add(tempHole.getLocation());
+            emptyLocations.addAll(world.getEmptySurroundingTiles(tempHole.getLocation()));
+            if(emptyLocations.isEmpty()) break;
+            freeLocation = emptyLocations.get(0);
         }
-
         if(freeLocation == null) return;
 
         inBurrow = false;

@@ -60,6 +60,4 @@ public abstract class Community {
         }
         return closestEntityLocation;
     }
-
-
 }

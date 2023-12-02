@@ -16,7 +16,9 @@ public class Grass extends Plant implements NonBlocking, Consumable {
     public Grass() {
         super(-1);
 
-        setEnergy(25);
+        setEnergy(50);
+
+        energyLossPerDay = 10;
     }
 
     /**
@@ -41,7 +43,7 @@ public class Grass extends Plant implements NonBlocking, Consumable {
 
         ObjectFactory.generateOnMap(world,randomLocation,"Grass");
 
-        removeEnergy(25);
+        removeEnergy(50);
     }
 
     @Override

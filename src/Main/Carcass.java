@@ -13,17 +13,19 @@ public class Carcass extends Organism{
 
     /**
      * Sets food chain value to -2
-     * @param world the world the carcass is in
-     * @param animal the type of carcass this is
-     * @param carcassLocation where the carcass is located
      * Makes the carcass enter the world
      * Sets the adult age of the carcass to 3
      * Sets the starting age of the carcass to 0
+     * @param world the world the carcass is in
+     * @param animal the type of carcass this is
+     * @param carcassLocation where the carcass is located
      */
     public Carcass(World world, Animal animal, Location carcassLocation) {
         super(-2);
+
         this.animal = animal;
         world.setTile(carcassLocation, this);
+
         adultAge = 3;
         age = 0;
     }
@@ -68,6 +70,7 @@ public class Carcass extends Organism{
     @Override
     public void act(World world){
         setDay(world.isDay());
+        
         if(isDay()) dayBehavior(world);
         else nightBehavior(world);
     }
@@ -79,10 +82,11 @@ public class Carcass extends Organism{
      */
     @Override
     void dayBehavior(World world) {
-        if(night){
+        if(night) {
             grow();
             night = false;
         }
+
         if(age == adultAge) die(world);
     }
 

@@ -338,4 +338,11 @@ public class Wolf extends Animal{
     void nightBehavior(World world) {
         sleep();
     }
+
+    @Override
+    public void die(World world) {
+        super.die(world);
+
+        pack.removeMember(this);
+    }
 }

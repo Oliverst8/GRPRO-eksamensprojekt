@@ -333,8 +333,13 @@ class RabbitTest {
     }
 
     @Test
-    void testThatRabbitCantExitBurrowFromBlockedEntranceInTheBeginningThenBlockingObjectMoves(){
-
+    void testThatRabbitIsRemovedFromBorrowWhenDead() {
+        Burrow burrow = new Burrow(world, new Location(0,0));
+        Rabbit rabbit = new Rabbit(3, burrow, false);
+        world.setTile(new Location(0,0),rabbit);
+        rabbit.setEnergy(0);
+        program.simulate();
+        assertEquals(0,burrow.getMembers().size());
     }
 
     @AfterEach

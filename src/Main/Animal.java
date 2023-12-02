@@ -98,14 +98,14 @@ public abstract class Animal extends Organism implements Consumable{
         if(prey == null) return;
         Location preyLocation = world.getLocation(prey);
         double distanteToPrey = distance(world, preyLocation);
-        if(prey.getFoodChainValue() == -1){
+        if(prey.getFoodChainValue() == -1) {
             if(distanteToPrey == 0){
                 eat(world, prey);
             } else {
                 moveTowards(world, preyLocation);
             }
-        } else if(prey.getFoodChainValue() == -2){
-            if(distanteToPrey < 2){
+        } else if(prey.getFoodChainValue() == -2) {
+            if(distanteToPrey < 2) {
                 eat(world, prey);
             } else {
                 moveTowards(world, preyLocation);
@@ -148,11 +148,11 @@ public abstract class Animal extends Organism implements Consumable{
      */
     @Override
     public void die(World world){
-        if(world.contains(this)){
+        if(world.contains(this)) {
             Location carcassLocation = world.getLocation(this);
             world.delete(this);
             Carcass carcass = new Carcass(world,this, carcassLocation);
-        } else{
+        } else {
             super.die(world);
         }
     }

@@ -218,6 +218,13 @@ public class Rabbit extends Animal{
     }
 
     @Override
+    public void die(World world) {
+        super.die(world);
+
+        burrow.removeMember(this);
+    }
+
+    @Override
     public String getType() {
         return "rabbit";
     }

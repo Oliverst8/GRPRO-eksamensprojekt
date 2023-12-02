@@ -176,10 +176,13 @@ public class WolfTest {
         //Do something
     }
 
-
-
-
-
+    @Test
+    void testThatWolfsIsRemovedFromPackWhenDead() {
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf", 5);
+        wolf.die(world);
+        program.simulate();
+        assertEquals(0, wolf.getPack().getMembers().size());
+    }
 
     @AfterEach
     void tearDown() {

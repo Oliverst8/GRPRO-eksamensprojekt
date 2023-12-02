@@ -21,6 +21,7 @@ public abstract class Community {
     public void addMember(Animal member) {
         members.add(member);
     }
+    
     /**
      * Removes parameter member from the list of members
      */

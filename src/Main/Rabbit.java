@@ -42,17 +42,13 @@ public class Rabbit extends Animal{
      */
     @Override
     protected void nightBehavior(World world) {
-        if(inBurrow) sleeping = true;
-        if(sleeping){
+        if(inBurrow) {
             sleep();
-            return;
-        }
-        if(burrow != null){
+        } else if(burrow != null) {
             seekBurrow(world);
-            return;
+        } else {
+            dig(world);
         }
-        dig(world);
-
     }
 
     /**

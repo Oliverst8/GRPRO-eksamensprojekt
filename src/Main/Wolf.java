@@ -147,6 +147,8 @@ public class Wolf extends Animal{
      */
     @Override
     void dayBehavior(World world) {
+        wake();
+    
         if(getInDen()){
             if(getEnergy() > 80 && pack.getDen().getAdultMembers().size() >= 2){
                 for(Animal otherWolf : pack.getDen().getMembers()){
@@ -335,6 +337,6 @@ public class Wolf extends Animal{
      */
     @Override
     void nightBehavior(World world) {
-        throw new UnsupportedOperationException("Wolf nightBehavior is not implemented yet");
+        sleep();
     }
 }

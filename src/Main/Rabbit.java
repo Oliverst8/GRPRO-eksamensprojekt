@@ -211,7 +211,6 @@ public class Rabbit extends Animal{
         inBurrow = false;
         burrow.removeMember(this);
         world.setTile(freeLocation,this);
-
     }
 
     /**
@@ -235,7 +234,7 @@ public class Rabbit extends Animal{
     public void die(World world) {
         super.die(world);
 
-        burrow.removeMember(this);
+        if(burrow != null) burrow.removeMember(this);
     }
 
     @Override

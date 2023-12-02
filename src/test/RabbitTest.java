@@ -351,7 +351,7 @@ class RabbitTest {
     }
 
     @Test
-    void testThatRabbitCantExitBurrowFromBlockedEntrance(){
+    void testThatRabbitCantExitBurrowFromBlockedEntrance() {
         Location testLocation = new Location(0,0);
         Burrow burrow = new Burrow(world, testLocation);
         Rabbit rabbit = new Rabbit(3, burrow, true);

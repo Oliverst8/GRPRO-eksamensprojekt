@@ -120,12 +120,13 @@ public abstract class Animal extends Organism implements Consumable{
     }
 
     /**
-     *
+     * removes 10 energy from the prey
+     * if it hits 0 energy die will be called from organism.java
      * @param world
      * @param animal
      */
     private void Attack(World world, Organism animal) {
-        throw new UnsupportedOperationException("Attack method not implemented yet");
+        animal.removeEnergy(10);
     }
 
     /**
@@ -156,6 +157,7 @@ public abstract class Animal extends Organism implements Consumable{
             super.die(world);
         }
     }
+
 
     /**
      * @throws IllegalArgumentException if radius is less then 2

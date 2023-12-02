@@ -331,12 +331,18 @@ public class Wolf extends Animal{
     }
 
     /**
-     * Does nothing right now PLEASE FIX!
+     * If its inside of its den, then sleep true and calls sleep
+     * If not it calls goToDen where it movestowards its den or digs one
      * @param world
      */
     @Override
-    void nightBehavior(World world) {
-        sleep();
+    protected void nightBehavior(World world) {
+        if(inDen) sleeping = true;
+        if(sleeping){
+            sleep();
+            return;
+        }
+        goToDen(world);
     }
 
     @Override

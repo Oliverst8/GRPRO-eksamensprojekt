@@ -13,6 +13,7 @@ public abstract class Animal extends Organism implements Consumable{
     private final Class<? extends Consumable>[] canEat; //Holdes the types of classes the animal can eat
 
     protected boolean sleeping;
+    protected boolean infected;
 
     /**
      * Initialises hunger to 50
@@ -24,6 +25,7 @@ public abstract class Animal extends Organism implements Consumable{
         hunger = 50;
         this.canEat = canEat;
         sleeping = false;
+        infected = false;
     }
 
     /**
@@ -329,10 +331,16 @@ public abstract class Animal extends Organism implements Consumable{
      * Set sleeping to true
      */
     protected void sleep() {
+        sleeping = true;
+
         if(hunger > 10) {
             removeHunger(10);
             addEnergy(10);
         }
+    }
+
+    protected void wake() {
+        sleeping = false;
     }
 
     public double getHunger() {
@@ -364,5 +372,17 @@ public abstract class Animal extends Organism implements Consumable{
      */
     public Class<? extends Consumable>[] getCanEat(){
         return canEat;
+    }
+
+    @Override
+    protected String getPNGPath() {
+        StringBuilder path = new StringBuilder();
+
+        path.append(super.getPNGPath());
+
+        if (infected) path.append("-fungi");
+        if (sleeping) path.append("-sleeping");
+
+        return path.toString();
     }
 }

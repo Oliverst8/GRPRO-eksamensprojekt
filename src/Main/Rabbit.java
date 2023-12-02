@@ -135,7 +135,6 @@ public class Rabbit extends Animal{
             }
 
         }
-
     }
 
     /**
@@ -209,6 +208,7 @@ public class Rabbit extends Animal{
             if(emptyLocations.isEmpty()) break;
             freeLocation = emptyLocations.get(0);
         }
+
         if(freeLocation == null) return;
 
         inBurrow = false;

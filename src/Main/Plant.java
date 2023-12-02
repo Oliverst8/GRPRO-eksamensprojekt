@@ -11,7 +11,7 @@ public abstract class Plant extends Organism {
      * Degrades the current health by 10
      */
     protected void decay() {
-        removeEnergy(10);
+        removeEnergy(5);
     }
 
     /**
@@ -24,6 +24,6 @@ public abstract class Plant extends Organism {
             throw new IllegalOperationException("Cant make photosynthesis in the night");
         }
 
-        addEnergy(10);
+        addEnergy(20);
     }
 }

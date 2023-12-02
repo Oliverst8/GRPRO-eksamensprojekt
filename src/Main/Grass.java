@@ -15,6 +15,8 @@ public class Grass extends Plant implements NonBlocking, Consumable {
      */
     public Grass() {
         super(-1);
+
+        setEnergy(25);
     }
 
     /**
@@ -61,9 +63,8 @@ public class Grass extends Plant implements NonBlocking, Consumable {
     @Override
     void dayBehavior(World world) {
         photosynthesis();
-        if(getEnergy() >= 50) {
-            spread(world);
-        }
+
+        if(getEnergy() >= 75) spread(world);
     }
 
     /**

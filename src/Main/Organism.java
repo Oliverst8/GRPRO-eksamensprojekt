@@ -85,8 +85,6 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         return age;
     }
 
-
-
     /**
      * @return the current amount of energy
      */

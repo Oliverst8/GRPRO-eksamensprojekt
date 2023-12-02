@@ -8,10 +8,10 @@ import itumulator.world.Location;
 
 public class Bear extends Animal {
     Location territory;
-    int territoryRadius = 5;
+    int territoryRadius = 3;
 
     public Bear(World world) {
-        super(new String[]{"berries", "wolf"});
+        super(new Class[]{Wolf.class}, 3);
 
         adultAge = 5;
 
@@ -23,7 +23,7 @@ public class Bear extends Animal {
     }
 
     public Bear(World world, Location territory) {
-        super(new String[]{"berries", "wolf"});
+        super(new Class[]{Wolf.class}, 3);
 
         adultAge = 5;
 
@@ -42,8 +42,6 @@ public class Bear extends Animal {
             grow();
         }
 
-        System.out.println(getAge());
-
         if(age >= adultAge) {
             partrolTerritory(world);
         }
@@ -59,13 +57,18 @@ public class Bear extends Animal {
 
         Location newLocation = new Location(random.nextInt(upperX - lowerX + 1) + lowerX, random.nextInt(upperY - lowerY + 1) + lowerY);
 
-        moveTowards(newLocation, world);
+        moveTowards(world, newLocation);
     }
 
     @Override
     void nightBehavior(World world) {
-        if(!world.getLocation(this).equals(territory)) {
-            moveTowards(territory, world);
+        Location currentLocation = world.getLocation(this);
+
+        if(currentLocation.getX() >= territory.getX() + territoryRadius ||
+        currentLocation.getX() <= territory.getX() - territoryRadius ||
+        currentLocation.getY() >= territory.getY() + territoryRadius ||
+        currentLocation.getY() <= territory.getY() - territoryRadius) {
+            moveTowards(world, territory);
         } else {
             sleep();
         }

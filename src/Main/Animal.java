@@ -13,6 +13,7 @@ public abstract class Animal extends Organism implements Consumable{
     private final Class<? extends Consumable>[] canEat; //Holdes the types of classes the animal can eat
 
     protected boolean sleeping;
+    protected boolean infected;
 
     /**
      * Initialises hunger to 50
@@ -24,6 +25,7 @@ public abstract class Animal extends Organism implements Consumable{
         hunger = 50;
         this.canEat = canEat;
         sleeping = false;
+        infected = false;
     }
 
     /**
@@ -96,34 +98,35 @@ public abstract class Animal extends Organism implements Consumable{
         if(prey == null) return;
         Location preyLocation = world.getLocation(prey);
         double distanteToPrey = distance(world, preyLocation);
-        if(prey.getFoodChainValue() == -1){
+        if(prey.getFoodChainValue() == -1) {
             if(distanteToPrey == 0){
-                eat(prey, world);
+                eat(world, prey);
             } else {
-                moveTowards(preyLocation, world);
+                moveTowards(world, preyLocation);
             }
-        } else if(prey.getFoodChainValue() == -2){
-            if(distanteToPrey < 2){
-                eat(prey, world);
+        } else if(prey.getFoodChainValue() == -2) {
+            if(distanteToPrey < 2) {
+                eat(world, prey);
             } else {
-                moveTowards(preyLocation, world);
+                moveTowards(world, preyLocation);
             }
         }else{
             if(distanteToPrey < 2){
                 Attack(world, prey);
             } else{
-                moveTowards(preyLocation, world);
+                moveTowards(world, preyLocation);
             }
         }
     }
 
     /**
-     *
+     * removes 10 energy from the prey
+     * if it hits 0 energy die will be called from organism.java
      * @param world
      * @param animal
      */
     private void Attack(World world, Organism animal) {
-        throw new UnsupportedOperationException("Attack method not implemented yet");
+        animal.removeEnergy(10);
     }
 
     /**
@@ -132,7 +135,7 @@ public abstract class Animal extends Organism implements Consumable{
      * Adds energy if it can, and does nothing if not.
      * @param food the food to be eaten
      */
-    public void eat(Organism food, World world) {
+    public void eat(World world, Organism food) {
         if(canIEat(food.getEntityClass())){
             addHunger(0.5 * food.getEnergy());
             food.die(world);
@@ -146,14 +149,15 @@ public abstract class Animal extends Organism implements Consumable{
      */
     @Override
     public void die(World world){
-        if(world.contains(this)){
+        if(world.contains(this)) {
             Location carcassLocation = world.getLocation(this);
             world.delete(this);
             Carcass carcass = new Carcass(world,this, carcassLocation);
-        } else{
+        } else {
             super.die(world);
         }
     }
+
 
     /**
      * @throws IllegalArgumentException if radius is less then 2
@@ -239,8 +243,8 @@ public abstract class Animal extends Organism implements Consumable{
      * Moves towards location by one tile
      * Remove 10 energy
      */
-    protected void moveTowards(Location location, World world) {
-        moveTowards(location, world, 1, this);
+    protected void moveTowards(World world, Location location) {
+        moveTowards(world, location, 1, this);
     }
 
     /**
@@ -249,7 +253,7 @@ public abstract class Animal extends Organism implements Consumable{
      * Moves towards location by amount of steps tiles
      * Remove 10 energy
      */
-    protected void moveTowards(Location location, World world, int amountOfSteps, Animal animal) {
+    protected void moveTowards(World world, Location location, int amountOfSteps, Animal animal) {
         Location newTile = world.getLocation(animal);
         for(int i = 0; i < amountOfSteps; i++) {
             if (newTile.getX() == location.getX() && newTile.getY() == location.getY())
@@ -307,7 +311,6 @@ public abstract class Animal extends Organism implements Consumable{
     protected  int makeNumberOneFurtherAway(int actual, int target){
         if(actual < target) return (actual - 1);
         else return (actual + 1);
-
     }
 
     /**
@@ -333,6 +336,11 @@ public abstract class Animal extends Organism implements Consumable{
             removeHunger(10);
             addEnergy(10);
         }
+    }
+
+    protected void wake() {
+        grow();
+        sleeping = false;
     }
 
     public double getHunger() {
@@ -366,20 +374,14 @@ public abstract class Animal extends Organism implements Consumable{
         return canEat;
     }
 
-    public boolean isSleeping() {
-        return sleeping;
-    }
-
     @Override
     protected String getPNGPath() {
         StringBuilder path = new StringBuilder();
 
-        path.append(getType());
+        path.append(super.getPNGPath());
 
-        if(age >= adultAge) path.append("-large");
-        else path.append("-small");
-
-        if(isSleeping()) path.append("-sleeping");
+        if (infected) path.append("-fungi");
+        if (sleeping) path.append("-sleeping");
 
         return path.toString();
     }

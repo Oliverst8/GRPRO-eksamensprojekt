@@ -1,7 +1,10 @@
 package Main;
 
-import itumulator.executable.Program;
+import java.util.ArrayList;
+
 import itumulator.world.World;
+import itumulator.executable.Program;
+
 import spawn.Input;
 import spawn.ObjectFactory;
 import spawn.SpawningObject;
@@ -9,28 +12,28 @@ import spawn.SpawningObject;
 public class Main {
 
     public static void main(String[] args) {
-        Input input = new Input("data/week2/t2-5a.txt");
+        Input input = new Input("data/week1/t1-1d.txt");
+        
+        int delay = 500;
+        int display_size = 1000;
+        int size = input.getSize();
+        
+        Program program = new Program(size, display_size, delay);
+        World world = program.getWorld();
 
-        int size = input.getSize(); // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 500; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 1000; // skærm opløsningen (i px)
+        generateObjects(world, input.getObjects());
 
-        Program program = new Program(size, display_size, delay); // opret et nyt program
-        World world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
+        program.show();
+        while(true) program.simulate();
+    }
 
-        // Generates the objects in the world
-        for (SpawningObject object : input.getObjects()) {
+    private static void generateObjects(World world, ArrayList<SpawningObject> objects) {
+        for (SpawningObject object : objects) {
             if(object.getLocation() != null) {
-                ObjectFactory.generateOnMap(world, object.getClassName(), object.getLocation());
-                continue;
+                ObjectFactory.generateOnMap(world, object.getLocation(), object.getClassName());
             } else {
                 ObjectFactory.generateOnMap(world, object.getClassName());
             }
         }
-
-        program.show(); // viser selve simulationen
-        for (int i = 0; i < 200; i++) {
-            program.simulate();
-        } // kører 200 runder, altså kaldes 'act' 200 gange for alle placerede aktører
     }
 }

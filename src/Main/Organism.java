@@ -88,8 +88,6 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         return age;
     }
 
-
-
     /**
      * @return the current amount of energy
      */
@@ -104,6 +102,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     public void removeEnergy(int amount) {
         setEnergy(Math.max(0, getEnergy()-amount));
     }
+
     public void addEnergy(int amount) {
         setEnergy(Math.min(100, getEnergy()+amount));
     }
@@ -127,6 +126,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     @Override
     public void act(World world) {
         setDay(world.isDay());
+        
         if(dead || skipTurn) {
             skipTurn = false;
             return;
@@ -135,7 +135,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         if(isDay()) dayBehavior(world);
         else nightBehavior(world);
 
-        if(getEnergy() == 0) {
+        if(getEnergy() <= 0) {
             System.out.println(this + " is out of energy and dying");
             die(world);
         }

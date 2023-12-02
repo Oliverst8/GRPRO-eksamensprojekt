@@ -35,10 +35,9 @@ class GrassTest {
         ObjectFactory.generateOnMap(world, "grass");
         ObjectFactory.generateOnMap(world, "grass");
         ObjectFactory.generateOnMap(world, "grass");
-        double expectedEnergy = Math.min(100,grass.getEnergy()+10);
+        double expectedEnergy = Math.min(100,grass.getEnergy() + 20);
         program.simulate();
         assertEquals(expectedEnergy,grass.getEnergy());
-
     }
     
     @Test

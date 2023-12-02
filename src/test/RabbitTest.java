@@ -4,6 +4,7 @@ import Main.Burrow;
 import Main.Grass;
 import Main.Rabbit;
 
+import Main.Wolf;
 import spawn.ObjectFactory;
 
 import itumulator.executable.Program;
@@ -194,6 +195,22 @@ class RabbitTest {
         assertEquals(0,burrow.getMembers().size());
     }
     @Test
+    void testDayBehaviorExpectsRabbitsToExitHole(){
+        Location burrowLocation = new Location(0,0);
+        burrow = new Burrow(world, burrowLocation);
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
+        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
+        rabbit.setHunger(99);
+        rabbit.setEnergy(60);
+        rabbit1.setHunger(99);
+        rabbit1.setEnergy(60);
+        program.simulate();
+        int i = 0;
+        if(burrow.getEntries().size() == 1) i++;
+        if(burrow.getMembers().isEmpty()) i++;
+        assertEquals(2,i);
+    }
+    @Test
     void testDayBehaviorExpectsRabbitToDigAnotherEntrance(){
         burrow = new Burrow(world, new Location(0,0));
         rabbitInsideBurrow = (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true);
@@ -277,6 +294,21 @@ class RabbitTest {
         program.simulate();
         assertEquals(new Location(1,0),world.getLocation(rabbit1));
     }
+    @Test
+    void testDaysBehaviorWhereRabbitsneedsToAvoidNearbyPredatorExpectsRabbitToMoveOneAwayFromLocationOfPredator() {
+        Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(1,1));
+        Location wolfLocation = new Location(0,0);
+        Wolf wolf = null;
+        try{
+            wolf = (Wolf) ObjectFactory.generateOnMap(world,wolfLocation, "wolf");
+
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        wolf.setSkipTurn(true);
+        program.simulate();
+        assertEquals(new Location(2,2),world.getLocation(rabbit1));
+    }
 
     /**
      * New rabbit gets 100 energy in constructor
@@ -319,7 +351,7 @@ class RabbitTest {
     }
 
     @Test
-    void testThatRabbitCantExitBurrowFromBlockedEntrance(){
+    void testThatRabbitCantExitBurrowFromBlockedEntrance() {
         Location testLocation = new Location(0,0);
         Burrow burrow = new Burrow(world, testLocation);
         Rabbit rabbit = new Rabbit(3, burrow, true);
@@ -333,8 +365,13 @@ class RabbitTest {
     }
 
     @Test
-    void testThatRabbitCantExitBurrowFromBlockedEntranceInTheBeginningThenBlockingObjectMoves(){
-
+    void testThatRabbitIsRemovedFromBorrowWhenDead() {
+        Burrow burrow = new Burrow(world, new Location(0,0));
+        Rabbit rabbit = new Rabbit(3, burrow, false);
+        world.setTile(new Location(0,0),rabbit);
+        rabbit.setEnergy(0);
+        program.simulate();
+        assertEquals(0,burrow.getMembers().size());
     }
 
     @AfterEach

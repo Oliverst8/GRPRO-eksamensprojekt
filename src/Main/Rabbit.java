@@ -5,6 +5,7 @@ import itumulator.world.World;
 import spawn.ObjectFactory;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Rabbit extends Animal {
@@ -46,12 +47,7 @@ public class Rabbit extends Animal {
             sleep();
             return;
         }
-        if(burrow != null){
-            seekBurrow(world);
-            return;
-        }
-        dig(world);
-
+        seekBurrow(world);
     }
 
     /**
@@ -77,8 +73,8 @@ public class Rabbit extends Animal {
     }
 
     private void moveTowardsOwnBurrow(World world) {
-        Location nearestEntry = burrow.findNearestEntry(world.getCurrentLocation());
-        if(distance(world, nearestEntry) != 0) moveTowards(nearestEntry, world);
+        Location nearestEntry = burrow.findNearestEntry(world, world.getCurrentLocation());
+        if(distance(world, nearestEntry) != 0) moveTowards(world, nearestEntry);
         if(distance(world, nearestEntry) == 0) enterBurrow(world);
     }
 
@@ -97,10 +93,7 @@ public class Rabbit extends Animal {
      */
     @Override
     protected void dayBehavior(World world) {
-        if(sleeping) {
-            sleeping = false;
-            grow();
-        }
+        if(sleeping) wake();
 
         if(inBurrow) {
             if(getEnergy() > 80 && burrow.getAdultMembers().size() >= 2) {
@@ -120,10 +113,23 @@ public class Rabbit extends Animal {
                 return;
             }
             if(getHunger() < 100) exitBurrow(world);
-        } else if(getHunger() < 100) {
-            hunt(world);
-        } else{
-            seekBurrow(world);
+        }
+        else {
+            if(world.getSurroundingTiles(world.getLocation(this)).size()>world.getEmptySurroundingTiles(world.getLocation(this)).size()){
+               for(Location location : world.getSurroundingTiles(world.getLocation(this))){
+                   if(world.isTileEmpty(location)) return;
+                   Organism organism = (Organism) world.getTile(location);
+                   if(organism.getFoodChainValue()>this.getFoodChainValue()){
+                       moveAwayFrom(world,location);
+                   }
+               }
+            }
+            if(getHunger() < 100) {
+                hunt(world);
+            } else{
+                seekBurrow(world);
+            }
+
         }
     }
 
@@ -158,7 +164,7 @@ public class Rabbit extends Animal {
     private void expandBurrow(World world) {
         if(getEnergy()-50 > 0) {
             Location location = Helper.findNonBlockingEmptyLocation(world);
-            burrow.addEntry(location, world);
+            burrow.addEntry(world, location);
             removeEnergy(50);
         }
     }
@@ -190,12 +196,13 @@ public class Rabbit extends Animal {
         List<Hole> entries = burrow.getEntries();
         Location freeLocation = null;
 
-        for(int i = 0; i<entries.size();i++) {
-            Hole tempHole = entries.get(i);
-            if(world.isTileEmpty(tempHole.getLocation())) {
-                freeLocation = tempHole.getLocation();
-                break;
-            }
+        for(Hole tempHole : entries) {
+            if(!(freeLocation == null)) break;
+            List<Location> emptyLocations = new ArrayList<>();
+            if(world.isTileEmpty(tempHole.getLocation(world))) emptyLocations.add(tempHole.getLocation(world));
+            emptyLocations.addAll(world.getEmptySurroundingTiles(tempHole.getLocation(world)));
+            if(emptyLocations.isEmpty()) break;
+            freeLocation = emptyLocations.get(0);
         }
 
         if(freeLocation == null) return;
@@ -203,7 +210,6 @@ public class Rabbit extends Animal {
         inBurrow = false;
         burrow.removeMember(this);
         world.setTile(freeLocation,this);
-
     }
 
     /**
@@ -221,6 +227,13 @@ public class Rabbit extends Animal {
      */
     public boolean isInBurrow() {
         return inBurrow;
+    }
+
+    @Override
+    public void die(World world) {
+        super.die(world);
+
+        if(burrow != null) burrow.removeMember(this);
     }
 
     @Override

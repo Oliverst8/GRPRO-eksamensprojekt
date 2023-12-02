@@ -1,13 +1,13 @@
 package Main;
 
-import itumulator.world.Location;
 import itumulator.world.World;
+import itumulator.world.Location;
+
 import spawn.ObjectFactory;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.ArrayList;
 
 public class Burrow extends Community{
     private List<Hole> entries;
@@ -21,15 +21,13 @@ public class Burrow extends Community{
      */
     public Burrow(World world, Location entry) {
         super();
-        if(entry == null) throw new NullPointerException("Entry cant be null");
-        if(world == null) throw new NullPointerException("World cant be null");
 
         entries = new ArrayList<>();
-        addEntry(entry, world);
+
+        addEntry(world, entry);
     }
 
     /**
-     * @throws NullPointerException if world is null
      * Initialises the list of entries
      * Initialises the list of rabbitsinside
      * Creates a random location
@@ -37,18 +35,14 @@ public class Burrow extends Community{
      */
     public Burrow(World world) {
         super();
-        if (world == null) throw new NullPointerException("World cant be null");
 
         entries = new ArrayList<>();
 
         Random random = new Random();
         Location entryLocation = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
-        addEntry(entryLocation, world);
+        
+        addEntry(world, entryLocation);
     }
-
-
-
-
 
     /**
      * @return a list of Locations of the entries the burrow has
@@ -62,15 +56,11 @@ public class Burrow extends Community{
      * Otherwise makes a hole and adds it to the list of entries
      * @param entry
      */
-    public void addEntry(Location entry, World world) {
-        Hole hole = (Hole) ObjectFactory.generateOnMap(world,entry,"Hole", entry, this, "hole-small");
+    public void addEntry(World world, Location entry) {
+        Hole hole = (Hole) ObjectFactory.generateOnMap(world,entry,"Hole", this, "hole-small");
 
         entries.add(hole);
     }
-
-
-
-
 
     /**
      *
@@ -78,19 +68,7 @@ public class Burrow extends Community{
      * @return the closest entry, returns null if there is no entry found
      * returns closestEntryLocation if there is a entrance
      */
-    public Location findNearestEntry(Location rabbitLocation) {
-        Location closestEntryLocation = null;
-        double minDist = Double.MAX_VALUE;
-
-        for(Hole entry : entries) {
-            double distance = Helper.distance(rabbitLocation, entry.getLocation());
-            if(minDist > distance) {
-                minDist = distance;
-                closestEntryLocation = entry.getLocation();
-            }
-        }
-        return closestEntryLocation;
+    public Location findNearestEntry(World world, Location rabbitLocation) {
+        return findNearestEntity(world, rabbitLocation, entries);
     }
-
-
 }

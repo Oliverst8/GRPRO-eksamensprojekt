@@ -129,9 +129,9 @@ public class Wolf extends Animal{
      * @param world the world the wolf is in
      */
     @Override
-    protected void moveTowards(Location location, World world){
-        if(huntingPack != null) super.moveTowards(location, world, 2, this);
-        else super.moveTowards(location,world,1, this);
+    protected void moveTowards(World world, Location location){
+        if(huntingPack != null) super.moveTowards(world, location, 2, this);
+        else super.moveTowards(world, location,1, this);
     }
 
     /**
@@ -147,6 +147,8 @@ public class Wolf extends Animal{
      */
     @Override
     void dayBehavior(World world) {
+        if(sleeping) wake();
+    
         if(getInDen()){
             if(getEnergy() > 80 && pack.getDen().getAdultMembers().size() >= 2){
                 for(Animal otherWolf : pack.getDen().getMembers()){
@@ -188,8 +190,8 @@ public class Wolf extends Animal{
                 return;
             }
             if(!(createOrJoinHuntingPack(world, 3))) {
-                Location nearestWolf = pack.findNearestMember(world);
-                if(nearestWolf != null) moveTowards(nearestWolf, world);
+                Location nearestWolf = pack.findNearestMember(world, world.getLocation(this));
+                if(nearestWolf != null) moveTowards(world, nearestWolf);
                 else hunt(world);
             }
         }
@@ -245,13 +247,13 @@ public class Wolf extends Animal{
      * @param world the world the wolves are in
      */
     @Override
-    public void eat(Organism food, World world){
+    public void eat(World world, Organism food){
         if(huntingPack == null) {
-            super.eat(food, world);
+            super.eat(world, food);
             return;
         }
         for(Animal wolf : huntingPack.getMembers()){
-            ((Wolf)wolf).eatAlone(food, world);
+            ((Wolf)wolf).eatAlone(world, food);
             food.die(world);
         }
     }
@@ -261,7 +263,7 @@ public class Wolf extends Animal{
      * @param food the food to be consumed
      * @param world the world the wolf is in
      */
-    public void eatAlone(Organism food, World world){
+    public void eatAlone(World world, Organism food) {
         if(canIEat(food.getClass())){
             addHunger(0.5 * food.getEnergy());
         }
@@ -277,16 +279,16 @@ public class Wolf extends Animal{
             huntingPack = null;
         }
         if(pack.getDen() == null) {
-            pack.createDen(world.getCurrentLocation());
+            pack.createDen(world, world.getCurrentLocation());
             enterDen(world);
             return;
         }
-        if(pack.getDenLocation().equals(world.getCurrentLocation())) {
+        if(pack.getDenLocation(world).equals(world.getCurrentLocation())) {
             enterDen(world);
             return;
         }
-        moveTowards(pack.getDenLocation(), world);
-        if(pack.getDenLocation().equals(world.getCurrentLocation())) enterDen(world);
+        moveTowards(world, pack.getDenLocation(world));
+        if(pack.getDenLocation(world).equals(world.getCurrentLocation())) enterDen(world);
     }
 
     /**
@@ -294,9 +296,8 @@ public class Wolf extends Animal{
      * @param world the world the wolf is in
      */
     private void exitDen(World world) {
-
-        List<Location> exitLocations = new LinkedList<>(world.getEmptySurroundingTiles(pack.getDenLocation()));
-        if(world.isTileEmpty(pack.getDenLocation())) exitLocations.add(0,pack.getDenLocation());
+        List<Location> exitLocations = new LinkedList<>(world.getEmptySurroundingTiles(pack.getDenLocation(world)));
+        if(world.isTileEmpty(pack.getDenLocation(world))) exitLocations.add(0,pack.getDenLocation(world));
 
         if(exitLocations.isEmpty()) return;
 
@@ -310,7 +311,7 @@ public class Wolf extends Animal{
      * @param world the world the wolf is in
      */
     private void enterDen(World world){
-        if(!(pack.getDenLocation().equals(world.getCurrentLocation()))) throw new IllegalOperationException("Cant enter den, when wolf is not stading on it");
+        if(!(pack.getDenLocation(world).equals(world.getCurrentLocation()))) throw new IllegalOperationException("Cant enter den, when wolf is not stading on it");
         if(getInDen()) throw new IllegalOperationException("Cant enter den, when the wolf is already in its den");
 
         setInDen(true);
@@ -330,11 +331,24 @@ public class Wolf extends Animal{
     }
 
     /**
-     * Does nothing right now PLEASE FIX!
+     * If its inside of its den, then sleep true and calls sleep
+     * If not it calls goToDen where it movestowards its den or digs one
      * @param world
      */
     @Override
-    void nightBehavior(World world) {
-        throw new UnsupportedOperationException("Wolf nightBehavior is not implemented yet");
+    protected void nightBehavior(World world) {
+        if(inDen) sleeping = true;
+        if(sleeping){
+            sleep();
+            return;
+        }
+        goToDen(world);
+    }
+
+    @Override
+    public void die(World world) {
+        super.die(world);
+
+        if(pack != null) pack.removeMember(this);
     }
 }

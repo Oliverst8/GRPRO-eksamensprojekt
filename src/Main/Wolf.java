@@ -190,7 +190,7 @@ public class Wolf extends Animal{
                 return;
             }
             if(!(createOrJoinHuntingPack(world, 3))) {
-                Location nearestWolf = pack.findNearestMember(world);
+                Location nearestWolf = pack.findNearestMember(world, world.getLocation(this));
                 if(nearestWolf != null) moveTowards(world, nearestWolf);
                 else hunt(world);
             }

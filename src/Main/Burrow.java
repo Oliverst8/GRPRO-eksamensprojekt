@@ -69,17 +69,6 @@ public class Burrow extends Community{
      * returns closestEntryLocation if there is a entrance
      */
     public Location findNearestEntry(World world, Location rabbitLocation) {
-        Location closestEntryLocation = null;
-        double minDist = Double.MAX_VALUE;
-
-        for(Hole entry : entries) {
-            double distance = Helper.distance(rabbitLocation, entry.getLocation(world));
-            if(minDist > distance) {
-                minDist = distance;
-                closestEntryLocation = entry.getLocation(world);
-            }
-        }
-
-        return closestEntryLocation;
+        return findNearestEntity(world, rabbitLocation, entries);
     }
 }

@@ -47,12 +47,12 @@ public abstract class Community {
         return adultMembers;
     }
 
-    protected Location findNearestEntity(World world, List<? extends Entity> enitities) {
+    protected Location findNearestEntity(World world, Location location, List<? extends Entity> enitities) {
         Location closestEntityLocation = null;
         double minDist = Double.MAX_VALUE;
 
         for(Entity entity : enitities) {
-            double distance = Helper.distance(world.getCurrentLocation(), world.getLocation(entity));
+            double distance = Helper.distance(location, world.getLocation(entity));
             if(minDist > distance) {
                 minDist = distance;
                 closestEntityLocation = world.getLocation(entity);

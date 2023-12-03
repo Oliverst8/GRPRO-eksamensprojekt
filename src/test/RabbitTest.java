@@ -288,7 +288,7 @@ class RabbitTest {
     void testDaysBehaviorWhereRabbitsneedsToGoToGrassButThereIsAlreadyAnObjectExpectsRabbitToMoveOneCloser() {
         Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
         Rabbit rabbit2 = initialiseRabbitOnWorld(new Location(1,1));
-        Grass grass = initialiseGrassOnWorld(new Location(1,1));
+        Grass grass = initialiseGrassOnWorld(new Location(2,2));
         grass.setEnergy(10);
         rabbit2.setSkipTurn(true);
         program.simulate();
@@ -358,7 +358,10 @@ class RabbitTest {
         world.add(rabbit);
         rabbit.setHunger(99); // Under 100 so it wants to exit burrow
         rabbit.setEnergy(60); // Not more than 60 so it cant expand
-        Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0)); //New rabbit that blocks entrance
+        Rabbit rabbit1 = initialiseRabbitOnWorld(testLocation); //New rabbit that blocks entrance
+        for(Location location : world.getEmptySurroundingTiles(testLocation)){
+            initialiseRabbitOnWorld(location);
+        }
         program.simulate(); //Wants to exit burrow
         program.simulate(); //Wants to exit burrow
         assertTrue(rabbit.isInBurrow());

@@ -116,19 +116,20 @@ public class Rabbit extends Animal{
             if(getHunger() < 100) exitBurrow(world);
         }
         else {
-            if(world.getSurroundingTiles(world.getLocation(this)).size()>world.getEmptySurroundingTiles(world.getLocation(this)).size()){
-               for(Location location : world.getSurroundingTiles(world.getLocation(this))){
+            if(getHunger() < 100) {
+                hunt(world);
+            } else{
+                seekBurrow(world);
+            }
+            if(!isInBurrow() && world.getSurroundingTiles(world.getLocation(this)).size()>world.getEmptySurroundingTiles(world.getLocation(this)).size()){
+                for(Location location : world.getSurroundingTiles(world.getLocation(this))){
                    if(world.isTileEmpty(location)) return;
                    Organism organism = (Organism) world.getTile(location);
                    if(organism.getFoodChainValue()>this.getFoodChainValue()){
                        moveAwayFrom(world,location);
                    }
                }
-            }
-            if(getHunger() < 100) {
-                hunt(world);
-            } else{
-                seekBurrow(world);
+
             }
 
         }

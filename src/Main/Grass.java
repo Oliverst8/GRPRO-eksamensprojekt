@@ -65,8 +65,8 @@ public class Grass extends Plant implements NonBlocking, Consumable {
     @Override
     void dayBehavior(World world) {
         photosynthesis();
-
         if(getEnergy() >= 75) spread(world);
+
     }
 
     /**
@@ -78,6 +78,9 @@ public class Grass extends Plant implements NonBlocking, Consumable {
      */
     @Override
     void nightBehavior(World world) {
+        if(World.getDayDuration() == world.getCurrentTime()){
+            grow();
+        }
         decay();
     }
 

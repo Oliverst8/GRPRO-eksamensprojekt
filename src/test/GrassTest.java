@@ -17,20 +17,16 @@ class GrassTest {
     World world;
     @BeforeEach
     void setUp() {
-        int size = 20; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
-    }
-
-    @Test
-    void tryToSpreadGrassWhereThereIsNoEmptyTileExpectsEnergyToHaveIncreasedByPhotosynethesisAmount() {
         int size = 2; // størrelsen af vores 'map' (dette er altid kvadratisk)
         int delay = 1; // forsinkelsen mellem hver skridt af simulationen (i ms)
         int display_size = 800; // skærm opløsningen (i px)
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
+
+    }
+
+    @Test
+    void tryToSpreadGrassWhereThereIsNoEmptyTileExpectsEnergyToHaveIncreasedByPhotosynethesisAmount() {
         Grass grass = (Grass) ObjectFactory.generateOnMap(world, "grass");
         ObjectFactory.generateOnMap(world, "grass");
         ObjectFactory.generateOnMap(world, "grass");
@@ -38,6 +34,31 @@ class GrassTest {
         double expectedEnergy = Math.min(100,grass.getEnergy() + 20);
         program.simulate();
         assertEquals(expectedEnergy,grass.getEnergy());
+    }
+    @Test
+    void testIfGrassAges() {
+
+        Grass grass = (Grass) ObjectFactory.generateOnMap(world, "grass");
+        program.simulate();
+        program.simulate();
+        program.simulate();
+        program.simulate();
+        program.simulate();
+        program.simulate();
+        program.simulate();
+        program.simulate();
+        program.simulate();
+        program.simulate(); //tick 10 skifter til nat
+        assertEquals(1,grass.getAge());
+
+    }
+    @Test
+    void testIfGrassHasLessEnergyTheOlderItGets() {
+        Grass grass = (Grass) ObjectFactory.generateOnMap(world, "grass");
+        grass.setEnergy(100);
+        grass.grow();
+        grass.addEnergy(100);
+        assertEquals(90,grass.getEnergy());
     }
     
     @Test

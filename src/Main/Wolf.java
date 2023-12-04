@@ -154,7 +154,7 @@ public class Wolf extends Animal{
     @Override
     void dayBehavior(World world) {
         if(sleeping) wake();
-    
+
         if(getInDen()){
             if(getEnergy() > 80 && pack.getDen().getAdultMembers().size() >= 2){
                 for(Animal otherWolf : pack.getDen().getMembers()){
@@ -174,6 +174,7 @@ public class Wolf extends Animal{
             }
 
         } else{
+
             if(getHunger() == 100) {
                 goToDen(world);
                 return;
@@ -204,6 +205,7 @@ public class Wolf extends Animal{
     }
 
     private boolean createOrJoinHuntingPack(World world, int radius) {
+
         Set<Location> surroundingLocations = world.getSurroundingTiles(radius);
         List<Wolf> foundWolfes = new ArrayList<>();
         for(Location tile : surroundingLocations){

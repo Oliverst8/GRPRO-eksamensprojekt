@@ -12,9 +12,9 @@ import spawn.SpawningObject;
 public class Main {
 
     public static void main(String[] args) {
-        Input input = new Input("data/week1/t1-1d.txt");
+        Input input = new Input("data/demo/d1.txt");
         
-        int delay = 500;
+        int delay = 1000;
         int display_size = 1000;
         int size = input.getSize();
         

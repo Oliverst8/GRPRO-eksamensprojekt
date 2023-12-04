@@ -2,13 +2,15 @@ package test;
 
 import Main.Helper;
 import Main.NoEmptyLocationException;
-import itumulator.executable.Program;
-import itumulator.world.World;
+
 import spawn.ObjectFactory;
 
+import itumulator.world.World;
+import itumulator.executable.Program;
+
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,21 +21,24 @@ class HelperTest {
 
     @BeforeEach
     void setUp() {
+        int size = 3; // Size of the world
+        int delay = 1; // Delay between each turn (in ms)
+        int display_size = 800; // Size of the display
 
-    }
-
-    @AfterEach
-    void tearDown() {
+        program = new Program(size, display_size, delay);
+        world = program.getWorld();
     }
 
     @Test
     void testDoesArrayContainItDoesMultipleElements(){
         assertTrue(Helper.doesArrayContain(new Object[]{"27",3},"27"));
     }
+
     @Test
     void testDoesArrayContainItDoesOneElements(){
         assertTrue(Helper.doesArrayContain(new Object[]{"27"},"27"));
     }
+
     @Test
     void testDoesArrayContainItDoesNotMultipleElements(){
         assertFalse(Helper.doesArrayContain(new Object[]{"27",3},"28"));
@@ -51,69 +56,43 @@ class HelperTest {
 
     @Test
     void isThereAnEmptyLocationInWorldAllowNonBlockingWtihNoObjectsInWorldExpectsTrue(){
-        int size = 1; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, false));
     }
 
     @Test
     void isThereAnEmptyLocationInWorldAllowNonBlockingWtih1ObjectsInWorldExpectsTrue(){
-        int size = 2; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         ObjectFactory.generateOnMap(world, "grass");
+
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, false));
     }
 
     @Test
     void isThereAnEmptyLocationInWorldDontAllowNonBlockingWtih1ObjectInWorldExpectsTrue(){
-        int size = 1; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         ObjectFactory.generateOnMap(world, "grass");
+
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, false));
     }
 
     @Test
     void isThereAnEmptyLocationInWorldDontAllowNonBlockingWtih1ObjectInWorldExpectsFalse(){
-        int size = 1; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         ObjectFactory.generateOnMap(world, "grass");
+
         assertFalse(Helper.isThereAnEmptyLocationInWorld(world, true));
     }
 
     @Test
     void isThereAnEmptyLocationInWorldDontAllowNonBlockingWtihTwoObjectInWorldExpectsTrue(){
-        int size = 2; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
-        ObjectFactory.generateOnMap(world, "grass");
-        ObjectFactory.generateOnMap(world, "grass");
+        for(int i = 0; i < 2; i++) {
+            ObjectFactory.generateOnMap(world, "grass");
+        }
+        
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, true));
     }
 
-
-
     @Test
     void findEmptyLocationWhereThereIsNoneExpectsNoEmptyLocationException() {
-        int size = 1; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         ObjectFactory.generateOnMap(world, "rabbit");
+
         assertThrows(NoEmptyLocationException.class, () -> {
            Helper.findEmptyLocation(world);
         });
@@ -121,12 +100,8 @@ class HelperTest {
 
     @Test
     void findNonBlockingEmptyLocationWhereThereIsNoneExpectsNoEmptyLocationException() {
-        int size = 1; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         ObjectFactory.generateOnMap(world, "grass");
+
         assertThrows(NoEmptyLocationException.class, () -> {
             Helper.findNonBlockingEmptyLocation(world);
         });
@@ -134,21 +109,14 @@ class HelperTest {
 
     @Test
     void findNonBlockingEmptyLocationWhereThereIsOneExpectsReturnOfLocation() {
-        int size = 2; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         assertNotNull(Helper.findNonBlockingEmptyLocation(world));
     }
 
     @Test
     void findEmptyLocationWhereThereIsOneExpectsReturnOfLocation() {
-        int size = 2; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         assertNotNull(Helper.findEmptyLocation(world));
     }
+
+    @AfterEach
+    void tearDown() {}
 }

@@ -1,25 +1,26 @@
 package test;
 
-import Main.Animal;
+import java.util.Set;
+import java.util.List;
+import java.util.HashSet;
+import java.util.ArrayList;
+
 import Main.Hole;
+import Main.Burrow;
+import Main.Animal;
 import Main.Rabbit;
-import itumulator.executable.Program;
-import itumulator.world.Location;
+
 import itumulator.world.World;
+import itumulator.world.Location;
+import itumulator.executable.Program;
+
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import Main.Burrow;
-
-import java.util.*;
 
 class BurrowTest {
-
-
     Program program;
     World world;
     Burrow burrow;
@@ -28,11 +29,13 @@ class BurrowTest {
 
     @BeforeEach
     void setUp() {
-        int size = 3; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
+        int size = 3; // Size of the world
+        int delay = 1; // Delay between each turn (in ms)
+        int display_size = 800; // Size of the display
+
+        program = new Program(size, display_size, delay);
+        world = program.getWorld();
+
         Location location = new Location(0,0);
         burrow = new Burrow(world,location);
     }
@@ -47,8 +50,6 @@ class BurrowTest {
 
     @Test
     void testBurrowConstructorWithLocationArgument() {
-
-
         Location expected = new Location(2,2);
         Burrow testBurrow = new Burrow(world, expected);
         List<Hole> holes = new ArrayList<>(testBurrow.getEntries());
@@ -74,6 +75,7 @@ class BurrowTest {
     @Test
     void testBurrowConstructorWithNullWorldArgument2() {
         Location location = new Location(0,0);
+
         assertThrows(NullPointerException.class, () -> {
             new Burrow(null, location);
         });
@@ -84,6 +86,7 @@ class BurrowTest {
         Rabbit rabbit = new Rabbit();
         burrow.addMember(rabbit);
         List<Animal> members = new ArrayList<>(burrow.getMembers());
+
         assertEquals(rabbit, members.get(0));
     }
 
@@ -91,6 +94,7 @@ class BurrowTest {
     void testgetAdultRabbits0adults() {
         Rabbit rabbit = new Rabbit(2, burrow, false);
         burrow.addMember(rabbit);
+
         assertEquals(0, burrow.getAdultMembers().size());
     }
 
@@ -100,6 +104,7 @@ class BurrowTest {
         Rabbit rabbit1 = new Rabbit(3, burrow, false);
         burrow.addMember(rabbit);
         burrow.addMember(rabbit1);
+
         assertEquals(1, burrow.getAdultMembers().size());
     }
 
@@ -111,24 +116,30 @@ class BurrowTest {
         burrow.addMember(rabbit);
         burrow.addMember(rabbit1);
         burrow.addMember(rabbit2);
+
         assertEquals(2, burrow.getAdultMembers().size());
     }
 
     @Test
     void testClosestLocationIfThereIs1Entry() {
         Location location = new Location(1,1);
-        Location rabbitLocation = new Location(0,0);
         Burrow burrow = new Burrow(world, location);
+
+        Location rabbitLocation = new Location(0,0);
+
         assertEquals(location, burrow.findNearestEntry(world, rabbitLocation));
     }
 
     @Test
     void testClosestLocationIfThereIs2Entries() {
         Location location = new Location(2,2);
-        Location location1 = new Location(1,1);
-        Location rabbitLocation = new Location(0,0);
         Burrow burrow = new Burrow(world, location);
+        
+        Location location1 = new Location(1,1);
         burrow.addEntry(world, location1);
+
+        Location rabbitLocation = new Location(0,0);
+
         assertEquals(location1, burrow.findNearestEntry(world, rabbitLocation));
     }
 
@@ -141,16 +152,15 @@ class BurrowTest {
         Set<Animal> expected = new HashSet<>();
         expected.add(rabbit1);
         burrow.removeMember(rabbit2);
+
         assertEquals(expected, burrow.getMembers());
     }
 
     @Test
     void addTestEntryExpectsThatEntryIsAddedToEntries() {
-        System.out.println(burrow.getEntries());
         assertFalse(burrow.getEntries().isEmpty());
     }
 
     @AfterEach
-    void tearDown() {
-    }
+    void tearDown() {}
 }

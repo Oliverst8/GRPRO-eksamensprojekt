@@ -1,25 +1,24 @@
 package test;
 
-import Main.Burrow;
-import Main.Consumable;
 import Main.Grass;
+import Main.Burrow;
 import Main.Rabbit;
-import itumulator.executable.Program;
-import itumulator.world.Location;
-import itumulator.world.World;
+import Main.Consumable;
+
 import spawn.ObjectFactory;
 
-import org.junit.jupiter.api.AfterEach;
+import itumulator.world.World;
+import itumulator.world.Location;
+import itumulator.executable.Program;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class OrganismTest {
-
-
     Program program;
     World world;
     Rabbit rabbit;
@@ -31,11 +30,13 @@ public class OrganismTest {
      */
     @BeforeEach
     void setUp() {
-        int size = 3; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
+        int size = 3; // Size of the world
+        int delay = 1; // Delay between each turn (in ms)
+        int display_size = 800; // Size of the display
+
+        program = new Program(size, display_size, delay);
+        world = program.getWorld();
+
         rabbit = new Rabbit();
     }
 
@@ -44,23 +45,24 @@ public class OrganismTest {
      *Asserts NoSuchElementException when trying to access getAge of the object
      */
     @Test
-    void testOrganismDie(){
+    void testOrganismDie() {
         Location grassLocation = new Location(1,1);
         Grass grass = (Grass) ObjectFactory.generateOnMap(world, grassLocation, "grass");
         grass.die(world);
+
         assertThrows(IllegalArgumentException.class, () -> {
             grass.die(world);
         });
-
     }
+
     /**
      * Tests getFoodType from within Organism class
      * assertEquals meat, if not it fails
      * Because foodtype set to meat in Animals Constructor
      */
     @Test
-    void testOrganismFoodType(){
-        Assertions.assertInstanceOf(Consumable.class, rabbit);
+    void testOrganismFoodType() {
+        assertInstanceOf(Consumable.class, rabbit);
     }
 
     /**
@@ -68,8 +70,8 @@ public class OrganismTest {
      * assertEquals 100 as initialised in Organism Constructor
      */
     @Test
-    void testOrganismEnergy(){
-        Assertions.assertEquals(100, rabbit.getEnergy());
+    void testOrganismEnergy() {
+        assertEquals(100, rabbit.getEnergy());
     }
 
     /**
@@ -77,25 +79,25 @@ public class OrganismTest {
      * assertEquals 0 as initialised in Organism Constructor
      */
     @Test
-    void testOrganismAge(){
-        Assertions.assertEquals(0, rabbit.getAge());
+    void testOrganismAge() {
+        assertEquals(0, rabbit.getAge());
     }
 
     @Test
-    void testGrowOnce(){
+    void testGrowOnce() {
         rabbit.grow();
         assertEquals(1,rabbit.getAge());
     }
 
     @Test
-    void testGrowTwice(){
+    void testGrowTwice() {
         rabbit.grow();
         rabbit.grow();
         assertEquals(2,rabbit.getAge());
     }
 
     @Test
-    void testGetEnergy(){
+    void testGetEnergy() {
         for (int i = 0; i < 12; i++) {
             rabbit.grow();
         }
@@ -110,22 +112,18 @@ public class OrganismTest {
 
     @Test
     void dieExpectsNONAnimalToBeRemoved() {
-        Grass grass = null;
-        try{
-            grass = (Grass) ObjectFactory.generateOnMap(world, "grass");
-        } catch(Exception e){
-            System.out.println(e.getMessage());
-        }
+        Grass grass = (Grass) ObjectFactory.generateOnMap(world, "grass");
         grass.die(world);
-        assertFalse(world.contains(grass));
 
+        assertFalse(world.contains(grass));
     }
 
     @Test
     void getEnergyAdultOrganism() {
-        rabbit.grow();
-        rabbit.grow();
-        rabbit.grow();
+        for(int i = 0; i < 3; i++) {
+            rabbit.grow();
+        }
+
         assertEquals(100 - (rabbit.getEnergyLossPerDay()*(Math.max(0,rabbit.getAge()-rabbit.getAdultAge()))),rabbit.getEnergy());
     }
 
@@ -137,10 +135,10 @@ public class OrganismTest {
     @Test
     void getEnergyFor12daysOld() {
         Rabbit rabbit = new Rabbit(12, new Burrow(world, new Location(0,0)), false);
+
         assertEquals(100 - (rabbit.getEnergyLossPerDay()*(Math.max(0,rabbit.getAge()-rabbit.getAdultAge()))),rabbit.getEnergy());
     }
 
     @AfterEach
-    void tearDown() {
-    }
+    void tearDown() {}
 }

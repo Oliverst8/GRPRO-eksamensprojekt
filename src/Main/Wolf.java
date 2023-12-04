@@ -26,7 +26,7 @@ public class Wolf extends Animal{
      * calles initialise with a age of 0
      */
     public Wolf() {
-        super(new Class[]{Rabbit.class}, 1);
+        super(1);
         pack = new Pack();
         initialise(0);
     }
@@ -39,7 +39,7 @@ public class Wolf extends Animal{
      * calles initialise with a age of the parameter
      */
     public Wolf(int age) {
-        super(new Class[]{Rabbit.class}, 1);
+        super(1);
         pack = new Pack();
         initialise(age);
     }
@@ -53,7 +53,7 @@ public class Wolf extends Animal{
      * @param inDen weather or not the wolf is in its den
      */
     public Wolf(Pack pack, int age, boolean inDen){
-        super(new Class[]{Rabbit.class}, 1);
+        super(1);
         this.pack = pack;
         pack.addMember(this);
         initialise(age);
@@ -132,6 +132,12 @@ public class Wolf extends Animal{
     protected void moveTowards(World world, Location location){
         if(huntingPack != null) super.moveTowards(world, location, 2, this);
         else super.moveTowards(world, location,1, this);
+    }
+
+    @Override
+    void setupCanEat() {
+        canEat.add(Rabbit.class);
+        //canEat.add(Bear.grass);
     }
 
     /**

@@ -9,7 +9,7 @@ public class Den extends Community{
     Hole den;
 
     public Den(World world, Location entry) {
-        den = (Hole) ObjectFactory.generateOnMap(world,entry,"hole", this, "hole-small");
+        den = (Hole) ObjectFactory.generateOnMap(world,entry,"hole","hole-small");
     }
 
     public Location getLocation(World world) {

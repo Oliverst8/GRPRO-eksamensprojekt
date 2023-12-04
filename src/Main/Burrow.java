@@ -5,12 +5,10 @@ import itumulator.world.Location;
 
 import spawn.ObjectFactory;
 
-import java.util.List;
-import java.util.Random;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Burrow extends Community{
-    private List<Hole> entries;
+    private Set<Hole> entries;
 
     /**
      * @throws IllegalArgumentException if entry is null or world is null
@@ -22,7 +20,7 @@ public class Burrow extends Community{
     public Burrow(World world, Location entry) {
         super();
 
-        entries = new ArrayList<>();
+        entries = new HashSet<>();
 
         addEntry(world, entry);
     }
@@ -36,7 +34,7 @@ public class Burrow extends Community{
     public Burrow(World world) {
         super();
 
-        entries = new ArrayList<>();
+        entries = new HashSet<>();
 
         Random random = new Random();
         Location entryLocation = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
@@ -47,7 +45,7 @@ public class Burrow extends Community{
     /**
      * @return a list of Locations of the entries the burrow has
      */
-    public List<Hole> getEntries() {
+    public Set<Hole> getEntries() {
         return entries;
     }
 

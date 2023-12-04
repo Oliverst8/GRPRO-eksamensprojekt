@@ -6,7 +6,9 @@ import spawn.ObjectFactory;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Rabbit extends Animal {
     private Burrow burrow;
@@ -17,13 +19,13 @@ public class Rabbit extends Animal {
      * Initialises inBurrow to false
      */
     public Rabbit(){
-        super(new Class[]{Grass.class}, 0);
+        super(0);
         burrow = null;
         adultAge = 3;
     }
 
     public Rabbit(int age, Burrow burrow, boolean inBurrow) {
-        super(new Class[]{Grass.class}, 0);
+        super(0);
         setBurrow(burrow);
         adultAge = 3;
         this.age = age;
@@ -82,6 +84,11 @@ public class Rabbit extends Animal {
         ObjectFactory.generateOffMap(world, "rabbit", 0, burrow, true);
     }
 
+    @Override
+    void setupCanEat() {
+        canEat.add(Grass.class);
+    }
+
     /**
      * - Set sleeping to false if its true, and call the grow method
      * - If its in a burrow, check if it can reproduce
@@ -115,19 +122,20 @@ public class Rabbit extends Animal {
             if(getHunger() < 100) exitBurrow(world);
         }
         else {
-            if(world.getSurroundingTiles(world.getLocation(this)).size()>world.getEmptySurroundingTiles(world.getLocation(this)).size()){
-               for(Location location : world.getSurroundingTiles(world.getLocation(this))){
+            if(getHunger() < 100) {
+                hunt(world);
+            } else{
+                seekBurrow(world);
+            }
+            if(!isInBurrow() && world.getSurroundingTiles(world.getLocation(this)).size()>world.getEmptySurroundingTiles(world.getLocation(this)).size()){
+                for(Location location : world.getSurroundingTiles(world.getLocation(this))){
                    if(world.isTileEmpty(location)) return;
                    Organism organism = (Organism) world.getTile(location);
                    if(organism.getFoodChainValue()>this.getFoodChainValue()){
                        moveAwayFrom(world,location);
                    }
                }
-            }
-            if(getHunger() < 100) {
-                hunt(world);
-            } else{
-                seekBurrow(world);
+
             }
 
         }
@@ -193,7 +201,7 @@ public class Rabbit extends Animal {
     private void exitBurrow(World world) {
         if(!inBurrow) throw new IllegalOperationException("Cant exit a burrow, if its not in one");
         
-        List<Hole> entries = burrow.getEntries();
+        Set<Hole> entries = burrow.getEntries();
         Location freeLocation = null;
 
         for(Hole tempHole : entries) {

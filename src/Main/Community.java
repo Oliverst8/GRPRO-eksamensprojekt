@@ -3,15 +3,13 @@ package Main;
 import itumulator.world.Location;
 import itumulator.world.World;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public abstract class Community {
-    private List<Animal> members;
+    private Set<Animal> members;
 
     public Community(){
-        members = new LinkedList<>();
+        members = new HashSet<>();
     }
 
     /**
@@ -32,12 +30,12 @@ public abstract class Community {
     /**
      * @return the list of members in the community
      */
-    public List<Animal> getMembers() {
+    public Set<Animal> getMembers() {
         return members;
     }
 
-    public List<Animal> getAdultMembers() {
-        List<Animal> adultMembers = new ArrayList<>();
+    public Set<Animal> getAdultMembers() {
+        Set<Animal> adultMembers = new HashSet<>();
 
         for(Animal animal : members) {
             if(animal.getAge() >= animal.getAdultAge()) {
@@ -48,7 +46,7 @@ public abstract class Community {
         return adultMembers;
     }
 
-    protected Location findNearestEntity(World world, Location location, List<? extends Entity> enitities) {
+    protected Location findNearestEntity(World world, Location location, Set<? extends Entity> enitities) {
         Location closestEntityLocation = null;
         double minDist = Double.MAX_VALUE;
 

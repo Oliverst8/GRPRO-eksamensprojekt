@@ -3,8 +3,10 @@ package Main;
 import itumulator.world.Location;
 import itumulator.world.World;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class Pack extends Community{
     private Den den;
@@ -26,7 +28,7 @@ public class Pack extends Community{
     }
 
     public Location findNearestMember(World world, Location wolfLocation){
-        List<Animal> wolvesAboveGround = new LinkedList<>(getMembers());
+        Set<Animal> wolvesAboveGround = new HashSet<>(getMembers());
         if(den != null) wolvesAboveGround.removeAll(den.getMembers());
         return findNearestEntity(world, wolfLocation, wolvesAboveGround);
     }

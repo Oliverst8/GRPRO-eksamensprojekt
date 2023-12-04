@@ -1,5 +1,6 @@
 package test;
 
+import Main.Animal;
 import Main.Hole;
 import Main.Rabbit;
 import itumulator.executable.Program;
@@ -14,8 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import Main.Burrow;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 class BurrowTest {
 
@@ -51,7 +51,7 @@ class BurrowTest {
 
         Location expected = new Location(2,2);
         Burrow testBurrow = new Burrow(world, expected);
-        List<Hole> holes = testBurrow.getEntries();
+        List<Hole> holes = new ArrayList<>(testBurrow.getEntries());
         Location actual = holes.get(0).getLocation(world);
 
         assertEquals(expected,actual);
@@ -83,7 +83,8 @@ class BurrowTest {
     void testAddRabbit() {
         Rabbit rabbit = new Rabbit();
         burrow.addMember(rabbit);
-        assertEquals(rabbit, burrow.getMembers().get(0));
+        List<Animal> members = new ArrayList<>(burrow.getMembers());
+        assertEquals(rabbit, members.get(0));
     }
 
     @Test
@@ -137,7 +138,7 @@ class BurrowTest {
         Rabbit rabbit2 = new Rabbit();
         burrow.addMember(rabbit1);
         burrow.addMember(rabbit2);
-        List<Rabbit> expected = new LinkedList<>();
+        Set<Animal> expected = new HashSet<>();
         expected.add(rabbit1);
         burrow.removeMember(rabbit2);
         assertEquals(expected, burrow.getMembers());

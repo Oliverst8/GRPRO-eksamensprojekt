@@ -10,7 +10,7 @@ public abstract class Animal extends Organism implements Consumable{
 
     private double hunger; //0 is empty, and 100 is full
 
-    private final Class<? extends Consumable>[] canEat; //Holdes the types of classes the animal can eat
+    protected Set<Class<? extends Consumable>> canEat; //Holdes the types of classes the animal can eat
 
     protected boolean sleeping;
     protected boolean infected;
@@ -20,12 +20,13 @@ public abstract class Animal extends Organism implements Consumable{
      * Initialises food type to that the animal itself is to meat
      * Initialises the food that can be eaten
      */
-    public Animal( Class<? extends Consumable>[] canEat, int defualtFoodChainValue) {
+    public Animal(int defualtFoodChainValue) {
         super(defualtFoodChainValue);
         hunger = 50;
-        this.canEat = canEat;
+        this.canEat = new HashSet<>();
         sleeping = false;
         infected = false;
+        setupCanEat();
     }
 
     /**
@@ -35,10 +36,7 @@ public abstract class Animal extends Organism implements Consumable{
      * @return true if the class is in the list of classes the animal can eat
      */
     public boolean canIEat(Class<? extends Consumable> food) {
-        for(Class<? extends Consumable> edibleFood : canEat) {
-            if(food.equals(edibleFood)) return true;
-        }
-        return false;
+        return canEat.contains(food);
     }
 
     /**
@@ -367,10 +365,12 @@ public abstract class Animal extends Organism implements Consumable{
         this.hunger = Math.min(0, this.hunger + hunger);
     }
 
+    abstract void setupCanEat();
+
     /*
      * @return String array of canEat of the object
      */
-    public Class<? extends Consumable>[] getCanEat(){
+    public Set<Class<? extends Consumable>> getCanEat(){
         return canEat;
     }
 

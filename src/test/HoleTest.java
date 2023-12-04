@@ -28,36 +28,43 @@ class HoleTest {
         program = new Program(size, display_size, delay); // opret et nyt program
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         location = new Location(0,0);
-        hole = new Hole(location, "hole-small");
         burrow = new Burrow(world, location);
+        hole = new Hole(burrow, "hole-small");
+
     }
 
     /**
      * Tests Hole constructor with valid location
      * Expects the holes location to be the expectedLocation
+     *  @Test
+     *     void testHoleConstructorWithLocationArgument(){
+     *         Location expectedLocation = new Location(60,60);
+     *         Hole constructorHole = new Hole(expectedLocation, "hole-small");
+     *         assertEquals(expectedLocation,constructorHole.getLocation());
+     *     }
      */
-    @Test
-    void testHoleConstructorWithLocationArgument(){
-        Location expectedLocation = new Location(60,60);
-        Hole constructorHole = new Hole(expectedLocation, "hole-small");
-        assertEquals(expectedLocation,constructorHole.getLocation());
-    }
-    @Test
-    void testHoleConstructorWithLocationAndBurrowArgument(){
-        Location expectedLocation = new Location(60,60);
-        Hole constructorHole = new Hole(expectedLocation,burrow, "hole-small");
-        assertEquals(expectedLocation,constructorHole.getLocation());
-        assertEquals(burrow,constructorHole.getBurrow());
-    }
+
+
+    /**
+     *  @Test
+     *     void testHoleConstructorWithLocationAndBurrowArgument(){
+     *         Location expectedLocation = new Location(60,60);
+     *         Hole constructorHole = new Hole(expectedLocation,burrow, "hole-small");
+     *         assertEquals(expectedLocation,constructorHole.getLocation());
+     *         assertEquals(burrow,constructorHole.getBurrow());
+     *     }
+     */
+
 
     /**
      * Tests the holes getLocation()
      * Expects it to be the same as stated in the setup before each test
+     * @Test
+     *     void getLocation() {
+     *         assertEquals(this.location,this.hole.getLocation());
+     *     }
      */
-    @Test
-    void getLocation() {
-        assertEquals(this.location,this.hole.getLocation());
-    }
+
 
     /**
      *

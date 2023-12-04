@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import Main.Carcass;
 import Main.Helper;
 import Main.Rabbit;
 import Main.Wolf;
@@ -159,7 +160,7 @@ public class WolfTest {
         program.simulate();
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
         wolf.setHunger(50);
-        double expectedEnergy = Math.min(100, wolf.getEnergy()+rabbit.getEnergy());
+        double expectedEnergy = 200;
         program.simulate();
 
         assertEquals(expectedEnergy, wolf.getEnergy());
@@ -175,15 +176,15 @@ public class WolfTest {
         wolf.setHunger(50);
         wolf2.setHunger(50);
         program.simulate();
-        double expectedEnergyWolf1 = Math.min(100, wolf.getEnergy()+rabbit.getEnergy());
-        double expectedEnergyWolf2 = Math.min(100, wolf2.getEnergy()+rabbit.getEnergy());
+        double expectedEnergyWolf1 = Math.min(200, wolf.getEnergy()+rabbit.getEnergy());
+        double expectedEnergyWolf2 = Math.min(200, wolf2.getEnergy()+rabbit.getEnergy());
 
         assertEquals(expectedEnergyWolf1, wolf.getEnergy());
         assertEquals(expectedEnergyWolf2, wolf2.getEnergy());
     }
 
     @Test
-    void testDayBehaviorExpectsWolfToAttack() {
+    void testDayBehaviorExpectsWolfToAttackAndRabbitToDie() {
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf", 5);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
         rabbit.setEnergy(100);
@@ -193,7 +194,39 @@ public class WolfTest {
         program.simulate();
         rabbit.skipTurn();
         program.simulate();
-        assertEquals(90,rabbit.getEnergy());
+        assertEquals(rabbit.getMaxHeath()-wolf.getStrength(), rabbit.getHealth());
+        assertEquals(world.getTile(new Location(3,3)).getClass(), Carcass.class);
+    }
+
+    @Test
+    void testWolfEatingInAPack(){
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,2), "wolf", wolf.getPack(), 3, false);
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (1,1),"Rabbit");
+        rabbit.skipTurn();
+        program.simulate();
+        rabbit.skipTurn();
+        program.simulate();
+        program.simulate();
+
+        int expectedHunger = Math.min(100,rabbit.getEnergy()+wolf.getEnergy());
+        assertEquals(expectedHunger,wolf.getHunger());
+        assertEquals(expectedHunger,wolf2.getHunger());
+
+    }
+
+    @Test
+    void testWolfEatingAlone(){
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (1,1),"Rabbit");
+        rabbit.skipTurn();
+        program.simulate();
+        rabbit.skipTurn();
+        program.simulate();
+
+        int expectedHunger = Math.min(100,rabbit.getEnergy()+wolf.getEnergy());
+        assertEquals(expectedHunger,wolf.getHunger());
+
     }
 
     @Test

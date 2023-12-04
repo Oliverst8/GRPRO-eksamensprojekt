@@ -137,7 +137,9 @@ public class OrganismTest {
     @Test
     void getEnergyFor12daysOld() {
         Rabbit rabbit = new Rabbit(12, new Burrow(world, new Location(0,0)), false);
-        assertEquals(100 - (rabbit.getEnergyLossPerDay()*(Math.max(0,rabbit.getAge()-rabbit.getAdultAge()))),rabbit.getEnergy());
+        rabbit.setEnergy(100);
+        int expected = 100 - (rabbit.getEnergyLossPerDay()*(Math.max(0,rabbit.getAge()-rabbit.getAdultAge())));
+        assertEquals(expected,rabbit.getEnergy());
     }
 
     @AfterEach

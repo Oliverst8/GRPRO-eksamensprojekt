@@ -6,8 +6,6 @@ import itumulator.world.World;
 public abstract class Organism extends Entity implements Actor, Consumable {
     protected int age;
 
-    private int energy; //0 is empty, and 100 is full
-
     private boolean day;
 
     private boolean skipTurn = false;
@@ -19,6 +17,10 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     private int foodChainValue;
 
     protected int energyLossPerDay;
+    protected int maxHeath;
+    protected int health;
+    protected int energy;
+    protected int maxEnergy;
 
     public int getEnergyLossPerDay() {
         return energyLossPerDay;
@@ -34,9 +36,9 @@ public abstract class Organism extends Entity implements Actor, Consumable {
      */
     public Organism(int defualtFoodChainValue) {
         age = 0;
-        energy = 100;
         energyLossPerDay = 5;
         dead = false;
+        health = 100;
         setFoodChainValue(defualtFoodChainValue);
     }
 
@@ -81,6 +83,10 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         world.delete(this);
     }
 
+    public void setDead(){
+        dead = true;
+    }
+
     /**
      * @return current age
      */
@@ -92,7 +98,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
      * @return the current amount of energy
      */
     public int getEnergy() {
-        return energy - (energyLossPerDay*(Math.max(0,getAge()-getAdultAge())));
+        return energy;
     }
 
     /**
@@ -108,7 +114,8 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     }
 
     public void setEnergy(int energy) {
-        this.energy = energy;
+        int newEnergy = (energy - (energyLossPerDay*(Math.max(0,getAge()-getAdultAge()))));
+        this.energy = Math.max(0,Math.min(newEnergy, maxEnergy));
     }
 
     protected boolean isDay() {
@@ -135,8 +142,8 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         if(isDay()) dayBehavior(world);
         else nightBehavior(world);
 
-        if(getEnergy() <= 0) {
-            System.out.println(this + " is out of energy and dying");
+        if(getEnergy() <= 0 && getHealth() <= 0) {
+            System.out.println(this + " is out of energy or health and dying");
             die(world);
         }
     }
@@ -163,7 +170,24 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         return path.toString();
     }
 
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(World world ,int health) {
+        this.health = health;
+        if(health <= 0) die(world);
+    }
+
+    public int getMaxEnergy() {
+        return maxEnergy;
+    }
+
     public int getAdultAge() {
         return adultAge;
+    }
+
+    public int getMaxHeath(){
+        return maxHeath;
     }
 }

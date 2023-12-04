@@ -74,6 +74,11 @@ public class Wolf extends Animal{
         adultAge = 5;
         this.age = age;
         inDen = false;
+        maxEnergy = 200;
+        energy = maxEnergy;
+        maxHeath = 200;
+        health = maxHeath;
+        strength = 100;
     }
 
 
@@ -190,8 +195,9 @@ public class Wolf extends Animal{
                 Organism prey = findPrey(world, 4);
                 for(Animal wolf : huntingPack.getMembers()){
                     wolf.huntPrey(world, prey);
-                    wolf.skipTurn();
+                    if(!world.contains(prey)) break;
                 }
+                skipHuntingPacksTurn();
                 setSkipTurn(false);
                 return;
             }
@@ -230,6 +236,12 @@ public class Wolf extends Animal{
         return true;
     }
 
+    public void skipHuntingPacksTurn(){
+        for (Animal wolf: huntingPack.getMembers()) {
+            wolf.skipTurn();
+        }
+    }
+
     /**
      * @return the hunting pack of the wolf
      */
@@ -259,9 +271,9 @@ public class Wolf extends Animal{
             return;
         }
         for(Animal wolf : huntingPack.getMembers()){
-            ((Wolf)wolf).eatAlone(world, food);
-            food.die(world);
+            ((Wolf) wolf).eatAlone(world, food);
         }
+        food.die(world);
     }
 
     /**
@@ -270,7 +282,7 @@ public class Wolf extends Animal{
      * @param world the world the wolf is in
      */
     public void eatAlone(World world, Organism food) {
-        if(canIEat(food.getClass())){
+        if(canIEat(food.getEntityClass())){
             addHunger(0.5 * food.getEnergy());
         }
     }

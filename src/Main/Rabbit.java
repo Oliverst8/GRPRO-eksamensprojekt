@@ -6,7 +6,6 @@ import spawn.ObjectFactory;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,18 +21,27 @@ public class Rabbit extends Animal{
     public Rabbit(){
         super(0);
         burrow = null;
-        adultAge = 3;
+        initialize();
     }
 
     public Rabbit(int age, Burrow burrow, boolean inBurrow) {
         super(0);
         setBurrow(burrow);
-        adultAge = 3;
+        initialize();
         this.age = age;
         if(inBurrow) {
             this.inBurrow = true;
             burrow.addMember(this);
         }
+    }
+
+    private void initialize(){
+        adultAge = 3;
+        maxEnergy = 100;
+        energy = maxEnergy;
+        strength = 100;
+        maxHeath = 100;
+        health = maxHeath;
     }
 
     /**

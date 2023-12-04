@@ -1,17 +1,18 @@
 package Main;
 
-import itumulator.world.Location;
-import itumulator.world.World;
-import spawn.ObjectFactory;
-
-import java.awt.*;
-import java.util.LinkedList;
+import java.awt.*
+;
+import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.LinkedList;
 
-public class Wolf extends Animal{
+import itumulator.world.World;
+import itumulator.world.Location;
 
+import spawn.ObjectFactory;
+
+public class Wolf extends Animal {
     private Pack pack; //The pack the wolf is part off
 
     private Pack huntingPack; //If the wolf is not part of a huntingpack it is null, otherwise this is the huntingpack

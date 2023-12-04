@@ -1,12 +1,10 @@
 package Main;
 
-import itumulator.world.Location;
 import itumulator.world.World;
+import itumulator.world.Location;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
+import java.util.HashSet;
 
 public class Pack extends Community{
     private Den den;

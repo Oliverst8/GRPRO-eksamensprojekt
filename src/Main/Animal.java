@@ -1,8 +1,8 @@
 package Main;
 
+import itumulator.world.World;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
-import itumulator.world.World;
 
 import java.util.*;
 
@@ -156,7 +156,6 @@ public abstract class Animal extends Organism implements Consumable{
         }
     }
 
-
     /**
      * @throws IllegalArgumentException if radius is less then 2
      * @throws NullPointerException if the world or object is null
@@ -201,6 +200,7 @@ public abstract class Animal extends Organism implements Consumable{
                 }
             }
         }
+
         return nearestObject;
     }
 
@@ -253,9 +253,12 @@ public abstract class Animal extends Organism implements Consumable{
      */
     protected void moveTowards(World world, Location location, int amountOfSteps, Animal animal) {
         Location newTile = world.getLocation(animal);
+
         for(int i = 0; i < amountOfSteps; i++) {
-            if (newTile.getX() == location.getX() && newTile.getY() == location.getY())
-                throw new IllegalArgumentException("Animal is already there");
+            if (newTile.getX() == location.getX() && newTile.getY() == location.getY()) {
+                System.out.println("Animal is already on the location");
+                return;
+            }
 
             int x = makeNumberOneCloser(newTile.getX(), location.getX());
             int y = makeNumberOneCloser(newTile.getY(), location.getY());
@@ -265,15 +268,15 @@ public abstract class Animal extends Organism implements Consumable{
                 else if (world.isTileEmpty(new Location(newTile.getX(), y))) x = newTile.getX();
                 else break;
             }
+
             newTile = new Location(x,y);
-
-
         }
-        System.out.println(this + " moves from: " + world.getLocation(this) + " to: " + newTile);
-        world.move(this, newTile);
-        removeEnergy(10*amountOfSteps);
-    }
 
+        System.out.println(this + " moves from: " + world.getLocation(this) + " to: " + newTile);
+
+        world.move(this, newTile);
+        removeEnergy(2*amountOfSteps);
+    }
 
     /**
      * Moves the animal on block away from a location

@@ -1,14 +1,15 @@
 package Main;
 
-import itumulator.world.Location;
-import itumulator.world.World;
 import spawn.ObjectFactory;
 
+import itumulator.world.World;
+import itumulator.world.Location;
+
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+
 import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Rabbit extends Animal {
     private Burrow burrow;
@@ -18,7 +19,7 @@ public class Rabbit extends Animal {
      * Initilises the food to the bunny can eat to plant and fruits
      * Initialises inBurrow to false
      */
-    public Rabbit(){
+    public Rabbit() {
         super(0);
         burrow = null;
         adultAge = 3;

@@ -6,7 +6,7 @@ import itumulator.world.NonBlocking;
 
 import java.util.*;
 
-public abstract class Animal extends Organism implements Consumable{
+public abstract class Animal extends Organism {
 
     private double hunger; //0 is empty, and 100 is full
 
@@ -15,8 +15,6 @@ public abstract class Animal extends Organism implements Consumable{
     protected boolean sleeping;
     protected boolean infected;
     protected int strength;
-
-
 
     /**
      * Initialises hunger to 50

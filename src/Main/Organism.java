@@ -17,7 +17,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     private int foodChainValue;
 
     protected int energyLossPerDay;
-    protected int maxHeath;
+    protected int maxHealth;
     protected int health;
     protected int energy;
     protected int maxEnergy;
@@ -25,8 +25,6 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     public int getEnergyLossPerDay() {
         return energyLossPerDay;
     }
-
-
 
     /**
      * Creates a new organism
@@ -42,7 +40,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         setFoodChainValue(defualtFoodChainValue);
     }
 
-    protected void setFoodChainValue(int foodChainValue){
+    protected void setFoodChainValue(int foodChainValue) {
         this.foodChainValue = foodChainValue;
     }
 
@@ -58,7 +56,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
      * @return the class of the object
      */
     @Override
-    public Class<? extends Organism> getEntityClass(){
+    public Class<? extends Organism> getEntityClass() {
         return this.getClass();
     }
 
@@ -83,7 +81,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         world.delete(this);
     }
 
-    public void setDead(){
+    public void setDead() {
         dead = true;
     }
 
@@ -187,7 +185,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         return adultAge;
     }
 
-    public int getMaxHeath(){
-        return maxHeath;
+    public int getMaxHealth(){
+        return maxHealth;
     }
 }

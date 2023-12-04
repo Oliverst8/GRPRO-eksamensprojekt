@@ -77,8 +77,8 @@ public class Wolf extends Animal {
         inDen = false;
         maxEnergy = 200;
         energy = maxEnergy;
-        maxHeath = 200;
-        health = maxHeath;
+        maxHealth = 200;
+        health = maxHealth;
         strength = 100;
     }
 

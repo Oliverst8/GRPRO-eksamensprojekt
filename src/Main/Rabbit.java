@@ -41,8 +41,8 @@ public class Rabbit extends Animal {
         maxEnergy = 100;
         energy = maxEnergy;
         strength = 100;
-        maxHeath = 100;
-        health = maxHeath;
+        maxHealth = 100;
+        health = maxHealth;
     }
 
     /**

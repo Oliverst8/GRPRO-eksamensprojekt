@@ -217,7 +217,7 @@ public class WolfTest {
         program.simulate();
         rabbit.skipTurn();
         program.simulate();
-        assertEquals(rabbit.getMaxHeath()-wolf.getStrength(), rabbit.getHealth());
+        assertEquals(rabbit.getMaxHealth()-wolf.getStrength(), rabbit.getHealth());
         assertEquals(world.getTile(new Location(3,3)).getClass(), Carcass.class);
     }
 

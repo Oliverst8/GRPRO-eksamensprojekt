@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
         Input input = new Input("data/demo/d1.txt");
         
-        int delay = 1000;
+        int delay = 250;
         int display_size = 1000;
         int size = input.getSize();
         

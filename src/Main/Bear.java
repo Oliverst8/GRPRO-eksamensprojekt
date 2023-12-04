@@ -13,26 +13,36 @@ public class Bear extends Animal {
     Location territory;
 
     int matingDesire;
-    int territoryRadius = 3;
+    int territoryRadius = 4;
 
     public Bear(World world) {
         super(3);
 
-        adultAge = 5;
+        adultAge = 1;
 
         Random random = new Random();
 
         Location location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
 
         this.territory = location;
+        this.strength = 125;
+
+        this.maxEnergy = 300;
+        this.maxHealth = 350;
+        this.health = maxHealth;
     }
 
     public Bear(World world, Location territory) {
         super(3);
 
-        adultAge = 5;
+        adultAge = 1;
 
         this.territory = territory;
+        this.strength = 125;
+
+        this.maxEnergy = 300;
+        this.maxHealth = 350;
+        this.health = maxHealth;
     }
 
     private void partrolTerritory(World world) {
@@ -49,9 +59,9 @@ public class Bear extends Animal {
                 for(int y = lowerY; y <= upperY; y++) {
                     Location location = new Location(x, y);
 
-                    Object object = world.getTile(location);
+                    Entity object = (Entity) world.getTile(location);
 
-                    if(object != null && canEat.contains(object.getClass())) {
+                    if(object != null && canEat.contains(object.getEntityClass())) {
                         huntPrey(world, (Organism) object);
                         return;
                     }

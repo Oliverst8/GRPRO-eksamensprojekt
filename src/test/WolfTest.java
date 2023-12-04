@@ -14,6 +14,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spawn.ObjectFactory;
 
+import java.util.Objects;
+
 public class WolfTest {
 
     Program program;
@@ -138,19 +140,28 @@ public class WolfTest {
 
     @Test
     void testDayBehaviorExpectsWolfsToCreateHuntingPackAndMoveTowardsRabbit() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "wolf", wolf.getPack(), 3, false);
+        Wolf wolf1 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "wolf", wolf1.getPack(), 3, false);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
-        rabbit.skipTurn();
-        double currentDistWolf1 = Helper.distance(world.getLocation(wolf),world.getLocation(rabbit));
-        double currentDistWolf2 = Helper.distance(world.getLocation(wolf2),world.getLocation(rabbit));
 
+        rabbit.skipTurn();
         program.simulate();
         rabbit.skipTurn();
         program.simulate();
 
-        assertTrue(Helper.distance(world.getLocation(wolf),world.getLocation(rabbit)) < currentDistWolf1-1);
-        assertTrue(Helper.distance(world.getLocation(wolf2),world.getLocation(rabbit)) < currentDistWolf2-1);
+        Location wolf1Location = world.getLocation(wolf1);
+        Location wolf2Location = world.getLocation(wolf2);
+        Location predictedWolf1Location1 = new Location(2,1);
+        Location predictedWolf1Locaiton2 = new Location(2,2);
+        boolean isAtPredictedLocation = false;
+
+        if(Objects.equals(wolf1Location, predictedWolf1Location1) || Objects.equals(wolf1Location, predictedWolf1Locaiton2)){
+            isAtPredictedLocation = true;
+        }
+        Location predictedWolf2Location = new Location(3,2);
+
+        assertTrue(isAtPredictedLocation);
+        assertEquals(predictedWolf2Location,wolf2Location);
     }
 
     @Test
@@ -246,6 +257,18 @@ public class WolfTest {
         wolf.die(world);
         program.simulate();
         assertEquals(0, wolf.getPack().getMembers().size());
+    }
+
+    @Test
+    void testThatWolfsIsRemovedFromHuntingPackWhenDead() {
+        Wolf wolf1 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf", 5);
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "wolf", wolf1.getPack(), 3, false);
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
+        program.simulate();
+        program.simulate();
+        int expectedMembers = wolf2.getHuntingPack().getMembers().size()-1;
+        wolf1.die(world);
+        assertEquals(expectedMembers, wolf2.getHuntingPack().getMembers().size());
     }
 
     @AfterEach

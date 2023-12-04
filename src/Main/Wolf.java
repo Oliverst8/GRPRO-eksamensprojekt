@@ -75,6 +75,11 @@ public class Wolf extends Animal {
         adultAge = 5;
         this.age = age;
         inDen = false;
+        maxEnergy = 200;
+        energy = maxEnergy;
+        maxHeath = 200;
+        health = maxHeath;
+        strength = 100;
     }
 
 
@@ -155,7 +160,7 @@ public class Wolf extends Animal {
     @Override
     void dayBehavior(World world) {
         if(sleeping) wake();
-    
+
         if(getInDen()){
             if(getEnergy() > 80 && pack.getDen().getAdultMembers().size() >= 2){
                 for(Animal otherWolf : pack.getDen().getMembers()){
@@ -175,6 +180,7 @@ public class Wolf extends Animal {
             }
 
         } else{
+
             if(getHunger() == 100) {
                 goToDen(world);
                 return;
@@ -191,8 +197,9 @@ public class Wolf extends Animal {
                 Organism prey = findPrey(world, 4);
                 for(Animal wolf : huntingPack.getMembers()){
                     wolf.huntPrey(world, prey);
-                    wolf.skipTurn();
+                    if(!world.contains(prey)) break;
                 }
+                skipHuntingPacksTurn();
                 setSkipTurn(false);
                 return;
             }
@@ -205,6 +212,7 @@ public class Wolf extends Animal {
     }
 
     private boolean createOrJoinHuntingPack(World world, int radius) {
+
         Set<Location> surroundingLocations = world.getSurroundingTiles(radius);
         List<Wolf> foundWolfes = new ArrayList<>();
         for(Location tile : surroundingLocations){
@@ -229,6 +237,12 @@ public class Wolf extends Animal {
         }
         setSkipTurn(false);
         return true;
+    }
+
+    public void skipHuntingPacksTurn(){
+        for (Animal wolf: huntingPack.getMembers()) {
+            wolf.skipTurn();
+        }
     }
 
     /**
@@ -260,9 +274,9 @@ public class Wolf extends Animal {
             return;
         }
         for(Animal wolf : huntingPack.getMembers()){
-            ((Wolf)wolf).eatAlone(world, food);
-            food.die(world);
+            ((Wolf) wolf).eatAlone(world, food);
         }
+        food.die(world);
     }
 
     /**
@@ -271,7 +285,7 @@ public class Wolf extends Animal {
      * @param world the world the wolf is in
      */
     public void eatAlone(World world, Organism food) {
-        if(canIEat(food.getClass())){
+        if(canIEat(food.getEntityClass())){
             addHunger(0.5 * food.getEnergy());
         }
     }
@@ -355,7 +369,7 @@ public class Wolf extends Animal {
     @Override
     public void die(World world) {
         super.die(world);
-
+        if(getHuntingPack() != null) getHuntingPack().removeMember(this);
         if(pack != null) pack.removeMember(this);
     }
 }

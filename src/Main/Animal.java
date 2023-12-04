@@ -14,6 +14,9 @@ public abstract class Animal extends Organism implements Consumable{
 
     protected boolean sleeping;
     protected boolean infected;
+    protected int strength;
+
+
 
     /**
      * Initialises hunger to 50
@@ -27,6 +30,10 @@ public abstract class Animal extends Organism implements Consumable{
         sleeping = false;
         infected = false;
         setupCanEat();
+    }
+
+    public int getStrength() {
+        return strength;
     }
 
     /**
@@ -124,7 +131,9 @@ public abstract class Animal extends Organism implements Consumable{
      * @param animal
      */
     private void Attack(World world, Organism animal) {
-        animal.removeEnergy(10);
+        int currentHealth = animal.getHealth();
+        animal.setHealth(world, animal.getHealth()-strength);
+        this.removeEnergy(10);
     }
 
     /**
@@ -147,6 +156,7 @@ public abstract class Animal extends Organism implements Consumable{
      */
     @Override
     public void die(World world){
+        setDead();
         if(world.contains(this)) {
             Location carcassLocation = world.getLocation(this);
             world.delete(this);

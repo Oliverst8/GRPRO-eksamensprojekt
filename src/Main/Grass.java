@@ -19,6 +19,13 @@ public class Grass extends Plant implements NonBlocking, Consumable {
         setEnergy(50);
 
         energyLossPerDay = 10;
+        initialize();
+    }
+
+    private void initialize(){
+        adultAge = 0;
+        maxEnergy = 100;
+        energy = maxEnergy;
     }
 
     /**

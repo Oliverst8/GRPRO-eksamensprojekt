@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.management.RuntimeErrorException;
 
+import Main.Animal;
 import Main.Entity;
 import Main.Helper;
 
@@ -68,6 +69,8 @@ public class ObjectFactory {
         classMap.put(Character.class, char.class);
         return classMap.getOrDefault(preConvertedClass,preConvertedClass);
     }
+
+
 
     private static Object generateHelper(String className, Object... constructorArgs) {
         className = className.toLowerCase();

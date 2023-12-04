@@ -145,6 +145,7 @@ public class WolfTest {
         double currentDistWolf2 = Helper.distance(world.getLocation(wolf2),world.getLocation(rabbit));
 
         program.simulate();
+        rabbit.skipTurn();
         program.simulate();
 
         assertTrue(Helper.distance(world.getLocation(wolf),world.getLocation(rabbit)) < currentDistWolf1-1);

@@ -6,7 +6,9 @@ import spawn.ObjectFactory;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Rabbit extends Animal{
 
@@ -18,13 +20,13 @@ public class Rabbit extends Animal{
      * Initialises inBurrow to false
      */
     public Rabbit(){
-        super(new Class[]{Grass.class}, 0);
+        super(0);
         burrow = null;
         adultAge = 3;
     }
 
     public Rabbit(int age, Burrow burrow, boolean inBurrow) {
-        super(new Class[]{Grass.class}, 0);
+        super(0);
         setBurrow(burrow);
         adultAge = 3;
         this.age = age;
@@ -81,6 +83,11 @@ public class Rabbit extends Animal{
 
     protected void produceOffSpring(World world) {
         ObjectFactory.generateOffMap(world, "rabbit", 0, burrow, true);
+    }
+
+    @Override
+    void setupCanEat() {
+        canEat.add(Grass.class);
     }
 
     /**
@@ -195,7 +202,7 @@ public class Rabbit extends Animal{
     private void exitBurrow(World world) {
         if(!inBurrow) throw new IllegalOperationException("Cant exit a burrow, if its not in one");
         
-        List<Hole> entries = burrow.getEntries();
+        Set<Hole> entries = burrow.getEntries();
         Location freeLocation = null;
 
         for(Hole tempHole : entries) {

@@ -356,7 +356,7 @@ public class Wolf extends Animal{
     @Override
     public void die(World world) {
         super.die(world);
-
+        if(getHuntingPack() != null) getHuntingPack().removeMember(this);
         if(pack != null) pack.removeMember(this);
     }
 }

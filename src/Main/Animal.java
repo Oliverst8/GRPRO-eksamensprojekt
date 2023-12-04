@@ -36,10 +36,7 @@ public abstract class Animal extends Organism implements Consumable{
      * @return true if the class is in the list of classes the animal can eat
      */
     public boolean canIEat(Class<? extends Consumable> food) {
-        for(Class<? extends Consumable> edibleFood : canEat) {
-            if(food.equals(edibleFood)) return true;
-        }
-        return false;
+        return canEat.contains(food);
     }
 
     /**

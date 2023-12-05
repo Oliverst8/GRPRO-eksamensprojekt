@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.Random;
 
 public class Rabbit extends Animal{
 
@@ -216,10 +217,11 @@ public class Rabbit extends Animal{
         for(Hole tempHole : entries) {
             if(!(freeLocation == null)) break;
             List<Location> emptyLocations = new ArrayList<>();
-            if(world.isTileEmpty(tempHole.getLocation(world))) emptyLocations.add(tempHole.getLocation(world));
-            emptyLocations.addAll(world.getEmptySurroundingTiles(tempHole.getLocation(world)));
+            if(world.isTileEmpty(tempHole.getLocation(world))) emptyLocations.add(tempHole.getLocation(world)); //adds hole itself to list
+            emptyLocations.addAll(world.getEmptySurroundingTiles(tempHole.getLocation(world))); //adds empty sorrounding tiles to list
             if(emptyLocations.isEmpty()) break;
-            freeLocation = emptyLocations.get(0);
+            int random = new Random().nextInt(0,emptyLocations.size());
+            freeLocation = emptyLocations.get(random);
         }
 
         if(freeLocation == null) return;

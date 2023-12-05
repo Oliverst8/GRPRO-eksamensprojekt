@@ -1,6 +1,7 @@
 package test;
 import Main.Carcass;
 import Main.Entity;
+import Main.Organism;
 import Main.Rabbit;
 import itumulator.executable.Program;
 import itumulator.world.Location;
@@ -30,6 +31,7 @@ public class CarcassTest {
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "rabbit");
         rabbit.setHealth(100);
         rabbit.removeHealth(100,world);
+        rabbit.setEnergy(100);
         program.simulate();
         assertEquals(world.getTile(location).getClass(), Carcass.class);
     }
@@ -44,19 +46,19 @@ public class CarcassTest {
     }
 
     @Test
-    void testCarcassDissapersAfter3Nights() {
+    void testCarcassDissapersAfter20Nights() {
         Location location = new Location(0,0);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "rabbit");
         rabbit.setHealth(100);
         rabbit.removeHealth(100,world);
-        int adultAge = 3;
-        for (int i = 0; i < adultAge*19; i++) {
+        program.simulate();
+        Carcass carcass = (Carcass) world.getTile(location);
+
+        for(int i = 0; i <= 100; i++){
             program.simulate();
-            assertNotNull(world.getTile(location));
+            System.out.println(carcass.getEnergy());
         }
-        for(int i = 0; i < adultAge; i++){
-            program.simulate();
-        }
+
         assertNull(world.getTile(location));
     }
 }

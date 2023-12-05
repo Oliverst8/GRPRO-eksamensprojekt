@@ -28,7 +28,7 @@ public class CarcassTest {
     @Test
     void testIfCarcussSpawnsWhenAnimalDies(){
         Location location = new Location(0,0);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "rabbit");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "Rabbit");
         rabbit.setHealth(100);
         rabbit.removeHealth(100,world);
         rabbit.setEnergy(100);
@@ -39,7 +39,7 @@ public class CarcassTest {
     @Test
     void testGetEntityClassOverride() {
         Location location = new Location(0,0);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "rabbit");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "Rabbit");
         rabbit.setEnergy(0);
         program.simulate();
         assertTrue(((Entity) world.getTile(location)).getEntityClass().equals(rabbit.getEntityClass()));
@@ -48,7 +48,7 @@ public class CarcassTest {
     @Test
     void testCarcassDissapersAfter20Nights() {
         Location location = new Location(0,0);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "rabbit");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "Rabbit");
         rabbit.setHealth(100);
         rabbit.removeHealth(100,world);
         program.simulate();

@@ -1,7 +1,6 @@
 package Main;
 
 import itumulator.world.Location;
-import itumulator.world.NonBlocking;
 import itumulator.world.World;
 import spawn.ObjectFactory;
 
@@ -169,7 +168,7 @@ public abstract class Animal extends Organism {
             Location carcassLocation = world.getLocation(this);
             world.delete(this);
 
-            Carcass carcass = (Carcass) ObjectFactory.generateOnMap(world, carcassLocation, "carcass");
+            Carcass carcass = (Carcass) ObjectFactory.generateOnMap(world, carcassLocation, "Carcass");
             carcass.setAnimal(this);
 
         } else {
@@ -182,13 +181,15 @@ public abstract class Animal extends Organism {
      * Finds the nearest object of the type object to this animal
      * @return the location of the nearest object (except itself) in radius, returns null if there is no such object
      */
-    protected Location findNearest(World world, int radius, Class<?> object) {
+    protected Entity findNearest(World world, int radius, Class<?> object) {
 
         if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
 
         Set<Entity> surroundingEntities = Helper.getEntities(world, world.getCurrentLocation(), radius);
+
         Entity nearestEntity = null;
         double smallestDistance = Double.MAX_VALUE;
+
         for(Entity entity : surroundingEntities){
             if(entity.equals(this)) continue;
             if(!entity.getEntityClass().equals(object)) continue;
@@ -201,8 +202,7 @@ public abstract class Animal extends Organism {
 
         }
 
-        if(nearestEntity == null) return null;
-        return world.getLocation(nearestEntity);
+        return nearestEntity;
     }
 
     /**
@@ -221,15 +221,15 @@ public abstract class Animal extends Organism {
      * @param world the world of the animals
      * @param animal1 the first animal
      * @param animal2 the second animal
-     * @throws cantReproduceException if the animals arent old if enough to breed
-     * @throws cantReproduceException if the animals arent the same type of animals
-     * @throws cantReproduceException if the animals dont have enough energy
+     * @throws CantReproduceException if the animals arent old if enough to breed
+     * @throws CantReproduceException if the animals arent the same type of animals
+     * @throws CantReproduceException if the animals dont have enough energy
      */
-    protected void reproduce(World world, Animal animal1, Animal animal2) throws cantReproduceException {
-        if (animal1.getAge() < animal1.getAdultAge()) throw new cantReproduceException(animal1, animal2);
-        if (animal2.getAge() < animal2.getAdultAge()) throw new cantReproduceException(animal1, animal2);
-        if (!animal1.getEntityClass().equals(animal2.getEntityClass())) throw new cantReproduceException(animal1, animal2);
-        if (!(animal1.getEnergy() > 50 && animal2.getEnergy() > 50)) throw new cantReproduceException(animal1, animal2);
+    protected void reproduce(World world, Animal animal1, Animal animal2) throws CantReproduceException {
+        if (animal1.getAge() < animal1.getAdultAge()) throw new CantReproduceException(animal1, animal2);
+        if (animal2.getAge() < animal2.getAdultAge()) throw new CantReproduceException(animal1, animal2);
+        if (!animal1.getEntityClass().equals(animal2.getEntityClass())) throw new CantReproduceException(animal1, animal2);
+        if (!(animal1.getEnergy() > 50 && animal2.getEnergy() > 50)) throw new CantReproduceException(animal1, animal2);
         animal1.removeEnergy(50);
         animal2.removeEnergy(50);
         animal2.skipTurn();
@@ -272,6 +272,7 @@ public abstract class Animal extends Organism {
         }
         System.out.println(this + " moves from: " + world.getLocation(this) + " to: " + newTile);
         world.move(this, newTile);
+        world.setCurrentLocation(newTile);
         removeEnergy(10*amountOfSteps);
     }
 

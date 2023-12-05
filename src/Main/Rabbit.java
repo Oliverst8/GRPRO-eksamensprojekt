@@ -73,15 +73,16 @@ public class Rabbit extends Animal{
         } else if(shouldRabbitDig(world)) {
             dig(world);
         } else {
-            setBurrow( ((Hole) world.getNonBlocking(findNearest(world, 5, Hole.class))).getBurrow());
+            setBurrow( ((RabbitHole) findNearest(world, 5, RabbitHole.class)).getBurrow());
             seekBurrow(world);
         }
     }
 
     private boolean shouldRabbitDig(World world) {
-        Location nearestBurrow = findNearest(world, 5, Burrow.class);
-        if(nearestBurrow == null) return true;
-        return !(distance(world, nearestBurrow) * 5 > 25);
+        RabbitHole nearestBurrowEntry = (RabbitHole) findNearest(world, 5, RabbitHole.class);
+        if(nearestBurrowEntry == null) return true;
+
+        return !(distance(world, world.getLocation(nearestBurrowEntry)) * 5 > 25);
     }
 
     private void moveTowardsOwnBurrow(World world) {
@@ -91,7 +92,7 @@ public class Rabbit extends Animal{
     }
 
     protected void produceOffSpring(World world) {
-        ObjectFactory.generateOffMap(world, "rabbit", 0, burrow, true);
+        ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
     }
 
     @Override
@@ -118,7 +119,7 @@ public class Rabbit extends Animal{
                     if(otherRabbit != this && otherRabbit.getEnergy() > 80) {
                         try{
                             reproduce(world, this, otherRabbit);
-                        } catch (cantReproduceException e){
+                        } catch (CantReproduceException e){
                             e.printInformation();
                         }
                         return;
@@ -211,7 +212,7 @@ public class Rabbit extends Animal{
     private void exitBurrow(World world) {
         if(!inBurrow) throw new IllegalOperationException("Cant exit a burrow, if its not in one");
         
-        Set<Hole> entries = burrow.getEntries();
+        Set<RabbitHole> entries = burrow.getEntries();
         Location freeLocation = null;
 
         for(Hole tempHole : entries) {

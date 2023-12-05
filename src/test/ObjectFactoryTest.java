@@ -29,31 +29,30 @@ class ObjectFactoryTest {
 
     @Test
     void testgenerateWithoutLocation() {
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, "rabbit");
-        assertTrue(rabbit instanceof Rabbit);
+        assertInstanceOf(Rabbit.class, ObjectFactory.generateOnMap(world, "Rabbit"));
     }
 
     @Test
     void testgenerateWithLocation() {
         Location location = new Location(1,1);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location,"rabbit");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location,"Rabbit");
         assertEquals(new Location(1,1),world.getLocation(rabbit));
     }
 
     @Test
     void generateWith3ConstructorArgumentsExpectsRabbit(){
         Burrow burrow = new Burrow(world, new Location(0,0));
-        assertInstanceOf(Rabbit.class, (Rabbit) ObjectFactory.generateOffMap(world, "rabbit", 3, burrow, true));
+        assertInstanceOf(Rabbit.class, ObjectFactory.generateOffMap(world, "Rabbit", 3, burrow, true));
     }
 
     @Test
     void generateWith0ConstructorArgumentsExpectsRabbit(){
-        assertInstanceOf(Rabbit.class,(Rabbit) ObjectFactory.generateOffMap(world, "rabbit") );
+        assertInstanceOf(Rabbit.class, ObjectFactory.generateOffMap(world, "Rabbit") );
     }
 
     @Test
     void generateWith0ConstructorArgumentsExpectsWolf(){
-        assertInstanceOf(Wolf.class,(Wolf) ObjectFactory.generateOffMap(world, "wolf") );
+        assertInstanceOf(Wolf.class, ObjectFactory.generateOffMap(world, "Wolf") );
     }
 
     @AfterEach

@@ -142,26 +142,11 @@ public class WolfTest {
         Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf", wolf.getPack(), 3, false);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
         rabbit.addEnergy(100);
-
         rabbit.skipTurn();
         program.simulate();
         rabbit.skipTurn();
         program.simulate();
 
-
-        System.out.println(world.getEntities());
-
-
-
-
-
-
-
-        //fejler når wolf2 kaldes først i
-        //                   for(Animal wolf : huntingPack.getMembers()){
-        //                    wolf.huntPrey(world, prey);
-        //                    if(!world.contains(prey)) break;
-        //                }
         Location wolfLocation = world.getLocation(wolf);
         Location wolf2Location = world.getLocation(wolf2);
         Location predictedWolfLocation1 = new Location(2,1);
@@ -284,6 +269,7 @@ public class WolfTest {
         wolf1.die(world);
         assertEquals(expectedMembers, wolf2.getHuntingPack().getMembers().size());
     }
+
 
     @AfterEach
     void tearDown() {

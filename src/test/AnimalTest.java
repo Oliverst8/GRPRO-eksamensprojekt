@@ -27,7 +27,7 @@ public class AnimalTest {
      */
     @BeforeEach
     void setUp() {
-        int size = 3; // størrelsen af vores 'map' (dette er altid kvadratisk)
+        int size = 20; // størrelsen af vores 'map' (dette er altid kvadratisk)
         int delay = 1; // forsinkelsen mellem hver skridt af simulationen (i ms)
         int display_size = 800; // skærm opløsningen (i px)
         program = new Program(size, display_size, delay); // opret et nyt program
@@ -93,6 +93,12 @@ public class AnimalTest {
         rabbit.removeHunger(hungerMod);
         assertEquals(expectedHunger,rabbit.getHunger());
     }
+    @Test
+    void testAnimalEatTheLargerTheAnimalTheMoreHungerConsumedByAnimal(){
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
+
+    }
+
     @AfterEach
     void tearDown() {
     }

@@ -62,18 +62,6 @@ public class Carcass extends Organism{
         return new Color(92, 64, 51);
     }
 
-    /**
-     * Sets day variable
-     * Calls day or night behavior depending on the time of day
-     * @param world providing details of the position on which the actor is currently located and much more.
-     */
-    @Override
-    public void act(World world){
-        setDay(world.isDay());
-        
-        if(isDay()) dayBehavior(world);
-        else nightBehavior(world);
-    }
 
     /**
      * If it has been night and is now day the carcass gets older
@@ -82,11 +70,6 @@ public class Carcass extends Organism{
      */
     @Override
     void dayBehavior(World world) {
-        if(night) {
-            grow();
-            night = false;
-        }
-
         if(age == adultAge) die(world);
     }
 
@@ -95,7 +78,5 @@ public class Carcass extends Organism{
      * @param world the world the carcass is in
      */
     @Override
-    void nightBehavior(World world) {
-        night = true;
-    }
+    void nightBehavior(World world) {}
 }

@@ -180,6 +180,7 @@ class RabbitTest {
         double expectedHunger = Math.max(100, rabbit.getHunger()+(0.5*grass.getEnergy()));
 
         for (int i = 0; i < 3; i++) {
+            grass.skipTurn();
             program.simulate();
         }
 

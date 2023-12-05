@@ -39,16 +39,9 @@ class GrassTest {
     void testIfGrassAges() {
 
         Grass grass = (Grass) ObjectFactory.generateOnMap(world, "grass");
-        program.simulate();
-        program.simulate();
-        program.simulate();
-        program.simulate();
-        program.simulate();
-        program.simulate();
-        program.simulate();
-        program.simulate();
-        program.simulate();
-        program.simulate(); //tick 10 skifter til nat
+        for(int i = 0; i < 20; i++){
+            program.simulate();
+        }
         assertEquals(1,grass.getAge());
 
     }

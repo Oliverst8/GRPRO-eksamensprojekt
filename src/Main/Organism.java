@@ -188,9 +188,18 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         return health;
     }
 
-    public void setHealth(World world ,int health) {
+    public void setHealth(int health) {
         this.health = health;
-        if(health <= 0) die(world);
+    }
+
+
+    public void removeHealth(int health, World world){
+    setHealth(Math.max(0, this.health - health));
+    if(this.health <=0) die(world);
+    }
+
+    public void addHealth(int health){
+    setHealth(Math.max(100, this.health + health));
     }
 
     public int getMaxEnergy() {

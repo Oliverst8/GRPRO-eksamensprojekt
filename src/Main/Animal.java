@@ -187,8 +187,10 @@ public abstract class Animal extends Organism {
         if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
 
         Set<Entity> surroundingEntities = Helper.getEntities(world, world.getCurrentLocation(), radius);
+
         Entity nearestEntity = null;
         double smallestDistance = Double.MAX_VALUE;
+
         for(Entity entity : surroundingEntities){
             if(entity.equals(this)) continue;
             if(!entity.getEntityClass().equals(object)) continue;

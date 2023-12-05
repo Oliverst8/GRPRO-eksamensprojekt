@@ -56,7 +56,6 @@ public class CarcassTest {
 
         for(int i = 0; i <= 100; i++){
             program.simulate();
-            System.out.println(carcass.getEnergy());
         }
 
         assertNull(world.getTile(location));

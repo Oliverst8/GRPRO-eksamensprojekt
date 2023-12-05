@@ -125,6 +125,7 @@ public abstract class Animal extends Organism {
             }
         }else{
             if(distanteToPrey < 2){
+                System.out.println(distanteToPrey);
                 Attack(world, prey);
             } else{
                 moveTowards(world, preyLocation);
@@ -139,6 +140,8 @@ public abstract class Animal extends Organism {
      * @param animal
      */
     private void Attack(World world, Organism animal) {
+        System.out.println(this + " angriber " + animal);
+        System.out.println(world.getLocation(this) + " <-Ulv|Kanin-> "+world.getLocation(animal));
         animal.removeHealth(strength, world);
         this.removeEnergy(10);
     }
@@ -151,7 +154,10 @@ public abstract class Animal extends Organism {
      */
     public void eat(World world, Organism food) {
         if(canIEat(food.getEntityClass())){
-            addHunger(0.5 * food.getEnergy());
+            if(food.getEnergy()>0){
+                addHunger(0.5*food.getEnergy());
+                food.removeEnergy(food.getEnergy());
+            }
             food.die(world);
         }
     }
@@ -163,6 +169,7 @@ public abstract class Animal extends Organism {
      */
     @Override
     public void die(World world){
+
         setDead();
         if(world.contains(this)) {
             Location carcassLocation = world.getLocation(this);

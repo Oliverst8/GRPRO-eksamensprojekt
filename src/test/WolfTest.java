@@ -135,31 +135,34 @@ public class WolfTest {
         program.simulate();
         assertEquals(new Location(0,0),world.getLocation(wolf));
     }
-
+    
     @Test
     void testDayBehaviorExpectsWolfsToCreateHuntingPackAndMoveTowardsRabbit() {
-        Wolf wolf1 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf", wolf1.getPack(), 3, false);
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf", wolf.getPack(), 3, false);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
-
+        rabbit.addEnergy(100);
+        System.out.println(world.getEntities());
         rabbit.skipTurn();
+        wolf2.skipTurn();
         program.simulate();
         rabbit.skipTurn();
         program.simulate();
 
-        Location wolf1Location = world.getLocation(wolf1);
+        Location wolfLocation = world.getLocation(wolf);
         Location wolf2Location = world.getLocation(wolf2);
-        Location predictedWolf1Location1 = new Location(2,1);
-        Location predictedWolf1Locaiton2 = new Location(2,2);
+        Location predictedWolfLocation1 = new Location(2,1);
+        Location predictedWolfLocation2 = new Location(2,2);
         boolean isAtPredictedLocation = false;
 
-        if(Objects.equals(wolf1Location, predictedWolf1Location1) || Objects.equals(wolf1Location, predictedWolf1Locaiton2)){
+        if(Objects.equals(wolfLocation, predictedWolfLocation1) || Objects.equals(wolfLocation, predictedWolfLocation2)){
             isAtPredictedLocation = true;
         }
         Location predictedWolf2Location = new Location(3,2);
-
+        System.out.println(world.getEntities());
         assertTrue(isAtPredictedLocation);
         assertEquals(predictedWolf2Location,wolf2Location);
+
     }
 
     @Test

@@ -1,6 +1,5 @@
 package test;
 import Main.Entity;
-import Main.Organism;
 import Main.Rabbit;
 import Main.Carcass;
 

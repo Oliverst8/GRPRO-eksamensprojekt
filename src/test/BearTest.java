@@ -56,5 +56,8 @@ public class BearTest {
         program.simulate();
 
         assertEquals(wolf.getHealth(), initialWolfHealth);
-    }    
+    }
+
+    @AfterEach
+    void tearDown() {}
 }

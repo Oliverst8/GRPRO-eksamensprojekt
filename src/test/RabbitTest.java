@@ -244,7 +244,6 @@ class RabbitTest {
         rabbit.setHunger(100);
         program.simulate();
         program.simulate();
-        program.simulate();
         assertTrue(rabbit.isInBurrow());
 
     }

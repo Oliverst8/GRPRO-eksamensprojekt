@@ -185,11 +185,10 @@ public class Wolf extends Animal{
                 goToDen(world);
                 return;
             }
-            Location nearestWolfLocation = findNearest(world, 3, Wolf.class);
-            if(nearestWolfLocation != null){
-                Wolf nearestWolf = (Wolf) world.getTile(nearestWolfLocation);
+            Wolf nearestWolf =  (Wolf) findNearest(world, 3, Wolf.class);
+            if(nearestWolf != null){
                 if (!(nearestWolf.getPack()).equals(getPack())) {
-                    moveAwayFrom(world, nearestWolfLocation);
+                    moveAwayFrom(world, world.getLocation(nearestWolf));
                     return;
                 }
             }
@@ -204,8 +203,8 @@ public class Wolf extends Animal{
                 return;
             }
             if(!(createOrJoinHuntingPack(world, 3))) {
-                Location nearestWolf = pack.findNearestMember(world, world.getLocation(this));
-                if(nearestWolf != null) moveTowards(world, nearestWolf);
+                Location nearestWolfLocation = pack.findNearestMember(world, world.getLocation(this));
+                if(nearestWolfLocation != null) moveTowards(world, nearestWolfLocation);
                 else hunt(world);
             }
         }

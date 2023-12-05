@@ -182,7 +182,7 @@ public abstract class Animal extends Organism {
      * Finds the nearest object of the type object to this animal
      * @return the location of the nearest object (except itself) in radius, returns null if there is no such object
      */
-    protected Location findNearest(World world, int radius, Class<?> object) {
+    protected Entity findNearest(World world, int radius, Class<?> object) {
 
         if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
 
@@ -201,8 +201,7 @@ public abstract class Animal extends Organism {
 
         }
 
-        if(nearestEntity == null) return null;
-        return world.getLocation(nearestEntity);
+        return nearestEntity;
     }
 
     /**
@@ -272,6 +271,7 @@ public abstract class Animal extends Organism {
         }
         System.out.println(this + " moves from: " + world.getLocation(this) + " to: " + newTile);
         world.move(this, newTile);
+        world.setCurrentLocation(newTile);
         removeEnergy(10*amountOfSteps);
     }
 

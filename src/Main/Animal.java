@@ -110,7 +110,7 @@ public abstract class Animal extends Organism {
     protected void huntPrey(World world, Organism prey){
         if(prey == null) return;
         Location preyLocation = world.getLocation(prey);
-        double distanteToPrey = distance(world, preyLocation);
+        double distanteToPrey = Helper.distance(world.getLocation(this),preyLocation);
         if(prey.getFoodChainValue() == -1) {
             if(distanteToPrey == 0){
                 eat(world, prey);

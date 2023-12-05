@@ -196,9 +196,11 @@ public class Wolf extends Animal{
             if(huntingPack != null){
                 Organism prey = findPrey(world, 4);
                 for(Animal wolf : huntingPack.getMembers()){
+                    world.setCurrentLocation(world.getLocation(wolf));
                     wolf.huntPrey(world, prey);
                     if(!world.contains(prey)) break;
                 }
+                world.setCurrentLocation(world.getLocation(this));
                 skipHuntingPacksTurn();
                 setSkipTurn(false);
                 return;

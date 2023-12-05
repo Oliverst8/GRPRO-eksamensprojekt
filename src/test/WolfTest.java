@@ -140,7 +140,7 @@ public class WolfTest {
     void testDayBehaviorExpectsWolfsToCreateHuntingPackAndMoveTowardsRabbit() {
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
         Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf", wolf.getPack(), 3, false);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (4,4),"Rabbit");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
         rabbit.addEnergy(100);
 
         rabbit.skipTurn();

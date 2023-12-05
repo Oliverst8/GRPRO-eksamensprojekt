@@ -359,7 +359,7 @@ class RabbitTest {
         world.add(rabbit);
         rabbit.setHunger(99); // Under 100 so it wants to exit burrow
         rabbit.setEnergy(60); // Not more than 60 so it cant expand
-        Rabbit rabbit1 = initialiseRabbitOnWorld(testLocation); //New rabbit that blocks entrance
+        initialiseRabbitOnWorld(testLocation); //New rabbit that blocks entrance
         for(Location location : world.getEmptySurroundingTiles(testLocation)){
             initialiseRabbitOnWorld(location);
         }

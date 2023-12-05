@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class Grass extends Plant implements NonBlocking, Consumable {
+public class Grass extends Plant implements NonBlocking {
     /**
      * Sets the food type to plant
      */
@@ -20,8 +20,6 @@ public class Grass extends Plant implements NonBlocking, Consumable {
 
         energyLossPerDay = 10;
     }
-
-
 
     /**
      * If the energy level is below 25 throw Main.IllegalOperationException

@@ -9,8 +9,6 @@ public class Carcass extends Organism{
 
     private final Animal animal; //The animal that the carcass represents
 
-    private boolean night; //Weather or not it was night the last time the carcass acted
-
     /**
      * Sets food chain value to -2
      * Makes the carcass enter the world

@@ -6,7 +6,7 @@ import itumulator.world.World;
 
 import java.util.*;
 
-public abstract class Animal extends Organism implements Consumable{
+public abstract class Animal extends Organism {
 
     private double hunger; //0 is empty, and 100 is full
 
@@ -15,8 +15,6 @@ public abstract class Animal extends Organism implements Consumable{
     protected boolean sleeping;
     protected boolean infected;
     protected int strength;
-
-
 
     /**
      * Initialises hunger to 50
@@ -128,7 +126,6 @@ public abstract class Animal extends Organism implements Consumable{
      * @param animal
      */
     private void Attack(World world, Organism animal) {
-        int currentHealth = animal.getHealth();
         animal.setHealth(world, animal.getHealth()-strength);
         this.removeEnergy(10);
     }
@@ -157,7 +154,7 @@ public abstract class Animal extends Organism implements Consumable{
         if(world.contains(this)) {
             Location carcassLocation = world.getLocation(this);
             world.delete(this);
-            Carcass carcass = new Carcass(world,this, carcassLocation);
+            new Carcass(world,this, carcassLocation);
         } else {
             super.die(world);
         }

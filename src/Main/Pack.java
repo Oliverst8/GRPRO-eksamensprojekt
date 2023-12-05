@@ -4,8 +4,6 @@ import itumulator.world.Location;
 import itumulator.world.World;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 public class Pack extends Community{

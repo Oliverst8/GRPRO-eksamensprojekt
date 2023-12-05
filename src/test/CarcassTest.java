@@ -28,7 +28,8 @@ public class CarcassTest {
     void testIfCarcussSpawnsWhenAnimalDies(){
         Location location = new Location(0,0);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "Rabbit");
-        rabbit.setHealth(world, 0);
+        rabbit.setHealth(100);
+        rabbit.removeHealth(100,world);
         program.simulate();
         assertEquals(world.getTile(location).getClass(), Carcass.class);
     }
@@ -46,7 +47,8 @@ public class CarcassTest {
     void testCarcassDissapersAfter3Nights() {
         Location location = new Location(0,0);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "Rabbit");
-        rabbit.setHealth(world,0);
+        rabbit.setHealth(100);
+        rabbit.removeHealth(100,world);
         int adultAge = 3;
         for (int i = 0; i < adultAge*19; i++) {
             program.simulate();

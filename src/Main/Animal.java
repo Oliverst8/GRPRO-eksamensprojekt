@@ -33,6 +33,7 @@ public abstract class Animal extends Organism {
 
     @Override
     void dayBehavior(World world) {
+
         if(sleeping && hunger >= 0 && world.getCurrentTime() > 0){
             sleep();
         } else if(energy<=0 && health > 0 && hunger > 1){
@@ -139,7 +140,7 @@ public abstract class Animal extends Organism {
      * @param animal
      */
     private void Attack(World world, Organism animal) {
-        animal.setHealth(world, animal.getHealth()-strength);
+        animal.removeHealth(strength, world);
         this.removeEnergy(10);
     }
 
@@ -328,9 +329,8 @@ public abstract class Animal extends Organism {
      * Set sleeping to true
      */
     protected void sleep() {
-
+        addHealth(2);
         sleeping = true;
-
         if(hunger >= 10) {
             removeHunger(10);
             addEnergy(10);
@@ -360,7 +360,7 @@ public abstract class Animal extends Organism {
      * @param hunger gets added to current hunger
      */
     public void addHunger(double hunger){
-        this.hunger = Math.max(100, this.hunger + hunger);
+        setHunger(Math.max(100, this.hunger + hunger));
     }
 
     /*
@@ -368,7 +368,7 @@ public abstract class Animal extends Organism {
      * @param hunger get subtracted from current hunger
      */
     public void removeHunger(double hunger){
-        this.hunger = Math.max(0, this.hunger - hunger);
+        setHunger(Math.max(0, this.hunger - hunger));
     }
 
     abstract void setupCanEat();

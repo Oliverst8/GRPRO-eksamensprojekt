@@ -57,7 +57,7 @@ public class Input {
     }
 
     private Location parseLocation(String location) {
-        String[] coordinates = location.substring(1, 4).split(",");
+        String[] coordinates = location.substring(1, location.length() - 1).split(",");
 
         return new Location(Integer.parseInt(coordinates[0]), Integer.parseInt(coordinates[1]));
     }

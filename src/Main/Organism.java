@@ -106,15 +106,15 @@ public abstract class Organism extends Entity implements Actor, Consumable {
      * @param amount
      */
     public void removeEnergy(int amount) {
-        setEnergy(Math.max(0, getEnergy()-amount));
+        setEnergy(Math.max(0, getEnergy() - amount));
     }
 
     public void addEnergy(int amount) {
-        setEnergy(Math.min(100, getEnergy()+amount));
+        setEnergy(Math.min(100, getEnergy() + amount));
     }
 
     public void setEnergy(int energy) {
-        int newEnergy = (energy - (energyLossPerDay*(Math.max(0,getAge()-getAdultAge()))));
+        int newEnergy = (energy - (energyLossPerDay * (Math.max(0,getAge() - getAdultAge()))));
         this.energy = Math.max(0,Math.min(newEnergy, maxEnergy));
     }
 
@@ -157,11 +157,10 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         if(isDay()) dayBehavior(world);
         else nightBehavior(world);
 
-        if(getEnergy() <= 0 && getHealth() <= 0) {
+        if(getEnergy() <= 0 || getHealth() <= 0) {
             System.out.println(this + " is out of energy or health and dying");
             die(world);
         }
-
     }
 
     public void skipTurn(){

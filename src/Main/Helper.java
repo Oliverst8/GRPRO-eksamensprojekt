@@ -48,7 +48,7 @@ public class Helper {
      * @return a location where there is no object
      * @throws NoEmptyLocationException if there is no empty location
      */
-    private static Location findNonFilledLocation(World world, boolean nonBlockingNotAllowed){
+    private static Location findNonFilledLocation(World world, boolean nonBlockingNotAllowed) {
         if(!isThereAnEmptyLocationInWorld(world, nonBlockingNotAllowed)) throw new NoEmptyLocationException();
 
         Random r = new Random();

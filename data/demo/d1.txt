@@ -1,3 +1,4 @@
 8
 bear 1 (0,0)
+wolf 1
 berry 7-12

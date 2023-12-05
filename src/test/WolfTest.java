@@ -26,7 +26,7 @@ public class WolfTest {
 
     @BeforeEach
     void setUp(){
-        int size = 3; // Size of the world
+        int size = 4; // Size of the world
         int delay = 1; // Delay between each turn (in ms)
         int display_size = 800; // Size of the display
 

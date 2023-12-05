@@ -51,16 +51,12 @@ public class CarcassTest {
 
     @Test
     void testCarcassDissapersAfter20Nights() {
-        Location location = new Location(0,0);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "Rabbit");
-        rabbit.setHealth(100);
-        rabbit.removeHealth(100,world);
-        program.simulate();
+        Carcass carcass = (Carcass) ObjectFactory.generateOnMap(world, "Carcass");
 
         for(int i = 0; i <= 100; i++){
             program.simulate();
         }
 
-        assertNull(world.getTile(location));
+        assertFalse(world.contains(carcass));
     }
 }

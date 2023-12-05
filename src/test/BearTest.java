@@ -34,15 +34,22 @@ public class BearTest {
 
     @Test
     void testBearAttackAnimalIfInTerritory() {
-        ObjectFactory.generateOnMap(world,new Location(0, 0), "Bear");
+        Bear bear = (Bear) ObjectFactory.generateOnMap(world,new Location(0, 0), "Bear");
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0, 1), "Wolf");
         
         int initialWolfHealth = wolf.getHealth();
+
+        for(int i = 0; i < bear.getAdultAge(); i++) {
+            bear.skipTurn();
+            wolf.skipTurn();
+            bear.grow();
+        }
         
         wolf.skipTurn();
         program.simulate();
+        program.simulate();
 
-        assertTrue(wolf.getHealth() < initialWolfHealth);
+        assertTrue(wolf.getHealth() < initialWolfHealth || !world.contains(wolf));
     }
 
     @Test

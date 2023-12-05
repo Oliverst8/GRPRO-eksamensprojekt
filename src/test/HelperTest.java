@@ -30,58 +30,58 @@ class HelperTest {
     }
 
     @Test
-    void testDoesArrayContainItDoesMultipleElements(){
+    void testDoesArrayContainItDoesMultipleElements() {
         assertTrue(Helper.doesArrayContain(new Object[]{"27",3},"27"));
     }
 
     @Test
-    void testDoesArrayContainItDoesOneElements(){
+    void testDoesArrayContainItDoesOneElements() {
         assertTrue(Helper.doesArrayContain(new Object[]{"27"},"27"));
     }
 
     @Test
-    void testDoesArrayContainItDoesNotMultipleElements(){
+    void testDoesArrayContainItDoesNotMultipleElements() {
         assertFalse(Helper.doesArrayContain(new Object[]{"27",3},"28"));
     }
 
     @Test
-    void testDoesArrayContainItDoesNooneElements(){
+    void testDoesArrayContainItDoesNooneElements() {
         assertFalse(Helper.doesArrayContain(new Object[]{"27"},"28"));
     }
 
     @Test
-    void testDoesArrayContainItDoesNoElements(){
+    void testDoesArrayContainItDoesNoElements() {
         assertFalse(Helper.doesArrayContain(new Object[]{},"28"));
     }
 
     @Test
-    void isThereAnEmptyLocationInWorldAllowNonBlockingWtihNoObjectsInWorldExpectsTrue(){
+    void isThereAnEmptyLocationInWorldAllowNonBlockingWtihNoObjectsInWorldExpectsTrue() {
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, false));
     }
 
     @Test
-    void isThereAnEmptyLocationInWorldAllowNonBlockingWtih1ObjectsInWorldExpectsTrue(){
+    void isThereAnEmptyLocationInWorldAllowNonBlockingWtih1ObjectsInWorldExpectsTrue() {
         ObjectFactory.generateOnMap(world, "Grass");
 
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, false));
     }
 
     @Test
-    void isThereAnEmptyLocationInWorldDontAllowNonBlockingWtih1ObjectInWorldExpectsTrue(){
+    void isThereAnEmptyLocationInWorldDontAllowNonBlockingWtih1ObjectInWorldExpectsTrue() {
         ObjectFactory.generateOnMap(world, "Grass");
 
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, false));
     }
 
     @Test
-    void isThereAnEmptyLocationInWorldDontAllowNonBlockingWtih1ObjectInWorldExpectsFalse(){
+    void isThereAnEmptyLocationInWorldDontAllowNonBlockingWtih1ObjectInWorldExpectsFalse() {
         ObjectFactory.generateOnMap(world, "Grass");
 
         assertFalse(Helper.isThereAnEmptyLocationInWorld(world, true));
     }
 
     @Test
-    void isThereAnEmptyLocationInWorldDontAllowNonBlockingWtihTwoObjectInWorldExpectsTrue(){
+    void isThereAnEmptyLocationInWorldDontAllowNonBlockingWtihTwoObjectInWorldExpectsTrue() {
         for(int i = 0; i < 2; i++) {
             ObjectFactory.generateOnMap(world, "Grass");
         }

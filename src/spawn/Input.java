@@ -28,6 +28,8 @@ public class Input {
             while (sc.hasNextLine()) {
                 String object[] = sc.nextLine().split(" ");
 
+                object[0] = object[0].substring(0, 1).toUpperCase() + object[0].substring(1); // Capitalize the first letter
+
                 if (object.length == 0) continue; // Skip if line is blank
 
                 if (object.length == 2) { // If the object is not given a location

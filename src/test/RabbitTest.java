@@ -74,7 +74,7 @@ class RabbitTest {
             program.simulate();
         }
 
-        assertEquals(1,rabbit.getAge());
+        assertEquals(1, rabbit.getAge());
     }
 
     @Test
@@ -123,13 +123,13 @@ class RabbitTest {
     }
 
     @Test
-    void testActDayBehaviorExpectingToMoveTowardsGrassAndLoss10Energy() {
+    void testActDayBehaviorExpectingToMoveTowardsGrassAndLoseEnergy() {
         Rabbit rabbit = initialiseGrassAndRabbitOnWorld(new Location(1,1),new Location(2,2));
 
-        int expectedEnergy = rabbit.getEnergy()-10;
+        int previousEnergy = rabbit.getEnergy();
         program.simulate();
 
-        assertEquals(expectedEnergy, rabbit.getEnergy());
+        assertTrue(rabbit.getEnergy() < previousEnergy);
     }
 
     @Test

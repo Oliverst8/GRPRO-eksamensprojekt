@@ -18,7 +18,7 @@ import itumulator.world.World;
 public class ObjectFactory {
     private ObjectFactory() {}
 
-    private static String[] requiresWorld = {"burrow", "bear"};
+    private static String[] requiresWorld = {"Bear"};
 
     public static Object generateOffMap(World world, String className, Object... constructorArgs){
         if (Helper.doesArrayContain(requiresWorld, className)) {

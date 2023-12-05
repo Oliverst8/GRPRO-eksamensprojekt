@@ -36,7 +36,7 @@ public class Bear extends Animal {
     }
 
     private void initialize() {
-        adultAge = 5;
+        adultAge = 1;
 
         strength = 125;
 
@@ -57,17 +57,16 @@ public class Bear extends Animal {
         int upperY = Math.min(world.getSize() - 1, territory.getY() + territoryRadius);
 
         // If there is prey in the territory, hunt it.
-        if(age >= adultAge) {
-            for(int x = lowerX; x <= upperX; x++) {
-                for(int y = lowerY; y <= upperY; y++) {
-                    Location location = new Location(x, y);
+        for(int x = lowerX; x <= upperX; x++) {
+            for(int y = lowerY; y <= upperY; y++) {
+                Location location = new Location(x, y);
 
-                    Entity object = (Entity) world.getTile(location);
+                Entity object = (Entity) world.getTile(location);
 
-                    if(object != null && canEat.contains(object.getEntityClass())) {
-                        huntPrey(world, (Organism) object);
-                        return;
-                    }
+                if(object != null && canEat.contains(object.getEntityClass()) &&
+                ((Organism) object).isEatable()) {
+                    huntPrey(world, (Organism) object);
+                    return;
                 }
             }
         }
@@ -88,24 +87,23 @@ public class Bear extends Animal {
 
     private boolean seekMate(World world) {
         Object mate = findNearest(world, 10, this.getClass());
+
+        if(mate == null) return false;
+
         Location location = world.getLocation(mate);
 
-        if(location != null) {
-            if(Helper.distance(world.getLocation(this), location) < 2) {
-                try {
-                    reproduce(world, this, (Animal) world.getTile(location));
-                    decreaseMatingDesire(100);
-                } catch(CantReproduceException e) {
-                    e.printInformation();
-                }
-            } else {
-                moveTowards(world, location);
+        if(Helper.distance(world.getLocation(this), location) < 2) {
+            try {
+                reproduce(world, this, (Animal) world.getTile(location));
+                decreaseMatingDesire(100);
+            } catch(CantReproduceException e) {
+                e.printInformation();
             }
-
-            return true;
+        } else {
+            moveTowards(world, location);
         }
 
-        return false;
+        return true;
     }
 
     private void turnAdult() {

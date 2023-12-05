@@ -140,15 +140,28 @@ public class WolfTest {
     void testDayBehaviorExpectsWolfsToCreateHuntingPackAndMoveTowardsRabbit() {
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
         Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf", wolf.getPack(), 3, false);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (4,4),"Rabbit");
         rabbit.addEnergy(100);
-        System.out.println(world.getEntities());
+
         rabbit.skipTurn();
-        wolf2.skipTurn();
         program.simulate();
         rabbit.skipTurn();
         program.simulate();
 
+
+        System.out.println(world.getEntities());
+
+
+
+
+
+
+
+        //fejler når wolf2 kaldes først i
+        //                   for(Animal wolf : huntingPack.getMembers()){
+        //                    wolf.huntPrey(world, prey);
+        //                    if(!world.contains(prey)) break;
+        //                }
         Location wolfLocation = world.getLocation(wolf);
         Location wolf2Location = world.getLocation(wolf2);
         Location predictedWolfLocation1 = new Location(2,1);
@@ -159,7 +172,7 @@ public class WolfTest {
             isAtPredictedLocation = true;
         }
         Location predictedWolf2Location = new Location(3,2);
-        System.out.println(world.getEntities());
+
         assertTrue(isAtPredictedLocation);
         assertEquals(predictedWolf2Location,wolf2Location);
 

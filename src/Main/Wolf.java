@@ -182,6 +182,7 @@ public class Wolf extends Animal{
         } else{
 
             if(getHunger() == 100) {
+
                 goToDen(world);
                 return;
             }
@@ -238,7 +239,7 @@ public class Wolf extends Animal{
         return true;
     }
 
-    public void skipHuntingPacksTurn(){
+    public void skipHuntingPacksTurn() {
         for (Animal wolf: huntingPack.getMembers()) {
             wolf.skipTurn();
         }
@@ -294,6 +295,7 @@ public class Wolf extends Animal{
      * Makes the wolf go towards its den and enter it if it dosent have one it digs one
      */
     private void goToDen(World world) {
+
         if(huntingPack != null){
             huntingPack.removeMember(this);
             huntingPack = null;
@@ -305,6 +307,7 @@ public class Wolf extends Animal{
         }
         if(pack.getDenLocation(world).equals(world.getCurrentLocation())) {
             enterDen(world);
+
             return;
         }
         moveTowards(world, pack.getDenLocation(world));
@@ -331,6 +334,7 @@ public class Wolf extends Animal{
      * @param world the world the wolf is in
      */
     private void enterDen(World world){
+
         if(!(pack.getDenLocation(world).equals(world.getCurrentLocation()))) throw new IllegalOperationException("Cant enter den, when wolf is not stading on it");
         if(getInDen()) throw new IllegalOperationException("Cant enter den, when the wolf is already in its den");
 

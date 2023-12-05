@@ -118,7 +118,7 @@ public class Rabbit extends Animal{
                     if(otherRabbit != this && otherRabbit.getEnergy() > 80) {
                         try{
                             reproduce(world, this, otherRabbit);
-                        } catch (cantReproduceException e){
+                        } catch (CantReproduceException e){
                             e.printInformation();
                         }
                         return;

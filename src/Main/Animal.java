@@ -1,7 +1,6 @@
 package Main;
 
 import itumulator.world.Location;
-import itumulator.world.NonBlocking;
 import itumulator.world.World;
 import spawn.ObjectFactory;
 
@@ -222,15 +221,15 @@ public abstract class Animal extends Organism {
      * @param world the world of the animals
      * @param animal1 the first animal
      * @param animal2 the second animal
-     * @throws cantReproduceException if the animals arent old if enough to breed
-     * @throws cantReproduceException if the animals arent the same type of animals
-     * @throws cantReproduceException if the animals dont have enough energy
+     * @throws CantReproduceException if the animals arent old if enough to breed
+     * @throws CantReproduceException if the animals arent the same type of animals
+     * @throws CantReproduceException if the animals dont have enough energy
      */
-    protected void reproduce(World world, Animal animal1, Animal animal2) throws cantReproduceException {
-        if (animal1.getAge() < animal1.getAdultAge()) throw new cantReproduceException(animal1, animal2);
-        if (animal2.getAge() < animal2.getAdultAge()) throw new cantReproduceException(animal1, animal2);
-        if (!animal1.getEntityClass().equals(animal2.getEntityClass())) throw new cantReproduceException(animal1, animal2);
-        if (!(animal1.getEnergy() > 50 && animal2.getEnergy() > 50)) throw new cantReproduceException(animal1, animal2);
+    protected void reproduce(World world, Animal animal1, Animal animal2) throws CantReproduceException {
+        if (animal1.getAge() < animal1.getAdultAge()) throw new CantReproduceException(animal1, animal2);
+        if (animal2.getAge() < animal2.getAdultAge()) throw new CantReproduceException(animal1, animal2);
+        if (!animal1.getEntityClass().equals(animal2.getEntityClass())) throw new CantReproduceException(animal1, animal2);
+        if (!(animal1.getEnergy() > 50 && animal2.getEnergy() > 50)) throw new CantReproduceException(animal1, animal2);
         animal1.removeEnergy(50);
         animal2.removeEnergy(50);
         animal2.skipTurn();

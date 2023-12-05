@@ -167,7 +167,7 @@ public class Wolf extends Animal{
                     if(otherWolf != this && otherWolf.getEnergy() > 80) {
                         try{
                             reproduce(world, this, otherWolf);
-                        } catch (cantReproduceException e){
+                        } catch (CantReproduceException e){
                             e.printInformation();
                         }
                         return;

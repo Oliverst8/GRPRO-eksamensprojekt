@@ -69,7 +69,8 @@ class RabbitTest {
     @Test
     void testIfRabbitAgesAfterNight() {
         Rabbit rabbit = (Rabbit) initialiseRabbitOnWorld(new Location(0,0));
-        for (int i = 0; i < 30; i++) {
+        world.setNight();
+        for (int i = 0; i < 11; i++) {
             rabbit.setEnergy(100);
             program.simulate();
         }

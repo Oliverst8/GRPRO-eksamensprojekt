@@ -27,8 +27,6 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         return energyLossPerDay;
     }
 
-
-
     /**
      * Creates a new organism
      * Initialises age to 0
@@ -165,8 +163,6 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         }
 
     }
-
-
 
     public void skipTurn(){
         skipTurn = true;

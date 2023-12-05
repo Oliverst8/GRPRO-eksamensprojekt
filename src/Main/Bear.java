@@ -83,7 +83,7 @@ public class Bear extends Animal {
         matingDesire = Math.max(matingDesire - amount, 0);
     }
 
-    private void seekMate(World world) {
+    private boolean seekMate(World world) {
         Location location = findNearest(world, 10, this.getClass());
 
         if(location != null) {
@@ -97,7 +97,11 @@ public class Bear extends Animal {
             } else {
                 moveTowards(world, location);
             }
+
+            return true;
         }
+
+        return false;
     }
 
     @Override
@@ -115,11 +119,12 @@ public class Bear extends Animal {
         }
 
         if(age >= adultAge) {
-            increaseMatingDesire(5);
+            increaseMatingDesire(50);
 
             if(matingDesire >= 100) {
-                seekMate(world);
-                return;
+                boolean attemptingToMate = seekMate(world);
+                
+                if(attemptingToMate) return;
             }
         }
 
@@ -143,6 +148,7 @@ public class Bear extends Animal {
     @Override
     void setupCanEat() {
         canEat.add(Wolf.class);
+        canEat.add(Carcass.class);
     }
 
     @Override

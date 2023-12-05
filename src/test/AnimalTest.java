@@ -25,11 +25,13 @@ public class AnimalTest {
      */
     @BeforeEach
     void setUp() {
-        int size = 3; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
+        int size = 3; // Size of the world
+        int delay = 1; // Delay between each turn (in ms)
+        int display_size = 800; // Size of the display
+
+        program = new Program(size, display_size, delay);
+        world = program.getWorld();
+
         rabbit = new Rabbit();
         hungerMod = 10;
     }
@@ -66,11 +68,10 @@ public class AnimalTest {
     }
 
     @Test
-    void testAnimalRemoveHunger(){
+    void testAnimalRemoveHunger() {
         rabbit.removeHunger(hungerMod);
         assertEquals(0,rabbit.getHunger());
     }
     @AfterEach
-    void tearDown() {
-    }
+    void tearDown() {}
 }

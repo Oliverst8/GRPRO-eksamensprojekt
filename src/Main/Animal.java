@@ -7,7 +7,6 @@ import itumulator.world.NonBlocking;
 import java.util.*;
 
 public abstract class Animal extends Organism {
-
     private double hunger; //0 is empty, and 100 is full
 
     protected Set<Class<? extends Consumable>> canEat; //Holdes the types of classes the animal can eat

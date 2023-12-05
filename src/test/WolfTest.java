@@ -58,7 +58,7 @@ public class WolfTest {
         wolf.setHunger(0);
         wolf2.setHunger(0);
         program.simulate();
-        
+
         assertEquals(2, wolf.getFoodChainValue());
     }
 
@@ -79,7 +79,7 @@ public class WolfTest {
         wolf2.setHunger(100);
 
         program.simulate();
-        
+
         assertTrue(wolf.getInDen());
         assertTrue(wolf2.getInDen());
     }
@@ -90,9 +90,10 @@ public class WolfTest {
         Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", wolf.getPack(), 5, false);
         wolf.setHunger(100);
         wolf2.setHunger(100);
+
         program.simulate();
         program.simulate();
-        
+
         assertEquals(3, wolf.getPack().getDen().getMembers().size());
     }
 

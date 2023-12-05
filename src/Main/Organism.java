@@ -79,6 +79,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
      * @param world current world
      */
     public void die(World world) {
+
         dead = true;
         world.delete(this);
     }

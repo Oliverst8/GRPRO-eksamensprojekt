@@ -3,6 +3,7 @@ import Main.Entity;
 import Main.Rabbit;
 import Main.Carcass;
 
+import Main.Wolf;
 import spawn.ObjectFactory;
 
 import itumulator.world.World;
@@ -58,5 +59,19 @@ public class CarcassTest {
         }
 
         assertFalse(world.contains(carcass));
+    }
+
+    @Test
+    void testCarcassDissapearsAfterGettingConsumed() {
+        Location location = new Location(0,0);
+        Location wolfLocation = new Location(1,1);
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "Rabbit");
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world,wolfLocation,"Wolf");
+        rabbit.setHealth(100);
+        rabbit.removeHealth(100,world);
+        double wolfHunger = wolf.getHunger();
+        program.simulate();
+        assertTrue(wolfHunger<wolf.getHunger());
+        assertNull(world.getTile(location));
     }
 }

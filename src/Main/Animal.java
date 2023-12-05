@@ -113,7 +113,7 @@ public abstract class Animal extends Organism {
     protected void huntPrey(World world, Organism prey){
         if(prey == null) return;
         Location preyLocation = world.getLocation(prey);
-        double distanteToPrey = distance(world, preyLocation);
+        double distanteToPrey = Helper.distance(world.getLocation(this),preyLocation);
         if(prey.getFoodChainValue() == -1) {
             if(distanteToPrey == 0){
                 eat(world, prey);
@@ -154,7 +154,10 @@ public abstract class Animal extends Organism {
      */
     public void eat(World world, Organism food) {
         if(canIEat(food.getEntityClass())){
-            addHunger(0.5 * food.getEnergy());
+            if(food.getEnergy()>0){
+                addHunger(0.5*food.getEnergy());
+                food.removeEnergy(food.getEnergy());
+            }
             food.die(world);
         }
     }
@@ -166,6 +169,7 @@ public abstract class Animal extends Organism {
      */
     @Override
     public void die(World world){
+
         setDead();
         if(world.contains(this)) {
             Location carcassLocation = world.getLocation(this);

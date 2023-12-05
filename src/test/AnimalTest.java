@@ -38,6 +38,7 @@ public class AnimalTest {
 
         rabbit = new Rabbit();
         hungerMod = 10;
+
     }
 
     /**
@@ -89,6 +90,11 @@ public class AnimalTest {
         double expectedHunger = rabbit.getHunger() - hungerMod;
         rabbit.removeHunger(hungerMod);
         assertEquals(expectedHunger,rabbit.getHunger());
+    }
+    @Test
+    void testAnimalEatTheLargerTheAnimalTheMoreHungerConsumedByAnimal(){
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
+
     }
 
     @AfterEach

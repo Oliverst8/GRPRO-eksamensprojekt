@@ -5,6 +5,9 @@ public abstract class Plant extends Organism {
 
     public Plant(int defaultStenght) {
         super(defaultStenght);
+        adultAge = 0;
+        maxEnergy = 100;
+        energy = maxEnergy;
     }
 
     /**

@@ -347,7 +347,6 @@ public abstract class Animal extends Organism implements Consumable{
     }
 
     protected void wake() {
-        grow();
         sleeping = false;
     }
 

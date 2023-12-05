@@ -4,36 +4,36 @@ import itumulator.world.World;
 
 import java.awt.*;
 
-public class Carcass extends Organism{
+public class Carcass extends Organism {
 
-    private Animal animal; //The animal that the carcass represents
+    private Animal animal;
 
     /**
      * Sets food chain value to -2
-     * Makes the carcass enter the world
      * Sets the adult age of the carcass to 3
      * Sets the starting age of the carcass to 0
-     * @param world the world the carcass is in
-     * @param animal the type of carcass this is
-     * @param carcassLocation where the carcass is located
      */
     public Carcass() {
         super(-2);
 
         adultAge = 3;
         age = 0;
+        energy = 100;
+        animal = null;
     }
 
     public void setAnimal(Animal animal) {
         this.animal = animal;
+        this.energy = animal.getEnergy();
     }
 
     /**
      * @return the class of the animal the carcass is
      */
     @Override
-    public Class<? extends Organism> getEntityClass(){
-        return animal.getEntityClass();
+    public Class<? extends Organism> getEntityClass() {
+        if (animal == null) animal.getEntityClass();
+        return getClass();
     }
 
     /**
@@ -41,7 +41,7 @@ public class Carcass extends Organism{
      */
     @Override
     public int getEnergy() {
-        return animal.getEnergy();
+        return energy;
     }
 
     /**

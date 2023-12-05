@@ -177,52 +177,32 @@ public abstract class Animal extends Organism {
         }
     }
 
-
     /**
      * @throws IllegalArgumentException if radius is less then 2
-     * @throws NullPointerException if the world or object is null
      * Finds the nearest object of the type object to this animal
      * @return the location of the nearest object (except itself) in radius, returns null if there is no such object
      */
     protected Location findNearest(World world, int radius, Class<?> object) {
+
         if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
 
-        Location nearestObject = null;
-        double smallestDistance = Integer.MAX_VALUE;
+        Set<Entity> surroundingEntities = Helper.getEntities(world, world.getCurrentLocation(), radius);
+        Entity nearestEntity = null;
+        double smallestDistance = Double.MAX_VALUE;
+        for(Entity entity : surroundingEntities){
+            if(entity.equals(this)) continue;
+            if(!entity.getEntityClass().equals(object)) continue;
 
-        Set<Location> surrondingTiles = world.getSurroundingTiles(radius); //Document tation says empty tiles but code says it dosent matter
-        Object standingOnObject;
-
-        if(world.containsNonBlocking(world.getCurrentLocation())) standingOnObject = world.getNonBlocking(world.getCurrentLocation()); //Gets the nonblocking object the animal is standing on if its standing on one
-
-        else standingOnObject = null;
-
-        if(standingOnObject != null) surrondingTiles.add(world.getLocation(standingOnObject)); //If the animal is standing on an object, adds it location to the set
-
-        for(Location tile : surrondingTiles) {
-            if(world.getTile(tile) == null) continue;
-
-            Class<? extends Entity> tileObject;
-
-            if(Helper.doesArrayContain(object.getInterfaces(), NonBlocking.class)) {
-                if(world.containsNonBlocking(tile)) {
-                    tileObject =((Entity) world.getNonBlocking(tile)).getEntityClass();
-                } else {
-                    continue;
-                }
-            } else tileObject =((Entity) world.getTile(tile)).getEntityClass();
-
-            if(tileObject.equals(object)){ //Check if the tile is the same object as object in parameter
-
-                double distance = distance(world, tile);
-
-                if(distance < smallestDistance) {
-                    nearestObject = tile;
-                    smallestDistance = distance;
-                }
+            double distance = distance(world, world.getLocation(entity));
+            if(distance < smallestDistance){
+                smallestDistance = distance;
+                nearestEntity = entity;
             }
+
         }
-        return nearestObject;
+
+        if(nearestEntity == null) return null;
+        return world.getLocation(nearestEntity);
     }
 
     /**

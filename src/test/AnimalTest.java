@@ -1,9 +1,13 @@
 package test;
 
+import Main.Wolf;
 import Main.Grass;
 import Main.Rabbit;
 
+import spawn.ObjectFactory;
+
 import itumulator.world.World;
+import itumulator.world.Location;
 import itumulator.executable.Program;
 
 import org.junit.jupiter.api.Test;
@@ -54,9 +58,8 @@ public class AnimalTest {
         assertEquals(50, rabbit.getHunger());
     }
 
-
     @Test
-    void testAnimalSetHunger() {
+    void testAnimalSetHunger(){
         rabbit.setHunger(hungerMod);
         assertEquals(10,rabbit.getHunger());
     }
@@ -68,10 +71,26 @@ public class AnimalTest {
     }
 
     @Test
-    void testAnimalRemoveHunger() {
-        rabbit.removeHunger(hungerMod);
-        assertEquals(0,rabbit.getHunger());
+    void testAnimalSleepsInsteadOfDyingWhenItHasZeroEnergyButOverZeroHunger() {
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf", 5);
+        wolf.setHunger(100);
+        wolf.setHealth(world,100);
+        wolf.setEnergy(0);
+        program.simulate();
+        program.simulate();
+        program.simulate();
+        int expectedSleepingCycles = world.getCurrentTime();
+        int expectedEnergy = expectedSleepingCycles * 10;
+        assertEquals(expectedEnergy, wolf.getEnergy());
     }
+
+    @Test
+    void testAnimalRemoveHunger() {
+        double expectedHunger = rabbit.getHunger() - hungerMod;
+        rabbit.removeHunger(hungerMod);
+        assertEquals(expectedHunger,rabbit.getHunger());
+    }
+
     @AfterEach
     void tearDown() {}
 }

@@ -21,6 +21,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     protected int health;
     protected int energy;
     protected int maxEnergy;
+    private boolean isNight;
 
     public int getEnergyLossPerDay() {
         return energyLossPerDay;
@@ -33,6 +34,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
      * Initialises energy to 100
      */
     public Organism(int defualtFoodChainValue) {
+        isNight = false;
         age = 0;
         energyLossPerDay = 5;
         dead = false;
@@ -127,11 +129,26 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     abstract void dayBehavior(World world);
 
     abstract void nightBehavior(World world);
+    private void doesAge() {
+        if(isNight && isDay()) {
+            grow();
+            isNight = false;
+        } else if (!isDay()){
+            isNight = true;
+        }
+    }
+
+    /**
+     * @return weather or not this organism can be eaten.
+     */
+    public boolean isEatable(){
+        return true;
+    }
 
     @Override
     public void act(World world) {
         setDay(world.isDay());
-        
+        doesAge();
         if(dead || skipTurn) {
             skipTurn = false;
             return;
@@ -144,9 +161,8 @@ public abstract class Organism extends Entity implements Actor, Consumable {
             System.out.println(this + " is out of energy or health and dying");
             die(world);
         }
+
     }
-
-
 
     public void skipTurn(){
         skipTurn = true;

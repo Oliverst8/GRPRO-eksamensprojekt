@@ -12,7 +12,7 @@ import spawn.SpawningObject;
 public class Main {
 
     public static void main(String[] args) {
-        Input input = new Input("data/demo/d1.txt");
+        Input input = new Input("data/week2/t2-6a.txt");
         
         int delay = 250;
         int display_size = 1000;
@@ -22,7 +22,7 @@ public class Main {
         World world = program.getWorld();
 
         generateObjects(world, input.getObjects());
-
+        //program.getCanvas().setIsomorphic(false);
         program.show();
         while(true) program.simulate();
     }

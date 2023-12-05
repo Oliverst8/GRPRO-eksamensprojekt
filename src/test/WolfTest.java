@@ -277,7 +277,7 @@ public class WolfTest {
     void testThatWolfsIsRemovedFromHuntingPackWhenDead() {
         Wolf wolf1 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf", 5);
         Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "wolf", wolf1.getPack(), 3, false);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
+        ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
         program.simulate();
         program.simulate();
         int expectedMembers = wolf2.getHuntingPack().getMembers().size()-1;

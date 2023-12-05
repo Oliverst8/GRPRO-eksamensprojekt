@@ -110,7 +110,7 @@ public class Rabbit extends Animal {
      */
     @Override
     protected void dayBehavior(World world) {
-        if(sleeping) wake();
+        super.dayBehavior(world);
 
         if(inBurrow) {
             if(getEnergy() > 80 && burrow.getAdultMembers().size() >= 2) {

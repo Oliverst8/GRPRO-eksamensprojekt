@@ -44,11 +44,10 @@ class GrassTest {
     @Test
     void testIfGrassAges() {
         Grass grass = (Grass) ObjectFactory.generateOnMap(world, "grass");
-
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 20; i++){
             program.simulate();
         }
-
+        
         assertEquals(1,grass.getAge());
     }
 

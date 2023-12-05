@@ -67,7 +67,9 @@ class RabbitTest {
     void testIfRabbitAgesAfterNight() {
         Rabbit rabbit = (Rabbit) initialiseRabbitOnWorld(new Location(0,0));
         
-        for (int i = 0; i < 30; i++) {
+        world.setNight();
+
+        for (int i = 0; i < 11; i++) {
             rabbit.setEnergy(100);
             program.simulate();
         }
@@ -174,7 +176,10 @@ class RabbitTest {
 
         double expectedHunger = Math.max(100, rabbit.getHunger()+(0.5*grass.getEnergy()));
 
-        for (int i = 0; i < 3; i++) program.simulate();
+        for (int i = 0; i < 3; i++) {
+            grass.skipTurn();
+            program.simulate();
+        }
 
         assertEquals(expectedHunger,rabbit.getHunger());
     }
@@ -354,10 +359,12 @@ class RabbitTest {
         world.add(rabbit);
         rabbit.setHunger(99); // Under 100 so it wants to exit burrow
         rabbit.setEnergy(60); // Not more than 60 so it cant expand
-        Rabbit rabbit1 = initialiseRabbitOnWorld(testLocation); //New rabbit that blocks entrance
+        initialiseRabbitOnWorld(testLocation); //New rabbit that blocks entrance
+        
         for(Location location : world.getEmptySurroundingTiles(testLocation)) {
             initialiseRabbitOnWorld(location);
         }
+
         program.simulate(); //Wants to exit burrow
         program.simulate(); //Wants to exit burrow
         assertTrue(rabbit.isInBurrow());

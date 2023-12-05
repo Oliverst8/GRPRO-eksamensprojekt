@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class Grass extends Plant implements NonBlocking, Consumable {
+public class Grass extends Plant implements NonBlocking {
     /**
      * Sets the food type to plant
      */
@@ -19,13 +19,6 @@ public class Grass extends Plant implements NonBlocking, Consumable {
         setEnergy(50);
 
         energyLossPerDay = 10;
-        initialize();
-    }
-
-    private void initialize(){
-        adultAge = 0;
-        maxEnergy = 100;
-        energy = maxEnergy;
     }
 
     /**
@@ -85,9 +78,6 @@ public class Grass extends Plant implements NonBlocking, Consumable {
      */
     @Override
     void nightBehavior(World world) {
-        if(World.getDayDuration() == world.getCurrentTime()){
-            grow();
-        }
         decay();
     }
 

@@ -4,6 +4,8 @@ import itumulator.world.World;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 
+import spawn.ObjectFactory;
+
 import java.util.*;
 
 public abstract class Animal extends Organism {
@@ -29,6 +31,18 @@ public abstract class Animal extends Organism {
         setupCanEat();
     }
 
+    @Override
+    void dayBehavior(World world) {
+        if(sleeping && hunger >= 0 && world.getCurrentTime() > 0){
+            sleep();
+        } else if(energy<=0 && health > 0 && hunger > 1){
+            sleep();
+        } else if(world.getCurrentTime() == 0 && sleeping){
+            sleeping = false;
+            wake();
+        }
+
+    }
     public int getStrength() {
         return strength;
     }
@@ -52,17 +66,14 @@ public abstract class Animal extends Organism {
      */
     protected Organism findPrey(World world, int radius) {
         Map<Location, Organism> prey = new HashMap<>();
-        for (Class<? extends Consumable> foodtype : canEat){
-            Location preyLocation = findNearest(world, radius, foodtype);
-            if(preyLocation == null) continue;
-            Organism currentPrey;
-            if(Helper.doesArrayContain(foodtype.getInterfaces(), NonBlocking.class)) currentPrey = (Organism) world.getNonBlocking(preyLocation);
-            else currentPrey = (Organism) world.getTile(preyLocation);
 
-            if(getFoodChainValue() >= currentPrey.getFoodChainValue()){
-                prey.put(preyLocation, currentPrey);
+        for(Entity entity : Helper.getEntities(world, world.getLocation(this),radius)){
+            if(canEat.contains(entity.getEntityClass())){
+                Organism currentPrey = (Organism) entity;
+                if(getFoodChainValue() >= currentPrey.getFoodChainValue() && currentPrey.isEatable()) prey.put(world.getLocation(entity), currentPrey);
             }
         }
+
         if(prey.isEmpty()) return null;
         Location closestPrey = null;
         double closestDist = Double.MAX_VALUE;
@@ -128,7 +139,6 @@ public abstract class Animal extends Organism {
      * @param animal
      */
     private void Attack(World world, Organism animal) {
-        int currentHealth = animal.getHealth();
         animal.setHealth(world, animal.getHealth()-strength);
         this.removeEnergy(10);
     }
@@ -157,7 +167,10 @@ public abstract class Animal extends Organism {
         if(world.contains(this)) {
             Location carcassLocation = world.getLocation(this);
             world.delete(this);
-            Carcass carcass = new Carcass(world,this, carcassLocation);
+
+            Carcass carcass = (Carcass) ObjectFactory.generateOnMap(world, carcassLocation, "carcass");
+            carcass.setAnimal(this);
+
         } else {
             super.die(world);
         }
@@ -338,18 +351,24 @@ public abstract class Animal extends Organism {
      * Set sleeping to true
      */
     protected void sleep() {
+
         sleeping = true;
 
-        if(hunger > 10) {
+        if(hunger >= 10) {
             removeHunger(10);
             addEnergy(10);
+        } else if(hunger > 0) {
+            removeHunger(hunger);
+            addEnergy((int)hunger);
         }
+
     }
 
     protected void wake() {
-        grow();
         sleeping = false;
     }
+
+
 
     public double getHunger() {
         return hunger;
@@ -372,7 +391,7 @@ public abstract class Animal extends Organism {
      * @param hunger get subtracted from current hunger
      */
     public void removeHunger(double hunger){
-        this.hunger = Math.min(0, this.hunger + hunger);
+        this.hunger = Math.max(0, this.hunger - hunger);
     }
 
     abstract void setupCanEat();

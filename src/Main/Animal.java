@@ -295,6 +295,9 @@ public abstract class Animal extends Organism {
         int y = makeNumberOneFurtherAway(world.getCurrentLocation().getY(), location.getY());
         x = validateCordinate(world, x);
         y = validateCordinate(world, y);
+
+        if(x>(world.getSize()-1)||y>(world.getSize()-1)) return;
+
         world.move(this, new Location(x,y));
     }
 

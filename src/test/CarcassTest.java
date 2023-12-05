@@ -52,7 +52,13 @@ public class CarcassTest {
 
     @Test
     void testCarcassDissapersAfter20Nights() {
-        Carcass carcass = (Carcass) ObjectFactory.generateOnMap(world, "Carcass");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0,0), "Rabbit");
+        rabbit.setHealth(100);
+        rabbit.removeHealth(100,world);
+
+        program.simulate();
+
+        Carcass carcass = (Carcass) world.getTile(new Location(0,0));
 
         for(int i = 0; i <= 100; i++){
             program.simulate();
@@ -61,6 +67,9 @@ public class CarcassTest {
         assertFalse(world.contains(carcass));
     }
 
+    /**
+     * FIX IT
+     */
     @Test
     void testCarcassDissapearsAfterGettingConsumed() {
         Location location = new Location(0,0);

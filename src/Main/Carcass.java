@@ -100,7 +100,5 @@ public class Carcass extends Organism {
             return;
         }
         removeEnergy(1);
-        if(getEnergy() <= 0 ) die(world);
-
     }
 }

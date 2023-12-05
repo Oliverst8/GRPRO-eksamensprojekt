@@ -55,17 +55,14 @@ public abstract class Animal extends Organism implements Consumable{
      */
     protected Organism findPrey(World world, int radius) {
         Map<Location, Organism> prey = new HashMap<>();
-        for (Class<? extends Consumable> foodtype : canEat){
-            Location preyLocation = findNearest(world, radius, foodtype);
-            if(preyLocation == null) continue;
-            Organism currentPrey;
-            if(Helper.doesArrayContain(foodtype.getInterfaces(), NonBlocking.class)) currentPrey = (Organism) world.getNonBlocking(preyLocation);
-            else currentPrey = (Organism) world.getTile(preyLocation);
 
-            if(getFoodChainValue() >= currentPrey.getFoodChainValue()){
-                prey.put(preyLocation, currentPrey);
+        for(Entity entity : Helper.getEntities(world, world.getLocation(this),radius)){
+            if(canEat.contains(entity.getEntityClass())){
+                Organism currentPrey = (Organism) entity;
+                if(getFoodChainValue() >= currentPrey.getFoodChainValue() && currentPrey.isEatable()) prey.put(world.getLocation(entity), currentPrey);
             }
         }
+
         if(prey.isEmpty()) return null;
         Location closestPrey = null;
         double closestDist = Double.MAX_VALUE;

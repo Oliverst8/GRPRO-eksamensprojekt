@@ -27,10 +27,10 @@ class GrassTest {
 
     @Test
     void tryToSpreadGrassWhereThereIsNoEmptyTileExpectsEnergyToHaveIncreasedByPhotosynethesisAmount() {
-        Grass grass = (Grass) ObjectFactory.generateOnMap(world, "grass");
-        ObjectFactory.generateOnMap(world, "grass");
-        ObjectFactory.generateOnMap(world, "grass");
-        ObjectFactory.generateOnMap(world, "grass");
+        Grass grass = (Grass) ObjectFactory.generateOnMap(world, "Grass");
+        ObjectFactory.generateOnMap(world, "Grass");
+        ObjectFactory.generateOnMap(world, "Grass");
+        ObjectFactory.generateOnMap(world, "Grass");
         double expectedEnergy = Math.min(100,grass.getEnergy() + 20);
         program.simulate();
         assertEquals(expectedEnergy,grass.getEnergy());
@@ -38,7 +38,7 @@ class GrassTest {
     @Test
     void testIfGrassAges() {
 
-        Grass grass = (Grass) ObjectFactory.generateOnMap(world, "grass");
+        Grass grass = (Grass) ObjectFactory.generateOnMap(world, "Grass");
         for(int i = 0; i < 20; i++){
             program.simulate();
         }
@@ -47,7 +47,7 @@ class GrassTest {
     }
     @Test
     void testIfGrassHasLessEnergyTheOlderItGets() {
-        Grass grass = (Grass) ObjectFactory.generateOnMap(world, "grass");
+        Grass grass = (Grass) ObjectFactory.generateOnMap(world, "Grass");
         grass.setEnergy(100);
         grass.grow();
         grass.addEnergy(100);

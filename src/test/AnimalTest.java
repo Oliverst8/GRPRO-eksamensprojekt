@@ -74,7 +74,7 @@ public class AnimalTest {
 
     @Test
     void testAnimalSleepsInsteadOfDyingWhenItHasZeroEnergyButOverZeroHunger(){
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf", 5);
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
         wolf.setHunger(100);
         wolf.setHealth(world,100);
         wolf.setEnergy(0);

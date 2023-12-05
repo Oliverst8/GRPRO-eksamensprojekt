@@ -50,8 +50,8 @@ public class WolfTest {
 
     @Test
     void testWolfgetFoodChainValueInPack() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf", 5);
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "wolf", wolf.getPack(), 5, false);
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", wolf.getPack(), 5, false);
         wolf.setHunger(100);
         wolf2.setHunger(100);
         program.simulate();
@@ -60,7 +60,7 @@ public class WolfTest {
 
     @Test
     void testDayBehaviorExpectsWolfToCreateAndEnterDen() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
         wolf.setHunger(100);
         program.simulate();
         assertTrue(wolf.getInDen());
@@ -68,8 +68,8 @@ public class WolfTest {
 
     @Test
     void testDayBehaviorExpectsFirstWolfToCreateDenAndSecondToEnter() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "wolf", wolf.getPack(), 3, false);
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", wolf.getPack(), 3, false);
         wolf.setHunger(100);
         wolf2.setHunger(100);
         program.simulate();
@@ -80,8 +80,8 @@ public class WolfTest {
 
     @Test
     void testDaybehaviorInDenExpectsWolfToReproduce() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf", 5);
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "wolf", wolf.getPack(), 5, false);
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", wolf.getPack(), 5, false);
         wolf.setHunger(100);
         wolf2.setHunger(100);
         program.simulate();
@@ -92,7 +92,7 @@ public class WolfTest {
 
     @Test
     void testDaybehaviorWolfToExitDen() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
         wolf.setHunger(100);
         program.simulate();
         wolf.setHunger(50);
@@ -102,7 +102,7 @@ public class WolfTest {
 
     @Test
     void testDaybehaviorExpectsWolfToStayInDen() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
         wolf.setHunger(100);
         program.simulate();
         program.simulate();
@@ -111,10 +111,10 @@ public class WolfTest {
 
     @Test
     void testDaybehaviorExpectsWolfToGoToDen() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
         wolf.setHunger(100);
         program.simulate();
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,2), "wolf", wolf.getPack(), 3, false);
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,2), "Wolf", wolf.getPack(), 3, false);
         wolf2.setHunger(100);
         program.simulate();
         program.simulate();
@@ -124,24 +124,24 @@ public class WolfTest {
 
     @Test
     void testDayBehaviorExpectsWolfToRunAwayFromOtherWolfInSideWorld() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "wolf");
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf");
         program.simulate();
         assertEquals(new Location(2,2),world.getLocation(wolf2));
     }
 
     @Test
     void testDayBehaviorExpectsToStandStillEvenThoNextToOtherPack() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "wolf");
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf");
         program.simulate();
         assertEquals(new Location(0,0),world.getLocation(wolf));
     }
 
     @Test
     void testDayBehaviorExpectsWolfsToCreateHuntingPackAndMoveTowardsRabbit() {
-        Wolf wolf1 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "wolf", wolf1.getPack(), 3, false);
+        Wolf wolf1 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf", wolf1.getPack(), 3, false);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
 
         rabbit.skipTurn();
@@ -169,7 +169,7 @@ public class WolfTest {
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (1,1),"Rabbit");
         rabbit.die(world);
         program.simulate();
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
         wolf.setHunger(50);
         double expectedEnergy = 200;
         program.simulate();
@@ -182,8 +182,8 @@ public class WolfTest {
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (1,1),"Rabbit");
         rabbit.die(world);
         program.simulate();
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,1), "wolf");
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,1), "Wolf");
         wolf.setHunger(50);
         wolf2.setHunger(50);
         program.simulate();
@@ -196,7 +196,7 @@ public class WolfTest {
 
     @Test
     void testDayBehaviorExpectsWolfToAttackAndRabbitToDie() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf", 5);
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
         rabbit.setEnergy(100);
         rabbit.skipTurn();
@@ -211,8 +211,8 @@ public class WolfTest {
 
     @Test
     void testWolfEatingInAPack(){
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,2), "wolf", wolf.getPack(), 3, false);
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,2), "Wolf", wolf.getPack(), 3, false);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (1,1),"Rabbit");
         rabbit.skipTurn();
         program.simulate();
@@ -228,7 +228,7 @@ public class WolfTest {
 
     @Test
     void testWolfEatingAlone(){
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf");
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (1,1),"Rabbit");
         rabbit.skipTurn();
         program.simulate();
@@ -242,7 +242,7 @@ public class WolfTest {
 
     @Test
     void testNightBehaviorWhereWolfIsInsideOfDenExpectsWolfToSleep() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf", 5);
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
         wolf.setHunger(100);
         wolf.setEnergy(90);
         world.setNight();
@@ -253,7 +253,7 @@ public class WolfTest {
 
     @Test
     void testThatWolfsIsRemovedFromPackWhenDead() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf", 5);
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
         wolf.die(world);
         program.simulate();
         assertEquals(0, wolf.getPack().getMembers().size());
@@ -261,8 +261,8 @@ public class WolfTest {
 
     @Test
     void testThatWolfsIsRemovedFromHuntingPackWhenDead() {
-        Wolf wolf1 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "wolf", 5);
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "wolf", wolf1.getPack(), 3, false);
+        Wolf wolf1 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf", wolf1.getPack(), 3, false);
         ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
         program.simulate();
         program.simulate();

@@ -109,7 +109,7 @@ public class Wolf extends Animal{
      */
     @Override
     protected void produceOffSpring(World world) {
-        ObjectFactory.generateOffMap(world, "wolf",this.getPack(), 0, true);
+        ObjectFactory.generateOffMap(world, "Wolf",this.getPack(), 0, true);
     }
 
     /**

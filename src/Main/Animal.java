@@ -168,7 +168,7 @@ public abstract class Animal extends Organism {
             Location carcassLocation = world.getLocation(this);
             world.delete(this);
 
-            Carcass carcass = (Carcass) ObjectFactory.generateOnMap(world, carcassLocation, "carcass");
+            Carcass carcass = (Carcass) ObjectFactory.generateOnMap(world, carcassLocation, "Carcass");
             carcass.setAnimal(this);
 
         } else {

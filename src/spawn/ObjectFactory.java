@@ -70,8 +70,6 @@ public class ObjectFactory {
     }
 
     private static Object generateHelper(String className, Object... constructorArgs) {
-        className = className.toLowerCase();
-        className = className.substring(0, 1).toUpperCase() + className.substring(1);
         className = "Main." + className;
 
         try {

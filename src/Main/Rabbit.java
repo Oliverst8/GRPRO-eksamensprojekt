@@ -72,7 +72,7 @@ public class Rabbit extends Animal{
         } else if(shouldRabbitDig(world)) {
             dig(world);
         } else {
-            setBurrow( ((Hole) world.getNonBlocking(findNearest(world, 5, Hole.class))).getBurrow());
+            setBurrow( ((RabbitHole) world.getNonBlocking(findNearest(world, 5, RabbitHole.class))).getBurrow());
             seekBurrow(world);
         }
     }
@@ -90,7 +90,7 @@ public class Rabbit extends Animal{
     }
 
     protected void produceOffSpring(World world) {
-        ObjectFactory.generateOffMap(world, "rabbit", 0, burrow, true);
+        ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
     }
 
     @Override
@@ -210,7 +210,7 @@ public class Rabbit extends Animal{
     private void exitBurrow(World world) {
         if(!inBurrow) throw new IllegalOperationException("Cant exit a burrow, if its not in one");
         
-        Set<Hole> entries = burrow.getEntries();
+        Set<RabbitHole> entries = burrow.getEntries();
         Location freeLocation = null;
 
         for(Hole tempHole : entries) {

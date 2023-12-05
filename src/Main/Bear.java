@@ -87,14 +87,15 @@ public class Bear extends Animal {
     }
 
     private boolean seekMate(World world) {
-        Location location = findNearest(world, 10, this.getClass());
+        Object mate = findNearest(world, 10, this.getClass());
+        Location location = world.getLocation(mate);
 
         if(location != null) {
             if(Helper.distance(world.getLocation(this), location) < 2) {
                 try {
                     reproduce(world, this, (Animal) world.getTile(location));
                     decreaseMatingDesire(100);
-                } catch(cantReproduceException e) {
+                } catch(CantReproduceException e) {
                     e.printInformation();
                 }
             } else {

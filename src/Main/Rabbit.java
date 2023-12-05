@@ -8,7 +8,9 @@ import itumulator.world.Location;
 import java.awt.*;
 
 import java.util.Set;
+import java.util.List;
 import java.util.Random;
+import java.util.ArrayList;
 
 public class Rabbit extends Animal {
     private Burrow burrow;

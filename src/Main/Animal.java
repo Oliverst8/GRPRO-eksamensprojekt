@@ -2,7 +2,6 @@ package Main;
 
 import itumulator.world.World;
 import itumulator.world.Location;
-import itumulator.world.NonBlocking;
 
 import spawn.ObjectFactory;
 

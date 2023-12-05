@@ -8,6 +8,9 @@ public class Carcass extends Organism {
 
     private Animal animal;
 
+    private boolean spawned = false;
+
+    private int startTick;
     /**
      * Sets food chain value to -2
      * Sets the adult age of the carcass to 3
@@ -25,6 +28,7 @@ public class Carcass extends Organism {
     public void setAnimal(Animal animal) {
         this.animal = animal;
         this.energy = animal.getEnergy();
+        this.maxEnergy = animal.getMaxEnergy();
     }
 
     /**
@@ -68,7 +72,7 @@ public class Carcass extends Organism {
      */
     @Override
     void dayBehavior(World world) {
-        if(age == adultAge) die(world);
+        carcussBehaviour(world);
     }
 
     /**
@@ -76,5 +80,27 @@ public class Carcass extends Organism {
      * @param world the world the carcass is in
      */
     @Override
-    void nightBehavior(World world) {}
+    void nightBehavior(World world) {
+        carcussBehaviour(world);
+    }
+
+    /**
+     * Is the behaviour for the carcuss both day and night
+     * Removes 1 energy pr tick, so 20 per fulldaycycle
+     * 100 ticks does not equal 100 energy taken since carcass also ages
+     * maxiamal Energy that the organism can have gets less and less pr age
+     * @param world
+     */
+    void carcussBehaviour(World world){
+        if(!spawned){
+            startTick = world.getCurrentTime();
+            spawned = true;
+        }
+        if((world.getCurrentTime() == startTick)){
+            return;
+        }
+        removeEnergy(1);
+        if(getEnergy() <= 0 ) die(world);
+
+    }
 }

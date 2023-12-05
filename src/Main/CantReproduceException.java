@@ -1,9 +1,9 @@
 package Main;
 
-public class cantReproduceException extends Exception{
+public class CantReproduceException extends Exception{
     private final Animal animal1;
     private final Animal animal2;
-    public cantReproduceException(Animal animal1, Animal animal2) {
+    public CantReproduceException(Animal animal1, Animal animal2) {
         super();
         this.animal1 = animal1;
         this.animal2 = animal2;

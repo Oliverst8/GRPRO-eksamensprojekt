@@ -8,7 +8,7 @@ import spawn.ObjectFactory;
 import java.util.*;
 
 public class Burrow extends Community{
-    private Set<Hole> entries;
+    private final Set<RabbitHole> entries;
 
     /**
      * @throws IllegalArgumentException if entry is null or world is null
@@ -45,7 +45,7 @@ public class Burrow extends Community{
     /**
      * @return a list of Locations of the entries the burrow has
      */
-    public Set<Hole> getEntries() {
+    public Set<RabbitHole> getEntries() {
         return entries;
     }
 
@@ -55,7 +55,7 @@ public class Burrow extends Community{
      * @param entry
      */
     public void addEntry(World world, Location entry) {
-        Hole hole = (Hole) ObjectFactory.generateOnMap(world,entry,"Hole", this, "hole-small");
+        RabbitHole hole = (RabbitHole) ObjectFactory.generateOnMap(world,entry,"RabbitHole", this);
 
         entries.add(hole);
     }

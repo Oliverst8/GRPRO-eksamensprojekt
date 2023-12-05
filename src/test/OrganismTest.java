@@ -47,7 +47,7 @@ public class OrganismTest {
     @Test
     void testOrganismDie() {
         Location grassLocation = new Location(1,1);
-        Grass grass = (Grass) ObjectFactory.generateOnMap(world, grassLocation, "grass");
+        Grass grass = (Grass) ObjectFactory.generateOnMap(world, grassLocation, "Grass");
         grass.die(world);
 
         assertThrows(IllegalArgumentException.class, () -> {
@@ -112,7 +112,7 @@ public class OrganismTest {
 
     @Test
     void dieExpectsNONAnimalToBeRemoved() {
-        Grass grass = (Grass) ObjectFactory.generateOnMap(world, "grass");
+        Grass grass = (Grass) ObjectFactory.generateOnMap(world, "Grass");
         grass.die(world);
 
         assertFalse(world.contains(grass));

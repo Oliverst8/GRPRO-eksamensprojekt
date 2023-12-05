@@ -1,5 +1,6 @@
 package test;
 import Main.Entity;
+import Main.Organism;
 import Main.Rabbit;
 import Main.Carcass;
 
@@ -30,8 +31,10 @@ public class CarcassTest {
     @Test
     void testIfCarcussSpawnsWhenAnimalDies() {
         Location location = new Location(0,0);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "rabbit");
-        rabbit.setHealth(world, 0);
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "Rabbit");
+        rabbit.setHealth(100);
+        rabbit.removeHealth(100,world);
+        rabbit.setEnergy(100);
         program.simulate();
         
         assertEquals(world.getTile(location).getClass(), Carcass.class);
@@ -40,7 +43,7 @@ public class CarcassTest {
     @Test
     void testGetEntityClassOverride() {
         Location location = new Location(0,0);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "rabbit");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "Rabbit");
         rabbit.setEnergy(0);
         program.simulate();
 
@@ -48,18 +51,16 @@ public class CarcassTest {
     }
 
     @Test
-    void testCarcassDissapersAfter3Nights() {
+    void testCarcassDissapersAfter20Nights() {
         Location location = new Location(0,0);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "rabbit");
-        rabbit.setHealth(world,0);
-        int adultAge = 3;
-        
-        for (int i = 0; i < adultAge*19; i++) {
-            program.simulate();
-            assertNotNull(world.getTile(location));
-        }
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "Rabbit");
+        rabbit.setHealth(100);
+        rabbit.removeHealth(100,world);
+        program.simulate();
 
-        for(int i = 0; i < adultAge; i++) program.simulate();
+        for(int i = 0; i <= 100; i++){
+            program.simulate();
+        }
 
         assertNull(world.getTile(location));
     }

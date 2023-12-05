@@ -61,21 +61,21 @@ class HelperTest {
 
     @Test
     void isThereAnEmptyLocationInWorldAllowNonBlockingWtih1ObjectsInWorldExpectsTrue(){
-        ObjectFactory.generateOnMap(world, "grass");
+        ObjectFactory.generateOnMap(world, "Grass");
 
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, false));
     }
 
     @Test
     void isThereAnEmptyLocationInWorldDontAllowNonBlockingWtih1ObjectInWorldExpectsTrue(){
-        ObjectFactory.generateOnMap(world, "grass");
+        ObjectFactory.generateOnMap(world, "Grass");
 
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, false));
     }
 
     @Test
     void isThereAnEmptyLocationInWorldDontAllowNonBlockingWtih1ObjectInWorldExpectsFalse(){
-        ObjectFactory.generateOnMap(world, "grass");
+        ObjectFactory.generateOnMap(world, "Grass");
 
         assertFalse(Helper.isThereAnEmptyLocationInWorld(world, true));
     }
@@ -83,7 +83,7 @@ class HelperTest {
     @Test
     void isThereAnEmptyLocationInWorldDontAllowNonBlockingWtihTwoObjectInWorldExpectsTrue(){
         for(int i = 0; i < 2; i++) {
-            ObjectFactory.generateOnMap(world, "grass");
+            ObjectFactory.generateOnMap(world, "Grass");
         }
         
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, true));
@@ -91,7 +91,7 @@ class HelperTest {
 
     @Test
     void findEmptyLocationWhereThereIsNoneExpectsNoEmptyLocationException() {
-        ObjectFactory.generateOnMap(world, "rabbit");
+        ObjectFactory.generateOnMap(world, "Rabbit");
 
         assertThrows(NoEmptyLocationException.class, () -> {
            Helper.findEmptyLocation(world);
@@ -100,7 +100,7 @@ class HelperTest {
 
     @Test
     void findNonBlockingEmptyLocationWhereThereIsNoneExpectsNoEmptyLocationException() {
-        ObjectFactory.generateOnMap(world, "grass");
+        ObjectFactory.generateOnMap(world, "Grass");
 
         assertThrows(NoEmptyLocationException.class, () -> {
             Helper.findNonBlockingEmptyLocation(world);

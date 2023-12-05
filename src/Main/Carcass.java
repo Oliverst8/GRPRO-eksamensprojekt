@@ -1,13 +1,12 @@
 package Main;
 
-import itumulator.world.Location;
 import itumulator.world.World;
 
 import java.awt.*;
 
 public class Carcass extends Organism{
 
-    private final Animal animal; //The animal that the carcass represents
+    private Animal animal; //The animal that the carcass represents
 
     /**
      * Sets food chain value to -2
@@ -18,14 +17,15 @@ public class Carcass extends Organism{
      * @param animal the type of carcass this is
      * @param carcassLocation where the carcass is located
      */
-    public Carcass(World world, Animal animal, Location carcassLocation) {
+    public Carcass() {
         super(-2);
-
-        this.animal = animal;
-        world.setTile(carcassLocation, this);
 
         adultAge = 3;
         age = 0;
+    }
+
+    public void setAnimal(Animal animal) {
+        this.animal = animal;
     }
 
     /**
@@ -40,7 +40,7 @@ public class Carcass extends Organism{
      * @return the dead animals energy
      */
     @Override
-    public int getEnergy(){
+    public int getEnergy() {
         return animal.getEnergy();
     }
 

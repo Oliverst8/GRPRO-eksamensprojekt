@@ -3,6 +3,7 @@ package Main;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
+import spawn.ObjectFactory;
 
 import java.util.*;
 
@@ -166,7 +167,10 @@ public abstract class Animal extends Organism {
         if(world.contains(this)) {
             Location carcassLocation = world.getLocation(this);
             world.delete(this);
-            new Carcass(world,this, carcassLocation);
+
+            Carcass carcass = (Carcass) ObjectFactory.generateOnMap(world, carcassLocation, "carcass");
+            carcass.setAnimal(this);
+
         } else {
             super.die(world);
         }

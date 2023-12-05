@@ -13,36 +13,39 @@ public class Bear extends Animal {
     Location territory;
 
     int matingDesire;
-    int territoryRadius = 4;
+    int territoryRadius;
 
     public Bear(World world) {
         super(3);
 
-        adultAge = 1;
+        initialize();
 
         Random random = new Random();
 
         Location location = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
 
-        this.territory = location;
-        this.strength = 125;
-
-        this.maxEnergy = 300;
-        this.maxHealth = 350;
-        this.health = maxHealth;
+        territory = location;
     }
 
     public Bear(World world, Location territory) {
         super(3);
 
-        adultAge = 1;
+        initialize();
 
         this.territory = territory;
-        this.strength = 125;
+    }
 
-        this.maxEnergy = 300;
-        this.maxHealth = 350;
-        this.health = maxHealth;
+    private void initialize() {
+        adultAge = 5;
+
+        strength = 125;
+
+        maxEnergy = 300;
+        maxHealth = 350;
+
+        energy = maxEnergy;
+        health = maxHealth;
+        territoryRadius = 4;
     }
 
     private void partrolTerritory(World world) {
@@ -104,6 +107,10 @@ public class Bear extends Animal {
         return false;
     }
 
+    private void turnAdult() {
+        canEat.add(Wolf.class);
+    }
+
     @Override
     void produceOffSpring(World world) {
         Location territoryLocation = Helper.findEmptyLocation(world);
@@ -113,9 +120,13 @@ public class Bear extends Animal {
 
     @Override
     void dayBehavior(World world) {
-        if(sleeping) {
-            sleeping = false;
-            grow();
+        super.dayBehavior(world);
+
+        if(getAge() == adultAge) turnAdult();
+        if(getHunger() <= 50) {
+            territoryRadius = 8;
+        } else {
+            territoryRadius = 4;
         }
 
         if(age >= adultAge) {
@@ -141,13 +152,18 @@ public class Bear extends Animal {
         currentLocation.getY() <= territory.getY() - territoryRadius) {
             moveTowards(world, territory);
         } else {
+            sleeping = true;
+        }
+
+        if(sleeping) {
             sleep();
+            return;
         }
     }
 
     @Override
     void setupCanEat() {
-        canEat.add(Wolf.class);
+        canEat.add(Berry.class);
         canEat.add(Carcass.class);
     }
 

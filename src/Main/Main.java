@@ -11,7 +11,7 @@ import spawn.SpawningObject;
 
 public class Main {
     public static void main(String[] args) {
-        Input input = new Input("data/week2/t2-6a.txt");
+        Input input = new Input("data/demo/d1.txt");
         
         int delay = 250;
         int display_size = 1000;
@@ -22,7 +22,7 @@ public class Main {
 
         generateObjects(world, input.getObjects());
 
-        program.getCanvas().setIsomorphic(false);
+        program.getCanvas().setIsomorphic(true);
         program.show();
 
         while(true) program.simulate();
@@ -30,10 +30,12 @@ public class Main {
 
     private static void generateObjects(World world, ArrayList<SpawningObject> objects) {
         for (SpawningObject object : objects) {
-            if(object.getLocation() != null) {
-                ObjectFactory.generateOnMap(world, object.getLocation(), object.getClassName());
-            } else {
-                ObjectFactory.generateOnMap(world, object.getClassName());
+            for (int i = 0; i < object.getAmount(); i++) {
+                if(object.getLocation() != null) {
+                    ObjectFactory.generateOnMap(world, object.getLocation(), object.getClassName());
+                } else {
+                    ObjectFactory.generateOnMap(world, object.getClassName());
+                }
             }
         }
     }

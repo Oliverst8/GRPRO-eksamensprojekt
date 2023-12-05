@@ -100,7 +100,6 @@ public class Rabbit extends Animal {
     }
 
     /**
-     * - Set sleeping to false if its true, and call the grow method
      * - If its in a burrow, check if it can reproduce
      * -    It can reproduce if there are two rabbits in the burrow, and they both have enough energy
      * - If it cant reproduce it tries to dig more entries to the burrow (If it has enough energy)
@@ -145,9 +144,7 @@ public class Rabbit extends Animal {
                        moveAwayFrom(world,location);
                    }
                }
-
             }
-
         }
     }
 

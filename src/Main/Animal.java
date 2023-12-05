@@ -32,16 +32,16 @@ public abstract class Animal extends Organism {
 
     @Override
     void dayBehavior(World world) {
-        if(sleeping && hunger >= 0 && world.getCurrentTime() > 0){
+        if(sleeping && hunger >= 0 && world.getCurrentTime() > 0) {
             sleep();
-        } else if(energy<=0 && health > 0 && hunger > 1){
+        } else if(energy<=0 && health > 0 && hunger > 1) {
             sleep();
-        } else if(world.getCurrentTime() == 0 && sleeping){
+        } else if(world.getCurrentTime() == 0 && sleeping) {
             sleeping = false;
             wake();
         }
-
     }
+
     public int getStrength() {
         return strength;
     }
@@ -270,8 +270,6 @@ public abstract class Animal extends Organism {
 
             newTile = new Location(x,y);
         }
-
-        System.out.println(this + " moves from: " + world.getLocation(this) + " to: " + newTile);
 
         world.move(this, newTile);
         removeEnergy(2*amountOfSteps);

@@ -163,6 +163,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
             System.out.println(this + " is out of energy or health and dying");
             die(world);
         }
+
     }
 
 

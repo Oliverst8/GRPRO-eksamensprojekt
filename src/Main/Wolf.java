@@ -143,7 +143,7 @@ public class Wolf extends Animal {
     @Override
     void setupCanEat() {
         canEat.add(Rabbit.class);
-        //canEat.add(Bear.grass);
+        canEat.add(Bear.class);
         canEat.add(Carcass.class);
     }
 

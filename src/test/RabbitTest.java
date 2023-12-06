@@ -245,14 +245,7 @@ class RabbitTest {
 
     @Test
     void testDayBehaviorWhereRabbitIsInBurrowExpectsRabbitToReproduce() {
-        burrow = new Burrow(world, new Location(0,0));
-        rabbitInsideBurrow = (Rabbit) ObjectFactory.generateOffMap(world, "Rabbit", 3, burrow, true);
-        Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "Rabbit", 3, burrow, true);
-        rabbitInsideBurrow.setEnergy(100);
-        rabbit2.setEnergy(100);
-        int expected = world.getEntities().size()+1;
-        program.simulate();
-        assertEquals(expected,world.getEntities().size());
+       //rykket til KravTest K1_2e
     }
 
     @Test

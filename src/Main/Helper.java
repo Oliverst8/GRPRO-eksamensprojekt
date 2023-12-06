@@ -129,15 +129,13 @@ public class Helper {
         return filteredEntities;
     }
 
-    public static Entity findNearest(World world, Entity caller, Set<? extends Entity> entities){
-        Location callerLocation = world.getLocation(caller);
+    public static Entity findNearest(World world, Location location ,Set<? extends Entity> entities){
 
         Entity nearestEntity = null;
         double smallestDistance = Double.MAX_VALUE;
 
         for(Entity entity : entities){
-            if(entity.equals(caller)) continue;
-            double distance = distance(callerLocation, world.getLocation(entity));
+            double distance = distance(location, world.getLocation(entity));
             if(distance < smallestDistance){
                 smallestDistance = distance;
                 nearestEntity = entity;
@@ -146,12 +144,5 @@ public class Helper {
         return nearestEntity;
     }
 
-    public static Set<MycoHost> filterNonInfectedMycoHosts(Set<Entity> entities){
-        Set<MycoHost> nonInfected = new HashSet<>();
-        for(Entity entity : entities){
-            MycoHost host = (MycoHost) entity;
-            if(!host.isInfected()) nonInfected.add(host);
-        }
-        return nonInfected;
-    }
+
 }

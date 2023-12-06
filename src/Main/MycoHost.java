@@ -30,4 +30,6 @@ public abstract class MycoHost extends Organism{
         return fungi != null;
     }
 
+    abstract void infectedBehavior();
+
 }

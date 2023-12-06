@@ -4,7 +4,7 @@ import itumulator.world.World;
 
 import java.awt.*;
 
-public class Carcass extends Organism {
+public class Carcass extends MycoHost {
 
     private Animal animal;
 
@@ -36,7 +36,7 @@ public class Carcass extends Organism {
      */
     @Override
     public Class<? extends Organism> getEntityClass() {
-        if (animal == null) animal.getEntityClass();
+        if (animal != null) animal.getEntityClass();
         return getClass();
     }
 
@@ -101,4 +101,6 @@ public class Carcass extends Organism {
         }
         removeEnergy(1);
     }
+
+
 }

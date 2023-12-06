@@ -302,8 +302,6 @@ public abstract class Animal extends MycoHost {
         x = validateCordinate(world, x);
         y = validateCordinate(world, y);
 
-        if(x>(world.getSize()-1)||y>(world.getSize()-1)) return;
-
         world.move(this, new Location(x,y));
     }
 
@@ -314,7 +312,7 @@ public abstract class Animal extends MycoHost {
      * @return the new coordinate that is in the world
      */
     protected int validateCordinate(World world, int coordinate){
-     int returnNumber = Math.min(world.getSize(), coordinate);
+     int returnNumber = Math.min(world.getSize()-1, coordinate);
      returnNumber = Math.max(0, returnNumber);
      return returnNumber;
     }

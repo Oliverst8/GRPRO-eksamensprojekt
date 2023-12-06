@@ -74,13 +74,13 @@ public class Rabbit extends Animal {
         } else if(shouldRabbitDig(world)) {
             dig(world);
         } else {
-            setBurrow( ((RabbitHole) findNearest(world, 5, RabbitHole.class)).getBurrow());
+            setBurrow( ((RabbitHole) findNearestPrey(world, 5, RabbitHole.class)).getBurrow());
             seekBurrow(world);
         }
     }
 
     private boolean shouldRabbitDig(World world) {
-        RabbitHole nearestBurrowEntry = (RabbitHole) findNearest(world, 5, RabbitHole.class);
+        RabbitHole nearestBurrowEntry = (RabbitHole) findNearestPrey(world, 5, RabbitHole.class);
         if(nearestBurrowEntry == null) return true;
 
         return !(distance(world, world.getLocation(nearestBurrowEntry)) * 5 > 25);

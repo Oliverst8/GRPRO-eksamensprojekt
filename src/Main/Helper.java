@@ -95,4 +95,63 @@ public class Helper {
         }
         return entities;
     }
+
+    public static Entity findNearest(World world, Object searchingObject , int radius, Class<?> object){
+        if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
+
+        Set<Entity> surroundingEntities = Helper.getEntities(world, world.getCurrentLocation(), radius);
+
+        Entity nearestEntity = null;
+        double smallestDistance = Double.MAX_VALUE;
+
+        for(Entity entity : surroundingEntities){
+            if(entity.equals(searchingObject)) continue;
+            if(object.equals(entity.getClass())) continue;
+
+            double distance = distance(world.getCurrentLocation(), world.getLocation(entity));
+            if(distance < smallestDistance){
+                smallestDistance = distance;
+                nearestEntity = entity;
+            }
+
+        }
+
+        return nearestEntity;
+    }
+
+    public static Set<Entity> filterByClass(Set<Entity> entities, Class<?> filterClass){
+        Set<Entity> filteredEntities = new HashSet<Entity>();
+        for(Entity entity : entities){
+            if(entity.getClass() == filterClass){
+                filteredEntities.add(entity);
+            }
+        }
+        return filteredEntities;
+    }
+
+    public static Entity findNearest(World world, Entity caller, Set<? extends Entity> entities){
+        Location callerLocation = world.getLocation(caller);
+
+        Entity nearestEntity = null;
+        double smallestDistance = Double.MAX_VALUE;
+
+        for(Entity entity : entities){
+            if(entity.equals(caller)) continue;
+            double distance = distance(callerLocation, world.getLocation(entity));
+            if(distance < smallestDistance){
+                smallestDistance = distance;
+                nearestEntity = entity;
+            }
+        }
+        return nearestEntity;
+    }
+
+    public static Set<MycoHost> filterNonInfectedMycoHosts(Set<Entity> entities){
+        Set<MycoHost> nonInfected = new HashSet<>();
+        for(Entity entity : entities){
+            MycoHost host = (MycoHost) entity;
+            if(!host.isInfected()) nonInfected.add(host);
+        }
+        return nonInfected;
+    }
 }

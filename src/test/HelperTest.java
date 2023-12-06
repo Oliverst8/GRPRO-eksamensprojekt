@@ -1,7 +1,12 @@
 package test;
 
+
 import Main.Helper;
 import Main.NoEmptyLocationException;
+
+import itumulator.executable.Program;
+import itumulator.world.Location;
+import itumulator.world.World;
 
 import spawn.ObjectFactory;
 
@@ -119,4 +124,15 @@ class HelperTest {
 
     @AfterEach
     void tearDown() {}
+    
+    @Test
+    void testFindNearestOfExtendingClass(){
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
+        Rabbit expected = (Rabbit) ObjectFactory.generateOnMap(world, "Rabbit");
+        world.setCurrentLocation(new Location(0,0));
+        Rabbit actual = (Rabbit) Helper.findNearest(world, wolf, 5, Organism.class);
+
+        assertEquals(expected, actual);
+    }
+
 }

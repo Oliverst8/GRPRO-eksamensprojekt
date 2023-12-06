@@ -6,13 +6,20 @@ import itumulator.world.World;
 import java.util.HashSet;
 import java.util.Set;
 
-public interface Fungi {
+public abstract class Fungi extends Organism{
+
+    /**
+     * @param defualtFoodChainValue
+     */
+    public Fungi(int defualtFoodChainValue) {
+        super(defualtFoodChainValue);
+    }
 
     abstract void hostDied(World world, MycoHost host);
 
     abstract MycoHost findNewHost(World world, Location location);
 
-    default Set<MycoHost> filterNonInfectedMycoHosts(Set<Entity> entities){
+    protected Set<MycoHost> filterNonInfectedMycoHosts(Set<Entity> entities){
         Set<MycoHost> nonInfected = new HashSet<>();
         for(Entity entity : entities){
             MycoHost host = (MycoHost) entity;

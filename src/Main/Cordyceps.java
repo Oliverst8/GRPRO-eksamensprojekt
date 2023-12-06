@@ -5,7 +5,7 @@ import itumulator.world.World;
 
 import java.util.Set;
 
-public class Cordyceps implements Fungi{
+public class Cordyceps extends Fungi{
 
     @Override
     public void hostDied(World world, MycoHost host) {

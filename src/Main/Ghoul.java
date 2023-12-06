@@ -7,7 +7,7 @@ import spawn.ObjectFactory;
 import java.awt.*;
 import java.util.Set;
 
-public class Ghoul extends Organism implements Fungi, Cloneable{
+public class Ghoul extends Fungi implements Cloneable{
 
     public Ghoul() {
         super(-2);

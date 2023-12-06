@@ -11,9 +11,10 @@ import spawn.Input;
 import spawn.ObjectFactory;
 import spawn.SpawningObject;
 
-import static Main.Main.generateObjects;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 public class KravTest {
     Program program;
@@ -388,15 +389,8 @@ public class KravTest {
     @Test
     void K2_5a() {
 
-        Input input = new Input("data/week2/t2-5a.txt");
-        int delay = 250;
-        int display_size = 1000;
-        int size = input.getSize();
-
-        Program program = new Program(size, display_size, delay);
-        World world = program.getWorld();
-        Bear bear = new Bear(world,new Location(5,6));
-        generateObjects(world, input.getObjects());
+        World world = generateWithInput(new Input("data/week2/t2-5a"));
+        Bear bear = new Bear(world, new Location(6,5));
         assertTrue(((Entity) world.getTile(new Location(3,5))).getEntityClass().equals(bear.getEntityClass()));
     }
 
@@ -499,6 +493,35 @@ public class KravTest {
     }
 
 
+    /**
+     * Useful methods that gets used
+     */
+    private void generateObjects(World world, ArrayList<SpawningObject> objects) {
+        for (SpawningObject object : objects) {
+            for (int i = 0; i < object.getAmount(); i++) {
+                if(object.getLocation() != null) {
+                    ObjectFactory.generateOnMap(world, object.getLocation(), object.getClassName());
+                } else {
+                    ObjectFactory.generateOnMap(world, object.getClassName());
+                }
+            }
+        }
+    }
+
+    private World generateWithInput(Input input){
+
+        int delay = 250;
+        int display_size = 1000;
+        int size = input.getSize();
+
+        Program program = new Program(size, display_size, delay);
+        World world = program.getWorld();
+        generateObjects(world, input.getObjects());
+        return world;
+    }
+
     @AfterEach
     void tearDown() {}
+
+
 }

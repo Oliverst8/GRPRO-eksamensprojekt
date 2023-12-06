@@ -6,7 +6,7 @@ import spawn.ObjectFactory;
 
 import java.util.*;
 
-public abstract class Animal extends Organism {
+public abstract class Animal extends MycoHost {
 
     private double hunger; //0 is empty, and 100 is full
 
@@ -40,6 +40,8 @@ public abstract class Animal extends Organism {
         } else if(world.getCurrentTime() == 0 && sleeping){
             sleeping = false;
             wake();
+        } else {
+            die(world);
         }
 
     }
@@ -164,6 +166,10 @@ public abstract class Animal extends Organism {
     @Override
     public void die(World world){
         setDead();
+        if(isInfected()){
+            super.die(world);
+            return;
+        }
         if(world.contains(this)) {
             Location carcassLocation = world.getLocation(this);
             world.delete(this);
@@ -181,7 +187,7 @@ public abstract class Animal extends Organism {
      * Finds the nearest object of the type object to this animal
      * @return the location of the nearest object (except itself) in radius, returns null if there is no such object
      */
-    protected Entity findNearest(World world, int radius, Class<?> object) {
+    protected Entity findNearestPrey(World world, int radius, Class<?> object) {
 
         if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
 

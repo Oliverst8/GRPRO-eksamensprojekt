@@ -1,8 +1,8 @@
 package test;
 
-import Main.Helper;
-import Main.NoEmptyLocationException;
+import Main.*;
 import itumulator.executable.Program;
+import itumulator.world.Location;
 import itumulator.world.World;
 import spawn.ObjectFactory;
 
@@ -19,7 +19,11 @@ class HelperTest {
 
     @BeforeEach
     void setUp() {
-
+        int size = 4; // størrelsen af vores 'map' (dette er altid kvadratisk)
+        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
+        int display_size = 800; // skærm opløsningen (i px)
+        program = new Program(size, display_size, delay); // opret et nyt program
+        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
     }
 
     @AfterEach
@@ -151,4 +155,15 @@ class HelperTest {
         world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
         assertNotNull(Helper.findEmptyLocation(world));
     }
+
+    @Test
+    void testFindNearestOfExtendingClass(){
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
+        Rabbit expected = (Rabbit) ObjectFactory.generateOnMap(world, "Rabbit");
+        world.setCurrentLocation(new Location(0,0));
+        Rabbit actual = (Rabbit) Helper.findNearest(world, wolf, 5, Organism.class);
+
+        assertEquals(expected, actual);
+    }
+
 }

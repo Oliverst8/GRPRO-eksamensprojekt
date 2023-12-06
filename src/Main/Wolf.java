@@ -185,7 +185,7 @@ public class Wolf extends Animal{
                 goToDen(world);
                 return;
             }
-            Wolf nearestWolf =  (Wolf) findNearest(world, 3, Wolf.class);
+            Wolf nearestWolf =  (Wolf) findNearestPrey(world, 3, Wolf.class);
             if(nearestWolf != null){
                 if (!(nearestWolf.getPack()).equals(getPack())) {
                     moveAwayFrom(world, world.getLocation(nearestWolf));

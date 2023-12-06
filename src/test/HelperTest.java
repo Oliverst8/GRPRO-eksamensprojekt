@@ -66,6 +66,7 @@ class HelperTest {
 
     @Test
     void isThereAnEmptyLocationInWorldAllowNonBlockingWtih1ObjectsInWorldExpectsTrue() {
+
         ObjectFactory.generateOnMap(world, "Grass");
 
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, false));
@@ -80,6 +81,12 @@ class HelperTest {
 
     @Test
     void isThereAnEmptyLocationInWorldDontAllowNonBlockingWtih1ObjectInWorldExpectsFalse() {
+        int size = 1; // Size of the world
+        int delay = 1; // Delay between each turn (in ms)
+        int display_size = 800; // Size of the display
+
+        program = new Program(size, display_size, delay);
+        world = program.getWorld();
         ObjectFactory.generateOnMap(world, "Grass");
 
         assertFalse(Helper.isThereAnEmptyLocationInWorld(world, true));
@@ -96,6 +103,12 @@ class HelperTest {
 
     @Test
     void findEmptyLocationWhereThereIsNoneExpectsNoEmptyLocationException() {
+        int size = 1; // Size of the world
+        int delay = 1; // Delay between each turn (in ms)
+        int display_size = 800; // Size of the display
+
+        program = new Program(size, display_size, delay);
+        world = program.getWorld();
         ObjectFactory.generateOnMap(world, "Rabbit");
 
         assertThrows(NoEmptyLocationException.class, () -> {
@@ -105,6 +118,12 @@ class HelperTest {
 
     @Test
     void findNonBlockingEmptyLocationWhereThereIsNoneExpectsNoEmptyLocationException() {
+        int size = 1; // Size of the world
+        int delay = 1; // Delay between each turn (in ms)
+        int display_size = 800; // Size of the display
+
+        program = new Program(size, display_size, delay);
+        world = program.getWorld();
         ObjectFactory.generateOnMap(world, "Grass");
 
         assertThrows(NoEmptyLocationException.class, () -> {

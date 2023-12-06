@@ -10,7 +10,6 @@ import spawn.ObjectFactory;
 import itumulator.world.World;
 import itumulator.world.Location;
 
-
 public abstract class Animal extends MycoHost {
 
     private double hunger; //0 is empty, and 100 is full

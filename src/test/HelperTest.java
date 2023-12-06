@@ -3,15 +3,14 @@ package test;
 
 import Main.Helper;
 import Main.NoEmptyLocationException;
-
+import Main.Organism;
+import Main.Rabbit;
+import Main.Wolf;
 import itumulator.executable.Program;
 import itumulator.world.Location;
 import itumulator.world.World;
 
 import spawn.ObjectFactory;
-
-import itumulator.world.World;
-import itumulator.executable.Program;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
@@ -26,13 +25,14 @@ class HelperTest {
 
     @BeforeEach
     void setUp() {
-        int size = 3; // Size of the world
-        int delay = 1; // Delay between each turn (in ms)
-        int display_size = 800; // Size of the display
-
-        program = new Program(size, display_size, delay);
-        world = program.getWorld();
+        int size = 4; // størrelsen af vores 'map' (dette er altid kvadratisk)
+        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
+        int display_size = 800; // skærm opløsningen (i px)
+        program = new Program(size, display_size, delay); // opret et nyt program
+        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
     }
+
+
 
     @Test
     void testDoesArrayContainItDoesMultipleElements() {

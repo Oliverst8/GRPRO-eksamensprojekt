@@ -158,14 +158,14 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         if(isDay()) dayBehavior(world);
         else nightBehavior(world);
 
-        if(getEnergy() <= 0 || getHealth() <= 0) {
+        /*if(getEnergy() <= 0 || getHealth() <= 0) {
             System.out.println(this + " is out of energy or health and dying");
             die(world);
-        }
+        }*/
     }
 
     protected boolean checkIfDying(World world){
-        if(health <= 0){
+        if(health <= 0 || energy <= 0){
             die(world);
             return true;
         }

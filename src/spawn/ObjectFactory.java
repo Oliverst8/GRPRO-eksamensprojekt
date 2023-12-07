@@ -28,7 +28,7 @@ public class ObjectFactory {
 
         Object object = generateHelper(className, constructorArgs);
 
-        world.add(object);
+        if(object instanceof Entity) world.add(object);
 
         return object;
     }

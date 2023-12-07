@@ -2,11 +2,12 @@ package Main;
 
 import itumulator.world.Location;
 import itumulator.world.World;
+import spawn.ObjectFactory;
 
 import java.awt.*;
 import java.util.Set;
 
-public class Ghoul extends Fungi implements Cloneable, Spawnable {
+public class Ghoul extends Fungi implements Spawnable {
 
     public Ghoul() {
         super(-2);
@@ -57,6 +58,8 @@ public class Ghoul extends Fungi implements Cloneable, Spawnable {
     @Override
     void infectedBehavior(World world, MycoHost host) {
         drain(world, host);
+        if(!world.isOnTile(host)) return;
+        spread(world, host);
     }
 
     @Override
@@ -81,11 +84,16 @@ public class Ghoul extends Fungi implements Cloneable, Spawnable {
     private void spread(World world){
         MycoHost newHost = findNewHost(world, world.getLocation(this));
         if(newHost == null) return;
-        try{
-            Ghoul clone = (Ghoul) this.clone();
-            newHost.setInfected(clone);
-        } catch(CloneNotSupportedException e){
-            throw new RuntimeException("Failed to clone ghoul", e);
-        }
+
+        Ghoul newFungi = (Ghoul) ObjectFactory.generateOffMap(world, "Ghoul");
+        newHost.setInfected(newFungi);
+    }
+
+    private void spread(World world, MycoHost host){
+        MycoHost newHost = findNewHost(world, world.getLocation(host));
+        if(newHost == null) return;
+
+        Ghoul newFungi = (Ghoul) ObjectFactory.generateOffMap(world, "Ghoul");
+        newHost.setInfected(newFungi);
     }
 }

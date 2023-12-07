@@ -15,6 +15,7 @@ public class Cordyceps extends Fungi{
     public Cordyceps(Animal host) {
         super(-3);
         currentHost = host;
+        energy = 1;
     }
 
     @Override

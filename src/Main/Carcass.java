@@ -23,12 +23,15 @@ public class Carcass extends MycoHost implements Spawnable {
         age = 0;
         energy = 100;
         animal = null;
+        health = 100;
+        maxEnergy = 100;
     }
 
     public void setAnimal(Animal animal) {
         this.animal = animal;
         this.energy = animal.getEnergy();
         this.maxEnergy = animal.getMaxEnergy();
+        this.health = animal.maxHealth;
     }
 
     /**
@@ -70,7 +73,7 @@ public class Carcass extends MycoHost implements Spawnable {
 
         path.append(getType());
 
-        if(animal.maxHealth >= 200) path.append("-large");
+        if(animal != null && animal.maxHealth >= 200) path.append("-large");
         else path.append("-small");
 
         return path.toString();
@@ -104,9 +107,15 @@ public class Carcass extends MycoHost implements Spawnable {
      * @param world
      */
     void carcussBehaviour(World world){
+        if(checkIfDying(world)) return;
         if(!spawned){
             startTick = world.getCurrentTime();
             spawned = true;
+        }
+        if(!isInfected()){
+            if(age >= 2){
+                setInfected(new Ghoul());
+            }
         }
         if((world.getCurrentTime() == startTick)){
             return;

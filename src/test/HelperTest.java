@@ -1,11 +1,7 @@
 package test;
 
 
-import Main.Helper;
-import Main.NoEmptyLocationException;
-import Main.Organism;
-import Main.Rabbit;
-import Main.Wolf;
+import Main.*;
 import itumulator.executable.Program;
 import itumulator.world.Location;
 import itumulator.world.World;
@@ -15,6 +11,9 @@ import spawn.ObjectFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -99,6 +98,20 @@ class HelperTest {
         }
         
         assertTrue(Helper.isThereAnEmptyLocationInWorld(world, true));
+    }
+
+    @Test
+    void testFilterByClassWithSuperClass(){
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, "Rabbit");
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, "Wolf");
+        Carcass carcass = (Carcass) ObjectFactory.generateOnMap(world, "Carcass");
+
+        Set<Entity> entities = new HashSet<>();
+        entities.add(rabbit);
+        entities.add(wolf);
+        entities.add(carcass);
+
+        assertEquals(2, Helper.filterByClass(entities, Animal.class).size());
     }
 
     @Test

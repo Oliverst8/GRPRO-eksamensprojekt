@@ -122,7 +122,7 @@ public class Helper {
     public static Set<Entity> filterByClass(Set<Entity> entities, Class<?> filterClass){
         Set<Entity> filteredEntities = new HashSet<Entity>();
         for(Entity entity : entities){
-            if(entity.getClass() == filterClass){
+            if(filterClass.isAssignableFrom(entity.getClass())){
                 filteredEntities.add(entity);
             }
         }

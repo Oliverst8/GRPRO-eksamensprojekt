@@ -12,18 +12,21 @@ public class Cordyceps extends Fungi{
     /**
      * @param defualtFoodChainValue
      */
-    public Cordyceps(int defualtFoodChainValue) {
-        super(defualtFoodChainValue);
-        currentHost = null;
+    public Cordyceps(Animal host) {
+        super(-3);
+        currentHost = host;
     }
 
     @Override
     public void hostDied(World world, MycoHost host) {
-        MycoHost newHost = findNewHost(world, world.getLocation(host));
+        Animal newHost = (Animal) findNewHost(world, world.getLocation(host));
 
         world.delete(host);
 
-        if(newHost != null) newHost.setInfected(this);
+        if(newHost != null){
+            newHost.setInfected(this);
+            currentHost = newHost;
+        }
         else world.delete(this);
     }
 
@@ -60,9 +63,17 @@ public class Cordyceps extends Fungi{
         Set<Entity> surrondingEntities = Helper.getEntities(world, world.getLocation(currentHost), 3);
         surrondingEntities = Helper.filterByClass(surrondingEntities, currentHost.getClass());
 
-        surrondingEntities.removeAll(filterNonInfectedMycoHosts(surrondingEntities));
+        surrondingEntities.retainAll(filterNonInfectedMycoHosts(surrondingEntities));
+
         Entity closetAnimalOfSameSpecies = Helper.findNearest(world, world.getLocation(currentHost), surrondingEntities);
+        if(closetAnimalOfSameSpecies == null) return;
+
 
         currentHost.moveTowards(world, world.getLocation(closetAnimalOfSameSpecies));
     }
+
+    public Animal getCurrentHost(){
+        return currentHost;
+    }
+
 }

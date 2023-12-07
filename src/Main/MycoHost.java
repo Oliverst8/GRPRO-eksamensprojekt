@@ -19,6 +19,7 @@ public abstract class MycoHost extends Organism{
 
     @Override
     public void act(World world){
+        if(checkIfDying(world)) return;
         if(isInfected()) fungi.infectedBehavior(world, this);
         else super.act(world);
     }

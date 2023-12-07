@@ -164,6 +164,15 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         }
     }
 
+    protected boolean checkIfDying(World world){
+        if(health <= 0){
+            die(world);
+            return true;
+        }
+        return false;
+    }
+
+
     public void skipTurn(){
         skipTurn = true;
     }

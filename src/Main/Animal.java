@@ -36,17 +36,28 @@ public abstract class Animal extends MycoHost implements Spawnable {
 
     @Override
     void dayBehavior(World world) {
+        checkIfDying(world);
+    }
+
+    protected boolean checkIfDying(World world){
         if(sleeping && hunger >= 0 && world.getCurrentTime() > 0) {
             sleep();
+            return true;
         } else if(energy<=0 && health > 0 && hunger > 1) {
             sleep();
+            return true;
         } else if(world.getCurrentTime() == 0 && sleeping) {
             sleeping = false;
             wake();
+            return true;
         } else  if(health <= 0 || energy <= 0){
             die(world);
+            return true;
         }
+        return false;
     }
+
+
 
     public int getStrength() {
         return strength;

@@ -143,7 +143,7 @@ public class Wolf extends Animal {
     @Override
     void setupCanEat() {
         canEat.add(Rabbit.class);
-        //canEat.add(Bear.grass);
+        canEat.add(Bear.class);
         canEat.add(Carcass.class);
     }
 
@@ -160,7 +160,7 @@ public class Wolf extends Animal {
      */
     @Override
     void dayBehavior(World world) {
-        super.dayBehavior(world);
+        if(checkIfDying(world)) return;
 
         if(getInDen()){
             if(getEnergy() > 80 && pack.getDen().getAdultMembers().size() >= 2){

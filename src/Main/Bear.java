@@ -119,7 +119,7 @@ public class Bear extends Animal {
 
     @Override
     void dayBehavior(World world) {
-        super.dayBehavior(world);
+        if(checkIfDying(world)) return;
 
         if(getAge() == adultAge) turnAdult();
         if(getHunger() <= 50) {

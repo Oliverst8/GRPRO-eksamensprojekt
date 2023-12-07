@@ -47,6 +47,7 @@ class GrassTest {
         
         for(int i = 0; i < 20; i++){
             program.simulate();
+            grass.setEnergy(100);
         }
         
         assertEquals(1,grass.getAge());

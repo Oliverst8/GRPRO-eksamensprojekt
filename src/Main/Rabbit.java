@@ -75,7 +75,7 @@ public class Rabbit extends Animal {
     private void seekBurrow(World world) {
         if(burrow != null) {
             moveTowardsOwnBurrow(world);
-        } else if(shouldRabbitDig(world)) {
+        } else if(shouldRabbitDig(world) && getEnergy()>25) {
             dig(world);
         } else {
             setBurrow( ((RabbitHole) findNearestPrey(world, 5, RabbitHole.class)).getBurrow());
@@ -254,6 +254,7 @@ public class Rabbit extends Animal {
 
     @Override
     public void die(World world) {
+        if(isInBurrow()) exitBurrow(world);
         super.die(world);
 
         if(burrow != null) burrow.removeMember(this);

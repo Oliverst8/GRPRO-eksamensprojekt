@@ -5,6 +5,7 @@ import java.util.Objects;
 import Main.Wolf;
 import Main.Rabbit;
 import Main.Carcass;
+import Main.Bear;
 
 import spawn.ObjectFactory;
 
@@ -283,6 +284,11 @@ public class WolfTest {
         int expectedMembers = wolf2.getHuntingPack().getMembers().size()-1;
         wolf1.die(world);
         assertEquals(expectedMembers, wolf2.getHuntingPack().getMembers().size());
+    }
+
+    @Test
+    void testThatWolvesInAnWolfpackWith3OrMoreMemebersAttackBear(){
+    //rykket til K2_8a
     }
 
     @AfterEach

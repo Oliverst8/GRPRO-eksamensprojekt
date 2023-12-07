@@ -11,6 +11,7 @@ import javax.management.RuntimeErrorException;
 import Main.Entity;
 import Main.Helper;
 
+import Main.Spawnable;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
@@ -39,7 +40,8 @@ public class ObjectFactory {
 
         Object object = generateHelper(className, constructorArgs);
 
-        if (object instanceof Entity) place(world, object);
+        if(object instanceof Entity) world.add(object);
+        if (object instanceof Spawnable) place(world, object);
 
         return object;
     }
@@ -51,7 +53,8 @@ public class ObjectFactory {
         
         Object object = generateHelper(className, constructorArgs);
 
-        if (object instanceof Entity) place(world, object, location);
+        if(object instanceof Entity) world.add(object);
+        if (object instanceof Spawnable) place(world, object, location);
         
         return object;
     }

@@ -2,7 +2,13 @@ package Main;
 
 import itumulator.world.World;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public abstract class MycoHost extends Organism{
+
+    Fungi fungi;
+
     /**
      * @param defualtFoodChainValue
      */
@@ -11,7 +17,11 @@ public abstract class MycoHost extends Organism{
         fungi = null;
     }
 
-    Fungi fungi;
+    @Override
+    public void act(World world){
+        if(isInfected()) fungi.infectedBehavior(world, this);
+        else super.act(world);
+    }
 
     @Override
     public void die(World world){
@@ -30,6 +40,6 @@ public abstract class MycoHost extends Organism{
         return fungi != null;
     }
 
-    abstract void infectedBehavior();
+
 
 }

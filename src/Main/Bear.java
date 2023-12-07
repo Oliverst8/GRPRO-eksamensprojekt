@@ -86,7 +86,7 @@ public class Bear extends Animal {
     }
 
     private boolean seekMate(World world) {
-        Object mate = findNearest(world, 10, this.getClass());
+        Object mate = findNearestPrey(world, 10, this.getClass());
 
         if(mate == null) return false;
 
@@ -167,12 +167,12 @@ public class Bear extends Animal {
     }
 
     @Override
-    protected String getType() {
+    public String getType() {
         return "bear";
     }
 
     @Override
-    protected Color getColor() {
+    public Color getColor() {
         return Color.lightGray;
     }
 }

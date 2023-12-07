@@ -42,7 +42,7 @@ public class Berry extends Plant{
     }
 
     @Override
-    protected String getPNGPath() {
+    public String getPNGPath() {
         StringBuilder path = new StringBuilder();
 
         path.append(getType());
@@ -53,12 +53,12 @@ public class Berry extends Plant{
     }
 
     @Override
-    protected String getType() {
+    public String getType() {
         return "bush";
     }
 
     @Override
-    protected Color getColor() {
+    public Color getColor() {
         return new Color(144,238,144);
     }
 

@@ -55,6 +55,10 @@ public class Rabbit extends Animal {
      */
     @Override
     protected void nightBehavior(World world) {
+        if(isInfected()){
+            fungi.infectedBehavior(world, this);
+            return;
+        }
         if(inBurrow) sleeping = true;
         if(sleeping){
             sleep();
@@ -112,6 +116,10 @@ public class Rabbit extends Animal {
     @Override
     protected void dayBehavior(World world) {
         super.dayBehavior(world);
+        if(isInfected()){
+            fungi.infectedBehavior(world, this);
+            return;
+        }
 
         if(inBurrow) {
             if(getEnergy() > 80 && burrow.getAdultMembers().size() >= 2) {

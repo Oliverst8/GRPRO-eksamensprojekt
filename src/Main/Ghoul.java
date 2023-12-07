@@ -2,25 +2,35 @@ package Main;
 
 import itumulator.world.Location;
 import itumulator.world.World;
-import spawn.ObjectFactory;
 
 import java.awt.*;
 import java.util.Set;
 
-public class Ghoul extends Fungi implements Cloneable{
+public class Ghoul extends Fungi implements Cloneable, Spawnable {
 
     public Ghoul() {
         super(-2);
     }
 
     @Override
-    protected String getType() {
-        return null;
+    public String getType() {
+        return "fungi";
     }
 
     @Override
-    protected Color getColor() {
+    public Color getColor() {
         return new Color(37,42,4);
+    }
+
+    @Override
+    public String getPNGPath() {
+        StringBuilder path = new StringBuilder();
+
+        path.append(getType());
+        if(maxHealth > 150) path.append("-large");
+        else path.append("-small");
+
+        return path.toString();
     }
 
     @Override
@@ -45,6 +55,11 @@ public class Ghoul extends Fungi implements Cloneable{
     }
 
     @Override
+    void infectedBehavior(World world, MycoHost host) {
+        drain(world, host);
+    }
+
+    @Override
     public void dayBehavior(World world) {
         behavior(world);
     }
@@ -55,8 +70,10 @@ public class Ghoul extends Fungi implements Cloneable{
     }
 
     public void behavior(World world){
-        if(!world.contains(this)) return;
+        if(!world.isOnTile(this)) return;
         spread(world);
+        removeEnergy(10);
+        removeHealth(10, world);
     }
 
 

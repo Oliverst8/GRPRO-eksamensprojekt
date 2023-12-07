@@ -10,7 +10,7 @@ import spawn.ObjectFactory;
 import itumulator.world.World;
 import itumulator.world.Location;
 
-public abstract class Animal extends MycoHost {
+public abstract class Animal extends MycoHost implements Spawnable {
 
     private double hunger; //0 is empty, and 100 is full
 
@@ -43,7 +43,7 @@ public abstract class Animal extends MycoHost {
         } else if(world.getCurrentTime() == 0 && sleeping) {
             sleeping = false;
             wake();
-        } else {
+        } else  if(health <= 0 || energy <= 0){
             die(world);
         }
     }
@@ -397,14 +397,20 @@ public abstract class Animal extends MycoHost {
     }
 
     @Override
-    protected String getPNGPath() {
+    public String getPNGPath() {
         StringBuilder path = new StringBuilder();
 
-        path.append(super.getPNGPath());
+        path.append(getType());
+
+        if(age >= adultAge) path.append("-large");
+        else path.append("-small");
 
         if (infected) path.append("-fungi");
         if (sleeping) path.append("-sleeping");
 
         return path.toString();
     }
+
+
+
 }

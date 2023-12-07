@@ -1,8 +1,8 @@
 package Main;
 
-public abstract class Inanimate extends Entity {
+public abstract class Inanimate extends Entity implements Spawnable {
     @Override
-    protected String getPNGPath() {
+    public String getPNGPath() {
         return getType();
     }
 }

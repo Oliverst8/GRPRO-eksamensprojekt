@@ -4,7 +4,7 @@ import itumulator.world.World;
 
 import java.awt.*;
 
-public class Carcass extends MycoHost {
+public class Carcass extends MycoHost implements Spawnable {
 
     private Animal animal;
 
@@ -52,7 +52,7 @@ public class Carcass extends MycoHost {
      * @return the type of organism this is
      */
     @Override
-    protected String getType() {
+    public String getType() {
         return "carcass";
     }
 
@@ -60,8 +60,20 @@ public class Carcass extends MycoHost {
      * @return the default color of the carcuss (Brown)
      */
     @Override
-    protected Color getColor() {
+    public Color getColor() {
         return new Color(92, 64, 51);
+    }
+
+    @Override
+    public String getPNGPath() {
+        StringBuilder path = new StringBuilder();
+
+        path.append(getType());
+
+        if(animal.maxHealth >= 200) path.append("-large");
+        else path.append("-small");
+
+        return path.toString();
     }
 
 

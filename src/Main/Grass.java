@@ -35,7 +35,7 @@ public class Grass extends Plant implements NonBlocking {
         Location randomLocation;
 
         do {
-            if(locationsList.size() <= 0) return;
+            if(locationsList.isEmpty()) return;
             randomIndex = new Random().nextInt(locationsList.size());
             randomLocation = locationsList.get(randomIndex);
             if(world.getTile(randomLocation) != null) locationsList.remove(randomIndex);
@@ -47,12 +47,12 @@ public class Grass extends Plant implements NonBlocking {
     }
 
     @Override
-    protected String getType() {
+    public String getType() {
         return "grass";
     }
 
     @Override
-    protected Color getColor() {
+    public Color getColor() {
         return Color.green;
     }
 

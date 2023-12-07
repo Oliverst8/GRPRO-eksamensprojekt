@@ -28,6 +28,16 @@ public abstract class Fungi extends Organism{
         return nonInfected;
     }
 
+    protected void drain(World world, MycoHost host){
+        maxHealth += 5;
+        maxEnergy += 5;
+        addEnergy(5);
+        addHealth(5);
+        host.removeEnergy(5);
+    }
+
+    abstract void infectedBehavior(World world, MycoHost host);
+
 
 
 }

@@ -172,17 +172,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         this.skipTurn = skipTurn;
     }
 
-    @Override
-    protected String getPNGPath() {
-        StringBuilder path = new StringBuilder();
 
-        path.append(getType());
-
-        if(age >= adultAge) path.append("-large");
-        else path.append("-small");
-
-        return path.toString();
-    }
 
     public int getHealth() {
         return health;

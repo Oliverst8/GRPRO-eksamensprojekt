@@ -16,7 +16,7 @@ public class RabbitHole extends Hole{
      * @return the image of the hole
      */
     @Override
-    protected String getType() {
+    public String getType() {
         return "hole-small";
     }
 

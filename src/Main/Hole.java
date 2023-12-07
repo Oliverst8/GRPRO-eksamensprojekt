@@ -21,7 +21,7 @@ public class Hole extends Inanimate implements NonBlocking {
      * @return the image of the hole
      */
     @Override
-    protected String getType() {
+    public String getType() {
         return "hole-large";
     }
 
@@ -29,7 +29,7 @@ public class Hole extends Inanimate implements NonBlocking {
      * @return the color of the hole object
      */
     @Override
-    protected Color getColor() {
+    public Color getColor() {
         return new Color(150, 75, 0);
     }
 

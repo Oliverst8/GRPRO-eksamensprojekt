@@ -117,7 +117,7 @@ public class Wolf extends Animal {
      * @return the type of animal this is
      */
     @Override
-    protected String getType() {
+    public String getType() {
         return "wolf";
     }
 
@@ -125,7 +125,7 @@ public class Wolf extends Animal {
      * @return the default color for this animal
      */
     @Override
-    protected Color getColor() {
+    public Color getColor() {
         return Color.gray;
     }
 

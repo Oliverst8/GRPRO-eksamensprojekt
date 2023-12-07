@@ -11,6 +11,7 @@ public class Ghoul extends Fungi implements Spawnable {
 
     public Ghoul() {
         super(-2);
+        adultAge = 1;
     }
 
     @Override

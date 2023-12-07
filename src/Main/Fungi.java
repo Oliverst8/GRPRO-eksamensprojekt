@@ -29,6 +29,7 @@ public abstract class Fungi extends Organism{
     }
 
     protected void drain(World world, MycoHost host){
+
         maxHealth += 5;
         maxEnergy += 5;
         addEnergy(5);

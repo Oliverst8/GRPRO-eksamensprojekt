@@ -150,9 +150,10 @@ public class GhoulTest {
         carcass.setInfected(ghoul);
 
 
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 21; i++) {
             ghoul.skipTurn();
             program.simulate();
+            System.out.println(ghoul.getEnergy() + " " + i);
         }
 
         assertFalse(world.contains(carcass));

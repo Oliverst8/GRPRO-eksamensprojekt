@@ -8,7 +8,7 @@ public class SpawningObject {
     private Location location;
 
     /**
-     * @param type the type of the object
+     * @param className the type of the object
      * @param amount the amount of the object
      */
     public SpawningObject(String className, int amount) {

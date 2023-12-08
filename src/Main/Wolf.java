@@ -12,12 +12,11 @@ import itumulator.world.Location;
 
 import spawn.ObjectFactory;
 
-public class Wolf extends Animal {
+public class Wolf extends NestAnimal {
     private Pack pack; //The pack the wolf is part off
 
     private Pack huntingPack; //If the wolf is not part of a huntingpack it is null, otherwise this is the huntingpack
 
-    private boolean inDen; //Describes if the wolf is in its den
 
     /**
      * Creates a new wolf
@@ -59,7 +58,7 @@ public class Wolf extends Animal {
         pack.addMember(this);
         initialise(age);
         if(inDen){
-            this.inDen = true;
+            setInNest(true);
             pack.getDen().addMember(this);
         }
     }
@@ -74,7 +73,7 @@ public class Wolf extends Animal {
         huntingPack = null;
         adultAge = 5;
         this.age = age;
-        inDen = false;
+        setInNest(false);
         maxEnergy = 200;
         energy = maxEnergy;
         maxHealth = 200;
@@ -83,19 +82,9 @@ public class Wolf extends Animal {
     }
 
 
-    /**
-     * @param inDen weather or not the wolf is in its den
-     */
-    public void setInDen(boolean inDen){
-        this.inDen = inDen;
-    }
 
-    /**
-     * @return weather or not the wolf is in its den
-     */
-    public boolean getInDen(){
-        return inDen;
-    }
+
+
 
     /**
      * @return the pack the wolf is part off
@@ -162,7 +151,7 @@ public class Wolf extends Animal {
     public void dayBehavior(World world) {
         if(checkIfDying(world)) return;
 
-        if(getInDen()){
+        if(isInNest()){
             if(getEnergy() > 80 && pack.getDen().getAdultMembers().size() >= 2){
                 for(Animal otherWolf : pack.getDen().getMembers()){
                     if(otherWolf != this && otherWolf.getEnergy() > 80) {
@@ -176,7 +165,7 @@ public class Wolf extends Animal {
                 }
             }
             if(getHunger() < 100) {
-                exitDen(world);
+                exitNest(world);
                 return;
             }
 
@@ -305,45 +294,37 @@ public class Wolf extends Animal {
         }
         if(pack.getDen() == null) {
             pack.createDen(world, world.getCurrentLocation());
-            enterDen(world);
+            enterNest(world);
             return;
         }
         if(pack.getDenLocation(world).equals(world.getCurrentLocation())) {
-            enterDen(world);
+            enterNest(world);
 
             return;
         }
         moveTowards(world, pack.getDenLocation(world));
-        if(pack.getDenLocation(world).equals(world.getCurrentLocation())) enterDen(world);
+        if(pack.getDenLocation(world).equals(world.getCurrentLocation())) enterNest(world);
     }
 
     /**
      * Makes the wolf exit its den
      * @param world the world the wolf is in
      */
-    private void exitDen(World world) {
+    private void exitNest(World world) {
         List<Location> exitLocations = new LinkedList<>(world.getEmptySurroundingTiles(pack.getDenLocation(world)));
         if(world.isTileEmpty(pack.getDenLocation(world))) exitLocations.add(0,pack.getDenLocation(world));
 
         if(exitLocations.isEmpty()) return;
 
-        setInDen(false);
+        setInNest(false);
         pack.getDen().removeMember(this);
         world.setTile(exitLocations.get(0),this);
     }
 
-    /**
-     * Makes the wolf enter its den if its standing on it
-     * @param world the world the wolf is in
-     */
-    private void enterDen(World world){
 
-        if(!(pack.getDenLocation(world).equals(world.getCurrentLocation()))) throw new IllegalOperationException("Cant enter den, when wolf is not stading on it");
-        if(getInDen()) throw new IllegalOperationException("Cant enter den, when the wolf is already in its den");
 
-        setInDen(true);
-        pack.getDen().addMember(this);
-        world.remove(this);
+    public Nest getNest(){
+        return pack.getDen();
     }
 
     /**
@@ -364,7 +345,7 @@ public class Wolf extends Animal {
      */
     @Override
     public void nightBehavior(World world) {
-        if(inDen) sleeping = true;
+        if(isInNest()) sleeping = true;
         if(sleeping){
             sleep();
             return;

@@ -60,7 +60,7 @@ class RabbitTest {
      */
     @Test
     void testRabbitConstructorInBurrowExpectsFalse() {
-        assertFalse(rabbit.isInBurrow());
+        assertFalse(rabbit.isInNest());
     }
 
     @Test
@@ -240,7 +240,7 @@ class RabbitTest {
         rabbit.setHunger(100);
         program.simulate();
         program.simulate();
-        assertTrue(rabbit.isInBurrow());
+        assertTrue(rabbit.isInNest());
     }
 
     @Test
@@ -321,11 +321,11 @@ class RabbitTest {
         world.setTile(new Location(0,0),rabbit);
         world.setNight();
 
-        assertFalse(rabbit.isInBurrow());
+        assertFalse(rabbit.isInNest());
         program.simulate(); //move towards burrow
         program.simulate(); //move towards burrow
         program.simulate(); //enter burrow
-        assertTrue(rabbit.isInBurrow());
+        assertTrue(rabbit.isInNest());
     }
 
     @Test
@@ -358,7 +358,7 @@ class RabbitTest {
 
         program.simulate(); //Wants to exit burrow
         program.simulate(); //Wants to exit burrow
-        assertTrue(rabbit.isInBurrow());
+        assertTrue(rabbit.isInNest());
     }
 
     @Test

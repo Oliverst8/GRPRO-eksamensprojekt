@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 
-public class Rabbit extends Animal {
+public class Rabbit extends NestAnimal {
     private Burrow burrow;
-    private boolean inBurrow = false;
+
 
     /**
      * Initilises the food to the bunny can eat to plant and fruits
@@ -32,7 +32,7 @@ public class Rabbit extends Animal {
         initialize();
         this.age = age;
         if(inBurrow) {
-            this.inBurrow = true;
+            setInNest(true);
             burrow.addMember(this);
         }
     }
@@ -59,7 +59,7 @@ public class Rabbit extends Animal {
             fungi.infectedBehavior(world, this);
             return;
         }
-        if(inBurrow) sleeping = true;
+        if(isInNest()) sleeping = true;
         if(sleeping){
             sleep();
             return;
@@ -93,7 +93,7 @@ public class Rabbit extends Animal {
     private void moveTowardsOwnBurrow(World world) {
         Location nearestEntry = burrow.findNearestEntry(world, world.getCurrentLocation());
         if(distance(world, nearestEntry) != 0) moveTowards(world, nearestEntry);
-        if(distance(world, nearestEntry) == 0) enterBurrow(world);
+        if(distance(world, nearestEntry) == 0) enterNest(world);
     }
 
     protected void produceOffSpring(World world) {
@@ -118,7 +118,7 @@ public class Rabbit extends Animal {
         if(checkIfDying(world)) return;
 
 
-        if(inBurrow) {
+        if(isInNest()) {
             if(getEnergy() > 80 && burrow.getAdultMembers().size() >= 2) {
                 for(Animal otherRabbit : burrow.getMembers()){
                     if(otherRabbit != this && otherRabbit.getEnergy() > 80) {
@@ -143,7 +143,7 @@ public class Rabbit extends Animal {
             } else{
                 seekBurrow(world);
             }
-            if(!isInBurrow() && world.getSurroundingTiles(world.getLocation(this)).size()>world.getEmptySurroundingTiles(world.getLocation(this)).size()){
+            if(!isInNest() && world.getSurroundingTiles(world.getLocation(this)).size()>world.getEmptySurroundingTiles(world.getLocation(this)).size()){
                 for(Location location : world.getSurroundingTiles(world.getLocation(this))){
                    if(world.isTileEmpty(location)) return;
                    Organism organism = (Organism) world.getTile(location);
@@ -163,7 +163,7 @@ public class Rabbit extends Animal {
     private void dig(World world) {
         if(getEnergy()-25 > 0 ) {
             makeBurrow(world);
-            enterBurrow(world);
+            enterNest(world);
         }
     }
 
@@ -191,19 +191,10 @@ public class Rabbit extends Animal {
         }
     }
 
-    /**
-     * Throws Main.IllegalOperationException if the bunny is in a burrow or if the bunny has no burrow
-     * Throws IllegalArgumentException if world is null
-     * Sets inBurrow to true
-     * removes the bunny from the world
-     * When entering a burrow the rabbit goes to sleep
-     */
-    public void enterBurrow(World world) {
-        if(inBurrow) throw new IllegalOperationException("Cant enter a burrow, if its already in one");
 
-        inBurrow = true;
-        burrow.addMember(this);
-        world.remove(this);
+
+    public Nest getNest(){
+        return burrow;
     }
 
     /**
@@ -213,7 +204,7 @@ public class Rabbit extends Animal {
      * Adds the bunny to the world in the location of a random burrow entry
      */
     private void exitBurrow(World world) {
-        if(!inBurrow) throw new IllegalOperationException("Cant exit a burrow, if its not in one");
+        if(!isInNest()) throw new IllegalOperationException("Cant exit a burrow, if its not in one");
         
         Set<RabbitHole> entries = burrow.getEntries();
         Location freeLocation = null;
@@ -230,7 +221,7 @@ public class Rabbit extends Animal {
 
         if(freeLocation == null) return;
 
-        inBurrow = false;
+        setInNest(false);
         burrow.removeMember(this);
         world.setTile(freeLocation,this);
     }
@@ -245,16 +236,11 @@ public class Rabbit extends Animal {
         this.burrow = burrow;
     }
 
-    /**
-     * @return true if bunny is in burrow and false if not
-     */
-    public boolean isInBurrow() {
-        return inBurrow;
-    }
+
 
     @Override
     public void die(World world) {
-        if(isInBurrow()) exitBurrow(world);
+        if(isInNest()) exitBurrow(world);
         super.die(world);
 
         if(burrow != null) burrow.removeMember(this);

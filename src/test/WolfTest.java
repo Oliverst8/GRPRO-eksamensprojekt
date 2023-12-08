@@ -69,7 +69,7 @@ public class WolfTest {
         wolf.setHunger(100);
         program.simulate();
 
-        assertTrue(wolf.getInDen());
+        assertTrue(wolf.isInNest());
     }
 
     @Test
@@ -81,8 +81,8 @@ public class WolfTest {
 
         program.simulate();
 
-        assertTrue(wolf.getInDen());
-        assertTrue(wolf2.getInDen());
+        assertTrue(wolf.isInNest());
+        assertTrue(wolf2.isInNest());
     }
 
     @Test
@@ -106,7 +106,7 @@ public class WolfTest {
         wolf.setHunger(50);
         program.simulate();
 
-        assertFalse(wolf.getInDen());
+        assertFalse(wolf.isInNest());
     }
 
     @Test
@@ -116,7 +116,7 @@ public class WolfTest {
         program.simulate();
         program.simulate();
 
-        assertTrue(wolf.getInDen());
+        assertTrue(wolf.isInNest());
     }
 
     @Test
@@ -130,7 +130,7 @@ public class WolfTest {
         program.simulate();
         program.simulate();
 
-        assertTrue(wolf2.getInDen());
+        assertTrue(wolf2.isInNest());
     }
 
     @Test

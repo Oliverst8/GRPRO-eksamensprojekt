@@ -7,7 +7,7 @@ import spawn.ObjectFactory;
 
 import java.util.*;
 
-public class Burrow extends Community{
+public class Burrow extends Nest{
     private final Set<RabbitHole> entries;
 
     /**

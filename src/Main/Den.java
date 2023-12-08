@@ -4,7 +4,7 @@ import itumulator.world.World;
 import spawn.ObjectFactory;
 import itumulator.world.Location;
 
-public class Den extends Community{
+public class Den extends Nest{
 
     Hole den;
 

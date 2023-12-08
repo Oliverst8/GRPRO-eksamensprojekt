@@ -15,7 +15,7 @@ import spawn.SpawningObject;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.Map;
+
 public class KravTest {
     Program program;
     World world;
@@ -201,14 +201,14 @@ public class KravTest {
             rabbit2 = (Rabbit) ObjectFactory.generateOnMap(world,rabbit2Location, "Rabbit");
             rabbit2.setHunger(100);
             rabbit2.setEnergy(25); //cant dig burrow
-            while(!rabbit2.isInBurrow()){
+            while(!rabbit2.isInNest()){
                 rabbit1.skipTurn();
                 program.simulate();
             }
         }
 
         boolean rabbit2DigsAnotherHole = false;
-        if(burrow.getEntries().size()==world.getEntities().size()-2 && rabbit2.isInBurrow()){
+        if(burrow.getEntries().size()==world.getEntities().size()-2 && rabbit2.isInNest()){
             int currentEntries = burrow.getEntries().size();
             rabbit1.skipTurn();
             rabbit2.setEnergy(100);
@@ -287,14 +287,14 @@ public class KravTest {
         rabbit1.setEnergy(100);
         rabbit1.setHunger(99);
         program.simulate();
-        if(!rabbit1.isInBurrow()){
+        if(!rabbit1.isInNest()){
             program.simulate();
             rabbit1.setHunger(100);
             program.simulate();
         }
 
         int entriesBefore = 0;
-        if(rabbit1.isInBurrow()){
+        if(rabbit1.isInNest()){
             entriesBefore = burrow.getEntries().size();
             program.simulate();
         }

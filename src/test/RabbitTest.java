@@ -280,9 +280,8 @@ class RabbitTest {
         Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
         Rabbit rabbit2 = initialiseRabbitOnWorld(new Location(1,1));
 
-        grass.skipTurn();
-        rabbit2.setSkipTurn(true);
-        program.simulate();
+        world.setCurrentLocation(world.getLocation(rabbit1));
+        rabbit1.act(world);
 
         assertEquals(new Location(1,0),world.getLocation(rabbit1));
     }

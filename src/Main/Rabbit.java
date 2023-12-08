@@ -64,22 +64,17 @@ public class Rabbit extends NestAnimal {
             sleep();
             return;
         }
-        seekBurrow(world);
+        goToNest(world);
     }
 
-    /**
-     * Moves the bunny towards the closet hole entrance to its burrow
-     * If the bunny stands on the burrow it will enter it
-     * @param world
-     */
-    private void seekBurrow(World world) {
-        if(burrow != null) {
-            moveTowardsOwnBurrow(world);
-        } else if(shouldRabbitDig(world) && getEnergy()>25) {
+
+
+    protected void noNestBehavior(World world){
+        if (shouldRabbitDig(world) && getEnergy() > 25) {
             dig(world);
         } else {
-            setBurrow( ((RabbitHole) findNearestPrey(world, 5, RabbitHole.class)).getBurrow());
-            seekBurrow(world);
+            setBurrow(((RabbitHole) findNearestPrey(world, 5, RabbitHole.class)).getBurrow());
+            goToNest(world);
         }
     }
 
@@ -90,7 +85,7 @@ public class Rabbit extends NestAnimal {
         return !(distance(world, world.getLocation(nearestBurrowEntry)) * 5 > 25);
     }
 
-    private void moveTowardsOwnBurrow(World world) {
+    protected void moveTowardsNest(World world) {
         Location nearestEntry = burrow.findNearestEntry(world, world.getCurrentLocation());
         if(distance(world, nearestEntry) != 0) moveTowards(world, nearestEntry);
         if(distance(world, nearestEntry) == 0) enterNest(world);
@@ -135,13 +130,13 @@ public class Rabbit extends NestAnimal {
                 expandBurrow(world);
                 return;
             }
-            if(getHunger() < 100) exitBurrow(world);
+            if(getHunger() < 100) exitNest(world);
         }
         else {
             if(getHunger() < 100) {
                 hunt(world);
             } else{
-                seekBurrow(world);
+                goToNest(world);
             }
             if(!isInNest() && world.getSurroundingTiles(world.getLocation(this)).size()>world.getEmptySurroundingTiles(world.getLocation(this)).size()){
                 for(Location location : world.getSurroundingTiles(world.getLocation(this))){
@@ -197,15 +192,9 @@ public class Rabbit extends NestAnimal {
         return burrow;
     }
 
-    /**
-     * Throws Main.IllegalOperationException if the bunny is not in a burrow or if the bunny has no burrow
-     * Throws IllegalArgumentException if world is null
-     * Sets inBurrow to false
-     * Adds the bunny to the world in the location of a random burrow entry
-     */
-    private void exitBurrow(World world) {
-        if(!isInNest()) throw new IllegalOperationException("Cant exit a burrow, if its not in one");
-        
+
+
+    protected Location getExitLocation(World world){
         Set<RabbitHole> entries = burrow.getEntries();
         Location freeLocation = null;
 
@@ -215,15 +204,10 @@ public class Rabbit extends NestAnimal {
             if(world.isTileEmpty(tempHole.getLocation(world))) emptyLocations.add(tempHole.getLocation(world)); //adds hole itself to list
             emptyLocations.addAll(world.getEmptySurroundingTiles(tempHole.getLocation(world))); //adds empty sorrounding tiles to list
             if(emptyLocations.isEmpty()) break;
-            int random = new Random().nextInt(0,emptyLocations.size());
+            int random = new Random().nextInt(emptyLocations.size());
             freeLocation = emptyLocations.get(random);
         }
-
-        if(freeLocation == null) return;
-
-        setInNest(false);
-        burrow.removeMember(this);
-        world.setTile(freeLocation,this);
+        return freeLocation;
     }
 
     /**
@@ -240,7 +224,7 @@ public class Rabbit extends NestAnimal {
 
     @Override
     public void die(World world) {
-        if(isInNest()) exitBurrow(world);
+        if(isInNest()) exitNest(world);
         super.die(world);
 
         if(burrow != null) burrow.removeMember(this);

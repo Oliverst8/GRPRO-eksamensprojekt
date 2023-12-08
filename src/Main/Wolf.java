@@ -2,10 +2,8 @@ package Main;
 
 import java.awt.*
 ;
-import java.util.Set;
+import java.util.*;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.LinkedList;
 
 import itumulator.world.World;
 import itumulator.world.Location;
@@ -173,7 +171,7 @@ public class Wolf extends NestAnimal {
 
             if(getHunger() == 100) {
 
-                goToDen(world);
+                goToNest(world);
                 return;
             }
             Wolf nearestWolf =  (Wolf) findNearestPrey(world, 3, Wolf.class);
@@ -284,41 +282,37 @@ public class Wolf extends NestAnimal {
 
     /**
      * Removes the wolf from its huntingpack
-     * Makes the wolf go towards its den and enter it if it dosent have one it digs one
+     * Calls go to nest
      */
-    private void goToDen(World world) {
-
+    protected void goToNest(World world) {
         if(huntingPack != null){
             huntingPack.removeMember(this);
             huntingPack = null;
         }
-        if(pack.getDen() == null) {
-            pack.createDen(world, world.getCurrentLocation());
-            enterNest(world);
-            return;
-        }
-        if(pack.getDenLocation(world).equals(world.getCurrentLocation())) {
-            enterNest(world);
 
-            return;
-        }
+        super.goToNest(world);
+    }
+
+    protected void noNestBehavior(World world){
+        pack.createDen(world, world.getCurrentLocation());
+        enterNest(world);
+    }
+
+    protected void moveTowardsNest(World world){
         moveTowards(world, pack.getDenLocation(world));
         if(pack.getDenLocation(world).equals(world.getCurrentLocation())) enterNest(world);
     }
 
-    /**
-     * Makes the wolf exit its den
-     * @param world the world the wolf is in
-     */
-    private void exitNest(World world) {
-        List<Location> exitLocations = new LinkedList<>(world.getEmptySurroundingTiles(pack.getDenLocation(world)));
-        if(world.isTileEmpty(pack.getDenLocation(world))) exitLocations.add(0,pack.getDenLocation(world));
 
-        if(exitLocations.isEmpty()) return;
 
-        setInNest(false);
-        pack.getDen().removeMember(this);
-        world.setTile(exitLocations.get(0),this);
+    protected Location getExitLocation(World world){
+        List<Location> exitLocations = new ArrayList<>(world.getEmptySurroundingTiles(pack.getDenLocation(world)));
+        if(world.isTileEmpty(pack.getDenLocation(world))) exitLocations.add(pack.getDenLocation(world));
+
+        if(exitLocations.isEmpty()) return null;
+
+        Random random = new Random();
+        return exitLocations.get(random.nextInt(exitLocations.size()));
     }
 
 
@@ -350,7 +344,7 @@ public class Wolf extends NestAnimal {
             sleep();
             return;
         }
-        goToDen(world);
+        goToNest(world);
     }
 
     @Override

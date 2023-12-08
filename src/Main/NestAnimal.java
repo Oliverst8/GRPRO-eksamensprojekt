@@ -1,11 +1,13 @@
 package Main;
 
+import itumulator.world.Location;
 import itumulator.world.World;
 
 public abstract class NestAnimal extends Animal{
 
     private boolean inNest = false;
 
+    abstract Nest getNest();
 
     /**
      * @param defualtFoodChainValue
@@ -31,8 +33,6 @@ public abstract class NestAnimal extends Animal{
         world.remove(this);
     }
 
-    abstract Nest getNest();
-
     public boolean isInNest(){
         return inNest;
     }
@@ -41,5 +41,36 @@ public abstract class NestAnimal extends Animal{
         this.inNest = inNest;
     }
 
+    protected void goToNest(World world){
+        if(getNest() != null){
+            moveTowardsNest(world);
+        } else {
+            noNestBehavior(world);
+        }
+    }
+
+    protected abstract void moveTowardsNest(World world);
+
+    protected abstract void noNestBehavior(World world);
+
+    /**
+     * Throws Main.IllegalOperationException if the NestAnimal is not in its Nest
+     * Sets inNest to false
+     * Adds the NestAnimal to the world in the location exitLocation
+     */
+    protected void exitNest(World world){
+        if(!isInNest()) throw new IllegalOperationException("Cant exit a burrow, if its not in one");
+
+        Location freeLocation = getExitLocation(world);
+        if(freeLocation == null) return;
+
+        setInNest(false);
+        getNest().removeMember(this);
+        world.setTile(freeLocation,this);
+    }
+
+    protected abstract Location getExitLocation(World world);
+
+    
 
 }

@@ -118,7 +118,7 @@ public class Bear extends Animal {
     }
 
     @Override
-    void dayBehavior(World world) {
+    public void dayBehavior(World world) {
         if(checkIfDying(world)) return;
 
         if(getAge() == adultAge) turnAdult();
@@ -142,7 +142,7 @@ public class Bear extends Animal {
     }
 
     @Override
-    void nightBehavior(World world) {
+    public void nightBehavior(World world) {
         Location currentLocation = world.getLocation(this);
 
         if(currentLocation.getX() >= territory.getX() + territoryRadius ||

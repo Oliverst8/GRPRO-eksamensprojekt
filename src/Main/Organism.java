@@ -1,9 +1,8 @@
 package Main;
 
-import itumulator.simulator.Actor;
 import itumulator.world.World;
 
-public abstract class Organism extends Entity implements Actor, Consumable {
+public abstract class Organism extends Entity implements Consumable {
     protected int age;
 
     private boolean day;
@@ -11,8 +10,6 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     private boolean skipTurn = false;
 
     protected int adultAge;
-
-    private boolean dead; //Contains data of weather or not the animal is dead
 
     private int foodChainValue;
 
@@ -37,7 +34,6 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         isNight = false;
         age = 0;
         energyLossPerDay = 5;
-        dead = false;
         health = 100;
         setFoodChainValue(defualtFoodChainValue);
     }
@@ -47,10 +43,9 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     }
 
     /**
-     * @return the food chain value of the animal, and -1 if its dead
+     * @return the food chain value of the animal
      */
     public int getFoodChainValue() {
-        if(dead) return -1;
         return foodChainValue;
     }
 
@@ -60,10 +55,6 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     @Override
     public Class<? extends Organism> getEntityClass() {
         return this.getClass();
-    }
-
-    public boolean isDead() {
-        return dead;
     }
 
     /**
@@ -80,12 +71,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
      */
     public void die(World world) {
 
-        dead = true;
         world.delete(this);
-    }
-
-    public void setDead() {
-        dead = true;
     }
 
     /**
@@ -119,18 +105,16 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         this.energy = Math.max(0,Math.min(newEnergy, maxEnergy));
     }
 
-    protected boolean isDay() {
+    public boolean isDay() {
         return day;
     }
 
-    protected void setDay(boolean day) {
+    public void setDay(boolean day) {
         this.day = day;
     }
 
-    abstract void dayBehavior(World world);
 
-    abstract void nightBehavior(World world);
-    private void doesAge() {
+    public void doesAge() {
         if(isNight && isDay()) {
             grow();
             isNight = false;
@@ -146,23 +130,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         return true;
     }
 
-    @Override
-    public void act(World world) {
-        setDay(world.isDay());
-        doesAge();
-        if(dead || skipTurn) {
-            skipTurn = false;
-            return;
-        }
 
-        if(isDay()) dayBehavior(world);
-        else nightBehavior(world);
-
-        /*if(getEnergy() <= 0 || getHealth() <= 0) {
-            System.out.println(this + " is out of energy or health and dying");
-            die(world);
-        }*/
-    }
 
     protected boolean checkIfDying(World world){
         if(health <= 0 || energy <= 0){
@@ -179,6 +147,10 @@ public abstract class Organism extends Entity implements Actor, Consumable {
 
     public void setSkipTurn(boolean skipTurn){
         this.skipTurn = skipTurn;
+    }
+
+    public boolean isTurnSkipped(){
+        return skipTurn;
     }
 
 

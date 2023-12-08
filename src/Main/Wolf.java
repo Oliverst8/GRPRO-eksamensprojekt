@@ -159,7 +159,7 @@ public class Wolf extends Animal {
      * @param world
      */
     @Override
-    void dayBehavior(World world) {
+    public void dayBehavior(World world) {
         if(checkIfDying(world)) return;
 
         if(getInDen()){
@@ -363,7 +363,7 @@ public class Wolf extends Animal {
      * @param world
      */
     @Override
-    protected void nightBehavior(World world) {
+    public void nightBehavior(World world) {
         if(inDen) sleeping = true;
         if(sleeping){
             sleep();

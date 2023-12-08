@@ -35,7 +35,7 @@ public abstract class Animal extends MycoHost implements Spawnable {
     }
 
     @Override
-    void dayBehavior(World world) {
+    public void dayBehavior(World world) {
         checkIfDying(world);
     }
 
@@ -183,7 +183,6 @@ public abstract class Animal extends MycoHost implements Spawnable {
     @Override
     public void die(World world){
 
-        setDead();
         if(isInfected()){
             super.die(world);
             return;

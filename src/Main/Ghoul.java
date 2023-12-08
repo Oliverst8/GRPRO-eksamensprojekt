@@ -7,7 +7,7 @@ import spawn.ObjectFactory;
 import java.awt.*;
 import java.util.Set;
 
-public class Ghoul extends Fungi implements Spawnable {
+public class Ghoul extends Organism implements Spawnable, Fungi, Behavior {
 
     public Ghoul() {
         super(-2);
@@ -57,18 +57,19 @@ public class Ghoul extends Fungi implements Spawnable {
     }
 
     @Override
-    void infectedBehavior(World world, MycoHost host) {
+    public void infectedBehavior(World world, MycoHost host) {
         drain(world, host);
         if(!world.isOnTile(host)) return;
         spread(world, host);
     }
 
-    @Override
+
+
     public void dayBehavior(World world) {
         behavior(world);
     }
 
-    @Override
+
     public void nightBehavior(World world) {
         behavior(world);
     }
@@ -78,6 +79,15 @@ public class Ghoul extends Fungi implements Spawnable {
         spread(world);
         removeEnergy(10);
         removeHealth(10, world);
+    }
+
+    public void drain(World world, MycoHost host){
+
+        maxHealth += 5;
+        maxEnergy += 5;
+        addEnergy(5);
+        addHealth(5);
+        host.removeEnergy(5);
     }
 
 

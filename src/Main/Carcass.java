@@ -80,13 +80,15 @@ public class Carcass extends MycoHost implements Spawnable {
     }
 
 
+
+
     /**
      * If it has been night and is now day the carcass gets older
      * @param world the world the carcass is in
      * If the carcass reaches its adult age it dies
      */
     @Override
-    void dayBehavior(World world) {
+    public void dayBehavior(World world) {
         carcussBehaviour(world);
     }
 
@@ -95,7 +97,7 @@ public class Carcass extends MycoHost implements Spawnable {
      * @param world the world the carcass is in
      */
     @Override
-    void nightBehavior(World world) {
+    public void nightBehavior(World world) {
         carcussBehaviour(world);
     }
 

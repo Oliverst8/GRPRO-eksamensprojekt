@@ -63,7 +63,7 @@ public class Berry extends Plant{
     }
 
     @Override
-    void dayBehavior(World world) {
+    public void dayBehavior(World world) {
         if(!containsBerries){
             timeSinceBerries++;
         }
@@ -73,7 +73,7 @@ public class Berry extends Plant{
     }
 
     @Override
-    void nightBehavior(World world) {
+    public void nightBehavior(World world) {
 
     }
 }

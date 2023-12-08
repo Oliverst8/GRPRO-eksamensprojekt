@@ -187,7 +187,7 @@ public abstract class Animal extends MycoHost implements Spawnable {
             super.die(world);
             return;
         }
-        if(world.contains(this)) {
+        if(world.isOnTile(this)) {
             Location carcassLocation = world.getLocation(this);
             world.delete(this);
 

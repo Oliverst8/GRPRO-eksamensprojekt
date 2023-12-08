@@ -2,10 +2,7 @@ package Main;
 
 import itumulator.world.World;
 
-import java.util.HashSet;
-import java.util.Set;
-
-public abstract class MycoHost extends Organism implements Behavior{
+public abstract class MycoHost extends Organism{
 
     Fungi fungi;
 
@@ -19,9 +16,9 @@ public abstract class MycoHost extends Organism implements Behavior{
 
     @Override
     public void act(World world){
-        if(checkIfDying(world)) return;
+        if(isDying(world)) return;
         if(isInfected()) fungi.infectedBehavior(world, this);
-        else Behavior.super.act(world);
+        else super.act(world);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package Main;
 
-public abstract class Plant extends Organism implements Spawnable, Behavior {
+public abstract class Plant extends Organism implements Spawnable {
 
 
     public Plant(int defaultStenght) {

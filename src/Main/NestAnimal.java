@@ -3,7 +3,7 @@ package Main;
 import itumulator.world.Location;
 import itumulator.world.World;
 
-public abstract class NestAnimal extends Animal{
+public abstract class NestAnimal extends Animal {
 
     private boolean inNest = false;
 
@@ -23,26 +23,26 @@ public abstract class NestAnimal extends Animal{
      * removes the bunny from the world
      * When entering a burrow the rabbit goes to sleep
      */
-    protected void enterNest(World world){
+    protected void enterNest(World world) {
 
-        if(isInNest()) throw new IllegalOperationException("Cant enter nest, when " + this + " is already in its den");
-        if(getNest() == null) throw new IllegalOperationException("Cant enter nest when " + this + " has no nest");
+        if (isInNest()) throw new IllegalOperationException("Cant enter nest, when " + this + " is already in its den");
+        if (getNest() == null) throw new IllegalOperationException("Cant enter nest when " + this + " has no nest");
 
         setInNest(true);
         getNest().addMember(this);
         world.remove(this);
     }
 
-    public boolean isInNest(){
+    public boolean isInNest() {
         return inNest;
     }
 
-    public void setInNest(Boolean inNest){
+    public void setInNest(Boolean inNest) {
         this.inNest = inNest;
     }
 
-    protected void goToNest(World world){
-        if(getNest() != null){
+    protected void goToNest(World world) {
+        if (getNest() != null) {
             moveTowardsNest(world);
         } else {
             noNestBehavior(world);
@@ -58,19 +58,55 @@ public abstract class NestAnimal extends Animal{
      * Sets inNest to false
      * Adds the NestAnimal to the world in the location exitLocation
      */
-    protected void exitNest(World world){
-        if(!isInNest()) throw new IllegalOperationException("Cant exit a burrow, if its not in one");
+    protected void exitNest(World world) {
+        if (!isInNest()) throw new IllegalOperationException("Cant exit a burrow, if its not in one");
 
         Location freeLocation = getExitLocation(world);
-        if(freeLocation == null) return;
+        if (freeLocation == null) return;
 
         setInNest(false);
         getNest().removeMember(this);
-        world.setTile(freeLocation,this);
+        world.setTile(freeLocation, this);
     }
 
     protected abstract Location getExitLocation(World world);
 
-    
+    @Override
+    public void dayBehavior(World world) {
+
+        if (isDying(world)) return;
+
+        if (isInNest()) {
+            inNestBehavior(world);
+            return;
+        }
+
+        if (getHunger() >= 100) {
+            goToNest(world);
+        } else {
+            hungryBehavior(world);
+        }
+
+    }
+
+    protected abstract void hungryBehavior(World world);
+
+    protected abstract void inNestBehavior(World world);
+
+    protected boolean reproduceBehavior(World world) {
+        if (getEnergy() > 80 && getNest().getAdultMembers().size() >= 2) {
+            for (Animal otherNestAnimal : getNest().getMembers()) {
+                if (otherNestAnimal != this && otherNestAnimal.getEnergy() > 80) {
+                    try {
+                        reproduce(world, this, otherNestAnimal);
+                    } catch (CantReproduceException e) {
+                        e.printInformation();
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }

@@ -280,7 +280,7 @@ class RabbitTest {
         Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
         Rabbit rabbit2 = initialiseRabbitOnWorld(new Location(1,1));
 
-        grass.setEnergy(10);
+        grass.skipTurn();
         rabbit2.setSkipTurn(true);
         program.simulate();
 

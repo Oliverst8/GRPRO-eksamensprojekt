@@ -110,45 +110,36 @@ public class Rabbit extends NestAnimal {
      */
     @Override
     public void dayBehavior(World world) {
-        if(checkIfDying(world)) return;
+        super.dayBehavior(world);
+    }
 
-
-        if(isInNest()) {
-            if(getEnergy() > 80 && burrow.getAdultMembers().size() >= 2) {
-                for(Animal otherRabbit : burrow.getMembers()){
-                    if(otherRabbit != this && otherRabbit.getEnergy() > 80) {
-                        try{
-                            reproduce(world, this, otherRabbit);
-                        } catch (CantReproduceException e){
-                            e.printInformation();
-                        }
+    @Override
+    protected void hungryBehavior(World world){
+        if (world.getSurroundingTiles(world.getLocation(this)).size() > world.getEmptySurroundingTiles(world.getLocation(this)).size()) {
+            for (Location location : world.getSurroundingTiles(world.getLocation(this))) {
+                if (world.isTileEmpty(location)) continue;
+                Object object = world.getTile(location);
+                if (object instanceof Animal) {
+                    if (((Animal) object).canIEat(this.getClass())) {
+                        moveAwayFrom(world, location);
                         return;
                     }
                 }
             }
+        }
+        hunt(world);
+    }
+
+    protected void inNestBehavior(World world){
+            if(reproduceBehavior(world)) return;
             if(getEnergy() > 60) {
                 expandBurrow(world);
                 return;
             }
             if(getHunger() < 100) exitNest(world);
-        }
-        else {
-            if(getHunger() < 100) {
-                hunt(world);
-            } else{
-                goToNest(world);
-            }
-            if(!isInNest() && world.getSurroundingTiles(world.getLocation(this)).size()>world.getEmptySurroundingTiles(world.getLocation(this)).size()){
-                for(Location location : world.getSurroundingTiles(world.getLocation(this))){
-                   if(world.isTileEmpty(location)) return;
-                   Organism organism = (Organism) world.getTile(location);
-                   if(organism.getFoodChainValue()>this.getFoodChainValue()){
-                       moveAwayFrom(world,location);
-                   }
-               }
-            }
-        }
     }
+
+
 
     /**
      * Throws Main.IllegalOperationException if dig is called when the bunny already has a burrow

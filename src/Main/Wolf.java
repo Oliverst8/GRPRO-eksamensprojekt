@@ -79,11 +79,6 @@ public class Wolf extends NestAnimal {
         strength = 100;
     }
 
-
-
-
-
-
     /**
      * @return the pack the wolf is part off
      */
@@ -147,59 +142,57 @@ public class Wolf extends NestAnimal {
      */
     @Override
     public void dayBehavior(World world) {
-        if(checkIfDying(world)) return;
+        super.dayBehavior(world);
+    }
 
-        if(isInNest()){
-            if(getEnergy() > 80 && pack.getDen().getAdultMembers().size() >= 2){
-                for(Animal otherWolf : pack.getDen().getMembers()){
-                    if(otherWolf != this && otherWolf.getEnergy() > 80) {
-                        try{
-                            reproduce(world, this, otherWolf);
-                        } catch (CantReproduceException e){
-                            e.printInformation();
-                        }
-                        return;
-                    }
-                }
-            }
-            if(getHunger() < 100) {
-                exitNest(world);
+    protected void hungryBehavior(World world){
+        Wolf nearestWolf =  (Wolf) findNearestPrey(world, 3, Wolf.class);
+        if(nearestWolf != null){
+            if (!(nearestWolf.getPack()).equals(getPack())) {
+                moveAwayFrom(world, world.getLocation(nearestWolf));
                 return;
-            }
-
-        } else{
-
-            if(getHunger() == 100) {
-
-                goToNest(world);
-                return;
-            }
-            Wolf nearestWolf =  (Wolf) findNearestPrey(world, 3, Wolf.class);
-            if(nearestWolf != null){
-                if (!(nearestWolf.getPack()).equals(getPack())) {
-                    moveAwayFrom(world, world.getLocation(nearestWolf));
-                    return;
-                }
-            }
-            if(huntingPack != null){
-                Organism prey = findPrey(world, 4);
-                for(Animal wolf : huntingPack.getMembers()){
-                    world.setCurrentLocation(world.getLocation(wolf));
-                    wolf.huntPrey(world, prey);
-                    if(!world.contains(prey)) break;
-                }
-                world.setCurrentLocation(world.getLocation(this));
-                skipHuntingPacksTurn();
-                setSkipTurn(false);
-                return;
-            }
-            if(!(createOrJoinHuntingPack(world, 3))) {
-                Location nearestWolfLocation = pack.findNearestMember(world, world.getLocation(this));
-                if(nearestWolfLocation != null) moveTowards(world, nearestWolfLocation);
-                else hunt(world);
             }
         }
+        if(huntingPack != null){
+            hunt(world);
+            return;
+        }
+        if(!(createOrJoinHuntingPack(world, 3))) {
+            Location nearestWolfLocation = pack.findNearestMember(world, world.getLocation(this));
+            if(nearestWolfLocation != null) moveTowards(world, nearestWolfLocation);
+            else hunt(world);
+        }
     }
+
+    @Override
+    protected void hunt(World world){
+        if(huntingPack != null){
+            Organism prey = findPrey(world, 4);
+
+            for(Animal wolf : huntingPack.getMembers()){
+                world.setCurrentLocation(world.getLocation(wolf));
+                wolf.huntPrey(world, prey);
+                if(!world.contains(prey)) break;
+            }
+
+            world.setCurrentLocation(world.getLocation(this));
+            skipHuntingPacksTurn();
+            setSkipTurn(false);
+        } else{
+            super.hunt(world);
+        }
+    }
+
+    protected void inNestBehavior(World world){
+        if(reproduceBehavior(world)) return;
+        if(getHunger() < 100) {
+            exitNest(world);
+        }
+    }
+
+
+
+
 
     private boolean createOrJoinHuntingPack(World world, int radius) {
 

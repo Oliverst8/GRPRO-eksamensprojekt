@@ -1,8 +1,9 @@
 package Main;
 
+import itumulator.simulator.Actor;
 import itumulator.world.World;
 
-public abstract class Organism extends Entity implements Consumable {
+public abstract class Organism extends Entity implements Actor, Consumable {
     protected int age;
 
     private boolean day;
@@ -37,6 +38,24 @@ public abstract class Organism extends Entity implements Consumable {
         health = 100;
         setFoodChainValue(defualtFoodChainValue);
     }
+
+    @Override
+    public void act(World world) {
+        setDay(world.isDay());
+        doesAge();
+        if(isTurnSkipped()) {
+            setSkipTurn(false);
+            return;
+        }
+
+        if(isDay()) dayBehavior(world);
+        else nightBehavior(world);
+
+    }
+
+    abstract void dayBehavior(World world);
+
+    abstract void nightBehavior(World world);
 
     protected void setFoodChainValue(int foodChainValue) {
         this.foodChainValue = foodChainValue;
@@ -132,7 +151,7 @@ public abstract class Organism extends Entity implements Consumable {
 
 
 
-    protected boolean checkIfDying(World world){
+    protected boolean isDying(World world){
         if(health <= 0 || energy <= 0){
             die(world);
             return true;

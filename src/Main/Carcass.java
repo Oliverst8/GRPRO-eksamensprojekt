@@ -89,7 +89,7 @@ public class Carcass extends MycoHost implements Spawnable {
      */
     @Override
     public void dayBehavior(World world) {
-        carcussBehaviour(world);
+        carcassBehaviour(world);
     }
 
     /**
@@ -98,7 +98,7 @@ public class Carcass extends MycoHost implements Spawnable {
      */
     @Override
     public void nightBehavior(World world) {
-        carcussBehaviour(world);
+        carcassBehaviour(world);
     }
 
     /**
@@ -108,8 +108,8 @@ public class Carcass extends MycoHost implements Spawnable {
      * maxiamal Energy that the organism can have gets less and less pr age
      * @param world
      */
-    void carcussBehaviour(World world){
-        if(checkIfDying(world)) return;
+    void carcassBehaviour(World world){
+        if(isDying(world)) return;
         if(!spawned){
             startTick = world.getCurrentTime();
             spawned = true;

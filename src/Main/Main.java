@@ -11,7 +11,7 @@ import spawn.SpawningObject;
 
 public class Main {
     public static void main(String[] args) {
-        Input input = new Input("data/demo/d1.txt");
+        Input input = new Input("data/week2/t2-5a.txt");
         
         int delay = 250;
         int display_size = 1000;
@@ -32,7 +32,7 @@ public class Main {
         for (SpawningObject object : objects) {
             for (int i = 0; i < object.getAmount(); i++) {
                 if(object.getLocation() != null) {
-                    ObjectFactory.generateOnMap(world, object.getLocation(), object.getClassName());
+                    ObjectFactory.generateOnMap(world, object.getLocation(), object.getClassName(), object.getLocation());
                 } else {
                     ObjectFactory.generateOnMap(world, object.getClassName());
                 }

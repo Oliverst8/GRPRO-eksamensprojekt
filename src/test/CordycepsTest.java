@@ -1,18 +1,22 @@
 package test;
 
-import Main.Cordyceps;
-import Main.Fungi;
-import Main.Rabbit;
-import Main.Wolf;
-import itumulator.executable.Program;
-import itumulator.world.Location;
-import itumulator.world.World;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import itumulator.world.World;
+import itumulator.world.Location;
+import itumulator.executable.Program;
+
+import Main.Wolf;
+import Main.Rabbit;
+import Main.Cordyceps;
+
 import spawn.ObjectFactory;
 
-import static org.junit.jupiter.api.Assertions.*;
 public class CordycepsTest {
 
     Program program;

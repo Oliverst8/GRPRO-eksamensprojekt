@@ -1,20 +1,31 @@
 package test;
 
-import Main.*;
-import itumulator.executable.Program;
-import itumulator.world.Location;
-import itumulator.world.World;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
+import java.util.Set;
+import java.util.List;
+import java.util.HashSet;
+import java.util.ArrayList;
+
+import itumulator.world.World;
+import itumulator.world.Location;
+import itumulator.executable.Program;
+
+import Main.Ghoul;
+import Main.Entity;
+import Main.Rabbit;
+import Main.Helper;
+import Main.Carcass;
+
 import spawn.ObjectFactory;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
 public class GhoulTest {
 
     Program program;

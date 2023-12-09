@@ -1,7 +1,11 @@
 package test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 import Main.*;
+
 import itumulator.executable.Program;
 import itumulator.world.Location;
 import itumulator.world.World;
@@ -11,9 +15,6 @@ import spawn.ObjectFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,20 +1,31 @@
 package test;
 
-import Main.*;
-import itumulator.executable.Program;
-import itumulator.world.Location;
+import java.util.ArrayList;
+
 import itumulator.world.World;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import itumulator.world.Location;
+import itumulator.executable.Program;
+
+import Main.Hole;
+import Main.Wolf;
+import Main.Bear;
+import Main.Grass;
+import Main.Burrow;
+import Main.Entity;
+import Main.Rabbit;
+import Main.Carcass;
+
 import spawn.Input;
 import spawn.ObjectFactory;
 import spawn.SpawningObject;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KravTest {
     Program program;
@@ -508,7 +519,7 @@ public class KravTest {
         }
     }
 
-    private World generateWithInput(Input input){
+    private World generateWithInput(Input input) {
 
         int delay = 250;
         int display_size = 1000;
@@ -522,6 +533,4 @@ public class KravTest {
 
     @AfterEach
     void tearDown() {}
-
-
 }

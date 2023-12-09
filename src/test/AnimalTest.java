@@ -1,14 +1,14 @@
 package test;
 
+import itumulator.world.World;
+import itumulator.world.Location;
+import itumulator.executable.Program;
+
 import Main.Wolf;
 import Main.Grass;
 import Main.Rabbit;
 
 import spawn.ObjectFactory;
-
-import itumulator.world.World;
-import itumulator.world.Location;
-import itumulator.executable.Program;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;

@@ -295,7 +295,7 @@ public abstract class Animal extends MycoHost implements Spawnable {
 
             newTile = new Location(x,y);
         }
-        System.out.println(this + " moves from: " + world.getLocation(this) + " to: " + newTile);
+
         world.move(this, newTile);
         world.setCurrentLocation(newTile);
         removeEnergy(2 * amountOfSteps);

@@ -1,13 +1,13 @@
 package Main;
 
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
 import spawn.ObjectFactory;
-
-import java.awt.*;
-import java.util.*;
-import java.util.List;
 
 public class Grass extends Plant implements NonBlocking {
     /**

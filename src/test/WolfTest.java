@@ -5,7 +5,6 @@ import java.util.Objects;
 import Main.Wolf;
 import Main.Rabbit;
 import Main.Carcass;
-import Main.Bear;
 
 import spawn.ObjectFactory;
 

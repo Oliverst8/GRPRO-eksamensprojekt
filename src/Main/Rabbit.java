@@ -80,13 +80,13 @@ public class Rabbit extends NestAnimal {
         RabbitHole nearestBurrowEntry = (RabbitHole) findNearestPrey(world, 5, RabbitHole.class);
         if(nearestBurrowEntry == null) return true;
 
-        return !(distance(world, world.getLocation(nearestBurrowEntry)) * 5 > 25);
+        return !(Helper.distance(world.getLocation(this), world.getLocation(nearestBurrowEntry)) * 5 > 25);
     }
 
     protected void moveTowardsNest(World world) {
         Location nearestEntry = burrow.findNearestEntry(world, world.getCurrentLocation());
-        if(distance(world, nearestEntry) != 0) moveTowards(world, nearestEntry);
-        if(distance(world, nearestEntry) == 0) enterNest(world);
+        if(Helper.distance(world.getLocation(this), nearestEntry) != 0) moveTowards(world, nearestEntry);
+        if(Helper.distance(world.getLocation(this), nearestEntry) == 0) enterNest(world);
     }
 
     protected void produceOffSpring(World world) {

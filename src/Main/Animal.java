@@ -91,12 +91,13 @@ public abstract class Animal extends MycoHost implements Spawnable {
         Location closestPrey = null;
         double closestDist = Double.MAX_VALUE;
         for(Location currentPreyLocation : prey.keySet()){
-            double dist = distance(world, currentPreyLocation);
+            double dist = Helper.distance(world.getLocation(this), currentPreyLocation);
             if(closestDist > dist){
                 closestPrey = currentPreyLocation;
                 closestDist = dist;
             }
         }
+        
         return prey.get(closestPrey);
     }
 
@@ -214,25 +215,14 @@ public abstract class Animal extends MycoHost implements Spawnable {
             if(entity.equals(this)) continue;
             if(!entity.getEntityClass().equals(object)) continue;
 
-            double distance = distance(world, world.getLocation(entity));
+            double distance = Helper.distance(world.getLocation(this), world.getLocation(entity));
             if(distance < smallestDistance){
                 smallestDistance = distance;
                 nearestEntity = entity;
             }
-
         }
 
         return nearestEntity;
-    }
-
-    /**
-     * Finds the distance between two objects
-     * @param world the world the animal is in
-     * @param location2 the location of the second object
-     * @return the distance between two object
-     */
-    protected double distance(World world, Location location2) {
-        return Math.sqrt(Math.pow(world.getCurrentLocation().getX() - location2.getX(), 2) + Math.pow(world.getCurrentLocation().getY() - location2.getY(), 2));
     }
 
     abstract void produceOffSpring(World world);

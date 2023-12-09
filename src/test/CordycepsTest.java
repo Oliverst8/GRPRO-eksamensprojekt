@@ -1,24 +1,22 @@
 package test;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import itumulator.world.World;
-import itumulator.world.Location;
-import itumulator.executable.Program;
-
 import Main.Wolf;
 import Main.Rabbit;
 import Main.Cordyceps;
 
 import spawn.ObjectFactory;
 
-public class CordycepsTest {
+import itumulator.world.World;
+import itumulator.world.Location;
+import itumulator.executable.Program;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class CordycepsTest {
     Program program;
     World world;
 
@@ -32,22 +30,18 @@ public class CordycepsTest {
         world = program.getWorld();
     }
 
-    @AfterEach
-    void tearDown(){
-
-    }
-
     @Test
-    void testIfInfectedAnimalMovesTowardsAnimalOfSameTypeIfItsTheOnlyOne(){
+    void testIfInfectedAnimalMovesTowardsAnimalOfSameTypeIfItsTheOnlyOne() {
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0,0), "Rabbit");
         rabbit.setInfected(new Cordyceps());
         ((Rabbit) ObjectFactory.generateOnMap(world, new Location(2,2), "Rabbit")).skipTurn();
         program.simulate();
+
         assertEquals(new Location(1,1), world.getLocation(rabbit));
     }
 
     @Test
-    void testIfInfectedAnimalMovesTowardsAnimalOfSameTypeIfThereAreTwoAnimals(){
+    void testIfInfectedAnimalMovesTowardsAnimalOfSameTypeIfThereAreTwoAnimals() {
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0,0), "Rabbit");
         rabbit.setInfected(new Cordyceps());
         ((Rabbit) ObjectFactory.generateOnMap(world, new Location(2,2), "Rabbit")).skipTurn();
@@ -58,12 +52,8 @@ public class CordycepsTest {
         assertEquals(new Location(1,1), world.getLocation(rabbit));
     }
 
-
-
-
-
     @Test
-    void testIfCordycepsGoesToNewHostAndInfectsWhenOldHostDies(){
+    void testIfCordycepsGoesToNewHostAndInfectsWhenOldHostDies() {
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0,0), "Rabbit");
         Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOnMap(world, new Location(2,2), "Rabbit");
         Cordyceps cordyceps = new Cordyceps();
@@ -79,7 +69,7 @@ public class CordycepsTest {
     }
 
     @Test
-    void testIfCordycepsInfectsWhenOldHostDiesFromDistance(){
+    void testIfCordycepsInfectsWhenOldHostDiesFromDistance() {
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0,0), "Rabbit");
         Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOnMap(world, new Location(2,2), "Rabbit");
         Cordyceps cordyceps = new Cordyceps();
@@ -93,5 +83,4 @@ public class CordycepsTest {
         assertFalse(world.contains(rabbit));
         assertEquals(cordyceps, rabbit2.getFungi());
     }
-
 }

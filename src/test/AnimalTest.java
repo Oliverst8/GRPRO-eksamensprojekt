@@ -1,20 +1,20 @@
 package test;
 
-import itumulator.world.World;
-import itumulator.world.Location;
-import itumulator.executable.Program;
-
 import Main.Wolf;
 import Main.Grass;
 import Main.Rabbit;
 
 import spawn.ObjectFactory;
 
+import itumulator.world.World;
+import itumulator.world.Location;
+import itumulator.executable.Program;
+
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AnimalTest {
     Program program;
@@ -60,7 +60,7 @@ public class AnimalTest {
     }
 
     @Test
-    void testAnimalSetHunger(){
+    void testAnimalSetHunger() {
         rabbit.setHunger(hungerMod);
         assertEquals(10,rabbit.getHunger());
     }
@@ -92,10 +92,7 @@ public class AnimalTest {
         assertEquals(expectedHunger,rabbit.getHunger());
     }
     @Test
-    void testAnimalEatTheLargerTheAnimalTheMoreHungerConsumedByAnimal(){
+    void testAnimalEatTheLargerTheAnimalTheMoreHungerConsumedByAnimal() {
         ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
     }
-
-    @AfterEach
-    void tearDown() {}
 }

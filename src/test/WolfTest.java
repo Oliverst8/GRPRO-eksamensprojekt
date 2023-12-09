@@ -13,13 +13,14 @@ import itumulator.world.Location;
 import itumulator.executable.Program;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class WolfTest {
-
     Program program;
     World world;
     Wolf wolf;
@@ -289,7 +290,4 @@ public class WolfTest {
     void testThatWolvesInAnWolfpackWith3OrMoreMemebersAttackBear(){
     //rykket til K2_8a
     }
-
-    @AfterEach
-    void tearDown() {}
 }

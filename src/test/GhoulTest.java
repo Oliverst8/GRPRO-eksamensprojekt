@@ -1,21 +1,9 @@
 package test;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-
 import java.util.Set;
 import java.util.List;
 import java.util.HashSet;
 import java.util.ArrayList;
-
-import itumulator.world.World;
-import itumulator.world.Location;
-import itumulator.executable.Program;
 
 import Main.Ghoul;
 import Main.Entity;
@@ -24,6 +12,18 @@ import Main.Helper;
 import Main.Carcass;
 
 import spawn.ObjectFactory;
+
+import itumulator.world.World;
+import itumulator.world.Location;
+import itumulator.executable.Program;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class GhoulTest {
     Program program;
@@ -58,7 +58,7 @@ public class GhoulTest {
     }
 
     @Test
-    void testGhoulSpreadsToNearbyCarcuss(){
+    void testGhoulSpreadsToNearbyCarcuss() {
         carcass.setInfected((Ghoul) ObjectFactory.generateOffMap(world, "Ghoul"));
         ObjectFactory.generateOnMap(world, new Location(1,1), "Carcass");
 

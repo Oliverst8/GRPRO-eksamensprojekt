@@ -3,36 +3,43 @@ package test;
 import java.util.HashSet;
 import java.util.Set;
 
-
-import Main.*;
-
-import itumulator.executable.Program;
-import itumulator.world.Location;
-import itumulator.world.World;
+import Main.Wolf;
+import Main.Animal;
+import Main.Entity;
+import Main.Rabbit;
+import Main.Helper;
+import Main.Carcass;
+import Main.Organism;
+import Main.NoEmptyLocationException;
 
 import spawn.ObjectFactory;
 
+import itumulator.world.World;
+import itumulator.world.Location;
+import itumulator.executable.Program;
+
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class HelperTest {
-
     Program program;
     World world;
 
     @BeforeEach
     void setUp() {
-        int size = 4; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
+        int size = 4; // Size of the world
+        int delay = 1; // Delay between each turn (in ms)
+        int display_size = 800; // Size of the display
+
+        program = new Program(size, display_size, delay);
+        world = program.getWorld();
     }
-
-
 
     @Test
     void testDoesArrayContainItDoesMultipleElements() {
@@ -154,12 +161,9 @@ class HelperTest {
     void findEmptyLocationWhereThereIsOneExpectsReturnOfLocation() {
         assertNotNull(Helper.findEmptyLocation(world));
     }
-
-    @AfterEach
-    void tearDown() {}
     
     @Test
-    void testFindNearestOfExtendingClass(){
+    void testFindNearestOfExtendingClass() {
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
         Rabbit expected = (Rabbit) ObjectFactory.generateOnMap(world, "Rabbit");
         world.setCurrentLocation(new Location(0,0));
@@ -167,5 +171,4 @@ class HelperTest {
 
         assertEquals(expected, actual);
     }
-
 }

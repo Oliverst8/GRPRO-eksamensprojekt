@@ -12,7 +12,6 @@ import itumulator.world.Location;
 import itumulator.executable.Program;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -374,7 +373,4 @@ class RabbitTest {
 
         assertEquals(0,burrow.getMembers().size());
     }
-
-    @AfterEach
-    void tearDown() {}
 }

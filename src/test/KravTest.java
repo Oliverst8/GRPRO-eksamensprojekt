@@ -2,10 +2,6 @@ package test;
 
 import java.util.ArrayList;
 
-import itumulator.world.World;
-import itumulator.world.Location;
-import itumulator.executable.Program;
-
 import Main.Hole;
 import Main.Wolf;
 import Main.Bear;
@@ -19,8 +15,11 @@ import spawn.Input;
 import spawn.ObjectFactory;
 import spawn.SpawningObject;
 
+import itumulator.world.World;
+import itumulator.world.Location;
+import itumulator.executable.Program;
+
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,17 +35,18 @@ public class KravTest {
         int size = 5; // Size of the world
         int delay = 1; // Delay between each turn (in ms)
         int display_size = 800; // Size of the display
+
         program = new Program(size, display_size, delay);
         world = program.getWorld();
     }
-
 
     /** Græs kan blive plantet når input filerne beskriver dette. Græs skal blot tilfældigt placeres.
      *
      */
     @Test
     void K1_1a() {
-
+        Grass grass = (Grass) ObjectFactory.generateOnMap(world, "Grass");
+        assertTrue(world.contains(grass));
     }
 
     /** Græs kan nedbryde og forsvinde
@@ -90,7 +90,6 @@ public class KravTest {
         program.simulate();
 
         assertEquals(world.getLocation(grass),world.getLocation(rabbit));
-
     }
 
     /** Kaniner kan placeres på kortet når input filerne beskriver dette. Kaniner skal blot tilfældigt placeres.
@@ -98,7 +97,8 @@ public class KravTest {
      */
     @Test
     void K1_2a() {
-
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, "Rabbit");
+        assertTrue(world.contains(rabbit));
     }
 
     /** Kaniner kan dø, hvilket resulterer I at de fjernes fra verdenen.
@@ -280,7 +280,6 @@ public class KravTest {
         program.simulate();
 
         assertEquals(world.getLocation(burrow.getEntries().iterator().next()),world.getLocation(rabbit1));
-
     }
 
     /** Huller består altid minimum af en indgang, der kan dog være flere indgange som sammen former én kanin tunnel. Kaniner kan kun grave nye udgange mens de er i deres huller.
@@ -317,7 +316,8 @@ public class KravTest {
      */
     @Test
     void K2_1a() {
-
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
+        assertTrue(world.contains(wolf));
     }
 
     /** Ulve kan dø, hvilket resulterer I at de fjernes fra verdenen.
@@ -391,6 +391,7 @@ public class KravTest {
         Location assumedRabbitLocation = new Location(2,2);
         wolf.skipTurn();
         program.simulate();
+
         assertEquals(assumedRabbitLocation,world.getLocation(rabbit1));
     }
 
@@ -399,9 +400,9 @@ public class KravTest {
      */
     @Test
     void K2_5a() {
-
         World world = generateWithInput(new Input("data/week2/t2-5a"));
         Bear bear = new Bear(world, new Location(6,5));
+
         assertTrue(((Entity) world.getTile(new Location(3,5))).getEntityClass().equals(bear.getEntityClass()));
     }
 
@@ -426,6 +427,7 @@ public class KravTest {
         Location assumedRabbitLocation = new Location(2,2);
         bear.skipTurn();
         program.simulate();
+
         assertEquals(assumedRabbitLocation,world.getLocation(rabbit1));
     }
 
@@ -503,7 +505,6 @@ public class KravTest {
 
     }
 
-
     /**
      * Useful methods that gets used
      */
@@ -530,7 +531,4 @@ public class KravTest {
         generateObjects(world, input.getObjects());
         return world;
     }
-
-    @AfterEach
-    void tearDown() {}
 }

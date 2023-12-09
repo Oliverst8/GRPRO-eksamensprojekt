@@ -12,11 +12,12 @@ import itumulator.world.Location;
 import itumulator.executable.Program;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class OrganismTest {
     Program program;
@@ -140,7 +141,4 @@ public class OrganismTest {
         
         assertEquals(expected,rabbit.getEnergy());
     }
-
-    @AfterEach
-    void tearDown() {}
 }

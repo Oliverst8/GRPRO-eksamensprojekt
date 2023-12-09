@@ -1,5 +1,3 @@
 package test;
 
-public class FungiTest {
-    
-}
+public class FungiTest {}

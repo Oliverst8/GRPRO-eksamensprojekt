@@ -1,34 +1,30 @@
 package test;
 
-import itumulator.world.World;
-import itumulator.executable.Program;
-
 import Main.Berry;
 
 import spawn.ObjectFactory;
 
+import itumulator.world.World;
+import itumulator.executable.Program;
+
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
-public class BerryTest {
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
+public class BerryTest {
     Program program;
     World world;
 
     @BeforeEach
-    void setup(){
-        int size = 2; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm opløsningen (i px)
-        program = new Program(size, display_size, delay); // opret et nyt program
-        world = program.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
-    }
+    void setup() {
+        int size = 2; // Size of the world
+        int delay = 1; // Delay between each turn (in ms)
+        int display_size = 800; // Size of the display
 
-    @AfterEach
-    void tearDown(){
-
+        program = new Program(size, display_size, delay);
+        world = program.getWorld();
     }
 
     @Test
@@ -49,7 +45,7 @@ public class BerryTest {
     }
 
     @Test
-    void testIfBushGrowsBerriesAfter2Days(){
+    void testIfBushGrowsBerriesAfter2Days() {
         Berry berry = (Berry) ObjectFactory.generateOnMap(world, "Berry");
         berry.die(world);
         for(int i = 0; i < 2*19; i++){

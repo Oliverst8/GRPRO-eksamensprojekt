@@ -8,10 +8,9 @@ import itumulator.world.World;
 import itumulator.executable.Program;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GrassTest {
     Program program;
@@ -62,7 +61,4 @@ class GrassTest {
 
         assertEquals(90,grass.getEnergy());
     }
-
-    @AfterEach
-    void tearDown() {}
 }

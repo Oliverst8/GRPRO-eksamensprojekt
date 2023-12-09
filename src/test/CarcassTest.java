@@ -13,7 +13,11 @@ import itumulator.executable.Program;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class CarcassTest {
     Program program;
     World world;
@@ -67,9 +71,6 @@ public class CarcassTest {
         assertFalse(world.contains(carcass));
     }
 
-    /**
-     * FIX IT
-     */
     @Test
     void testCarcassDissapearsAfterGettingConsumed() {
         Location location = new Location(0,0);

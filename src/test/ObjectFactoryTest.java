@@ -11,13 +11,12 @@ import itumulator.world.Location;
 import itumulator.executable.Program;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 class ObjectFactoryTest {
-
     Program program;
     World world;
 
@@ -59,7 +58,4 @@ class ObjectFactoryTest {
     void generateWith0ConstructorArgumentsExpectsWolf(){
         assertInstanceOf(Wolf.class, ObjectFactory.generateOffMap(world, "Wolf") );
     }
-
-    @AfterEach
-    void tearDown() {}
 }

@@ -10,10 +10,10 @@ import itumulator.world.Location;
 import itumulator.executable.Program;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BearTest {
     Program program;
@@ -22,9 +22,9 @@ public class BearTest {
 
     @BeforeEach
     void setUp() {
-        int size = 5;
-        int delay = 1;
-        int display_size = 800;
+        int size = 5; // Size of the world
+        int delay = 1; // Delay between each turn (in ms)
+        int display_size = 800; // Size of the display
 
         program = new Program(size, display_size, delay);
         world = program.getWorld();
@@ -64,7 +64,4 @@ public class BearTest {
 
         assertEquals(wolf.getHealth(), initialWolfHealth);
     }
-
-    @AfterEach
-    void tearDown() {}
 }

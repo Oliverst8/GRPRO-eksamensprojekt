@@ -7,10 +7,9 @@ import itumulator.world.World;
 import itumulator.executable.Program;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 class PlantTest {
     Program program;
@@ -32,7 +31,4 @@ class PlantTest {
 
         assertInstanceOf(Consumable.class, grass);
     }
-
-    @AfterEach
-    void tearDown() {}
 }

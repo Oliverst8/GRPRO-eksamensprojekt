@@ -79,9 +79,6 @@ public class Carcass extends MycoHost implements Spawnable {
         return path.toString();
     }
 
-
-
-
     /**
      * If it has been night and is now day the carcass gets older
      * @param world the world the carcass is in
@@ -108,7 +105,7 @@ public class Carcass extends MycoHost implements Spawnable {
      * maxiamal Energy that the organism can have gets less and less pr age
      * @param world
      */
-    void carcassBehaviour(World world){
+    void carcassBehaviour(World world) {
         if(isDying(world)) return;
         if(!spawned){
             startTick = world.getCurrentTime();
@@ -124,6 +121,4 @@ public class Carcass extends MycoHost implements Spawnable {
         }
         removeEnergy(1);
     }
-
-
 }

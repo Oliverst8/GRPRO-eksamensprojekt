@@ -6,12 +6,13 @@ public class SpawningObject {
     private String className;
     private int amount;
     private Location location;
+    private boolean infected;
 
     /**
      * @param className the type of the object
      * @param amount the amount of the object
      */
-    public SpawningObject(String className, int amount) {
+    public SpawningObject(String className, int amount, boolean infected) {
         this.className = className;
         this.amount = amount;
     }
@@ -21,7 +22,7 @@ public class SpawningObject {
      * @param amount the amount of the object
      * @param location the location of the object
      */
-    public SpawningObject(String className, int amount, Location location) {
+    public SpawningObject(String className, int amount, boolean infected, Location location) {
         this.className = className;
         this.amount = amount;
         this.location = location;
@@ -46,5 +47,12 @@ public class SpawningObject {
      */
     public Location getLocation() {
         return location;
+    }
+
+    /**
+     * @return whether the object is infected or not
+     */
+    public boolean isInfected() {
+        return infected;
     }
 }

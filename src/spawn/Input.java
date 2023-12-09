@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import java.util.Scanner;
+
 import java.util.ArrayList;
 
 import itumulator.world.Location;
@@ -26,22 +27,35 @@ public class Input {
             objects = new ArrayList<SpawningObject>();
 
             while (sc.hasNextLine()) {
-                String object[] = sc.nextLine().split(" ");
+                boolean isInfected = false;
+
+                String line = sc.nextLine();
+                line = line.toLowerCase();
+
+                if (line.equals("")) continue; // Skip if line is blank
+
+                // Check if the object is infected
+                if (line.contains("fungi") || line.contains("cordyceps")) {
+                    isInfected = true;
+
+                    line = line.replaceAll("fungi |cordyceps ", "");
+                }
+
+                String object[] = line.split(" ");
 
                 object[0] = object[0].substring(0, 1).toUpperCase() + object[0].substring(1); // Capitalize the first letter
 
-                if (object.length == 0) continue; // Skip if line is blank
-
                 if (object.length == 2) { // If the object is not given a location
-                    objects.add(new SpawningObject(object[0], parseAmount(object[1])));
+                    objects.add(new SpawningObject(object[0], parseAmount(object[1]), isInfected));
                 } else if (object.length == 3) { // If the object is given a location
-                    objects.add(new SpawningObject(object[0], parseAmount(object[1]), parseLocation(object[2])));
+                    objects.add(new SpawningObject(object[0], parseAmount(object[1]), isInfected, parseLocation(object[2])));
                 }
             }
 
             sc.close();
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
+            System.exit(0);
         }
     }
 

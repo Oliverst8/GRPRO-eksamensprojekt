@@ -348,7 +348,7 @@ public class KravTest {
     @Test
     void K2_1c() {
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(4,4), "Wolf");
-        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world,new Location(0,0), "Rabbit");
+        ObjectFactory.generateOnMap(world,new Location(0,0), "Rabbit");
         program.simulate(); //4,4 - 3,3
         program.simulate(); //3,3 - 2,2
         double hungerBeforeConsuming = wolf.getHunger();
@@ -410,7 +410,7 @@ public class KravTest {
      */
     @Test
     void K2_5b() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,2), "Wolf");
+        ObjectFactory.generateOnMap(world, new Location(2,2), "Wolf");
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,0), "Bear");
         program.simulate();
         assertEquals(new Location(1,1),world.getLocation(bear));
@@ -461,8 +461,8 @@ public class KravTest {
     @Test
     void K2_8a() {
         Wolf wolf1 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,1), "Wolf", 5);
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf", wolf1.getPack(), 3, false);
-        Wolf wolf3 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", wolf1.getPack(), 3, false);
+        ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf", wolf1.getPack(), 3, false);
+        ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", wolf1.getPack(), 3, false);
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(3,3), "Bear");
 
         int bearHealthBeforeAtt = bear.getHealth();

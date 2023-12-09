@@ -1,14 +1,14 @@
 package Main;
 
-import itumulator.world.Location;
-import itumulator.world.World;
-
-import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
+import java.util.Random;
+import java.util.HashSet;
+
+import itumulator.world.World;
+import itumulator.world.Location;
 
 public class Helper {
-    private Helper(){}
+    private Helper() {}
 
     public static boolean doesArrayContain(Object[] array, Object value) {
         for(Object arrayValue : array) {
@@ -29,6 +29,7 @@ public class Helper {
 
     public static boolean isThereAnEmptyLocationInWorld(World world, boolean nonBlockingNotAllowed) {
         Object[][][] worldTiles = world.getTiles();
+        
         for (int i = 0; i < worldTiles.length; i++) {
             for (int j = 0; j < worldTiles[i].length; j++) {
                 if(nonBlockingNotAllowed){
@@ -38,6 +39,7 @@ public class Helper {
                 }
             }
         }
+
         return false;
     }
 
@@ -66,7 +68,7 @@ public class Helper {
      * @param world the world that needs to be locked in
      * @return a location where there is no object
      */
-    public static Location findNonBlockingEmptyLocation(World world){
+    public static Location findNonBlockingEmptyLocation(World world) {
         return findNonFilledLocation(world, true);
     }
 
@@ -80,10 +82,11 @@ public class Helper {
         return Math.sqrt(Math.pow(Math.abs(location1.getX() - location2.getX()), 2) + Math.pow(Math.abs(location1.getY() - location2.getY()), 2));
     }
 
-    public static Set<Entity> getEntities(World world, Location location, int radius){
+    public static Set<Entity> getEntities(World world, Location location, int radius) {
         Set<Location> surroundingTiles = world.getSurroundingTiles(location, radius);
         surroundingTiles.add(location);
         Set<Entity> entities = new HashSet<>();
+
         for(Location tile : surroundingTiles){
             Object tileObject = world.getTile(tile);
             if(tileObject != null){
@@ -93,10 +96,11 @@ public class Helper {
                 }
             }
         }
+
         return entities;
     }
 
-    public static Entity findNearest(World world, Object searchingObject , int radius, Class<?> object){
+    public static Entity findNearest(World world, Object searchingObject , int radius, Class<?> object) {
         if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
 
         Set<Entity> surroundingEntities = Helper.getEntities(world, world.getCurrentLocation(), radius);
@@ -119,17 +123,19 @@ public class Helper {
         return nearestEntity;
     }
 
-    public static Set<Entity> filterByClass(Set<Entity> entities, Class<?> filterClass){
+    public static Set<Entity> filterByClass(Set<Entity> entities, Class<?> filterClass) {
         Set<Entity> filteredEntities = new HashSet<Entity>();
+
         for(Entity entity : entities){
             if(filterClass.isAssignableFrom(entity.getClass())){
                 filteredEntities.add(entity);
             }
         }
+
         return filteredEntities;
     }
 
-    public static Entity findNearest(World world, Location location ,Set<? extends Entity> entities){
+    public static Entity findNearest(World world, Location location ,Set<? extends Entity> entities) {
 
         Entity nearestEntity = null;
         double smallestDistance = Double.MAX_VALUE;
@@ -141,8 +147,7 @@ public class Helper {
                 nearestEntity = entity;
             }
         }
+
         return nearestEntity;
     }
-
-
 }

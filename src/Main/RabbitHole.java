@@ -1,7 +1,6 @@
 package Main;
 
-public class RabbitHole extends Hole{
-
+public class RabbitHole extends Hole {
     private final Burrow burrow;
 
     /**

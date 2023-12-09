@@ -3,6 +3,7 @@ package Main;
 public class CantReproduceException extends Exception{
     private final Animal animal1;
     private final Animal animal2;
+    
     public CantReproduceException(Animal animal1, Animal animal2) {
         super();
         this.animal1 = animal1;

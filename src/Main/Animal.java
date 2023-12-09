@@ -11,7 +11,6 @@ import itumulator.world.World;
 import itumulator.world.Location;
 
 public abstract class Animal extends MycoHost implements Spawnable {
-
     private double hunger; //0 is empty, and 100 is full
 
     protected Set<Class<? extends Consumable>> canEat; //Holdes the types of classes the animal can eat
@@ -56,8 +55,6 @@ public abstract class Animal extends MycoHost implements Spawnable {
         }
         return false;
     }
-
-
 
     public int getStrength() {
         return strength;
@@ -371,8 +368,6 @@ public abstract class Animal extends MycoHost implements Spawnable {
         sleeping = false;
     }
 
-
-
     public double getHunger() {
         return hunger;
     }
@@ -420,7 +415,4 @@ public abstract class Animal extends MycoHost implements Spawnable {
 
         return path.toString();
     }
-
-
-
 }

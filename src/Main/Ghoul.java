@@ -1,14 +1,15 @@
 package Main;
 
-import itumulator.world.Location;
-import itumulator.world.World;
-import spawn.ObjectFactory;
+import java.awt.Color;
 
-import java.awt.*;
 import java.util.Set;
 
-public class Ghoul extends Organism implements Spawnable, Fungi {
+import spawn.ObjectFactory;
 
+import itumulator.world.Location;
+import itumulator.world.World;
+
+public class Ghoul extends Organism implements Spawnable, Fungi {
     public Ghoul() {
         super(-2);
         adultAge = 1;
@@ -63,26 +64,22 @@ public class Ghoul extends Organism implements Spawnable, Fungi {
         spread(world, host);
     }
 
-
-
     public void dayBehavior(World world) {
         behavior(world);
     }
-
 
     public void nightBehavior(World world) {
         behavior(world);
     }
 
-    public void behavior(World world){
+    public void behavior(World world) {
         if(!world.isOnTile(this)) return;
         spread(world);
         removeEnergy(10);
         removeHealth(10, world);
     }
 
-    public void drain(World world, MycoHost host){
-
+    public void drain(World world, MycoHost host) {
         maxHealth += 5;
         maxEnergy += 5;
         addEnergy(5);
@@ -90,9 +87,7 @@ public class Ghoul extends Organism implements Spawnable, Fungi {
         host.removeEnergy(5);
     }
 
-
-
-    private void spread(World world){
+    private void spread(World world) {
         MycoHost newHost = findNewHost(world, world.getLocation(this));
         if(newHost == null) return;
 
@@ -100,7 +95,7 @@ public class Ghoul extends Organism implements Spawnable, Fungi {
         newHost.setInfected(newFungi);
     }
 
-    private void spread(World world, MycoHost host){
+    private void spread(World world, MycoHost host) {
         MycoHost newHost = findNewHost(world, world.getLocation(host));
         if(newHost == null) return;
 

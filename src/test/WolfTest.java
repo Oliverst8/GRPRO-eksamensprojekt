@@ -134,7 +134,7 @@ public class WolfTest {
 
     @Test
     void testDayBehaviorExpectsWolfToRunAwayFromOtherWolfInSideWorld() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
+        ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
         Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf");
         program.simulate();
 
@@ -144,7 +144,7 @@ public class WolfTest {
     @Test
     void testDayBehaviorExpectsToStandStillEvenThoNextToOtherPack() {
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf");
+        ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf");
         program.simulate();
 
         assertEquals(new Location(0,0),world.getLocation(wolf));

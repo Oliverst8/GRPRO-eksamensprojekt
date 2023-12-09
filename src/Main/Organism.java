@@ -1,7 +1,7 @@
 package Main;
 
-import itumulator.simulator.Actor;
 import itumulator.world.World;
+import itumulator.simulator.Actor;
 
 public abstract class Organism extends Entity implements Actor, Consumable {
     protected int age;
@@ -145,13 +145,11 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     /**
      * @return weather or not this organism can be eaten.
      */
-    public boolean isEatable(){
+    public boolean isEatable() {
         return true;
     }
 
-
-
-    protected boolean isDying(World world){
+    protected boolean isDying(World world) {
         if(health <= 0 || energy <= 0){
             die(world);
             return true;
@@ -159,20 +157,17 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         return false;
     }
 
-
-    public void skipTurn(){
+    public void skipTurn() {
         skipTurn = true;
     }
 
-    public void setSkipTurn(boolean skipTurn){
+    public void setSkipTurn(boolean skipTurn) {
         this.skipTurn = skipTurn;
     }
 
-    public boolean isTurnSkipped(){
+    public boolean isTurnSkipped() {
         return skipTurn;
     }
-
-
 
     public int getHealth() {
         return health;
@@ -182,13 +177,12 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         this.health = health;
     }
 
-
-    public void removeHealth(int health, World world){
+    public void removeHealth(int health, World world) {
     setHealth(Math.max(0, this.health - health));
     if(this.health <=0) die(world);
     }
 
-    public void addHealth(int health){
+    public void addHealth(int health) {
     setHealth(Math.max(100, this.health + health));
     }
 
@@ -200,7 +194,7 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         return adultAge;
     }
 
-    public int getMaxHealth(){
+    public int getMaxHealth() {
         return maxHealth;
     }
 }

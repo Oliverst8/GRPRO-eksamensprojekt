@@ -1,10 +1,9 @@
 package Main;
 
-import itumulator.world.Location;
 import itumulator.world.World;
+import itumulator.world.Location;
 
 public abstract class NestAnimal extends Animal {
-
     private boolean inNest = false;
 
     abstract Nest getNest();
@@ -108,5 +107,4 @@ public abstract class NestAnimal extends Animal {
         }
         return false;
     }
-
 }

@@ -1,11 +1,11 @@
 package Main;
 
-import itumulator.world.World;
 import spawn.ObjectFactory;
+
+import itumulator.world.World;
 import itumulator.world.Location;
 
-public class Den extends Nest{
-
+public class Den extends Nest {
     Hole den;
 
     public Den(World world, Location entry) {

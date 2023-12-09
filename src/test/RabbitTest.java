@@ -279,9 +279,9 @@ class RabbitTest {
 
     @Test
     void testDaysBehaviorWhereRabbitsneedsToGoToGrassButThereIsAlreadyAnObjectExpectsRabbitToMoveOneCloser() {
-        Grass grass = initialiseGrassOnWorld(new Location(2,2));
+        initialiseGrassOnWorld(new Location(2,2));
         Rabbit rabbit1 = initialiseRabbitOnWorld(new Location(0,0));
-        Rabbit rabbit2 = initialiseRabbitOnWorld(new Location(1,1));
+        initialiseRabbitOnWorld(new Location(1,1));
 
         world.setCurrentLocation(world.getLocation(rabbit1));
         rabbit1.act(world);

@@ -1,22 +1,18 @@
 package Main;
 
-import itumulator.world.Location;
-import itumulator.world.World;
-
 import java.util.Set;
 
-public class Cordyceps implements Fungi{
+import itumulator.world.World;
+import itumulator.world.Location;
 
-
-
-
+public class Cordyceps implements Fungi {
     @Override
     public void hostDied(World world, MycoHost host) {
         Animal newHost = (Animal) findNewHost(world, world.getLocation(host));
 
         world.delete(host);
 
-        if(newHost != null){
+        if(newHost != null) {
             newHost.setInfected(this);
         }
         else world.delete(this);
@@ -39,9 +35,8 @@ public class Cordyceps implements Fungi{
         host.removeEnergy(5);
     }
 
-
     @Override
-    public void infectedBehavior(World world, MycoHost host){
+    public void infectedBehavior(World world, MycoHost host) {
         drain(world, host);
         if(host.getEnergy() <= 0 || host.getHealth() <= 0) return;
 
@@ -56,7 +51,4 @@ public class Cordyceps implements Fungi{
         Animal animalHost = (Animal) host;
         animalHost.moveTowards(world, world.getLocation(closetAnimalOfSameSpecies));
     }
-
-
-
 }

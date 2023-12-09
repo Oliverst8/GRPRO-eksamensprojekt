@@ -1,7 +1,6 @@
 package test;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,7 +26,6 @@ import Main.Carcass;
 import spawn.ObjectFactory;
 
 public class GhoulTest {
-
     Program program;
     World world;
 
@@ -43,34 +41,26 @@ public class GhoulTest {
         world = program.getWorld();
 
         carcass = (Carcass) ObjectFactory.generateOnMap(world, new Location(2,2), "Carcass");
-
-
-    }
-
-    @AfterEach
-    void tearDown(){
-
     }
 
     @Test
     void testGhoulSpawnsInCarcussAfter53Steps() {
-
         for (int i = 0; i < 53; i++) {
             program.simulate();
             Set<Entity> entitiesInWorld = Helper.getEntities(world, new Location(2,2), 5);
             assertTrue(Helper.filterByClass(entitiesInWorld, Ghoul.class).isEmpty());
         }
+
         program.simulate();
         Set<Entity> entitiesInWorld = Helper.getEntities(world, new Location(2,2), 5);
+        
         assertFalse(Helper.filterByClass(entitiesInWorld, Ghoul.class).isEmpty());
-
     }
 
     @Test
     void testGhoulSpreadsToNearbyCarcuss(){
         carcass.setInfected((Ghoul) ObjectFactory.generateOffMap(world, "Ghoul"));
-        Carcass carcass1 = (Carcass) ObjectFactory.generateOnMap(world, new Location(1,1), "Carcass");
-
+        ObjectFactory.generateOnMap(world, new Location(1,1), "Carcass");
 
         program.simulate();
 
@@ -81,9 +71,7 @@ public class GhoulTest {
             entities.add((Entity) entity);
         }
 
-
         assertEquals(2, Helper.filterByClass(entities, Ghoul.class).size());
-
     }
 
     @Test
@@ -99,7 +87,6 @@ public class GhoulTest {
         assertEquals(1, entities.size());
         assertInstanceOf(Ghoul.class, entities.get(0));
         assertInstanceOf(Ghoul.class, world.getTile(new Location(2,2)));
-
     }
 
     @Test
@@ -109,7 +96,6 @@ public class GhoulTest {
         program.simulate();
 
        assertTrue(carcass.isInfected());
-
     }
 
     @Test
@@ -119,14 +105,10 @@ public class GhoulTest {
         program.simulate();
 
         assertTrue(carcass.isInfected());
-
     }
 
     @Test
     void testGhoulHasMoreEnergyDependingOnCarcassExpects10Energy() {
-
-
-
         Rabbit rabbit = new Rabbit();
         rabbit.setEnergy(10);
 
@@ -135,8 +117,6 @@ public class GhoulTest {
         Ghoul ghoul = (Ghoul) ObjectFactory.generateOffMap(world, "Ghoul");
         carcass.setInfected(ghoul);
 
-
-
         for (int i = 0; i < 3; i++) {
             ghoul.skipTurn();
             program.simulate();
@@ -144,14 +124,10 @@ public class GhoulTest {
 
         assertFalse(world.contains(carcass));
         assertEquals(10,ghoul.getEnergy());
-
-
     }
 
     @Test
     void testGhoulHasMoreEnergyDependingOnCarcassExpects100Energy() {
-
-
         Rabbit rabbit = new Rabbit();
         rabbit.setEnergy(100);
 
@@ -159,7 +135,6 @@ public class GhoulTest {
 
         Ghoul ghoul = (Ghoul) ObjectFactory.generateOffMap(world, "Ghoul");
         carcass.setInfected(ghoul);
-
 
         for (int i = 0; i < 21; i++) {
             ghoul.skipTurn();
@@ -169,7 +144,5 @@ public class GhoulTest {
 
         assertFalse(world.contains(carcass));
         assertEquals(100, ghoul.getEnergy());
-
     }
-
-    }
+}

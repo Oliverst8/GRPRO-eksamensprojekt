@@ -2,19 +2,20 @@ package spawn;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.management.RuntimeErrorException;
 
+import java.util.Map;
+import java.util.Arrays;
+import java.util.HashMap;
+
 import Main.Entity;
 import Main.Helper;
-
 import Main.Spawnable;
+
+import itumulator.world.World;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
-import itumulator.world.World;
 
 public class ObjectFactory {
     private ObjectFactory() {}
@@ -57,19 +58,6 @@ public class ObjectFactory {
         if (object instanceof Spawnable) place(world, object, location);
         
         return object;
-    }
-
-    private static Class<?> convertToPrimitiveTypeIfThereIsOne(Class<?> preConvertedClass){
-        Map<Class<?>, Class<?>> classMap = new HashMap<>();
-        classMap.put(Integer.class, int.class);
-        classMap.put(Boolean.class, boolean.class);
-        classMap.put(Long.class, long.class);
-        classMap.put(Short.class, short.class);
-        classMap.put(Byte.class, byte.class);
-        classMap.put(Float.class, float.class);
-        classMap.put(Double.class, double.class);
-        classMap.put(Character.class, char.class);
-        return classMap.getOrDefault(preConvertedClass,preConvertedClass);
     }
 
     private static Object generateHelper(String className, Object... constructorArgs) {
@@ -136,5 +124,18 @@ public class ObjectFactory {
         }
 
         return newArray;
+    }
+
+    private static Class<?> convertToPrimitiveTypeIfThereIsOne(Class<?> preConvertedClass){
+        Map<Class<?>, Class<?>> classMap = new HashMap<>();
+        classMap.put(Integer.class, int.class);
+        classMap.put(Boolean.class, boolean.class);
+        classMap.put(Long.class, long.class);
+        classMap.put(Short.class, short.class);
+        classMap.put(Byte.class, byte.class);
+        classMap.put(Float.class, float.class);
+        classMap.put(Double.class, double.class);
+        classMap.put(Character.class, char.class);
+        return classMap.getOrDefault(preConvertedClass,preConvertedClass);
     }
 }

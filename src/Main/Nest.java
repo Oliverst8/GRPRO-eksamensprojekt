@@ -1,7 +1,3 @@
 package Main;
 
-public abstract class Nest extends Community{
-
-
-
-}
+public abstract class Nest extends Community {}

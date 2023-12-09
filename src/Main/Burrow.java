@@ -1,11 +1,13 @@
 package Main;
 
-import itumulator.world.World;
-import itumulator.world.Location;
+import java.util.Set;
+import java.util.Random;
+import java.util.HashSet;
 
 import spawn.ObjectFactory;
 
-import java.util.*;
+import itumulator.world.World;
+import itumulator.world.Location;
 
 public class Burrow extends Nest{
     private final Set<RabbitHole> entries;

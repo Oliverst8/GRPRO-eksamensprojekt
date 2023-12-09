@@ -1,8 +1,8 @@
 package Main;
 
-import itumulator.world.World;
+import java.awt.Color;
 
-import java.awt.*;
+import itumulator.world.World;
 
 public class Berry extends Plant{
 
@@ -15,11 +15,11 @@ public class Berry extends Plant{
         containsBerries = true;
     }
 
-    public boolean containsBerries(){
+    public boolean containsBerries() {
         return containsBerries;
     }
 
-    public void growBerries(){
+    public void growBerries() {
         if(energy > 50){
             timeSinceBerries = 0;
             containsBerries = true;
@@ -28,8 +28,8 @@ public class Berry extends Plant{
     }
 
     @Override
-    public void die(World world){
-        if(energy > 0 && containsBerries){
+    public void die(World world) {
+        if(energy > 0 && containsBerries) {
             containsBerries = false;
         } else {
             super.die(world);
@@ -37,7 +37,7 @@ public class Berry extends Plant{
     }
 
     @Override
-    public boolean isEatable(){
+    public boolean isEatable() {
         return containsBerries;
     }
 
@@ -64,16 +64,14 @@ public class Berry extends Plant{
 
     @Override
     public void dayBehavior(World world) {
-        if(!containsBerries){
+        if(!containsBerries) {
             timeSinceBerries++;
         }
-        if(timeSinceBerries == 20){
+        if(timeSinceBerries == 20) {
             growBerries();
         }
     }
 
     @Override
-    public void nightBehavior(World world) {
-
-    }
+    public void nightBehavior(World world) {}
 }

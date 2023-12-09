@@ -93,8 +93,7 @@ public class AnimalTest {
     }
     @Test
     void testAnimalEatTheLargerTheAnimalTheMoreHungerConsumedByAnimal(){
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
-
+        ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
     }
 
     @AfterEach

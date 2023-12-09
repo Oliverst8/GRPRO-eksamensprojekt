@@ -1,4 +1,3 @@
 package Main;
 
-public interface Consumable {
-}
+public interface Consumable {}

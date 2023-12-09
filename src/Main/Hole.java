@@ -1,10 +1,10 @@
 package Main;
 
+import java.awt.Color;
+
 import itumulator.world.World;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
-
-import java.awt.*;
 
 public class Hole extends Inanimate implements NonBlocking {
 
@@ -32,6 +32,4 @@ public class Hole extends Inanimate implements NonBlocking {
     public Color getColor() {
         return new Color(150, 75, 0);
     }
-
-
 }

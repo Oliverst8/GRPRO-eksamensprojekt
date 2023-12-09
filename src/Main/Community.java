@@ -1,9 +1,10 @@
 package Main;
 
-import itumulator.world.Location;
-import itumulator.world.World;
+import java.util.Set;
+import java.util.HashSet;
 
-import java.util.*;
+import itumulator.world.World;
+import itumulator.world.Location;
 
 public abstract class Community {
     private Set<Animal> members;

@@ -1,20 +1,19 @@
 package Main;
 
-import spawn.ObjectFactory;
-
-import itumulator.world.World;
-import itumulator.world.Location;
-
-import java.awt.*;
+import java.awt.Color;
 
 import java.util.Set;
 import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 
+import spawn.ObjectFactory;
+
+import itumulator.world.World;
+import itumulator.world.Location;
+
 public class Rabbit extends NestAnimal {
     private Burrow burrow;
-
 
     /**
      * Initilises the food to the bunny can eat to plant and fruits
@@ -31,13 +30,14 @@ public class Rabbit extends NestAnimal {
         setBurrow(burrow);
         initialize();
         this.age = age;
+
         if(inBurrow) {
             setInNest(true);
             burrow.addMember(this);
         }
     }
 
-    private void initialize(){
+    private void initialize() {
         adultAge = 3;
         maxEnergy = 100;
         energy = maxEnergy;
@@ -67,9 +67,7 @@ public class Rabbit extends NestAnimal {
         goToNest(world);
     }
 
-
-
-    protected void noNestBehavior(World world){
+    protected void noNestBehavior(World world) {
         if (shouldRabbitDig(world) && getEnergy() > 25) {
             dig(world);
         } else {
@@ -114,7 +112,7 @@ public class Rabbit extends NestAnimal {
     }
 
     @Override
-    protected void hungryBehavior(World world){
+    protected void hungryBehavior(World world) {
         if (world.getSurroundingTiles(world.getLocation(this)).size() > world.getEmptySurroundingTiles(world.getLocation(this)).size()) {
             for (Location location : world.getSurroundingTiles(world.getLocation(this))) {
                 if (world.isTileEmpty(location)) continue;
@@ -130,7 +128,7 @@ public class Rabbit extends NestAnimal {
         hunt(world);
     }
 
-    protected void inNestBehavior(World world){
+    protected void inNestBehavior(World world) {
             if(reproduceBehavior(world)) return;
             if(getEnergy() > 60) {
                 expandBurrow(world);
@@ -138,8 +136,6 @@ public class Rabbit extends NestAnimal {
             }
             if(getHunger() < 100) exitNest(world);
     }
-
-
 
     /**
      * Throws Main.IllegalOperationException if dig is called when the bunny already has a burrow
@@ -177,15 +173,11 @@ public class Rabbit extends NestAnimal {
         }
     }
 
-
-
-    public Nest getNest(){
+    public Nest getNest() {
         return burrow;
     }
 
-
-
-    protected Location getExitLocation(World world){
+    protected Location getExitLocation(World world) {
         Set<RabbitHole> entries = burrow.getEntries();
         Location freeLocation = null;
 
@@ -210,8 +202,6 @@ public class Rabbit extends NestAnimal {
     private void setBurrow(Burrow burrow) {
         this.burrow = burrow;
     }
-
-
 
     @Override
     public void die(World world) {

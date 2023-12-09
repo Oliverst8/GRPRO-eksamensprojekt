@@ -1,12 +1,11 @@
 package Main;
 
+import java.awt.Color;
+
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.DynamicDisplayInformationProvider;
 
-import java.awt.*;
-
 public interface Spawnable extends DynamicDisplayInformationProvider {
-
     abstract String getType();
 
     abstract Color getColor();

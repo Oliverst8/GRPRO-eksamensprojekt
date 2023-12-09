@@ -1,8 +1,8 @@
 package Main;
 
-import itumulator.world.World;
+import java.awt.Color;
 
-import java.awt.*;
+import itumulator.world.World;
 
 public class Carcass extends MycoHost implements Spawnable {
 

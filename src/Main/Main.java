@@ -2,12 +2,12 @@ package Main;
 
 import java.util.ArrayList;
 
-import itumulator.world.World;
-import itumulator.executable.Program;
-
 import spawn.Input;
 import spawn.ObjectFactory;
 import spawn.SpawningObject;
+
+import itumulator.world.World;
+import itumulator.executable.Program;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,8 +1,6 @@
 package Main;
 
 public abstract class Plant extends Organism implements Spawnable {
-
-
     public Plant(int defaultStenght) {
         super(defaultStenght);
         adultAge = 0;

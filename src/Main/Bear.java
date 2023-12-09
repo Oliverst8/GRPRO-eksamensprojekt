@@ -4,10 +4,10 @@ import java.awt.Color;
 
 import java.util.Random;
 
+import spawn.ObjectFactory;
+
 import itumulator.world.World;
 import itumulator.world.Location;
-
-import spawn.ObjectFactory;
 
 public class Bear extends Animal {
     Location territory;

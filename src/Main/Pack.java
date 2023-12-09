@@ -6,7 +6,7 @@ import java.util.HashSet;
 import itumulator.world.World;
 import itumulator.world.Location;
 
-public class Pack extends Community{
+public class Pack extends Community {
     private Den den;
 
     public Pack() {
@@ -30,5 +30,4 @@ public class Pack extends Community{
         if(den != null) wolvesAboveGround.removeAll(den.getMembers());
         return findNearestEntity(world, wolfLocation, wolvesAboveGround);
     }
-
 }

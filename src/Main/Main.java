@@ -30,6 +30,11 @@ public class Main {
 
     private static void generateObjects(World world, ArrayList<SpawningObject> objects) {
         for (SpawningObject object : objects) {
+            Pack pack = null;
+
+            // Create pack if spawning object is a wolf
+            if (object.getClassName().equals("Wolf")) pack = new Pack();
+
             for (int i = 0; i < object.getAmount(); i++) {
                 Object newObject = null;
 
@@ -48,6 +53,9 @@ public class Main {
                         ((Animal) newObject).setInfected(new Cordyceps());
                     }
                 }
+
+                // Add to pack if spawning object is a wolf
+                if (object.getClassName().equals("Wolf")) pack.addMember((Wolf) newObject);
             }
         }
     }

@@ -40,8 +40,8 @@ public class KravTest {
         world = program.getWorld();
     }
 
-    /** Græs kan blive plantet når input filerne beskriver dette. Græs skal blot tilfældigt placeres.
-     *
+    /**
+     * Græs kan blive plantet når input filerne beskriver dette. Græs skal blot tilfældigt placeres.
      */
     @Test
     void K1_1a() {
@@ -49,7 +49,8 @@ public class KravTest {
         assertTrue(world.contains(grass));
     }
 
-    /** Græs kan nedbryde og forsvinde
+    /**
+     * Græs kan nedbryde og forsvinde
      * setEnergy 10 so it low
      * setNight so grass doesnt make photosynthesis
      * Call program.simulate twice so it calls decay twice and removes 5 energy times two
@@ -64,7 +65,8 @@ public class KravTest {
         assertFalse(world.contains(grass));
     }
 
-    /** Græs kan sprede sig
+    /**
+     * Græs kan sprede sig
      * Creates grass, sets its energy to 75 which is required in its dayBehaviour to spread
      */
     @Test
@@ -75,7 +77,8 @@ public class KravTest {
         assertEquals(2,world.getEntities().size());
     }
 
-    /** Dyr kan stå på græs uden der sker noget med græsset.
+    /**
+     * Dyr kan stå på græs uden der sker noget med græsset.
      * Create both object at the same place
      * Set rabbit to skip turn so it doesnt eat the grass.
      * assert true that their locations equal eachother
@@ -92,8 +95,8 @@ public class KravTest {
         assertEquals(world.getLocation(grass),world.getLocation(rabbit));
     }
 
-    /** Kaniner kan placeres på kortet når input filerne beskriver dette. Kaniner skal blot tilfældigt placeres.
-     *
+    /**
+     * Kaniner kan placeres på kortet når input filerne beskriver dette. Kaniner skal blot tilfældigt placeres.
      */
     @Test
     void K1_2a() {
@@ -101,7 +104,8 @@ public class KravTest {
         assertTrue(world.contains(rabbit));
     }
 
-    /** Kaniner kan dø, hvilket resulterer I at de fjernes fra verdenen.
+    /**
+     * Kaniner kan dø, hvilket resulterer I at de fjernes fra verdenen.
      * Spawn rabbit on world
      * set energy and hunger to 0 so it call die in daybehaviour
      * Assert that the object doesnt exist within the world
@@ -115,10 +119,11 @@ public class KravTest {
         assertFalse(world.contains(rabbit));
     }
 
-    /** Kaniner lever af græs som de spiser i løbet af dagen, uden mad dør en kanin.
-     *  Create rabbit and grass. Observe if rabbit eats grass by comparing hunger
-     *  while(world doesnt contain grass and world contains rabbit) program.simulate
-     *  Assert that rabbit doesnt exist within the world.
+    /**
+     * Kaniner lever af græs som de spiser i løbet af dagen, uden mad dør en kanin.
+     * Create rabbit and grass. Observe if rabbit eats grass by comparing hunger
+     * while(world doesnt contain grass and world contains rabbit) program.simulate
+     * Assert that rabbit doesnt exist within the world.
      */
     @Test
     void K1_2c() {
@@ -135,7 +140,8 @@ public class KravTest {
         assertFalse(world.contains(rabbit));
     }
 
-    /** Kaniners alder bestemmer hvor meget energi de har.
+    /**
+     * Kaniners alder bestemmer hvor meget energi de har.
      * Creates rabbit
      * Gets the energy from when it was age 0
      * When it gets older than adultage the energy begins to fall
@@ -160,7 +166,8 @@ public class KravTest {
         assertTrue(energyBefore>rabbit.getEnergy());
     }
 
-    /** Kaniner kan reproducere.
+    /**
+     * Kaniner kan reproducere.
      * Generates two rabbits. Gives them enough energy to call reproduce
      * Expects that burrow.getMembers.size gets larger by 1
      */
@@ -177,7 +184,8 @@ public class KravTest {
         assertEquals(expected,burrow.getMembers().size());
     }
 
-    /** Kaniner kan grave huller, eller dele eksisterende huller med andre kaniner. Kaniner kan kun være knyttet til et hul.
+    /**
+     * Kaniner kan grave huller, eller dele eksisterende huller med andre kaniner. Kaniner kan kun være knyttet til et hul.
      * Rabbit bliver spawnet, hopper ned i eget hul.
      * Rabbit graver et nyt hul
      * ________________________
@@ -239,7 +247,8 @@ public class KravTest {
         assertEquals(i, world.getEntities().size()-2);
     }
 
-    /** Kaniner søger mod deres huller når det bliver aften, hvor de sover.
+    /**
+     * Kaniner søger mod deres huller når det bliver aften, hvor de sover.
      * Burrow har koordinat 2,2
      * Kanin har 0,0
      * Det bliver nat og den søger hen imod
@@ -256,18 +265,18 @@ public class KravTest {
         assertEquals(forventetLocation,world.getLocation(rabbit1));
     }
 
-    /** Huller kan enten blive indsat når input filerne beskriver dette, eller graves af kaniner. Huller skal blot blive tilfældigt placeret når de indgår i en input fil.
-     *
+    /**
+     * Huller kan enten blive indsat når input filerne beskriver dette, eller graves af kaniner. Huller skal blot blive tilfældigt placeret når de indgår i en input fil.
      */
     @Test
     void K1_3a() {
 
     }
 
-    /** Dyr kan stå på et kaninhul uden der sker noget.
-     *  Spawnlocation for både burrow(med tilhørende hul) og rabbit er den samme
-     *  Vi simulerer programmet og verificerer at de begge stadig har samme lokation
-     *
+    /**
+     * Dyr kan stå på et kaninhul uden der sker noget.
+     * Spawnlocation for både burrow(med tilhørende hul) og rabbit er den samme
+     * Vi simulerer programmet og verificerer at de begge stadig har samme lokation
      */
     @Test
     void K1_3b() {
@@ -282,12 +291,13 @@ public class KravTest {
         assertEquals(world.getLocation(burrow.getEntries().iterator().next()),world.getLocation(rabbit1));
     }
 
-    /** Huller består altid minimum af en indgang, der kan dog være flere indgange som sammen former én kanin tunnel. Kaniner kan kun grave nye udgange mens de er i deres huller.
-     *  Kaninen har nok energi til at grave et hul mere, men er ikke nede i burrow da den har 99 i hunger og skal jage
-     *  Hvis den ikke er i burrow, simuler, sethunger 100, simuler
-     *  Hvis den nu er i burrow, noter entries før
-     *  Simuler
-     *  Assert that entries before is less than burrow.getEntries.size at the current moment
+    /**
+     * Huller består altid minimum af en indgang, der kan dog være flere indgange som sammen former én kanin tunnel. Kaniner kan kun grave nye udgange mens de er i deres huller.
+     * Kaninen har nok energi til at grave et hul mere, men er ikke nede i burrow da den har 99 i hunger og skal jage
+     * Hvis den ikke er i burrow, simuler, sethunger 100, simuler
+     * Hvis den nu er i burrow, noter entries før
+     * Simuler
+     * Assert that entries before is less than burrow.getEntries.size at the current moment
      */
     @Test
     void KF1_1() {
@@ -311,8 +321,8 @@ public class KravTest {
         assertTrue(burrow.getEntries().size()>entriesBefore);
     }
 
-    /** Ulve kan placeres på kortet når input filerne beskriver dette.
-     *
+    /**
+     * Ulve kan placeres på kortet når input filerne beskriver dette.
      */
     @Test
     void K2_1a() {
@@ -320,10 +330,11 @@ public class KravTest {
         assertTrue(world.contains(wolf));
     }
 
-    /** Ulve kan dø, hvilket resulterer I at de fjernes fra verdenen.
-     *  Spawn ulv, remove health, simulate og ulven dør
-     *  Bliver lavet om til en carcass, hvis den gør det så sættes indeholdercarcass til 1
-     *  assert that world.getentities.size == indeholdercarcass
+    /**
+     * Ulve kan dø, hvilket resulterer I at de fjernes fra verdenen.
+     * Spawn ulv, remove health, simulate og ulven dør
+     * Bliver lavet om til en carcass, hvis den gør det så sættes indeholdercarcass til 1
+     * assert that world.getentities.size == indeholdercarcass
      */
     @Test
     void K2_1b() {
@@ -340,10 +351,11 @@ public class KravTest {
         assertEquals(world.getEntities().size(), indeholderCarcass);
     }
 
-    /** Ulve jager andre dyr og spiser dem for at opnå energi
-     *  If wolf movestowards rabbit location log hunger before
-     *  Simulate three times
-     *  Asserttrue that hungerbefore is lower than hunger after
+    /**
+     * Ulve jager andre dyr og spiser dem for at opnå energi
+     * If wolf movestowards rabbit location log hunger before
+     * Simulate three times
+     * Asserttrue that hungerbefore is lower than hunger after
      */
     @Test
     void K2_1c() {
@@ -361,28 +373,27 @@ public class KravTest {
         assertTrue(hungerBeforeConsuming<wolf.getHunger());
     }
 
-    /** Ulve er et flokdyr. De søger konstant mod andre ulve i flokken, og derigennem ’jager’ sammen.
-     *  Når inputfilen beskriver (på en enkelt linje) at der skal placeres flereulve, bør disse automatisk være i samme flok.
-     *
+    /**
+     * Ulve er et flokdyr. De søger konstant mod andre ulve i flokken, og derigennem ’jager’ sammen.
+     * Når inputfilen beskriver (på en enkelt linje) at der skal placeres flereulve, bør disse automatisk være i samme flok.
      */
     @Test
     void K2_2a() {
 
     }
 
-    /** Ulve og deres flok, tilhører en ulvehule, det er også her de formerer sig.
-     *  Ulve ’bygger’ selv deres huler. Ulve kan ikke lide andre ulveflokke og deres huler.
-     *  De prøver således at undgå andre grupper. Møder en ulv en ulv fra en anden flok, kæmper de mod hinanden.
-     *
-     *
+    /**
+     * Ulve og deres flok, tilhører en ulvehule, det er også her de formerer sig.
+     * Ulve ’bygger’ selv deres huler. Ulve kan ikke lide andre ulveflokke og deres huler.
+     * De prøver således at undgå andre grupper. Møder en ulv en ulv fra en anden flok, kæmper de mod hinanden.
      */
     @Test
     void K2_3a() {
 
     }
 
-    /** Kaniner frygter ulve og forsøger så vidt muligt at løbe fra dem.
-     *
+    /**
+     * Kaniner frygter ulve og forsøger så vidt muligt at løbe fra dem.
      */
     @Test
     void K2_4a() {
@@ -395,8 +406,8 @@ public class KravTest {
         assertEquals(assumedRabbitLocation,world.getLocation(rabbit1));
     }
 
-    /** Bjørne kan placeres på kortet når input filerne beskriver dette.
-     *
+    /**
+     * Bjørne kan placeres på kortet når input filerne beskriver dette.
      */
     @Test
     void K2_5a() {
@@ -406,8 +417,8 @@ public class KravTest {
         assertTrue(((Entity) world.getTile(new Location(3,5))).getEntityClass().equals(bear.getEntityClass()));
     }
 
-    /** Bjørne jager ligesom ulve, og spiser også alt.
-     *
+    /**
+     * Bjørne jager ligesom ulve, og spiser også alt.
      */
     @Test
     void K2_5b() {
@@ -417,8 +428,8 @@ public class KravTest {
         assertEquals(new Location(1,1),world.getLocation(bear));
     }
 
-    /** Kaniner frygter bjørne og forsøger så vidt muligt at løbe fra dem.
-     *
+    /**
+     * Kaniner frygter bjørne og forsøger så vidt muligt at løbe fra dem.
      */
     @Test
     void K2_5c() {
@@ -431,32 +442,29 @@ public class KravTest {
         assertEquals(assumedRabbitLocation,world.getLocation(rabbit1));
     }
 
-    /** Bjørnen er meget territoriel, og har som udgangspunkt ikke et bestemt sted den ’bor’.
-     *  Den knytter sig derimod Bl et bestemt område og bevæger sig sjældent ud herfra.
-     *  Dette territories centrum bestemmes ud fra bjørnens startplacering på kortet
-     *
-     *
-     *
-     *
+    /**
+     * Bjørnen er meget territoriel, og har som udgangspunkt ikke et bestemt sted den ’bor’.
+     * Den knytter sig derimod til et bestemt område og bevæger sig sjældent ud herfra.
+     * Dette territories centrum bestemmes ud fra bjørnens startplacering på kortet
      */
     @Test
     void K2_6a() {
 
     }
 
-    /** Dertil spiser bjørne også bær fra buske (såsom blåbær og hindbær) når de gror i området.
-     *  Bær er en god ekstra form for næring for bjørnen (om end det ikke giver samme mængde energi som når de spiser kød)
-     *  men som det er med buske går der tid før bær gror tilbage.
-     *  Bær skal indsættes på kortet når inputfilerne beskriver dette.
-     *
-     *
+    /** 
+     * Dertil spiser bjørne også bær fra buske (såsom blåbær og hindbær) når de gror i området.
+     * Bær er en god ekstra form for næring for bjørnen (om end det ikke giver samme mængde energi som når de spiser kød)
+     * men som det er med buske går der tid før bær gror tilbage.
+     * Bær skal indsættes på kortet når inputfilerne beskriver dette.
      */
     @Test
     void K2_7a() {
 
     }
 
-    /** Bjørnen er naturligvis vores øverste rovdyr i denne lille fødekæde, men det
+    /**
+     * Bjørnen er naturligvis vores øverste rovdyr i denne lille fødekæde, men det
      * hænder at en stor nok gruppe ulve kan angribe (og dræbe) en bjørn.
      * Dette vil i praksis være hvis flere ulve af samme flok er i nærheden af en bjørn.
      */
@@ -478,27 +486,26 @@ public class KravTest {
         assertTrue(bearHealthBeforeAtt>bearHealthAfterAtt);
     }
 
-    /** Hvis den ene ulv bliver voldsomt såret, underkaster den sig den sejrende ulvs flok. En såret ulv har brug for hvile før den kan fortsætte.
-     *
+    /**
+     * Hvis den ene ulv bliver voldsomt såret, underkaster den sig den sejrende ulvs flok. En såret ulv har brug for hvile før den kan fortsætte.
      */
     @Test
     void KF2_1() {
 
     }
 
-    /** Dog er bjørnen ikke et flokdyr, og mødes kun med andre bjørne når de skal
-     *  parre sig. Bjørnen kan også dø og fjernes her fra verdenen.
-     *
-     *
+    /**
+     * Dog er bjørnen ikke et flokdyr, og mødes kun med andre bjørne når de skal
+     * parre sig. Bjørnen kan også dø og fjernes her fra verdenen.
      */
     @Test
     void KF2_2() {
 
     }
 
-    /** Bjørne der ikke er klar til at parre sig, angriber andre bjørne der bevæger sig ind
-     *  på deres områder. Tilsvarende angriber de andre dyr.
-     *
+    /**
+     * Bjørne der ikke er klar til at parre sig, angriber andre bjørne der bevæger sig ind
+     * på deres områder. Tilsvarende angriber de andre dyr.
      */
     @Test
     void KF2_3() {
@@ -521,7 +528,6 @@ public class KravTest {
     }
 
     private World generateWithInput(Input input) {
-
         int delay = 250;
         int display_size = 1000;
         int size = input.getSize();

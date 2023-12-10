@@ -68,6 +68,7 @@ public class Grass extends Plant implements NonBlocking {
      */
     @Override
     public void dayBehavior(World world) {
+        isDying(world);
         photosynthesis();
         if(getEnergy() >= 75) spread(world);
 
@@ -83,6 +84,7 @@ public class Grass extends Plant implements NonBlocking {
     @Override
     public void nightBehavior(World world) {
         decay();
+        isDying(world);
     }
 
     @Override

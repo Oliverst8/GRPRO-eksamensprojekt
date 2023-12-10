@@ -64,13 +64,10 @@ public class KravTest {
     @Test
     void K1_1b() {
         Grass grass = (Grass) ObjectFactory.generateOnMap(world, "Grass");
-        grass.setEnergy(1);
+        grass.setEnergy(10);
         world.setNight();
         program.simulate();
-
-
-        System.out.println(grass.getEnergy());
-
+        program.simulate();
 
         assertFalse(world.contains(grass));
     }
@@ -177,14 +174,15 @@ public class KravTest {
 
         int energyBefore = rabbit.getEnergy(); //100
 
-        for(int i = 0; i<rabbit.getAdultAge()+3 ; i++){
+        for(int i = 0; i<rabbit.getAdultAge()+1 ; i++){
         world.setNight();
-        program.simulate();
-        world.setDay();
+        while(world.isNight()){
+            program.simulate();
+        }
         program.simulate();
         rabbit.addEnergy(100);
         }
-
+        System.out.println(rabbit.getAge());
         assertTrue(energyBefore>rabbit.getEnergy());
     }
 
@@ -292,7 +290,20 @@ public class KravTest {
      */
     @Test
     void K1_3a() {
+        World world = generateWithInput(new Input("data/demo/d8.txt"));
 
+        boolean containsHole = false;
+
+        Map<Object, Location> entities = world.getEntities();
+
+        for(Object entity : entities.keySet()) {
+            if (entity.getClass().equals(Hole.class)) {
+                containsHole = true;
+                break;
+            }
+        }
+
+        assertTrue(containsHole);
     }
 
     /**
@@ -348,8 +359,20 @@ public class KravTest {
      */
     @Test
     void K2_1a() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
-        assertTrue(world.contains(wolf));
+        World world = generateWithInput(new Input("data/demo/d2.txt"));
+
+        boolean containsWolf = false;
+
+        Map<Object, Location> entities = world.getEntities();
+
+        for(Object entity : entities.keySet()) {
+            if (entity.getClass().equals(Wolf.class)) {
+                containsWolf = true;
+                break;
+            }
+        }
+
+        assertTrue(containsWolf);
     }
 
     /**
@@ -643,7 +666,26 @@ public class KravTest {
      */
     @Test
     void K3_1b() {
+        Location location = new Location(0,0);
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "Rabbit");
+        rabbit.removeHealth(100,world);
 
+        double wolfRabbitHunger = 0;
+        double wolfWolfHunger = 0;
+
+        if(world.getTile(location).getClass().equals(Carcass.class)){
+            Location wolfLocation = new Location(1,1);
+            Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, wolfLocation, "Wolf");
+            program.simulate();
+            wolfRabbitHunger = wolf.getHunger();
+            if(world.isTileEmpty(location)){
+                wolf.removeHealth(wolf.getHealth(),world);
+                Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,2), "Wolf");
+                program.simulate();
+                wolfWolfHunger = wolf2.getHunger();
+            }
+        }
+        assertTrue(wolfRabbitHunger<wolfWolfHunger);
     }
 
     /**

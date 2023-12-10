@@ -25,8 +25,9 @@ public class Pack extends Community {
         return den;
     }
 
-    public Location findNearestMember(World world, Location wolfLocation){
+    public Location findNearestMember(World world, Location wolfLocation, Wolf wolf){
         Set<Animal> wolvesAboveGround = new HashSet<>(getMembers());
+        wolvesAboveGround.remove(wolf);
         if(den != null) wolvesAboveGround.removeAll(den.getMembers());
         return findNearestEntity(world, wolfLocation, wolvesAboveGround);
     }

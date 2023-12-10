@@ -152,8 +152,10 @@ public class Wolf extends NestAnimal {
     }
 
     protected void hungryBehavior(World world) {
+
         Wolf nearestWolf =  (Wolf) findNearestPrey(world, 3, Wolf.class);
         if(nearestWolf != null){
+
             if (!(nearestWolf.getPack()).equals(getPack())) {
                 moveAwayFrom(world, world.getLocation(nearestWolf));
                 return;
@@ -161,12 +163,13 @@ public class Wolf extends NestAnimal {
         }
 
         if(huntingPack != null) {
+
             hunt(world);
             return;
         }
 
         if(!(createOrJoinHuntingPack(world, 3))) {
-            Location nearestWolfLocation = pack.findNearestMember(world, world.getLocation(this));
+            Location nearestWolfLocation = pack.findNearestMember(world, world.getLocation(this),this);
             if(nearestWolfLocation != null) moveTowards(world, nearestWolfLocation);
             else hunt(world);
         }
@@ -174,6 +177,7 @@ public class Wolf extends NestAnimal {
 
     @Override
     protected void hunt(World world) {
+
         if(huntingPack != null){
             Organism prey = findPrey(world, 4);
 

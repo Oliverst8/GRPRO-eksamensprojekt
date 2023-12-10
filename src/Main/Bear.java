@@ -170,6 +170,7 @@ public class Bear extends Animal {
         canEat.add(Berry.class);
         canEat.add(Carcass.class);
         canEat.add(Wolf.class);
+        canEat.add(Rabbit.class);
     }
 
     @Override

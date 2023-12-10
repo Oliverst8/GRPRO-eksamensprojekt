@@ -79,7 +79,9 @@ public class CarcassTest {
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world,wolfLocation,"Wolf");
         rabbit.setHealth(100);
         rabbit.removeHealth(100,world);
+        wolf.setHunger(20);
         double wolfHunger = wolf.getHunger();
+        program.simulate();
         program.simulate();
         assertTrue(wolfHunger<wolf.getHunger());
         assertNull(world.getTile(location));

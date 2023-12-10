@@ -60,4 +60,8 @@ public abstract class Community {
         }
         return closestEntityLocation;
     }
+
+    public boolean contains(Organism animal) {
+        return members.contains(animal);
+    }
 }

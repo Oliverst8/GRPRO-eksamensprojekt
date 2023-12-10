@@ -3,8 +3,10 @@ package Main;
 import java.awt.Color;
 
 import java.util.Set;
+import java.util.Map;
 import java.util.List;
 import java.util.Random;
+import java.util.HashMap;
 import java.util.ArrayList;
 
 import spawn.ObjectFactory;
@@ -125,8 +127,9 @@ public class Wolf extends NestAnimal {
 
     @Override
     void setupCanEat() {
-        canEat.add(Rabbit.class);
         canEat.add(Bear.class);
+        canEat.add(Wolf.class);
+        canEat.add(Rabbit.class);
         canEat.add(Carcass.class);
     }
 
@@ -172,6 +175,11 @@ public class Wolf extends NestAnimal {
         if(huntingPack != null){
             Organism prey = findPrey(world, 4);
 
+            // Skip if a prey is from the same pack
+            if(prey instanceof Wolf){
+                if(((Wolf) prey).getPack().equals(getPack())) return;
+            }
+
             for(Animal wolf : huntingPack.getMembers()){
                 world.setCurrentLocation(world.getLocation(wolf));
                 wolf.huntPrey(world, prey);
@@ -184,6 +192,37 @@ public class Wolf extends NestAnimal {
         } else{
             super.hunt(world);
         }
+    }
+
+    @Override
+    protected Organism findPrey(World world, int radius) {
+        Map<Location, Organism> prey = new HashMap<>();
+
+        for(Entity entity : Helper.getEntities(world, world.getLocation(this), radius)) {
+            if(canEat.contains(entity.getEntityClass())){
+                Organism currentPrey = (Organism) entity;
+
+                if(getFoodChainValue() >= currentPrey.getFoodChainValue() && 
+                currentPrey.isEatable() && !pack.contains(currentPrey)) {
+                    prey.put(world.getLocation(entity), currentPrey);
+                }
+            }
+        }
+
+        if(prey.isEmpty()) return null;
+        
+        Location closestPrey = null;
+
+        double closestDist = Double.MAX_VALUE;
+        for(Location currentPreyLocation : prey.keySet()){
+            double dist = Helper.distance(world.getLocation(this), currentPreyLocation);
+            if(closestDist > dist){
+                closestPrey = currentPreyLocation;
+                closestDist = dist;
+            }
+        }
+        
+        return prey.get(closestPrey);
     }
 
     protected void inNestBehavior(World world) {

@@ -80,15 +80,20 @@ public abstract class Animal extends MycoHost implements Spawnable {
     protected Organism findPrey(World world, int radius) {
         Map<Location, Organism> prey = new HashMap<>();
 
-        for(Entity entity : Helper.getEntities(world, world.getLocation(this),radius)){
-            if(canEat.contains(entity.getEntityClass())){
+        for(Entity entity : Helper.getEntities(world, world.getLocation(this),radius)) {
+            if(canEat.contains(entity.getEntityClass())) {
                 Organism currentPrey = (Organism) entity;
-                if(getFoodChainValue() >= currentPrey.getFoodChainValue() && currentPrey.isEatable()) prey.put(world.getLocation(entity), currentPrey);
+
+                if(getFoodChainValue() >= currentPrey.getFoodChainValue() && currentPrey.isEatable()) {
+                    prey.put(world.getLocation(entity), currentPrey);
+                }
             }
         }
 
         if(prey.isEmpty()) return null;
+        
         Location closestPrey = null;
+
         double closestDist = Double.MAX_VALUE;
         for(Location currentPreyLocation : prey.keySet()){
             double dist = Helper.distance(world.getLocation(this), currentPreyLocation);

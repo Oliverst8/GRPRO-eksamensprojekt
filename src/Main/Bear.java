@@ -65,6 +65,9 @@ public class Bear extends Animal {
 
                 if(object != null && canEat.contains(object.getEntityClass()) &&
                 ((Organism) object).isEatable()) {
+                    // If the pray is an adult and this is not, do not hunt it.
+                    if (!isAdult() && ((Organism) object).isAdult()) continue;
+
                     huntPrey(world, (Organism) object);
                     return;
                 }
@@ -128,7 +131,7 @@ public class Bear extends Animal {
             territoryRadius = 4;
         }
 
-        if(age >= adultAge) {
+        if(isAdult()) {
             increaseMatingDesire(50);
 
             if(matingDesire >= 100) {
@@ -164,6 +167,7 @@ public class Bear extends Animal {
     void setupCanEat() {
         canEat.add(Berry.class);
         canEat.add(Carcass.class);
+        canEat.add(Wolf.class);
     }
 
     @Override

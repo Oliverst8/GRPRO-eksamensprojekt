@@ -397,7 +397,7 @@ public abstract class Animal extends MycoHost implements Spawnable {
 
         path.append(getType());
 
-        if(age >= adultAge) path.append("-large");
+        if(isAdult()) path.append("-large");
         else path.append("-small");
 
         if (infected) path.append("-fungi");

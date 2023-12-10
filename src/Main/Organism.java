@@ -197,4 +197,8 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     public int getMaxHealth() {
         return maxHealth;
     }
+
+    public boolean isAdult() {
+        return age >= adultAge;
+    }
 }

@@ -29,6 +29,7 @@ public class Wolf extends NestAnimal {
     public Wolf() {
         super(1);
         pack = new Pack();
+        pack.addMember(this);
         initialise(0);
     }
 
@@ -42,6 +43,7 @@ public class Wolf extends NestAnimal {
     public Wolf(int age) {
         super(1);
         pack = new Pack();
+        pack.addMember(this);
         initialise(age);
     }
 
@@ -199,6 +201,7 @@ public class Wolf extends NestAnimal {
         Map<Location, Organism> prey = new HashMap<>();
 
         for(Entity entity : Helper.getEntities(world, world.getLocation(this), radius)) {
+
             if(canEat.contains(entity.getEntityClass())){
                 Organism currentPrey = (Organism) entity;
 
@@ -206,6 +209,7 @@ public class Wolf extends NestAnimal {
                 currentPrey.isEatable() && !pack.contains(currentPrey)) {
                     prey.put(world.getLocation(entity), currentPrey);
                 }
+
             }
         }
 
@@ -221,6 +225,7 @@ public class Wolf extends NestAnimal {
                 closestDist = dist;
             }
         }
+
         
         return prey.get(closestPrey);
     }

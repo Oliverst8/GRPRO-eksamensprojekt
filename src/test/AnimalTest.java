@@ -1,5 +1,6 @@
 package test;
 
+import Main.Bear;
 import Main.Wolf;
 import Main.Grass;
 import Main.Rabbit;
@@ -93,6 +94,29 @@ public class AnimalTest {
     }
     @Test
     void testAnimalEatTheLargerTheAnimalTheMoreHungerConsumedByAnimal() {
-        ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
+        int size = 20; // Size of the world
+        int delay = 1; // Delay between each turn (in ms)
+        int display_size = 800; // Size of the display
+
+        program = new Program(size, display_size, delay);
+        world = program.getWorld();
+
+        Wolf wolf1 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf", wolf1.getPack(), 3, false);
+        Wolf wolf3 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", wolf1.getPack(), 3, false);
+        Wolf wolf4 = (Wolf) ObjectFactory.generateOnMap(world, new Location(15,15), "Wolf");
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (14,14),"Rabbit");
+        Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(3,3), "Bear");
+
+        wolf1.setHunger(50);
+        wolf4.setHunger(50);
+        bear.removeHealth(bear.getHealth(), world);
+        rabbit.removeHealth(rabbit.getHealth(),world);
+
+        program.simulate();
+        program.simulate();
+        program.simulate();
+
+        assertTrue(wolf4.getHunger()<wolf1.getHunger());
     }
 }

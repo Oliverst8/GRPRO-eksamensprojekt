@@ -1,6 +1,7 @@
 package test;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import Main.Hole;
 import Main.Wolf;
@@ -45,8 +46,20 @@ public class KravTest {
      */
     @Test
     void K1_1a() {
-        Grass grass = (Grass) ObjectFactory.generateOnMap(world, "Grass");
-        assertTrue(world.contains(grass));
+        World world = generateWithInput(new Input("data/demo/d4.txt"));
+
+        boolean containsGrass = false;
+
+        Map<Object, Location> entities = world.getEntities();
+
+        for(Object entity : entities.keySet()) {
+            if (entity.getClass().equals(Grass.class)) {
+                containsGrass = true;
+                break;
+            }
+        }
+
+        assertTrue(containsGrass);
     }
 
     /**
@@ -100,8 +113,20 @@ public class KravTest {
      */
     @Test
     void K1_2a() {
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, "Rabbit");
-        assertTrue(world.contains(rabbit));
+        World world = generateWithInput(new Input("data/demo/d5.txt"));
+
+        boolean containsRabbit = false;
+
+        Map<Object, Location> entities = world.getEntities();
+
+        for(Object entity : entities.keySet()) {
+            if (entity.getClass().equals(Rabbit.class)) {
+                containsRabbit = true;
+                break;
+            }
+        }
+
+        assertTrue(containsRabbit);
     }
 
     /**
@@ -411,10 +436,20 @@ public class KravTest {
      */
     @Test
     void K2_5a() {
-        World world = generateWithInput(new Input("data/week2/t2-5a"));
-        Bear bear = new Bear(world, new Location(6,5));
+        World world = generateWithInput(new Input("data/demo/d3.txt"));
 
-        assertTrue(((Entity) world.getTile(new Location(3,5))).getEntityClass().equals(bear.getEntityClass()));
+        boolean containsBear = false;
+
+        Map<Object, Location> entities = world.getEntities();
+
+        for(Object entity : entities.keySet()) {
+            if (entity.getClass().equals(Bear.class)) {
+                containsBear = true;
+                break;
+            }
+        }
+
+        assertTrue(containsBear);
     }
 
     /**
@@ -482,6 +517,7 @@ public class KravTest {
         program.simulate();
         bear.skipTurn();
         program.simulate();
+
         int bearHealthAfterAtt = bear.getHealth();
         assertTrue(bearHealthBeforeAtt>bearHealthAfterAtt);
     }

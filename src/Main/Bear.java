@@ -122,6 +122,7 @@ public class Bear extends Animal {
 
     @Override
     public void dayBehavior(World world) {
+        super.dayBehavior(world);
         if(isDying(world)) return;
 
         if(getAge() == adultAge) turnAdult();
@@ -158,6 +159,7 @@ public class Bear extends Animal {
         }
 
         if(sleeping) {
+
             sleep();
             return;
         }

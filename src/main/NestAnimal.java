@@ -28,7 +28,7 @@ public abstract class NestAnimal extends Animal {
     protected abstract void inNestBehavior(World world);
 
     @Override
-    public void dayBehavior(World world) {
+    protected void dayBehavior(World world) {
 
         if (isDying(world)) return;
 

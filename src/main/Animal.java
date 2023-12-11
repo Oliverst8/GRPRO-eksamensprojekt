@@ -334,8 +334,8 @@ public abstract class Animal extends MycoHost implements Spawnable {
         int y = makeNumberOneFurtherAway(world.getCurrentLocation().getY(), location.getY());
         x = validateCordinate(world, x);
         y = validateCordinate(world, y);
-
-        world.move(this, new Location(x,y));
+        if(world.isTileEmpty(new Location(x,y))) world.move(this, new Location(x,y));
+        return;
     }
 
     /**

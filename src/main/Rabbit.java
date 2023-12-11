@@ -37,13 +37,9 @@ public class Rabbit extends NestAnimal {
         }
     }
 
-    private void initialize() {
-        adultAge = 3;
-        maxEnergy = 100;
-        energy = maxEnergy;
-        strength = 100;
-        maxHealth = 100;
-        health = maxHealth;
+    @Override
+    void setupCanEat() {
+        canEat.add(Grass.class);
     }
 
     /**
@@ -67,37 +63,6 @@ public class Rabbit extends NestAnimal {
         goToNest(world);
     }
 
-    protected void noNestBehavior(World world) {
-        if (shouldRabbitDig(world) && getEnergy() > 25) {
-            dig(world);
-        } else {
-            setBurrow(((RabbitHole) findNearestPrey(world, 5, RabbitHole.class)).getBurrow());
-            goToNest(world);
-        }
-    }
-
-    private boolean shouldRabbitDig(World world) {
-        RabbitHole nearestBurrowEntry = (RabbitHole) findNearestPrey(world, 5, RabbitHole.class);
-        if(nearestBurrowEntry == null) return true;
-
-        return !(Helper.distance(world.getLocation(this), world.getLocation(nearestBurrowEntry)) * 5 > 25);
-    }
-
-    protected void moveTowardsNest(World world) {
-        Location nearestEntry = burrow.findNearestEntry(world, world.getCurrentLocation());
-        if(Helper.distance(world.getLocation(this), nearestEntry) != 0) moveTowards(world, nearestEntry);
-        if(Helper.distance(world.getLocation(this), nearestEntry) == 0) enterNest(world);
-    }
-
-    protected void produceOffSpring(World world) {
-        ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
-    }
-
-    @Override
-    void setupCanEat() {
-        canEat.add(Grass.class);
-    }
-
     /**
      * - If its in a burrow, check if it can reproduce
      * -    It can reproduce if there are two rabbits in the burrow, and they both have enough energy
@@ -109,6 +74,24 @@ public class Rabbit extends NestAnimal {
     @Override
     public void dayBehavior(World world) {
         super.dayBehavior(world);
+    }
+
+    @Override
+    public void die(World world) {
+        if(isInNest()) exitNest(world);
+        super.die(world);
+
+        if(burrow != null) burrow.removeMember(this);
+    }
+
+    @Override
+    public String getType() {
+        return "rabbit";
+    }
+
+    @Override
+    public Color getColor() {
+        return Color.red;
     }
 
     @Override
@@ -128,13 +111,69 @@ public class Rabbit extends NestAnimal {
         hunt(world);
     }
 
+    public Nest getNest() {
+        return burrow;
+    }
+
+    protected void noNestBehavior(World world) {
+        if (shouldRabbitDig(world) && getEnergy() > 25) {
+            dig(world);
+        } else {
+            setBurrow(((RabbitHole) findNearestPrey(world, 5, RabbitHole.class)).getBurrow());
+            goToNest(world);
+        }
+    }
+
+    protected void moveTowardsNest(World world) {
+        Location nearestEntry = burrow.findNearestEntry(world, world.getCurrentLocation());
+        if(Helper.distance(world.getLocation(this), nearestEntry) != 0) moveTowards(world, nearestEntry);
+        if(Helper.distance(world.getLocation(this), nearestEntry) == 0) enterNest(world);
+    }
+
+    protected void produceOffSpring(World world) {
+        ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
+    }
+
+
     protected void inNestBehavior(World world) {
-            if(reproduceBehavior(world)) return;
-            if(getEnergy() > 60) {
-                expandBurrow(world);
-                return;
-            }
-            if(getHunger() < 100) exitNest(world);
+        if(reproduceBehavior(world)) return;
+        if(getEnergy() > 60) {
+            expandBurrow(world);
+            return;
+        }
+        if(getHunger() < 100) exitNest(world);
+    }
+
+    protected Location getExitLocation(World world) {
+        Set<RabbitHole> entries = burrow.getEntries();
+        Location freeLocation = null;
+
+        for(Hole tempHole : entries) {
+            if(!(freeLocation == null)) break;
+            List<Location> emptyLocations = new ArrayList<>();
+            if(world.isTileEmpty(tempHole.getLocation(world))) emptyLocations.add(tempHole.getLocation(world)); //adds hole itself to list
+            emptyLocations.addAll(world.getEmptySurroundingTiles(tempHole.getLocation(world))); //adds empty sorrounding tiles to list
+            if(emptyLocations.isEmpty()) break;
+            int random = new Random().nextInt(emptyLocations.size());
+            freeLocation = emptyLocations.get(random);
+        }
+        return freeLocation;
+    }
+
+    private void initialize() {
+        adultAge = 3;
+        maxEnergy = 100;
+        energy = maxEnergy;
+        strength = 100;
+        maxHealth = 100;
+        health = maxHealth;
+    }
+
+    private boolean shouldRabbitDig(World world) {
+        RabbitHole nearestBurrowEntry = (RabbitHole) findNearestPrey(world, 5, RabbitHole.class);
+        if(nearestBurrowEntry == null) return true;
+
+        return !(Helper.distance(world.getLocation(this), world.getLocation(nearestBurrowEntry)) * 5 > 25);
     }
 
     /**
@@ -173,26 +212,6 @@ public class Rabbit extends NestAnimal {
         }
     }
 
-    public Nest getNest() {
-        return burrow;
-    }
-
-    protected Location getExitLocation(World world) {
-        Set<RabbitHole> entries = burrow.getEntries();
-        Location freeLocation = null;
-
-        for(Hole tempHole : entries) {
-            if(!(freeLocation == null)) break;
-            List<Location> emptyLocations = new ArrayList<>();
-            if(world.isTileEmpty(tempHole.getLocation(world))) emptyLocations.add(tempHole.getLocation(world)); //adds hole itself to list
-            emptyLocations.addAll(world.getEmptySurroundingTiles(tempHole.getLocation(world))); //adds empty sorrounding tiles to list
-            if(emptyLocations.isEmpty()) break;
-            int random = new Random().nextInt(emptyLocations.size());
-            freeLocation = emptyLocations.get(random);
-        }
-        return freeLocation;
-    }
-
     /**
      * Throws IllegalArgumentException if burrow is null
      * Throws Error.IllegalOperationException if the bunny has a burrow already
@@ -203,21 +222,4 @@ public class Rabbit extends NestAnimal {
         this.burrow = burrow;
     }
 
-    @Override
-    public void die(World world) {
-        if(isInNest()) exitNest(world);
-        super.die(world);
-
-        if(burrow != null) burrow.removeMember(this);
-    }
-
-    @Override
-    public String getType() {
-        return "rabbit";
-    }
-
-    @Override
-    public Color getColor() {
-        return Color.red;
-    }
 }

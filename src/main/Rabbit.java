@@ -127,7 +127,6 @@ public class Rabbit extends NestAnimal {
         ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
     }
 
-
     protected void inNestBehavior(World world) {
         if(reproduceBehavior(world)) return;
         if(getEnergy() > 60) {

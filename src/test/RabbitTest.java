@@ -345,21 +345,23 @@ class RabbitTest {
 
     @Test
     void testThatRabbitCantExitBurrowFromBlockedEntrance() {
-        Location testLocation = new Location(0,0);
-        Burrow burrow = new Burrow(world, testLocation);
-        Rabbit rabbit = new Rabbit(3, burrow, true);
-        world.add(rabbit);
-        rabbit.setHunger(99); // Under 100 so it wants to exit burrow
-        rabbit.setEnergy(60); // Not more than 60 so it cant expand
-        initialiseRabbitOnWorld(testLocation); //New rabbit that blocks entrance
+        Burrow burrow = (Burrow) ObjectFactory.generateOnMap(world, new Location(0, 0), "Burrow", world);
+        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0, 0), "Rabbit");
+
+        Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
+
+        rabbit2.setHunger(99); // Under 100 so it wants to exit burrow
+        rabbit2.setEnergy(60); // Not more than 60 so it cant expand
         
-        for(Location location : world.getEmptySurroundingTiles(testLocation)) {
-            initialiseRabbitOnWorld(location);
+        for(Location location : world.getEmptySurroundingTiles(new Location(0, 0))) {
+            ObjectFactory.generateOnMap(world, location, "Rabbit");
         }
 
+        rabbit1.skipTurn();
         program.simulate(); //Wants to exit burrow
+        rabbit1.skipTurn();
         program.simulate(); //Wants to exit burrow
-        assertTrue(rabbit.isInNest());
+        assertTrue(rabbit2.isInNest());
     }
 
     @Test

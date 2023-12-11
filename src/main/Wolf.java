@@ -150,22 +150,6 @@ public class Wolf extends NestAnimal {
     }
 
     /**
-     * If the wolf is in its den
-     * - If the the wolf has more then 90 energy it tries to reproduce
-     * - If the wolf cant reproduce and its hunger is less then 100it leaves the den
-     * - If the wolfs hunger is maxed it goes to its den
-     * - If the wolf sees another wolf close by it moves away
-     * - If the wolf is in a hunting party it hunts
-     * - If it dosent hunt it checks if it can join a close by hunting party/create one
-     * Otherwise it goes to another wolf, if there are non other above ground in the pack it hunts alone
-     * @param world
-     */
-    @Override
-    public void dayBehavior(World world) {
-        super.dayBehavior(world);
-    }
-
-    /**
      * If the wolf is in a hunting packs it calls the super movetowards twice otherwise once
      * @param location the location the wolf is going towards
      * @param world the world the wolf is in

@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.ArrayList;
 
-import Main.Hole;
-import Main.Burrow;
-import Main.Animal;
-import Main.Rabbit;
+import main.Hole;
+import main.Burrow;
+import main.Animal;
+import main.Rabbit;
 
 import itumulator.world.World;
 import itumulator.world.Location;

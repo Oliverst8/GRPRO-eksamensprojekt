@@ -1,8 +1,8 @@
 package test;
 
-import Main.Wolf;
-import Main.Rabbit;
-import Main.Cordyceps;
+import main.Wolf;
+import main.Rabbit;
+import main.Cordyceps;
 
 import spawn.ObjectFactory;
 

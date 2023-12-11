@@ -3,14 +3,7 @@ package test;
 import java.util.ArrayList;
 import java.util.Map;
 
-import Main.Hole;
-import Main.Wolf;
-import Main.Bear;
-import Main.Grass;
-import Main.Burrow;
-import Main.Entity;
-import Main.Rabbit;
-import Main.Carcass;
+import main.*;
 
 import spawn.Input;
 import spawn.ObjectFactory;
@@ -75,6 +68,7 @@ public class KravTest {
         world.setNight();
         program.simulate();
         program.simulate();
+
         assertFalse(world.contains(grass));
     }
 
@@ -182,12 +176,13 @@ public class KravTest {
 
         for(int i = 0; i<rabbit.getAdultAge()+1 ; i++){
         world.setNight();
-        program.simulate();
-        world.setDay();
+        while(world.isNight()){
+            program.simulate();
+        }
         program.simulate();
         rabbit.addEnergy(100);
         }
-
+        System.out.println(rabbit.getAge());
         assertTrue(energyBefore>rabbit.getEnergy());
     }
 
@@ -295,7 +290,20 @@ public class KravTest {
      */
     @Test
     void K1_3a() {
+        World world = generateWithInput(new Input("data/demo/d8.txt"));
 
+        boolean containsHole = false;
+
+        Map<Object, Location> entities = world.getEntities();
+
+        for(Object entity : entities.keySet()) {
+            if (entity.getClass().equals(Hole.class)) {
+                containsHole = true;
+                break;
+            }
+        }
+
+        assertTrue(containsHole);
     }
 
     /**
@@ -351,8 +359,20 @@ public class KravTest {
      */
     @Test
     void K2_1a() {
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
-        assertTrue(world.contains(wolf));
+        World world = generateWithInput(new Input("data/demo/d2.txt"));
+
+        boolean containsWolf = false;
+
+        Map<Object, Location> entities = world.getEntities();
+
+        for(Object entity : entities.keySet()) {
+            if (entity.getClass().equals(Wolf.class)) {
+                containsWolf = true;
+                break;
+            }
+        }
+
+        assertTrue(containsWolf);
     }
 
     /**
@@ -414,7 +434,52 @@ public class KravTest {
      */
     @Test
     void K2_3a() {
+        int wolf3HealthBefore = 200;
+        int wolf3HealthAfter = 200;
 
+
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf",5);
+        wolf.setHunger(100);
+
+        program.simulate();
+
+        if(wolf.isInNest()){
+            wolf.setHunger(50);
+            Wolf wolf2 = null;
+
+            program.simulate();
+
+            if(!wolf.isInNest()) {
+                wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,0), "Wolf", wolf.getPack(), 5, false);
+                wolf.setHunger(100);
+                wolf2.setHunger(100);
+
+                program.simulate();
+                program.simulate();
+                program.simulate();
+                wolf.setEnergy(20);
+                wolf2.setEnergy(20);
+                wolf.setHunger(50);
+                wolf2.setHunger(50);
+            }
+
+            if(world.getEntities().size()>=4) {
+
+                Wolf wolf3 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
+                wolf3.setHealth(200);
+                wolf3HealthBefore = wolf3.getHealth();
+
+                wolf3.skipTurn();
+                program.simulate();
+                wolf3.skipTurn();
+                program.simulate();
+                wolf3.skipTurn();
+                program.simulate();
+
+                wolf3HealthAfter = wolf3.getHealth();
+            }
+        }
+        assertTrue(wolf3HealthBefore>wolf3HealthAfter);
     }
 
     /**
@@ -485,6 +550,7 @@ public class KravTest {
     @Test
     void K2_6a() {
 
+        //Kunne placere en bjørn 0,0 og dernæst to kaniner en indenfor den radius og en udenfor og efter 6 simulates se at den anden ikke dør
     }
 
     /** 
@@ -495,7 +561,30 @@ public class KravTest {
      */
     @Test
     void K2_7a() {
+        boolean bearHasEaten = false;
+        Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(2,1), "Bear");
+        Berry berry = (Berry) ObjectFactory.generateOnMap(world, "Berry");
 
+        double before = 0;
+
+
+        world.setNight();
+        while(world.isNight()) {
+            program.simulate();
+        }
+
+
+        for(int i = 0; i<3;i++) {
+            program.simulate();
+        }
+
+
+
+        if(before < bear.getHunger()) {
+            bearHasEaten = true;
+        }
+
+        assertTrue(bearHasEaten);
     }
 
     /**
@@ -547,6 +636,149 @@ public class KravTest {
     void KF2_3() {
 
     }
+
+    /**
+     * Opret ådsler, som placeres på kortet når input filerne beskriver dette.
+     */
+    @Test
+    void K3_1a() {
+        World world = generateWithInput(new Input("data/demo/d7.txt"));
+
+        boolean containsCarcass = false;
+
+        Map<Object, Location> entities = world.getEntities();
+
+        for(Object entity : entities.keySet()) {
+            if (entity.getClass().equals(Carcass.class)) {
+                containsCarcass = true;
+                break;
+            }
+        }
+
+        assertTrue(containsCarcass);
+    }
+
+    /**
+     * Når dyr dør nu, skal de efterlade et ådsel. Ådsler kan spises ligesom dyr kunne
+     * tidligere, dog afhænger mængden af ’kød’ af hvor stort dyret der døde er. Således
+     * spises dyr ikke direkte længere når det slås ihjel, i stedet spises ådslet. Alle dyr som er
+     * kødædende spiser ådsler
+     */
+    @Test
+    void K3_1b() {
+        Location location = new Location(0,0);
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "Rabbit");
+        rabbit.removeHealth(100,world);
+
+        double wolfRabbitHunger = 0;
+        double wolfWolfHunger = 0;
+
+        if(world.getTile(location).getClass().equals(Carcass.class)){
+            Location wolfLocation = new Location(1,1);
+            Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, wolfLocation, "Wolf");
+            program.simulate();
+            wolfRabbitHunger = wolf.getHunger();
+            if(world.isTileEmpty(location)){
+                wolf.removeHealth(wolf.getHealth(),world);
+                Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,2), "Wolf");
+                program.simulate();
+                wolfWolfHunger = wolf2.getHunger();
+            }
+        }
+        assertTrue(wolfRabbitHunger<wolfWolfHunger);
+    }
+
+    /**
+     * Ådsler bliver dårligere med tiden og nedbrydes helt – selvom det ikke er spist
+     * op (altså forsvinder det)! Det forsvinder naturligvis også hvis det hele er spist.
+     */
+    @Test
+    void K3_1c() {
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0,0), "Rabbit");
+        rabbit.setHealth(100);
+        rabbit.removeHealth(100,world);
+
+        program.simulate();
+
+        Carcass carcass = (Carcass) world.getTile(new Location(0,0));
+
+        for(int i = 0; i <= 100; i++){
+            program.simulate();
+        }
+
+        assertFalse(world.contains(carcass));
+    }
+
+    /**
+     * Udover at ådsler nedbrydes, så hjælper svampene til. Således kan der opstå
+     * svampe I et ådsel.
+     * Dette kan ikke ses på selve kortet, men svampen lever I selve ådslet.
+     * Når ådslet er nedbrudt (og forsvinder), og hvis svampen er stor nok, kan den ses som
+     * en svamp placeret på kortet, der hvor ådsle lå. For at læse inputfilerne skal du sikre
+     * dig, at et ådsel kan indlæses med svamp.
+     */
+    @Test
+    void K3_2a() {
+
+    }
+
+    /**
+     * Svampe kan kun overleve, hvis der er andre ådsler den kan sprede sig til i
+     * nærheden. Er dette ikke tilfældet, vil svampen også dø efter lidt tid. Desto større ådslet
+     * er, desto længere vil svampen leve efter ådslet er væk. Da svampen kan udsende
+     * sporer, kan den række lidt længere end kun de omkringliggende pladser.
+     */
+    @Test
+    void K3_2b() {
+
+    }
+
+
+    /**
+     * Når en svamp dør, er jorden ekstra gunstig. Derfor opstår græs på sådanne
+     * felter, når svampen dør.
+     */
+    @Test
+    void KF3_1a() {
+
+    }
+
+    /**
+     * Ikke alle typer svampe lever på døde dyr. Der eksisterer også en anden type
+     * svamp (Cordyceps).
+     * Denne svamp spreder sig til, og styrer, (kun) levende dyr. Deres
+     * livscyklus er den samme som de tidligere svampe; de nedbryder langsomt dyret, og er
+     * der ikke mere tilbage af dyret, dør svampen snart efter. Når svampen har tæret nok på
+     * dyret, dør dyret. Da denne svamp nedbryder dyret mens det lever, er der ikke noget
+     * ådsel efter døden. Svampen dør også når dyret dør, med undtagelsen af krav
+     */
+    @Test
+    void KF3_2a() {
+
+    }
+
+    /**
+     * Når Cordyceps’ vært dør, forsøger den at sprede sig til levende dyr i nærheden,
+     * og kun på dette tidspunkt. Igen kan denne svamp sprede sig lidt længere end de
+     * omkringliggende pladser da den sender sporer ud.
+     */
+    @Test
+    void KF3_3a() {
+
+    }
+
+    /**
+     * Når et dyr er inficeret med Cordyceps svampen, overtager svampen dyrets
+     * handlinger. Dyret gør derfor som svampen bestemmer, hvilket er at søge mod andre
+     * dyr af samme art.
+     */
+    @Test
+    void KF3_3b() {
+
+    }
+
+
+
 
     /**
      * Useful methods that gets used

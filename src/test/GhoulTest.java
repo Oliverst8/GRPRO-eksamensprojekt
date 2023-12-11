@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.ArrayList;
 
-import Main.Ghoul;
-import Main.Entity;
-import Main.Rabbit;
-import Main.Helper;
-import Main.Carcass;
+import main.Ghoul;
+import main.Entity;
+import main.Rabbit;
+import main.Helper;
+import main.Carcass;
 
 import spawn.ObjectFactory;
 

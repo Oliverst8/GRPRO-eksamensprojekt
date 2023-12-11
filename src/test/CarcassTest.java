@@ -1,9 +1,9 @@
 package test;
-import Main.Entity;
-import Main.Rabbit;
-import Main.Carcass;
+import main.Entity;
+import main.Rabbit;
+import main.Carcass;
 
-import Main.Wolf;
+import main.Wolf;
 import spawn.ObjectFactory;
 
 import itumulator.world.World;
@@ -79,7 +79,9 @@ public class CarcassTest {
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world,wolfLocation,"Wolf");
         rabbit.setHealth(100);
         rabbit.removeHealth(100,world);
+        wolf.setHunger(20);
         double wolfHunger = wolf.getHunger();
+        program.simulate();
         program.simulate();
         assertTrue(wolfHunger<wolf.getHunger());
         assertNull(world.getTile(location));

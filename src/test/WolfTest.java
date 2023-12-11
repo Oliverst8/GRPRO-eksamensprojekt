@@ -2,9 +2,9 @@ package test;
 
 import java.util.Objects;
 
-import Main.Wolf;
-import Main.Rabbit;
-import Main.Carcass;
+import main.Wolf;
+import main.Rabbit;
+import main.Carcass;
 
 import spawn.ObjectFactory;
 

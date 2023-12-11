@@ -38,8 +38,8 @@ public class Rabbit extends NestAnimal {
     }
 
     @Override
-    void setupCanEat() {
-        canEat.add(Grass.class);
+    protected void setupCanEat() {
+        addCanEat(Grass.class);
     }
 
     /**

@@ -46,6 +46,13 @@ public class Wolf extends NestAnimal {
         initialise(age);
     }
 
+    public Wolf(Pack pack) {
+        super(1);
+        this.pack = pack;
+        pack.addMember(this);
+        initialise(age);
+    }
+
     /**
      * Creates a new wolf
      * Makes the wolf capable of eating rabbits

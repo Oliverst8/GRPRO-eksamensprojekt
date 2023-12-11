@@ -21,7 +21,9 @@ public class Main {
                 Object newObject = null;
 
                 // Generate object
-                if(object.getLocation() != null) {
+                if (object.getClassName().equals("Wolf")) {
+                    newObject = ObjectFactory.generateOnMap(world, object.getClassName(), pack);
+                } else if(object.getLocation() != null) {
                     newObject = ObjectFactory.generateOnMap(world, object.getLocation(), object.getClassName(), object.getLocation());
                 } else {
                     newObject = ObjectFactory.generateOnMap(world, object.getClassName());
@@ -35,9 +37,6 @@ public class Main {
                         ((Animal) newObject).setInfected(new Cordyceps());
                     }
                 }
-
-                // Add to pack if spawning object is a wolf
-                if (object.getClassName().equals("Wolf")) pack.addMember((Wolf) newObject);
             }
         }
     }

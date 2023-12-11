@@ -54,7 +54,7 @@ public class Rabbit extends NestAnimal {
      * If it does have one it moves towards its burrow if it isnt in it, otherwise it does nothing
      */
     @Override
-    public void nightBehavior(World world) {
+    protected void nightBehavior(World world) {
         if(isInfected()){
             fungi.infectedBehavior(world, this);
             return;
@@ -94,8 +94,8 @@ public class Rabbit extends NestAnimal {
     }
 
     @Override
-    void setupCanEat() {
-        canEat.add(Grass.class);
+    protected void setupCanEat() {
+        addCanEat(Grass.class);
     }
 
     /**
@@ -107,7 +107,7 @@ public class Rabbit extends NestAnimal {
      * - Otherwise
      */
     @Override
-    public void dayBehavior(World world) {
+    protected void dayBehavior(World world) {
         super.dayBehavior(world);
     }
 

@@ -53,9 +53,9 @@ public abstract class Organism extends Entity implements Actor, Consumable {
 
     }
 
-    abstract void dayBehavior(World world);
+    protected abstract void dayBehavior(World world);
 
-    abstract void nightBehavior(World world);
+    protected abstract void nightBehavior(World world);
 
     protected void setFoodChainValue(int foodChainValue) {
         this.foodChainValue = foodChainValue;

@@ -68,7 +68,7 @@ public class Grass extends Plant implements NonBlocking {
      * @param world providing details of the position on which the actor is currently located and much more.
      */
     @Override
-    public void dayBehavior(World world) {
+    protected void dayBehavior(World world) {
         isDying(world);
         photosynthesis();
         if(getEnergy() >= 75) spread(world);
@@ -83,7 +83,7 @@ public class Grass extends Plant implements NonBlocking {
      * @param world providing details of the position on which the actor is currently located and much more.
      */
     @Override
-    public void nightBehavior(World world) {
+    protected void nightBehavior(World world) {
         decay();
         isDying(world);
     }

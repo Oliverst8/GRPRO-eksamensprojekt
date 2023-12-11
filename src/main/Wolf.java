@@ -128,11 +128,11 @@ public class Wolf extends NestAnimal {
     }
 
     @Override
-    void setupCanEat() {
-        canEat.add(Bear.class);
-        canEat.add(Wolf.class);
-        canEat.add(Rabbit.class);
-        canEat.add(Carcass.class);
+    protected void setupCanEat() {
+        addCanEat(Bear.class);
+        addCanEat(Wolf.class);
+        addCanEat(Rabbit.class);
+        addCanEat(Carcass.class);
     }
 
     /**
@@ -147,7 +147,7 @@ public class Wolf extends NestAnimal {
      * @param world
      */
     @Override
-    public void dayBehavior(World world) {
+    protected void dayBehavior(World world) {
         super.dayBehavior(world);
     }
 
@@ -206,7 +206,7 @@ public class Wolf extends NestAnimal {
 
         for(Entity entity : Helper.getEntities(world, world.getLocation(this), radius)) {
 
-            if(canEat.contains(entity.getEntityClass())){
+            if(getCanEat().contains(entity.getEntityClass())){
                 Organism currentPrey = (Organism) entity;
 
                 if(getFoodChainValue() >= currentPrey.getFoodChainValue() && 
@@ -377,7 +377,7 @@ public class Wolf extends NestAnimal {
      * @param world
      */
     @Override
-    public void nightBehavior(World world) {
+    protected void nightBehavior(World world) {
         if(isInNest()) sleeping = true;
         if(sleeping){
             sleep();

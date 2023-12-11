@@ -74,7 +74,7 @@ public abstract class NestAnimal extends Animal {
     protected abstract Location getExitLocation(World world);
 
     @Override
-    public void dayBehavior(World world) {
+    protected void dayBehavior(World world) {
 
         if (isDying(world)) return;
 

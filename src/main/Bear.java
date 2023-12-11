@@ -11,10 +11,10 @@ import itumulator.world.World;
 import itumulator.world.Location;
 
 public class Bear extends Animal {
-    Location territory;
+    private final Location territory;
 
-    int matingDesire;
-    int territoryRadius;
+    private int matingDesire;
+    private int territoryRadius;
 
     public Bear(World world) {
         super(3);
@@ -34,6 +34,78 @@ public class Bear extends Animal {
         initialize();
 
         this.territory = territory;
+    }
+
+    @Override
+    public String getType() {
+        return "bear";
+    }
+
+    @Override
+    public Color getColor() {
+        return Color.lightGray;
+    }
+
+    @Override
+    protected void dayBehavior(World world) {
+        super.dayBehavior(world);
+        if(isDying(world)) return;
+
+        if(getAge() == adultAge) turnAdult();
+        if(getHunger() <= 50) {
+            territoryRadius = 8;
+        } else {
+            territoryRadius = 4;
+        }
+
+        if(isAdult()) {
+            increaseMatingDesire(50);
+
+            if(matingDesire >= 100) {
+                boolean attemptingToMate = seekMate(world);
+
+                if(attemptingToMate) return;
+            }
+        }
+
+        partrolTerritory(world);
+    }
+
+    @Override
+    protected void nightBehavior(World world) {
+        Location currentLocation = world.getLocation(this);
+
+        if(currentLocation.getX() >= territory.getX() + territoryRadius ||
+                currentLocation.getX() <= territory.getX() - territoryRadius ||
+                currentLocation.getY() >= territory.getY() + territoryRadius ||
+                currentLocation.getY() <= territory.getY() - territoryRadius) {
+            moveTowards(world, territory);
+        } else {
+            sleeping = true;
+        }
+
+        if(sleeping) {
+
+            sleep();
+            return;
+        }
+    }
+
+    @Override
+    protected void produceOffSpring(World world) {
+        Location territoryLocation = Helper.findEmptyLocation(world);
+
+        ObjectFactory.generateOnMap(world, territoryLocation, getType());
+    }
+
+
+    @Override
+    protected void setupCanEat() {
+        addCanEat(Berry.class);
+        addCanEat(Carcass.class);
+        addCanEat(Wolf.class);
+        addCanEat(Rabbit.class);
+        addCanEat(Bear.class);
     }
 
     private void initialize() {
@@ -64,7 +136,7 @@ public class Bear extends Animal {
 
                 Entity object = (Entity) world.getTile(location);
 
-                if(object != null && canEat.contains(object.getEntityClass()) &&
+                if(object != null && getCanEat().contains(object.getEntityClass()) &&
                 ((Organism) object).isEatable()) {
                     // If the pray is an adult and this is not, do not hunt it.
                     if (!isAdult() && ((Organism) object).isAdult()) continue;
@@ -111,76 +183,6 @@ public class Bear extends Animal {
     }
 
     private void turnAdult() {
-        canEat.add(Wolf.class);
-    }
-
-    @Override
-    void produceOffSpring(World world) {
-        Location territoryLocation = Helper.findEmptyLocation(world);
-
-        ObjectFactory.generateOnMap(world, territoryLocation, getType());
-    }
-
-    @Override
-    public void dayBehavior(World world) {
-        super.dayBehavior(world);
-        if(isDying(world)) return;
-
-        if(getAge() == adultAge) turnAdult();
-        if(getHunger() <= 50) {
-            territoryRadius = 8;
-        } else {
-            territoryRadius = 4;
-        }
-
-        if(isAdult()) {
-            increaseMatingDesire(50);
-
-            if(matingDesire >= 100) {
-                boolean attemptingToMate = seekMate(world);
-                
-                if(attemptingToMate) return;
-            }
-        }
-
-        partrolTerritory(world);
-    }
-
-    @Override
-    public void nightBehavior(World world) {
-        Location currentLocation = world.getLocation(this);
-
-        if(currentLocation.getX() >= territory.getX() + territoryRadius ||
-        currentLocation.getX() <= territory.getX() - territoryRadius ||
-        currentLocation.getY() >= territory.getY() + territoryRadius ||
-        currentLocation.getY() <= territory.getY() - territoryRadius) {
-            moveTowards(world, territory);
-        } else {
-            sleeping = true;
-        }
-
-        if(sleeping) {
-
-            sleep();
-            return;
-        }
-    }
-
-    @Override
-    void setupCanEat() {
-        canEat.add(Berry.class);
-        canEat.add(Carcass.class);
-        canEat.add(Wolf.class);
-        canEat.add(Rabbit.class);
-    }
-
-    @Override
-    public String getType() {
-        return "bear";
-    }
-
-    @Override
-    public Color getColor() {
-        return Color.lightGray;
+        addCanEat(Wolf.class);
     }
 }

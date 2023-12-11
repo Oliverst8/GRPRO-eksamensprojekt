@@ -7,10 +7,9 @@ import itumulator.world.World;
 public class Carcass extends MycoHost implements Spawnable {
 
     private Animal animal;
-
     private boolean spawned = false;
-
     private int startTick;
+
     /**
      * Sets food chain value to -2
      * Sets the adult age of the carcass to 3
@@ -25,13 +24,6 @@ public class Carcass extends MycoHost implements Spawnable {
         animal = null;
         health = 100;
         maxEnergy = 100;
-    }
-
-    public void setAnimal(Animal animal) {
-        this.animal = animal;
-        this.energy = animal.getEnergy();
-        this.maxEnergy = animal.getMaxEnergy();
-        this.health = animal.maxHealth;
     }
 
     /**
@@ -98,6 +90,13 @@ public class Carcass extends MycoHost implements Spawnable {
         carcassBehaviour(world);
     }
 
+    public void setAnimal(Animal animal) {
+        this.animal = animal;
+        this.energy = animal.getEnergy();
+        this.maxEnergy = animal.getMaxEnergy();
+        this.health = animal.maxHealth;
+    }
+
     /**
      * Is the behaviour for the carcuss both day and night
      * Removes 1 energy pr tick, so 20 per fulldaycycle
@@ -105,7 +104,7 @@ public class Carcass extends MycoHost implements Spawnable {
      * maxiamal Energy that the organism can have gets less and less pr age
      * @param world
      */
-    void carcassBehaviour(World world) {
+    private void carcassBehaviour(World world) {
         if(isDying(world)) return;
         if(!spawned){
             startTick = world.getCurrentTime();

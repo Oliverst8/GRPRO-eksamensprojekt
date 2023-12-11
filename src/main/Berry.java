@@ -15,18 +15,6 @@ public class Berry extends Plant{
         containsBerries = true;
     }
 
-    public boolean containsBerries() {
-        return containsBerries;
-    }
-
-    public void growBerries() {
-        if(energy > 50){
-            timeSinceBerries = 0;
-            containsBerries = true;
-            removeEnergy(25);
-        }
-    }
-
     @Override
     public void die(World world) {
         if(energy > 0 && containsBerries) {
@@ -63,7 +51,7 @@ public class Berry extends Plant{
     }
 
     @Override
-    public void dayBehavior(World world) {
+    protected void dayBehavior(World world) {
         if(!containsBerries) {
             timeSinceBerries++;
         }
@@ -73,5 +61,17 @@ public class Berry extends Plant{
     }
 
     @Override
-    public void nightBehavior(World world) {}
+    protected void nightBehavior(World world) {}
+
+    public boolean containsBerries() {
+        return containsBerries;
+    }
+
+    public void growBerries() {
+        if(energy > 50){
+            timeSinceBerries = 0;
+            containsBerries = true;
+            removeEnergy(25);
+        }
+    }
 }

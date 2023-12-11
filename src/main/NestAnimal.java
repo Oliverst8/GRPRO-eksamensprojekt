@@ -7,15 +7,58 @@ import error.IllegalOperationException;
 import error.CantReproduceException;
 
 public abstract class NestAnimal extends Animal {
-    private boolean inNest = false;
-
     abstract Nest getNest();
+    private boolean inNest = false;
 
     /**
      * @param defualtFoodChainValue
      */
     public NestAnimal(int defualtFoodChainValue) {
         super(defualtFoodChainValue);
+    }
+
+    protected abstract void moveTowardsNest(World world);
+
+    protected abstract void noNestBehavior(World world);
+
+    protected abstract Location getExitLocation(World world);
+
+    protected abstract void hungryBehavior(World world);
+
+    protected abstract void inNestBehavior(World world);
+
+    @Override
+    protected void dayBehavior(World world) {
+
+        if (isDying(world)) return;
+
+        if (isInNest()) {
+            inNestBehavior(world);
+            return;
+        }
+
+        if (getHunger() >= 100) {
+            goToNest(world);
+        } else {
+            hungryBehavior(world);
+        }
+
+    }
+
+    public boolean isInNest() {
+        return inNest;
+    }
+
+    public void setInNest(Boolean inNest) {
+        this.inNest = inNest;
+    }
+
+    protected void goToNest(World world) {
+        if (getNest() != null) {
+            moveTowardsNest(world);
+        } else {
+            noNestBehavior(world);
+        }
     }
 
     /**
@@ -35,26 +78,6 @@ public abstract class NestAnimal extends Animal {
         world.remove(this);
     }
 
-    public boolean isInNest() {
-        return inNest;
-    }
-
-    public void setInNest(Boolean inNest) {
-        this.inNest = inNest;
-    }
-
-    protected void goToNest(World world) {
-        if (getNest() != null) {
-            moveTowardsNest(world);
-        } else {
-            noNestBehavior(world);
-        }
-    }
-
-    protected abstract void moveTowardsNest(World world);
-
-    protected abstract void noNestBehavior(World world);
-
     /**
      * Throws Error.IllegalOperationException if the NestAnimal is not in its Nest
      * Sets inNest to false
@@ -71,29 +94,6 @@ public abstract class NestAnimal extends Animal {
         world.setTile(freeLocation, this);
     }
 
-    protected abstract Location getExitLocation(World world);
-
-    @Override
-    public void dayBehavior(World world) {
-
-        if (isDying(world)) return;
-
-        if (isInNest()) {
-            inNestBehavior(world);
-            return;
-        }
-
-        if (getHunger() >= 100) {
-            goToNest(world);
-        } else {
-            hungryBehavior(world);
-        }
-
-    }
-
-    protected abstract void hungryBehavior(World world);
-
-    protected abstract void inNestBehavior(World world);
 
     protected boolean reproduceBehavior(World world) {
         if (getEnergy() > 80 && getNest().getAdultMembers().size() >= 2) {

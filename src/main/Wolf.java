@@ -16,7 +16,6 @@ import itumulator.world.Location;
 
 public class Wolf extends NestAnimal {
     private Pack pack; //The pack the wolf is part off
-
     private Pack huntingPack; //If the wolf is not part of a huntingpack it is null, otherwise this is the huntingpack
 
     /**
@@ -66,38 +65,32 @@ public class Wolf extends NestAnimal {
         }
     }
 
-    /**
-     * Sets the starting values of the wolf
-     * huntingpack to null
-     * adultage to 5
-     * @param age the age of the wolf
-     */
-    private void initialise(int age) {
-        huntingPack = null;
-        adultAge = 5;
-        this.age = age;
-        setInNest(false);
-        maxEnergy = 200;
-        energy = maxEnergy;
-        maxHealth = 200;
-        health = maxHealth;
-        strength = 100;
+    @Override
+    void setupCanEat() {
+        canEat.add(Bear.class);
+        canEat.add(Wolf.class);
+        canEat.add(Rabbit.class);
+        canEat.add(Carcass.class);
     }
 
     /**
-     * @return the pack the wolf is part off
-     */
-    public Pack getPack() {
-        return pack;
-    }
-
-    /**
-     * Creates a new wolf with the same pack as the parent, and a age of 5 in a den
-     * @param world the wolf is part off
+     * If the wolf is not in a hunting pack, it eats normally
+     * If the wolf is in a hunting pack, everyone of the hunting pack gets energy
+     * @param food the food to be eaten
+     * @param world the world the wolves are in
      */
     @Override
-    protected void produceOffSpring(World world) {
-        ObjectFactory.generateOffMap(world, "Wolf",this.getPack(), 0, true);
+    public void eat(World world, Organism food) {
+        if(huntingPack == null) {
+            super.eat(world, food);
+            return;
+        }
+
+        for(Animal wolf : huntingPack.getMembers()){
+            ((Wolf) wolf).eatAlone(world, food);
+        }
+
+        food.die(world);
     }
 
     /**
@@ -117,22 +110,36 @@ public class Wolf extends NestAnimal {
     }
 
     /**
-     * If the wolf is in a hunting packs it calls the super movetowards twice otherwise once
-     * @param location the location the wolf is going towards
-     * @param world the world the wolf is in
+     *
+     * @return The food chain value of the wolf
+     * If the wolf is in a hunting pack the food chain value is equal to its size, otherwise it return the default value for wolves
      */
     @Override
-    protected void moveTowards(World world, Location location) {
-        if(huntingPack != null) super.moveTowards(world, location, 2, this);
-        else super.moveTowards(world, location,1, this);
+    public int getFoodChainValue() {
+        if(huntingPack == null) return super.getFoodChainValue();
+        else return huntingPack.getMembers().size();
+    }
+
+    /**
+     * If its inside of its den, then sleep true and calls sleep
+     * If not it calls goToDen where it movestowards its den or digs one
+     * @param world
+     */
+    @Override
+    public void nightBehavior(World world) {
+        if(isInNest()) sleeping = true;
+        if(sleeping){
+            sleep();
+            return;
+        }
+        goToNest(world);
     }
 
     @Override
-    void setupCanEat() {
-        canEat.add(Bear.class);
-        canEat.add(Wolf.class);
-        canEat.add(Rabbit.class);
-        canEat.add(Carcass.class);
+    public void die(World world) {
+        super.die(world);
+        if(getHuntingPack() != null) getHuntingPack().removeMember(this);
+        if(pack != null) pack.removeMember(this);
     }
 
     /**
@@ -151,28 +158,24 @@ public class Wolf extends NestAnimal {
         super.dayBehavior(world);
     }
 
-    protected void hungryBehavior(World world) {
+    /**
+     * If the wolf is in a hunting packs it calls the super movetowards twice otherwise once
+     * @param location the location the wolf is going towards
+     * @param world the world the wolf is in
+     */
+    @Override
+    protected void moveTowards(World world, Location location) {
+        if(huntingPack != null) super.moveTowards(world, location, 2, this);
+        else super.moveTowards(world, location,1, this);
+    }
 
-        Wolf nearestWolf =  (Wolf) findNearestPrey(world, 3, Wolf.class);
-        if(nearestWolf != null){
-
-            if (!(nearestWolf.getPack()).equals(getPack())) {
-                moveAwayFrom(world, world.getLocation(nearestWolf));
-                return;
-            }
-        }
-
-        if(huntingPack != null) {
-
-            hunt(world);
-            return;
-        }
-
-        if(!(createOrJoinHuntingPack(world, 3))) {
-            Location nearestWolfLocation = pack.findNearestMember(world, world.getLocation(this),this);
-            if(nearestWolfLocation != null) moveTowards(world, nearestWolfLocation);
-            else hunt(world);
-        }
+    /**
+     * Creates a new wolf with the same pack as the parent, and a age of 5 in a den
+     * @param world the wolf is part off
+     */
+    @Override
+    protected void produceOffSpring(World world) {
+        ObjectFactory.generateOffMap(world, "Wolf",this.getPack(), 0, true);
     }
 
     @Override
@@ -209,8 +212,8 @@ public class Wolf extends NestAnimal {
             if(canEat.contains(entity.getEntityClass())){
                 Organism currentPrey = (Organism) entity;
 
-                if(getFoodChainValue() >= currentPrey.getFoodChainValue() && 
-                currentPrey.isEatable() && !pack.contains(currentPrey)) {
+                if(getFoodChainValue() >= currentPrey.getFoodChainValue() &&
+                        currentPrey.isEatable() && !pack.contains(currentPrey)) {
                     prey.put(world.getLocation(entity), currentPrey);
                 }
 
@@ -218,7 +221,7 @@ public class Wolf extends NestAnimal {
         }
 
         if(prey.isEmpty()) return null;
-        
+
         Location closestPrey = null;
 
         double closestDist = Double.MAX_VALUE;
@@ -230,44 +233,15 @@ public class Wolf extends NestAnimal {
             }
         }
 
-        
+
         return prey.get(closestPrey);
     }
 
-    protected void inNestBehavior(World world) {
-        if(reproduceBehavior(world)) return;
-        if(getHunger() < 100) {
-            exitNest(world);
-        }
-    }
-
-    private boolean createOrJoinHuntingPack(World world, int radius) {
-        Set<Location> surroundingLocations = world.getSurroundingTiles(radius);
-        List<Wolf> foundWolfes = new ArrayList<>();
-
-        for(Location tile : surroundingLocations){
-            Object tileObject = world.getTile(tile);
-            if(tileObject instanceof Wolf){
-                Wolf wolf = (Wolf) tileObject;
-                if(pack.equals(wolf.getPack())){
-                    if(wolf.getHuntingPack() != null){
-                        setHuntingPack(wolf.huntingPack);
-                        return true;
-                    }  else{
-                        foundWolfes.add(wolf);
-                    }
-                }
-            }
-        }
-
-        if(foundWolfes.isEmpty()) return false;
-        setHuntingPack(new Pack());
-        for(Wolf wolf : foundWolfes){
-            wolf.setHuntingPack(huntingPack);
-            wolf.skipTurn();
-        }
-        setSkipTurn(false);
-        return true;
+    /**
+     * @return the pack the wolf is part off
+     */
+    public Pack getPack() {
+        return pack;
     }
 
     public void skipHuntingPacksTurn() {
@@ -293,26 +267,6 @@ public class Wolf extends NestAnimal {
     }
 
     /**
-     * If the wolf is not in a hunting pack, it eats normally
-     * If the wolf is in a hunting pack, everyone of the hunting pack gets energy
-     * @param food the food to be eaten
-     * @param world the world the wolves are in
-     */
-    @Override
-    public void eat(World world, Organism food) {
-        if(huntingPack == null) {
-            super.eat(world, food);
-            return;
-        }
-
-        for(Animal wolf : huntingPack.getMembers()){
-            ((Wolf) wolf).eatAlone(world, food);
-        }
-
-        food.die(world);
-    }
-
-    /**
      * Makes a wolf eat something without it dying
      * @param food the food to be consumed
      * @param world the world the wolf is in
@@ -320,6 +274,41 @@ public class Wolf extends NestAnimal {
     public void eatAlone(World world, Organism food) {
         if(canIEat(food.getEntityClass())){
             addHunger(0.5 * food.getEnergy());
+        }
+    }
+
+    public Nest getNest() {
+        return pack.getDen();
+    }
+
+    protected void hungryBehavior(World world) {
+
+        Wolf nearestWolf =  (Wolf) findNearestPrey(world, 3, Wolf.class);
+        if(nearestWolf != null){
+
+            if (!(nearestWolf.getPack()).equals(getPack())) {
+                moveAwayFrom(world, world.getLocation(nearestWolf));
+                return;
+            }
+        }
+
+        if(huntingPack != null) {
+
+            hunt(world);
+            return;
+        }
+
+        if(!(createOrJoinHuntingPack(world, 3))) {
+            Location nearestWolfLocation = pack.findNearestMember(world, world.getLocation(this),this);
+            if(nearestWolfLocation != null) moveTowards(world, nearestWolfLocation);
+            else hunt(world);
+        }
+    }
+
+    protected void inNestBehavior(World world) {
+        if(reproduceBehavior(world)) return;
+        if(getHunger() < 100) {
+            exitNest(world);
         }
     }
 
@@ -356,40 +345,51 @@ public class Wolf extends NestAnimal {
         return exitLocations.get(random.nextInt(exitLocations.size()));
     }
 
-    public Nest getNest() {
-        return pack.getDen();
+    /**
+     * Sets the starting values of the wolf
+     * huntingpack to null
+     * adultage to 5
+     * @param age the age of the wolf
+     */
+    private void initialise(int age) {
+        huntingPack = null;
+        adultAge = 5;
+        this.age = age;
+        setInNest(false);
+        maxEnergy = 200;
+        energy = maxEnergy;
+        maxHealth = 200;
+        health = maxHealth;
+        strength = 100;
     }
 
-    /**
-     *
-     * @return The food chain value of the wolf
-     * If the wolf is in a hunting pack the food chain value is equal to its size, otherwise it return the default value for wolves
-     */
-    @Override
-    public int getFoodChainValue() {
-        if(huntingPack == null) return super.getFoodChainValue();
-        else return huntingPack.getMembers().size();
-    }
+    private boolean createOrJoinHuntingPack(World world, int radius) {
+        Set<Location> surroundingLocations = world.getSurroundingTiles(radius);
+        List<Wolf> foundWolfes = new ArrayList<>();
 
-    /**
-     * If its inside of its den, then sleep true and calls sleep
-     * If not it calls goToDen where it movestowards its den or digs one
-     * @param world
-     */
-    @Override
-    public void nightBehavior(World world) {
-        if(isInNest()) sleeping = true;
-        if(sleeping){
-            sleep();
-            return;
+        for(Location tile : surroundingLocations){
+            Object tileObject = world.getTile(tile);
+            if(tileObject instanceof Wolf){
+                Wolf wolf = (Wolf) tileObject;
+                if(pack.equals(wolf.getPack())){
+                    if(wolf.getHuntingPack() != null){
+                        setHuntingPack(wolf.huntingPack);
+                        return true;
+                    }  else{
+                        foundWolfes.add(wolf);
+                    }
+                }
+            }
         }
-        goToNest(world);
+
+        if(foundWolfes.isEmpty()) return false;
+        setHuntingPack(new Pack());
+        for(Wolf wolf : foundWolfes){
+            wolf.setHuntingPack(huntingPack);
+            wolf.skipTurn();
+        }
+        setSkipTurn(false);
+        return true;
     }
 
-    @Override
-    public void die(World world) {
-        super.die(world);
-        if(getHuntingPack() != null) getHuntingPack().removeMember(this);
-        if(pack != null) pack.removeMember(this);
-    }
 }

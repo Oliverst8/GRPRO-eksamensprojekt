@@ -47,6 +47,10 @@ public abstract class Community {
         return adultMembers;
     }
 
+    public boolean contains(Organism animal) {
+        return members.contains(animal);
+    }
+
     protected Location findNearestEntity(World world, Location location, Set<? extends Entity> enitities) {
         Location closestEntityLocation = null;
         double minDist = Double.MAX_VALUE;
@@ -59,9 +63,5 @@ public abstract class Community {
             }
         }
         return closestEntityLocation;
-    }
-
-    public boolean contains(Organism animal) {
-        return members.contains(animal);
     }
 }

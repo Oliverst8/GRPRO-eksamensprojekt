@@ -24,7 +24,6 @@ public abstract class Plant extends Organism implements Spawnable {
      */
     protected void photosynthesis() {
         if(!isDay()) throw new IllegalOperationException("Cant make photosynthesis in the night");
-
         addEnergy(20);
     }
 }

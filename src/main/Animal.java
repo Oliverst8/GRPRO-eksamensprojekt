@@ -12,13 +12,10 @@ import itumulator.world.World;
 import itumulator.world.Location;
 
 public abstract class Animal extends MycoHost implements Spawnable {
-    private double hunger; //0 is empty, and 100 is full
-
-    protected Set<Class<? extends Consumable>> canEat; //Holdes the types of classes the animal can eat
-
     protected boolean sleeping;
-    protected boolean infected;
     protected int strength;
+    private double hunger; //0 is empty, and 100 is full
+    private Set<Class<? extends Consumable>> canEat; //Holdes the types of classes the animal can eat
 
     /**
      * Initialises hunger to 50
@@ -28,37 +25,111 @@ public abstract class Animal extends MycoHost implements Spawnable {
     public Animal(int defualtFoodChainValue) {
         super(defualtFoodChainValue);
         hunger = 50;
-        this.canEat = new HashSet<>();
+        this.setCanEat(new HashSet<>());
         sleeping = false;
-        infected = false;
         setupCanEat();
     }
 
+    protected abstract void setupCanEat();
+    protected abstract void produceOffSpring(World world);
+
+    /**
+     * Calls a check of weather or not the animal is dying
+     * @param world the world which the animal is in
+     */
     @Override
-    public void dayBehavior(World world) {
+    protected void dayBehavior(World world) {
         isDying(world);
     }
 
-    protected boolean isDying(World world){
-        if(sleeping && hunger >= 0 && world.getCurrentTime() > 0) {
-            sleep();
-            return true;
-        } else if(energy<=0 && health > 0 && hunger > 1) {
-            sleep();
-            return true;
-        } else if(world.getCurrentTime() == 0 && sleeping) {
-            sleeping = false;
-            wake();
-            return true;
-        } else  if(health <= 0 || energy <= 0){
-            die(world);
-            return true;
+    @Override
+    public String getPNGPath() {
+        StringBuilder path = new StringBuilder();
+
+        path.append(getType());
+
+        if(isAdult()) path.append("-large");
+        else path.append("-small");
+
+        if (isInfected()) path.append("-fungi");
+        if (sleeping) path.append("-sleeping");
+
+        return path.toString();
+    }
+
+    /**
+     * If the animal is in the world, it creates a carcuss of the animal in the animals location, and deletes the animal
+     * otherwise it just deletes the animal
+     * @param world current world
+     */
+    @Override
+    public void die(World world){
+
+        if(isInfected()){
+            super.die(world);
+            return;
         }
-        return false;
+        if(world.isOnTile(this)) {
+            Location carcassLocation = world.getLocation(this);
+            world.delete(this);
+
+            Carcass carcass = (Carcass) ObjectFactory.generateOnMap(world, carcassLocation, "Carcass");
+            carcass.setAnimal(this);
+
+        } else {
+            super.die(world);
+        }
+    }
+
+    /**
+     * @throws NullPointerException if food is null
+     * Check weather or not the animal can eat the food
+     * Adds energy if it can, and does nothing if not.
+     * @param food the food to be eaten
+     */
+    public void eat(World world, Organism food) {
+        if(canIEat(food.getEntityClass())){
+            if(food.getEnergy()>0){
+                addHunger(0.5*food.getEnergy());
+                food.removeEnergy(food.getEnergy());
+            }
+            food.die(world);
+        }
     }
 
     public int getStrength() {
         return strength;
+    }
+
+    public double getHunger() {
+        return hunger;
+    }
+
+    public void setHunger(double hunger) {
+        this.hunger = hunger;
+    }
+
+    /*
+     * Adds hunger
+     * @param hunger gets added to current hunger
+     */
+    public void addHunger(double hunger){
+        setHunger(Math.max(100, this.hunger + hunger));
+    }
+
+    /*
+     * Removes hunger
+     * @param hunger get subtracted from current hunger
+     */
+    public void removeHunger(double hunger){
+        setHunger(Math.max(0, this.hunger - hunger));
+    }
+
+    /*
+     * @return String array of canEat of the object
+     */
+    public Set<Class<? extends Consumable>> getCanEat(){
+        return canEat;
     }
 
     /**
@@ -68,7 +139,7 @@ public abstract class Animal extends MycoHost implements Spawnable {
      * @return true if the class is in the list of classes the animal can eat
      */
     public boolean canIEat(Class<? extends Consumable> food) {
-        return canEat.contains(food);
+        return getCanEat().contains(food);
     }
 
     /**
@@ -82,7 +153,7 @@ public abstract class Animal extends MycoHost implements Spawnable {
         Map<Location, Organism> prey = new HashMap<>();
 
         for(Entity entity : Helper.getEntities(world, world.getLocation(this),radius)) {
-            if(canEat.contains(entity.getEntityClass())) {
+            if(getCanEat().contains(entity.getEntityClass())) {
                 Organism currentPrey = (Organism) entity;
 
                 if(getFoodChainValue() >= currentPrey.getFoodChainValue() && currentPrey.isEatable()) {
@@ -153,57 +224,6 @@ public abstract class Animal extends MycoHost implements Spawnable {
     }
 
     /**
-     * removes 10 energy from the prey
-     * if it hits 0 energy die will be called from organism.java
-     * @param world
-     * @param animal
-     */
-    private void Attack(World world, Organism animal) {
-        animal.removeHealth(strength, world);
-        this.removeEnergy(10);
-    }
-
-    /**
-     * @throws NullPointerException if food is null
-     * Check weather or not the animal can eat the food
-     * Adds energy if it can, and does nothing if not.
-     * @param food the food to be eaten
-     */
-    public void eat(World world, Organism food) {
-        if(canIEat(food.getEntityClass())){
-            if(food.getEnergy()>0){
-                addHunger(0.5*food.getEnergy());
-                food.removeEnergy(food.getEnergy());
-            }
-            food.die(world);
-        }
-    }
-
-    /**
-     * If the animal is in the world, it creates a carcuss of the animal in the animals location, and deletes the animal
-     * otherwise it just deletes the animal
-     * @param world current world
-     */
-    @Override
-    public void die(World world){
-
-        if(isInfected()){
-            super.die(world);
-            return;
-        }
-        if(world.isOnTile(this)) {
-            Location carcassLocation = world.getLocation(this);
-            world.delete(this);
-
-            Carcass carcass = (Carcass) ObjectFactory.generateOnMap(world, carcassLocation, "Carcass");
-            carcass.setAnimal(this);
-
-        } else {
-            super.die(world);
-        }
-    }
-
-    /**
      * @throws IllegalArgumentException if radius is less then 2
      * Finds the nearest object of the type object to this animal
      * @return the location of the nearest object (except itself) in radius, returns null if there is no such object
@@ -230,8 +250,6 @@ public abstract class Animal extends MycoHost implements Spawnable {
 
         return nearestEntity;
     }
-
-    abstract void produceOffSpring(World world);
 
     /**
      * @param world the world of the animals
@@ -326,7 +344,7 @@ public abstract class Animal extends MycoHost implements Spawnable {
      * @param target the target to get furhter away from
      * @return the new number
      */
-    protected  int makeNumberOneFurtherAway(int actual, int target){
+    protected int makeNumberOneFurtherAway(int actual, int target){
         if(actual < target) return (actual - 1);
         else return (actual + 1);
     }
@@ -364,51 +382,45 @@ public abstract class Animal extends MycoHost implements Spawnable {
         sleeping = false;
     }
 
-    public double getHunger() {
-        return hunger;
+    protected void addCanEat(Class<? extends Consumable> food){
+        canEat.add(food);
     }
 
-    public void setHunger(double hunger) {
-        this.hunger = hunger;
+    protected void setCanEat(Set<Class<? extends Consumable>> canEat) {
+        this.canEat = canEat;
     }
 
-    /*
-     * Adds hunger
-     * @param hunger gets added to current hunger
+    /**
+     * Checks weather or not the animal should die or if it should go to sleep because of energi needs
+     * @param world The world the animal is in
+     * @return weather the animal is dying or having to sleep
      */
-    public void addHunger(double hunger){
-        setHunger(Math.max(100, this.hunger + hunger));
+    protected boolean isDying(World world){
+        if(sleeping && hunger >= 0 && world.getCurrentTime() > 0) {
+            sleep();
+            return true;
+        } else if(energy<=0 && health > 0 && hunger > 1) {
+            sleep();
+            return true;
+        } else if(world.getCurrentTime() == 0 && sleeping) {
+            sleeping = false;
+            wake();
+            return true;
+        } else  if(health <= 0 || energy <= 0){
+            die(world);
+            return true;
+        }
+        return false;
     }
 
-    /*
-     * Removes hunger
-     * @param hunger get subtracted from current hunger
+    /**
+     * removes 10 energy from the prey
+     * if it hits 0 energy die will be called from organism.java
+     * @param world
+     * @param animal
      */
-    public void removeHunger(double hunger){
-        setHunger(Math.max(0, this.hunger - hunger));
-    }
-
-    abstract void setupCanEat();
-
-    /*
-     * @return String array of canEat of the object
-     */
-    public Set<Class<? extends Consumable>> getCanEat(){
-        return canEat;
-    }
-
-    @Override
-    public String getPNGPath() {
-        StringBuilder path = new StringBuilder();
-
-        path.append(getType());
-
-        if(isAdult()) path.append("-large");
-        else path.append("-small");
-
-        if (infected) path.append("-fungi");
-        if (sleeping) path.append("-sleeping");
-
-        return path.toString();
+    private void Attack(World world, Organism animal) {
+        animal.removeHealth(strength, world);
+        this.removeEnergy(10);
     }
 }

@@ -7,7 +7,11 @@ import itumulator.world.World;
 import itumulator.world.Location;
 
 public interface Fungi {
+    abstract void drain(World world, MycoHost host);
+    
     abstract void hostDied(World world, MycoHost host);
+
+    abstract void infectedBehavior(World world, MycoHost host);
 
     abstract MycoHost findNewHost(World world, Location location);
 
@@ -21,8 +25,4 @@ public interface Fungi {
 
         return nonInfected;
     }
-
-    abstract void drain(World world, MycoHost host);
-
-    abstract void infectedBehavior(World world, MycoHost host);
 }

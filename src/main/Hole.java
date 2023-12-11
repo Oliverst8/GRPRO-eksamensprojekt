@@ -7,16 +7,6 @@ import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 
 public class Hole extends Inanimate implements NonBlocking {
-
-    /**
-     * @return the location of the hole
-     * @param world the world the hole is in
-     * @return the location of the hole
-     */
-    public Location getLocation(World world) {
-        return world.getLocation(this);
-    }
-
     /**
      * @return the image of the hole
      */
@@ -31,5 +21,14 @@ public class Hole extends Inanimate implements NonBlocking {
     @Override
     public Color getColor() {
         return new Color(150, 75, 0);
+    }
+
+    /**
+     * @return the location of the hole
+     * @param world the world the hole is in
+     * @return the location of the hole
+     */
+    public Location getLocation(World world) {
+        return world.getLocation(this);
     }
 }

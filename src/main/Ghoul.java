@@ -6,8 +6,8 @@ import java.util.Set;
 
 import spawn.ObjectFactory;
 
-import itumulator.world.Location;
 import itumulator.world.World;
+import itumulator.world.Location;
 
 public class Ghoul extends Organism implements Spawnable, Fungi {
     public Ghoul() {
@@ -64,27 +64,35 @@ public class Ghoul extends Organism implements Spawnable, Fungi {
         spread(world, host);
     }
 
+    @Override
     public void dayBehavior(World world) {
         behavior(world);
     }
 
+    @Override
     public void nightBehavior(World world) {
         behavior(world);
     }
 
-    public void behavior(World world) {
-        if(!world.isOnTile(this)) return;
-        spread(world);
-        removeEnergy(10);
-        removeHealth(10, world);
-    }
-
+    /**
+     * Drains the host's energy and health and adds it to the fungi
+     * @param world The world the host is in
+     * @param host The host to drain
+     */
     public void drain(World world, MycoHost host) {
         maxHealth += 5;
         maxEnergy += 5;
         addEnergy(5);
         addHealth(5);
         host.removeEnergy(5);
+    }
+
+    private void behavior(World world) {
+        if(!world.isOnTile(this)) return;
+
+        spread(world);
+        removeEnergy(10);
+        removeHealth(10, world);
     }
 
     private void spread(World world) {

@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.LinkedList;
 
 import spawn.ObjectFactory;
+
 import error.IllegalOperationException;
 
 import itumulator.world.World;
@@ -24,6 +25,35 @@ public class Grass extends Plant implements NonBlocking {
         setEnergy(50);
 
         energyLossPerDay = 10;
+    }
+
+    @Override
+    public String getType() {
+        return "grass";
+    }
+
+    @Override
+    public Color getColor() {
+        return Color.green;
+    }
+
+    @Override
+    public void dayBehavior(World world) {
+        isDying(world);
+        photosynthesis();
+        if(getEnergy() >= 75) spread(world);
+
+    }
+
+    @Override
+    public void nightBehavior(World world) {
+        decay();
+        isDying(world);
+    }
+
+    @Override
+    public String getPNGPath() {
+        return getType();
     }
 
     /**
@@ -49,47 +79,5 @@ public class Grass extends Plant implements NonBlocking {
         ObjectFactory.generateOnMap(world,randomLocation,"Grass");
 
         removeEnergy(50);
-    }
-
-    @Override
-    public String getType() {
-        return "grass";
-    }
-
-    @Override
-    public Color getColor() {
-        return Color.green;
-    }
-
-    /**
-     *
-     * Calls photosynthesis
-     * Will spread if the grass has more then or 50 energy
-     * @param world providing details of the position on which the actor is currently located and much more.
-     */
-    @Override
-    public void dayBehavior(World world) {
-        isDying(world);
-        photosynthesis();
-        if(getEnergy() >= 75) spread(world);
-
-    }
-
-    /**
-     *
-     * Calls spread
-     * Calls photosynthesis
-     * Bliver kaldt 10 gange på en dag
-     * @param world providing details of the position on which the actor is currently located and much more.
-     */
-    @Override
-    public void nightBehavior(World world) {
-        decay();
-        isDying(world);
-    }
-
-    @Override
-    public String getPNGPath() {
-        return getType();
     }
 }

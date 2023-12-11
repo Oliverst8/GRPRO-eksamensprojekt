@@ -48,7 +48,6 @@ public class Bear extends Animal {
 
     @Override
     protected void dayBehavior(World world) {
-        super.dayBehavior(world);
         if(isDying(world)) return;
 
         if(getAge() == adultAge) turnAdult();
@@ -138,6 +137,10 @@ public class Bear extends Animal {
 
                 if(object != null && getCanEat().contains(object.getEntityClass()) &&
                 ((Organism) object).isEatable()) {
+
+                    //Skip if target is itself
+                    if(object.equals(this)) continue;
+
                     // If the pray is an adult and this is not, do not hunt it.
                     if (!isAdult() && ((Organism) object).isAdult()) continue;
 

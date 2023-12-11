@@ -127,21 +127,6 @@ public class Wolf extends NestAnimal {
         else return huntingPack.getMembers().size();
     }
 
-    /**
-     * If its inside of its den, then sleep true and calls sleep
-     * If not it calls goToDen where it movestowards its den or digs one
-     * @param world
-     */
-    @Override
-    public void nightBehavior(World world) {
-        if(isInNest()) sleeping = true;
-        if(sleeping){
-            sleep();
-            return;
-        }
-        goToNest(world);
-    }
-
     @Override
     public void die(World world) {
         super.die(world);

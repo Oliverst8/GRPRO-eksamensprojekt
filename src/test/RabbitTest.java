@@ -346,13 +346,13 @@ class RabbitTest {
     @Test
     void testThatRabbitCantExitBurrowFromBlockedEntrance() {
         Burrow burrow = (Burrow) ObjectFactory.generateOnMap(world, new Location(0, 0), "Burrow", world);
-        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0, 0), "Rabbit");
 
+        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0, 0), "Rabbit");
         Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
 
         rabbit2.setHunger(99); // Under 100 so it wants to exit burrow
         rabbit2.setEnergy(60); // Not more than 60 so it cant expand
-        
+
         for(Location location : world.getEmptySurroundingTiles(new Location(0, 0))) {
             ObjectFactory.generateOnMap(world, location, "Rabbit");
         }
@@ -361,6 +361,7 @@ class RabbitTest {
         program.simulate(); //Wants to exit burrow
         rabbit1.skipTurn();
         program.simulate(); //Wants to exit burrow
+        
         assertTrue(rabbit2.isInNest());
     }
 

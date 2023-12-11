@@ -1,4 +1,4 @@
-package Main;
+package main;
 
 public class RabbitHole extends Hole {
     private final Burrow burrow;

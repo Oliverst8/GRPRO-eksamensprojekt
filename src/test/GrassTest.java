@@ -1,6 +1,6 @@
 package test;
 
-import Main.Grass;
+import main.Grass;
 
 import spawn.ObjectFactory;
 

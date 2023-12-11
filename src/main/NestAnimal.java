@@ -1,7 +1,10 @@
-package Main;
+package main;
 
 import itumulator.world.World;
 import itumulator.world.Location;
+
+import error.IllegalOperationException;
+import error.CantReproduceException;
 
 public abstract class NestAnimal extends Animal {
     private boolean inNest = false;
@@ -16,7 +19,7 @@ public abstract class NestAnimal extends Animal {
     }
 
     /**
-     * Throws Main.IllegalOperationException if the NestAnimal is a nest or if the NestAnimal has No Nest
+     * Throws Error.IllegalOperationException if the NestAnimal is a nest or if the NestAnimal has No Nest
      * Throws IllegalArgumentException if world is null
      * Sets inBurrow to true
      * removes the bunny from the world
@@ -53,7 +56,7 @@ public abstract class NestAnimal extends Animal {
     protected abstract void noNestBehavior(World world);
 
     /**
-     * Throws Main.IllegalOperationException if the NestAnimal is not in its Nest
+     * Throws Error.IllegalOperationException if the NestAnimal is not in its Nest
      * Sets inNest to false
      * Adds the NestAnimal to the world in the location exitLocation
      */

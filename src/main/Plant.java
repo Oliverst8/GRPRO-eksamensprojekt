@@ -1,4 +1,6 @@
-package Main;
+package main;
+
+import error.IllegalOperationException;
 
 public abstract class Plant extends Organism implements Spawnable {
     public Plant(int defaultStenght) {

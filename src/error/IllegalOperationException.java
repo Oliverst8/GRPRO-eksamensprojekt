@@ -1,4 +1,4 @@
-package Main;
+package error;
 
 public class IllegalOperationException extends RuntimeException {
     public IllegalOperationException(String error) {

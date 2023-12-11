@@ -1,3 +1,3 @@
-package Main;
+package main;
 
 public interface Consumable {}

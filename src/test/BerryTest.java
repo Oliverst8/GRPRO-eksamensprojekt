@@ -1,6 +1,6 @@
 package test;
 
-import Main.Berry;
+import main.Berry;
 
 import spawn.ObjectFactory;
 

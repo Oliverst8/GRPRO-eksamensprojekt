@@ -1,7 +1,7 @@
 package test;
 
-import Main.Grass;
-import Main.Consumable;
+import main.Grass;
+import main.Consumable;
 
 import itumulator.world.World;
 import itumulator.executable.Program;

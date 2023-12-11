@@ -1,4 +1,4 @@
-package Main;
+package error;
 
 public class NoEmptyLocationException extends RuntimeException {
     public NoEmptyLocationException() {

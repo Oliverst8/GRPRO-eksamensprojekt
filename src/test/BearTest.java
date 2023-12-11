@@ -1,7 +1,7 @@
 package test;
 
-import Main.Bear;
-import Main.Wolf;
+import main.Bear;
+import main.Wolf;
 
 import spawn.ObjectFactory;
 

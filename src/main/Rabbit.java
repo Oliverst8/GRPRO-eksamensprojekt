@@ -1,4 +1,4 @@
-package Main;
+package main;
 
 import java.awt.Color;
 
@@ -138,7 +138,7 @@ public class Rabbit extends NestAnimal {
     }
 
     /**
-     * Throws Main.IllegalOperationException if dig is called when the bunny already has a burrow
+     * Throws Error.IllegalOperationException if dig is called when the bunny already has a burrow
      * If The bunny has at least 25 energy:
      * - calls makeBurrow()
      */
@@ -160,7 +160,7 @@ public class Rabbit extends NestAnimal {
     }
 
     /**
-     * Throws Main.IllegalOperationException if the bunny has no burrow
+     * Throws Error.IllegalOperationException if the bunny has no burrow
      * If the bunny does not have 50 energy return;
      * - makes entrance to burrow
      * - removes 50 energy
@@ -195,7 +195,7 @@ public class Rabbit extends NestAnimal {
 
     /**
      * Throws IllegalArgumentException if burrow is null
-     * Throws Main.IllegalOperationException if the bunny has a burrow already
+     * Throws Error.IllegalOperationException if the bunny has a burrow already
      * Initializes the burrow to the argument
      * @param burrow The burrow which the bunny should make its own
      */

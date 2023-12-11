@@ -1,9 +1,9 @@
 package test;
-import Main.Entity;
-import Main.Rabbit;
-import Main.Carcass;
+import main.Entity;
+import main.Rabbit;
+import main.Carcass;
 
-import Main.Wolf;
+import main.Wolf;
 import spawn.ObjectFactory;
 
 import itumulator.world.World;

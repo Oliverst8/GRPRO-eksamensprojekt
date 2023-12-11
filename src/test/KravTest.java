@@ -3,7 +3,7 @@ package test;
 import java.util.ArrayList;
 import java.util.Map;
 
-import Main.*;
+import main.*;
 
 import spawn.Input;
 import spawn.ObjectFactory;

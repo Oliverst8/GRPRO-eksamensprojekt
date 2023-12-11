@@ -1,4 +1,4 @@
-package Main;
+package main;
 
 import java.util.Set;
 import java.util.Random;
@@ -6,6 +6,8 @@ import java.util.HashSet;
 
 import itumulator.world.World;
 import itumulator.world.Location;
+
+import error.NoEmptyLocationException;
 
 public class Helper {
     private Helper() {}

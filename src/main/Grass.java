@@ -1,4 +1,4 @@
-package Main;
+package main;
 
 import java.awt.Color;
 
@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.LinkedList;
 
 import spawn.ObjectFactory;
+import error.IllegalOperationException;
 
 import itumulator.world.World;
 import itumulator.world.Location;
@@ -26,7 +27,7 @@ public class Grass extends Plant implements NonBlocking {
     }
 
     /**
-     * If the energy level is below 25 throw Main.IllegalOperationException
+     * If the energy level is below 25 throw Error.IllegalOperationException
      * Create a new piece of grass next to this one
      * subtract 25 energy
      */

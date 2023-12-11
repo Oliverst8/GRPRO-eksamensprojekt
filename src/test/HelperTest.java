@@ -3,14 +3,14 @@ package test;
 import java.util.HashSet;
 import java.util.Set;
 
-import Main.Wolf;
-import Main.Animal;
-import Main.Entity;
-import Main.Rabbit;
-import Main.Helper;
-import Main.Carcass;
-import Main.Organism;
-import Main.NoEmptyLocationException;
+import main.Wolf;
+import main.Animal;
+import main.Entity;
+import main.Rabbit;
+import main.Helper;
+import main.Carcass;
+import main.Organism;
+import error.NoEmptyLocationException;
 
 import spawn.ObjectFactory;
 

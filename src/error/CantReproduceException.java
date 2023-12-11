@@ -1,4 +1,6 @@
-package Main;
+package error;
+
+import main.Animal;
 
 public class CantReproduceException extends Exception{
     private final Animal animal1;

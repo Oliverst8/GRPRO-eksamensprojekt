@@ -1,9 +1,9 @@
 package test;
 
-import Main.Grass;
-import Main.Burrow;
-import Main.Rabbit;
-import Main.Consumable;
+import main.Grass;
+import main.Burrow;
+import main.Rabbit;
+import main.Consumable;
 
 import spawn.ObjectFactory;
 

@@ -9,9 +9,9 @@ import java.util.Map;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import Main.Entity;
-import Main.Helper;
-import Main.Spawnable;
+import main.Entity;
+import main.Helper;
+import main.Spawnable;
 
 import itumulator.world.World;
 import itumulator.world.Location;
@@ -61,7 +61,7 @@ public class ObjectFactory {
     }
 
     private static Object generateHelper(String className, Object... constructorArgs) {
-        className = "Main." + className;
+        className = "main." + className;
 
         try {
             Class<?> objectClass = Class.forName(className);

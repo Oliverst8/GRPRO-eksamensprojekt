@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.List;
 import java.util.Random;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.ArrayList;
 
 import spawn.ObjectFactory;
@@ -367,13 +368,21 @@ public class Wolf extends NestAnimal {
 
         Set<Entity> nearbyWolves = Helper.filterByClass(neighbors, getClass());
 
+        Set<Wolf> targetWolves = new HashSet<>();
+
+        for(Entity otherWolf : nearbyWolves) {
+            if(!((Wolf) otherWolf).getPack().equals(getPack())) {
+                targetWolves.add((Wolf) otherWolf);
+            }
+        }
+
         // If there are no nearby wolves, return.
-        if(nearbyWolves.isEmpty()) return false;
+        if(targetWolves.isEmpty()) return false;
 
         Random random = new Random();
 
-        int randomIndex = random.nextInt(nearbyWolves.size());
-        Wolf randomWolf = (Wolf) nearbyWolves.toArray()[randomIndex];
+        int randomIndex = random.nextInt(targetWolves.size());
+        Wolf randomWolf = (Wolf) targetWolves.toArray()[randomIndex];
 
         attack(world, randomWolf);
 

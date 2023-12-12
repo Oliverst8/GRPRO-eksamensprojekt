@@ -259,13 +259,7 @@ public class Wolf extends NestAnimal {
     }
 
     protected void hungryBehavior(World world) {
-        Wolf nearestWolf = (Wolf) findNearestPrey(world, 3, Wolf.class);
-        if(nearestWolf != null) {
-            if (!(nearestWolf.getPack()).equals(getPack())) {
-                moveAwayFrom(world, world.getLocation(nearestWolf));
-                return;
-            }
-        }
+        if(attackNearbyWolf(world)) return;
 
         if(huntingPack != null) {
             hunt(world);
@@ -277,6 +271,8 @@ public class Wolf extends NestAnimal {
             if(nearestWolfLocation != null) moveTowards(world, nearestWolfLocation);
             else hunt(world);
         }
+
+        evadeOtherWolfs(world);
     }
 
     protected void inNestBehavior(World world) {
@@ -366,4 +362,41 @@ public class Wolf extends NestAnimal {
         return true;
     }
 
+    private boolean attackNearbyWolf(World world) {
+        Set<Entity> neighbors = Helper.getEntities(world, world.getLocation(this), 1);
+
+        Set<Entity> nearbyWolves = Helper.filterByClass(neighbors, getClass());
+
+        // If there are no nearby wolves, return.
+        if(nearbyWolves.isEmpty()) return false;
+
+        Random random = new Random();
+
+        int randomIndex = random.nextInt(nearbyWolves.size());
+        Wolf randomWolf = (Wolf) nearbyWolves.toArray()[randomIndex];
+
+        attack(world, randomWolf);
+
+        return true;
+    }
+
+    private boolean evadeOtherWolfs(World world) {
+        Wolf nearestWolf = (Wolf) findNearestPrey(world, 3, Wolf.class);
+        if(nearestWolf != null) {
+            if (!(nearestWolf.getPack()).equals(getPack())) {
+                moveAwayFrom(world, world.getLocation(nearestWolf));
+                return true;
+            }
+        }
+
+        WolfHole nearestWolfHole = (WolfHole) findNearestPrey(world, 3, WolfHole.class);
+        if(nearestWolfHole != null) {
+            if(!pack.getDen().getLocation(world).equals(nearestWolfHole.getLocation(world))) {
+                moveAwayFrom(world, nearestWolfHole.getLocation(world));
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

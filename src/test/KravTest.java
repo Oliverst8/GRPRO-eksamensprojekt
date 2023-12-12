@@ -297,7 +297,7 @@ public class KravTest {
         Map<Object, Location> entities = world.getEntities();
 
         for(Object entity : entities.keySet()) {
-            if (entity.getClass().equals(Hole.class)) {
+            if (entity.getClass().equals(RabbitHole.class)) {
                 containsHole = true;
                 break;
             }
@@ -923,6 +923,146 @@ public class KravTest {
         program.simulate();
 
         assertEquals(new Location(1,1), world.getLocation(rabbit));
+    }
+
+    /**
+     *  Vælg et valgfrit dyr og implementer dets karakteristika og adfærd i økosystemet.
+     *  Dyret skal have mindst et unikt adfærd.
+     *
+     *  Tester for hvorvidt om Turtles kan ligge æg
+     */
+    @Test
+    void K4_1() {
+        Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,0), "Turtle", 3);
+        Turtle turtle2 = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,1), "Turtle", 3);
+        turtle.setEnergy(100);
+        turtle2.setEnergy(100);
+        world.setCurrentLocation(new Location(0,0));
+        turtle.act(world);
+
+        turtle.die(world);
+        turtle2.die(world);
+        Carcass carcass = (Carcass) world.getTile(new Location(0,0));
+        Carcass carcass2 = (Carcass) world.getTile(new Location(0,1));
+        carcass.die(world);
+        carcass2.die(world);
+
+        List<Object> entities2 = new ArrayList<>(world.getEntities().keySet());
+
+        assertEquals(1, entities2.size());
+        assertInstanceOf(Egg.class, entities2.get(0));
+    }
+
+    /**
+     * Dyret skal kunne interagere med eksisterende elementer i økosystemet,
+     * herunder ådsler, planter og andre dyr.
+     */
+    @Test
+    void K4_2(){
+        Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,0), "Turtle", 3);
+        Grass grass = (Grass) ObjectFactory.generateOnMap(world,new Location(1,0),"Grass");
+        double hungerBefore = turtle.getHunger();
+        program.simulate();
+        program.simulate();
+        assertTrue(hungerBefore<turtle.getHunger());
+    }
+
+    /**
+     * Simuler dyrets livscyklus, herunder fødsel, vækst, reproduktion og død.
+     */
+    @Test
+    void K4_3(){
+        //fødsel
+        Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,0), "Turtle", 3);
+        Turtle turtle2 = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,1), "Turtle", 3);
+        turtle.setEnergy(100);
+        turtle2.setEnergy(100);
+        world.setCurrentLocation(new Location(0,0));
+        turtle.act(world);
+        turtle.setEnergy(100);
+        turtle2.setEnergy(100);
+        turtle.act(world);
+
+        turtle.die(world);
+        turtle2.die(world);
+        Carcass carcass = (Carcass) world.getTile(new Location(0,0));
+        Carcass carcass2 = (Carcass) world.getTile(new Location(0,1));
+        carcass.die(world);
+        carcass2.die(world);
+        assertEquals(world.getEntities().size(),2);
+        //HatchingFase
+        Egg egg = (Egg) world.getTile(new Location(1,1));
+        Egg egg2 = (Egg) world.getTile(new Location(1,0));
+        while(world.contains(egg)){
+            program.simulate();
+        }
+        assertFalse(world.contains(egg));
+        assertFalse(world.contains(egg2));
+
+        //Opvækst
+        Turtle turtleHatchedFromEgg = (Turtle) world.getTile(new Location(1,1));
+        Turtle turtleHatchedFromEgg2 = (Turtle) world.getTile(new Location(1,0));
+
+        while(!turtleHatchedFromEgg.isAdult()){
+            turtleHatchedFromEgg.setHunger(100);
+            turtleHatchedFromEgg.setHunger(100);
+            program.simulate();
+        }
+        assertTrue(turtleHatchedFromEgg.isAdult());
+        assertTrue(turtleHatchedFromEgg2.isAdult());
+
+        //reproducer
+        while(world.getEntities().size() == 2){
+            turtleHatchedFromEgg2.setEnergy(turtleHatchedFromEgg2.getMaxEnergy());
+            turtleHatchedFromEgg.setEnergy(turtleHatchedFromEgg.getMaxEnergy());
+            program.simulate();
+        }
+
+        turtleHatchedFromEgg2.setEnergy(30);
+        turtleHatchedFromEgg.setEnergy(30);
+
+        //Indtil død
+        while(world.contains(turtleHatchedFromEgg2)||world.contains(turtleHatchedFromEgg)){
+            program.simulate();
+        }
+        program.simulate();
+        assertEquals(world.getEntities().size(),1);
+    }
+
+    /**
+     * Implementer dyrets fødekæde og prædator-bytte forhold.
+     */
+    @Test
+    void K4_4(){
+        Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,0), "Turtle", 3);
+        Grass grass = (Grass) ObjectFactory.generateOnMap(world,new Location(1,0),"Grass");
+        double hungerBefore = turtle.getHunger();
+        program.simulate();
+        program.simulate();
+        assertTrue(hungerBefore<turtle.getHunger());
+    }
+
+    /**
+     * Dyrets tilstedeværelse og adfærd skal kunne påvirke økosystemets balance og
+     * dynamik.
+     *
+     * Hvis dyr støder på dette dyr vil de forsøge at angribe det og blive ved med det
+     * Hvis de angriber en turtle så kommer det til at tage dem lang tid at gøre dette da shell har meget liv
+     * På den måde kan de ikke jage andre dyr og andre dyr kan dermed overleve eller bruge tiden på andet
+     */
+    @Test
+    void K4_5(){
+
+        Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,0), "Turtle");
+        world.setCurrentLocation(new Location(0,0));
+
+        Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,1), "Bear");
+
+        int expected = turtle.getShellHealth()-bear.getStrength();
+
+        bear.act(world);
+
+        assertEquals(expected, turtle.getShellHealth());
     }
 
 

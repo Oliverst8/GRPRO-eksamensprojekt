@@ -1,16 +1,12 @@
 package main;
 
+import java.awt.Color;
+
 import error.CantReproduceException;
-import itumulator.world.Location;
+
 import itumulator.world.World;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-public class Turtle extends Animal implements Oviparous{
-
+public class Turtle extends Animal implements Oviparous {
     private boolean inShell;
     private int shellHealth;
     private int maxShellHealth;
@@ -32,7 +28,6 @@ public class Turtle extends Animal implements Oviparous{
         this.age = age;
     }
 
-    //<editor-fold desc="Overriden public methods">
     @Override
     public String getType() {
         return "turtle";
@@ -62,7 +57,6 @@ public class Turtle extends Animal implements Oviparous{
     public boolean isEatable(){
         return !inShell;
     }
-    //</editor-fold>
 
     @Override
     protected void setupCanEat() {
@@ -104,7 +98,9 @@ public class Turtle extends Animal implements Oviparous{
             }
         }
 
-        hunt(world);
+        if(hunt(world)) return;
+
+        wander(world);
 
     }
 

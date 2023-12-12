@@ -155,27 +155,28 @@ public class Wolf extends NestAnimal {
     }
 
     @Override
-    protected void hunt(World world) {
+    protected boolean hunt(World world) {
 
         if(huntingPack != null){
             Organism prey = findPrey(world, 4);
 
             // Skip if a prey is from the same pack
             if(prey instanceof Wolf){
-                if(((Wolf) prey).getPack().equals(getPack())) return;
+                if(((Wolf) prey).getPack().equals(getPack())) return false;
             }
 
             for(Animal wolf : huntingPack.getMembers()){
                 world.setCurrentLocation(world.getLocation(wolf));
                 wolf.huntPrey(world, prey);
-                if(!world.contains(prey)) break;
+                if(prey == null || !world.contains(prey)) break;
             }
 
             world.setCurrentLocation(world.getLocation(this));
             skipHuntingPacksTurn();
             setSkipTurn(false);
+            return true;
         } else{
-            super.hunt(world);
+            return super.hunt(world);
         }
     }
 

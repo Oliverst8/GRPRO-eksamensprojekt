@@ -182,8 +182,8 @@ public abstract class Animal extends MycoHost implements Spawnable {
      Hunts the closet prey to the animal
      * @param world the world which the animal is on
      */
-    protected void hunt(World world) {
-        huntPrey(world,findPrey(world, 4));
+    protected boolean hunt(World world) {
+        return huntPrey(world,findPrey(world, 4));
     }
 
     protected void wander(World world) {
@@ -210,8 +210,8 @@ public abstract class Animal extends MycoHost implements Spawnable {
      * @param world the world the organisms are in
      * @param prey the prey to be hunted nothing happens if null
      */
-    protected void huntPrey(World world, Organism prey){
-        if(prey == null) return;
+    protected boolean huntPrey(World world, Organism prey){
+        if(prey == null) return false;
         Location preyLocation = world.getLocation(prey);
         double distanteToPrey = Helper.distance(world.getLocation(this),preyLocation);
         if(prey.getFoodChainValue() == -1) {
@@ -233,6 +233,7 @@ public abstract class Animal extends MycoHost implements Spawnable {
                 moveTowards(world, preyLocation);
             }
         }
+        return true;
     }
 
     /**

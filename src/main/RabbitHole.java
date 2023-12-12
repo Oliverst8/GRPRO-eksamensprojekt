@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.Color;
+
 public class RabbitHole extends Hole {
     private final Burrow burrow;
 
@@ -11,12 +13,14 @@ public class RabbitHole extends Hole {
         this.burrow = burrow;
     }
 
-    /**
-     * @return the image of the hole
-     */
     @Override
     public String getType() {
         return "hole-small";
+    }
+
+    @Override
+    public Color getColor() {
+        return Color.BLACK;
     }
 
     /**

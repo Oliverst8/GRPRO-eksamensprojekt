@@ -239,7 +239,7 @@ public abstract class Animal extends MycoHost implements Spawnable {
             }
         }else{
             if(distanteToPrey < 2){
-                Attack(world, prey);
+                attack(world, prey);
             } else{
                 moveTowards(world, preyLocation);
             }

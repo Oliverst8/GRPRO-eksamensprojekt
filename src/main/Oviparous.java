@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface Oviparous {
-
     default Location getEggLocation(World world){
         Set<Location> surrondingLocations = world.getEmptySurroundingTiles(world.getCurrentLocation());
         List<Location> eggLocation = new ArrayList<>(surrondingLocations);

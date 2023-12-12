@@ -22,7 +22,7 @@ public class ObjectFactory {
 
     private static String[] requiresWorld = {"Bear", "Burrow"};
 
-    public static Object generateOffMap(World world, String className, Object... constructorArgs){
+    public static Object generateOffMap(World world, String className, Object... constructorArgs) {
         if (Helper.doesArrayContain(requiresWorld, className)) {
             constructorArgs = prependArray(constructorArgs, world);
         }

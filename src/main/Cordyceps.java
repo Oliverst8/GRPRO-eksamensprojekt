@@ -9,6 +9,28 @@ import itumulator.world.Location;
 
 public class Cordyceps implements Fungi {
     @Override
+    public void infectedBehavior(World world, MycoHost host) {
+        drain(world, host);
+        if(host.getEnergy() <= 0 || host.getHealth() <= 0) return;
+
+        Set<Entity> surrondingEntities = Helper.getEntities(world, world.getLocation(host), 3);
+        surrondingEntities = Helper.filterByClass(surrondingEntities, host.getClass());
+
+        surrondingEntities.retainAll(filterNonInfectedMycoHosts(surrondingEntities));
+
+        Entity closetAnimalOfSameSpecies = Helper.findNearest(world, world.getLocation(host), surrondingEntities);
+        if(closetAnimalOfSameSpecies == null) return;
+
+        Animal animalHost = (Animal) host;
+        animalHost.moveTowards(world, world.getLocation(closetAnimalOfSameSpecies));
+    }
+
+    @Override
+    public void drain(World world, MycoHost host) {
+        host.removeEnergy(5);
+    }
+
+    @Override
     public void hostDied(World world, MycoHost host) {
         Location hostLocation = world.getLocation(host);
 
@@ -34,27 +56,5 @@ public class Cordyceps implements Fungi {
         if(potentialHosts.isEmpty()) return null;
 
         return (MycoHost) Helper.findNearest(world, location, potentialHosts);
-    }
-
-    @Override
-    public void drain(World world, MycoHost host) {
-        host.removeEnergy(5);
-    }
-
-    @Override
-    public void infectedBehavior(World world, MycoHost host) {
-        drain(world, host);
-        if(host.getEnergy() <= 0 || host.getHealth() <= 0) return;
-
-        Set<Entity> surrondingEntities = Helper.getEntities(world, world.getLocation(host), 3);
-        surrondingEntities = Helper.filterByClass(surrondingEntities, host.getClass());
-
-        surrondingEntities.retainAll(filterNonInfectedMycoHosts(surrondingEntities));
-
-        Entity closetAnimalOfSameSpecies = Helper.findNearest(world, world.getLocation(host), surrondingEntities);
-        if(closetAnimalOfSameSpecies == null) return;
-
-        Animal animalHost = (Animal) host;
-        animalHost.moveTowards(world, world.getLocation(closetAnimalOfSameSpecies));
     }
 }

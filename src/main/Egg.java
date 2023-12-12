@@ -1,14 +1,13 @@
 package main;
 
+import java.awt.Color;
+
+import spawn.ObjectFactory;
 
 import itumulator.world.Location;
 import itumulator.world.World;
-import spawn.ObjectFactory;
 
-import java.awt.*;
-
-public class Egg extends Organism implements Spawnable{
-
+public class Egg extends Organism implements Spawnable {
     private final Class<? extends Oviparous> parentSpecies;
     private int hatchPercentage;
 
@@ -38,16 +37,15 @@ public class Egg extends Organism implements Spawnable{
         behavior(world);
     }
 
-    private void behavior(World world){
-        incubate(world);
-    }
-
     @Override
     protected void nightBehavior(World world) {
         behavior(world);
     }
 
-    private void initialize(){
+    /**
+     * Initializes the egg to default values.
+     */
+    private void initialize() {
         hatchPercentage = 0;
 
         energyLossPerDay = 0;
@@ -59,14 +57,31 @@ public class Egg extends Organism implements Spawnable{
         energy = maxEnergy;
     }
 
-    private void incubate(World world){
+    /**
+     * Determines the behavior of the egg
+     * @param world the world which the egg is in.
+     */
+    private void behavior(World world) {
+        incubate(world);
+    }
+
+    /**
+     * Increases the hatch percentage of the egg.
+     * If the hatch percentage is 100 or more, the egg hatches.
+     * @param world the world which the egg is in.
+     */
+    private void incubate(World world) {
         increaseHatchPercentage();
         if(hatchPercentage >= 100){
             hatch(world);
         }
     }
 
-    private void hatch(World world){
+    /**
+     * Hatches the egg and spawns the animal.
+     * @param world the world which the egg is in.
+     */
+    private void hatch(World world) {
         Location eggLocation = world.getLocation(this);
         die(world);
 
@@ -76,6 +91,9 @@ public class Egg extends Organism implements Spawnable{
         ObjectFactory.generateOnMap(world, eggLocation, classNameWithoutPackage);
     }
 
+    /**
+     * Increases the hatch percentage of the egg.
+     */
     private void increaseHatchPercentage(){
         hatchPercentage = Math.min(100, hatchPercentage + 5);
     }

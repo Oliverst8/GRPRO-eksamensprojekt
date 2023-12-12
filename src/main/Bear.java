@@ -50,7 +50,6 @@ public class Bear extends Animal {
     protected void dayBehavior(World world) {
         if(isDying(world)) return;
 
-        if(getAge() == adultAge) turnAdult();
         if(getHunger() <= 50) {
             territoryRadius = 8;
         } else {
@@ -112,6 +111,9 @@ public class Bear extends Animal {
         return  territory;
     }
 
+    /**
+     * Initializes the variables of the bear
+     */
     private void initialize() {
         adultAge = 1;
 
@@ -125,9 +127,15 @@ public class Bear extends Animal {
         territoryRadius = 4;
     }
 
+    /**
+     * If the bear finds prey in its territory, it will hunt it.
+     * Otherwise, it will move to a random location in its territory.
+     * @param world the world the bear is in.
+     */
     private void partrolTerritory(World world) {
         Random random = new Random();
 
+        // Get the bounds of the territory.
         int lowerX = Math.max(0, territory.getX() - territoryRadius);
         int upperX = Math.min(world.getSize() - 1, territory.getX() + territoryRadius);
         int lowerY = Math.max(0, territory.getY() - territoryRadius);
@@ -161,14 +169,27 @@ public class Bear extends Animal {
         moveTowards(world, newLocation);
     }
 
+    /**
+     * Increases the mating desire by the given amount.
+     * @param amount the amount to increase the mating desire by.
+     */
     private void increaseMatingDesire(int amount) {
         matingDesire = Math.min(matingDesire + amount, 100);
     }
 
+    /**
+     * Decreases the mating desire by the given amount.
+     * @param amount the amount to decrease the mating desire by.
+     */
     private void decreaseMatingDesire(int amount) {
         matingDesire = Math.max(matingDesire - amount, 0);
     }
 
+    /**
+     * Attempts to mate with the nearest mate.
+     * @param world the world the bear is in.
+     * @return true if the bear is attempting to mate, otherwise false.
+     */
     private boolean seekMate(World world) {
         Object mate = findNearestPrey(world, 10, this.getClass());
 
@@ -188,9 +209,5 @@ public class Bear extends Animal {
         }
 
         return true;
-    }
-
-    private void turnAdult() {
-        addCanEat(Wolf.class);
     }
 }

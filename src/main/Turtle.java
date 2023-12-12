@@ -120,14 +120,23 @@ public class Turtle extends Animal implements Oviparous {
         }
     }
 
+    /**
+     * @return the current haelth of the shell.
+     */
     public int getShellHealth(){
         return shellHealth;
     }
 
+    /**
+     * @return true if the turtle is in its shell, otherwise false.
+     */
     public boolean isInShell(){
         return inShell;
     }
 
+    /**
+     * Initialises the turtle to its default values.
+     */
     private void initialize() {
         adultAge = 3;
 
@@ -145,16 +154,25 @@ public class Turtle extends Animal implements Oviparous {
         shellHealth = maxShellHealth;
     }
 
+    /**
+     * Enter the shell and reset the time in shell.
+     */
     private void enterShell() {
         inShell = true;
         timeInShell = 0;
     }
 
+    /**
+     * Exit the shell and reset the time in shell.
+     */
     private void exitShell() {
         inShell = false;
         timeInShell = 0;
     }
 
+    /**
+     * Determines the behavior of the turtle when it is in its shell.
+     */
     private void inShellBehavior() {
         timeInShell++;
         if(timeInShell >= 3){

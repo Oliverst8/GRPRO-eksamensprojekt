@@ -12,12 +12,19 @@ public class CantReproduceException extends Exception{
         this.animal2 = animal2;
     }
 
+    /**
+     * Prints information about the animal to the console.
+     * @param animal the animal that caused the exception.
+     */
     private void printInformation(Animal animal) {
         System.out.println(animal + " age: " + animal.getAge() + " and has an adult age of: " + animal.getAdultAge());
         System.out.println(animal + " is of species: " + animal.getType());
         System.out.println(animal + " has an energy amount of: " + animal.getEnergy());
     }
 
+    /**
+     * Prints the animals that caused the exception to the console.
+     */
     public void printInformation() {
         System.out.println(animal1 + " " + animal2 + " cant reproduce");
         printInformation(animal1);

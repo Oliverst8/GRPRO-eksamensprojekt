@@ -11,16 +11,15 @@ public abstract class Plant extends Organism implements Spawnable {
     }
 
     /**
-     * Degrades the current health by 10
+     * Degrades the energy of the plant.
      */
     protected void decay() {
         removeEnergy(5);
     }
 
     /**
-     * Check if its day, if its day ->
-     * Add 10 energy
-     * else do nothing
+     * Check if it is day. If it is, add energy to the plant.
+     * Else, throw an exception.
      */
     protected void photosynthesis() {
         if(!isDay()) throw new IllegalOperationException("Cant make photosynthesis in the night");

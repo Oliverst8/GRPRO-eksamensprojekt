@@ -10,6 +10,11 @@ import itumulator.world.World;
 import itumulator.executable.Program;
 
 public class Main {
+    /**
+     * Generates objects from given list of spawning objects.
+     * @param world the world to generate objects in.
+     * @param objects the list of spawning objects.
+     */
     private static void generateObjects(World world, ArrayList<SpawningObject> objects) {
         for (SpawningObject object : objects) {
             Pack pack = null;
@@ -17,6 +22,7 @@ public class Main {
             // Create pack if spawning object is a wolf
             if (object.getClassName().equals("Wolf")) pack = new Pack();
 
+            // Iterate over amount of objects
             for (int i = 0; i < object.getAmount(); i++) {
                 Object newObject = null;
 

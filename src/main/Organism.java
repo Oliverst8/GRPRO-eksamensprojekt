@@ -30,8 +30,16 @@ public abstract class Organism extends Entity implements Actor, Consumable {
         setFoodChainValue(defualtFoodChainValue);
     }
 
+    /**
+     * Determines the behavior of the animal during the day
+     * @param world the world which the animal is in
+     */
     abstract void dayBehavior(World world);
 
+    /**
+     * Determines the behavior of the animal during the night
+     * @param world the world which the animal is in
+     */
     abstract void nightBehavior(World world);
 
     @Override
@@ -48,23 +56,21 @@ public abstract class Organism extends Entity implements Actor, Consumable {
 
     }
 
-    /**
-     * @return the class of the object
-     */
     @Override
     public Class<? extends Organism> getEntityClass() {
         return this.getClass();
     }
 
-
+    /**
+     * @return the amount of energy lost per day.
+     */
     public int getEnergyLossPerDay() {
         return energyLossPerDay;
     }
 
     /**
-     * @throws NullPointerException if world is null
-     * Kills this organism
-     * @param world current world
+     * Kills this organism.
+     * @param world current world the organism is in.
      */
     public void die(World world) {
         world.delete(this);

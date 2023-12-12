@@ -63,15 +63,21 @@ public class Berry extends Plant{
     @Override
     protected void nightBehavior(World world) {}
 
-    public boolean containsBerries() {
-        return containsBerries;
-    }
-
+    /**
+     * Grows berries on the bush if the energy is above 50.
+     */
     public void growBerries() {
         if(energy > 50){
             timeSinceBerries = 0;
             containsBerries = true;
             removeEnergy(25);
         }
+    }
+
+    /**
+     * @return true if the bush contains berries. Otherwise false.
+     */
+    public boolean containsBerries() {
+        return containsBerries;
     }
 }

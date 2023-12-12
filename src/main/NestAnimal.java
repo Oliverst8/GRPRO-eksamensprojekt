@@ -7,15 +7,13 @@ import error.IllegalOperationException;
 import error.CantReproduceException;
 
 public abstract class NestAnimal extends Animal {
-    abstract Nest getNest();
     private boolean inNest = false;
 
-    /**
-     * @param defualtFoodChainValue
-     */
     public NestAnimal(int defualtFoodChainValue) {
         super(defualtFoodChainValue);
     }
+
+    abstract Nest getNest();
 
     protected abstract void moveTowardsNest(World world);
 

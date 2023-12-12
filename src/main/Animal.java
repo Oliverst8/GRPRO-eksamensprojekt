@@ -33,20 +33,11 @@ public abstract class Animal extends MycoHost implements Spawnable {
     protected abstract void setupCanEat();
     protected abstract void produceOffSpring(World world);
 
-    /**
-     * Calls a check of weather or not the animal is dying
-     * @param world the world which the animal is in
-     */
     @Override
     protected void dayBehavior(World world) {
         isDying(world);
     }
 
-    /**
-     * Builds a string of path to the png file of the animal
-     * It determines weather or not the animal is adult, infected or sleeping
-     * @return the completed path to the png file of the animal
-     */
     @Override
     public String getPNGPath() {
         StringBuilder path = new StringBuilder();
@@ -70,11 +61,11 @@ public abstract class Animal extends MycoHost implements Spawnable {
      */
     @Override
     public void die(World world){
-
         if(isInfected()){
             super.die(world);
             return;
         }
+
         if(world.isOnTile(this)) {
             Location carcassLocation = world.getLocation(this);
             world.delete(this);
@@ -88,86 +79,28 @@ public abstract class Animal extends MycoHost implements Spawnable {
     }
 
     /**
-     * @throws NullPointerException if food is null
-     * Check weather or not the animal can eat the food
-     * Adds energy if it can, and does nothing if not.
-     * Makes the food die
-     * @param food the food to be eaten
+     * Hunts the closet prey to the animal
+     * @param world the world which the animal is on
+     * @return weather or not the animal hunted something
      */
-    public void eat(World world, Organism food) {
-        if(canIEat(food.getEntityClass())){
-            if(food.getEnergy()>0){
-                addHunger(0.5*food.getEnergy());
-                food.removeEnergy(food.getEnergy());
-            }
-            food.die(world);
-        }
+    protected boolean hunt(World world) {
+        return huntPrey(world,findPrey(world, 4));
     }
 
     /**
-     * @return the strength of the animal
+     * Makes the animal wander to a random tile next to the animal
+     * @param world the world the animal is in
      */
-    public int getStrength() {
-        return strength;
-    }
+    protected void wander(World world) {
+        Set<Location> emptyTiles = world.getEmptySurroundingTiles(world.getLocation(this));
 
-    /**
-     * @return the hunger of the animal
-     */
-    public double getHunger() {
-        return hunger;
-    }
+        if(emptyTiles.isEmpty()) return;
 
-    /**
-     * Sets the hunger of the animal
-     * @param hunger the new hunger of the animal
-     */
-    public void setHunger(double hunger) {
-        this.hunger = hunger;
-    }
+        int random = new java.util.Random().nextInt(emptyTiles.size());
 
-    /*
-     * Adds hunger to the animals hunger, with a max of 100
-     * @param hunger gets added to current hunger
-     */
-    public void addHunger(double hunger){
-        setHunger(Math.max(100, this.hunger + hunger));
-    }
+        Location randomLocation = (Location) emptyTiles.toArray()[random];
 
-    /*
-     * Removes hunger
-     * @param hunger get subtracted from current hunger
-     */
-    public void removeHunger(double hunger){
-        setHunger(Math.max(0, this.hunger - hunger));
-    }
-
-    /*
-     * @return String array of canEat of the object
-     */
-    public Set<Class<? extends Consumable>> getCanEat(){
-        return canEat;
-    }
-
-    /**
-     * Checks if the object that the function is called from can eat a type of food
-     * Returns false if not and true if it can
-     * @param food The type of class that is trying to get eaten
-     * @return Weather or not the animal can it the food
-     */
-    public boolean canIEat(Class<? extends Consumable> food) {
-        return getCanEat().contains(food);
-    }
-
-    /**
-     * removes 10 health from the prey
-     * removes 10 energy from the animal
-     * @param world
-     * @param animal
-     */
-    public void attack(World world, Organism animal) {
-        animal.removeHealth(strength, world);
-        this.removeEnergy(10);
+        moveTowards(world, randomLocation);
     }
 
     /**
@@ -207,28 +140,31 @@ public abstract class Animal extends MycoHost implements Spawnable {
     }
 
     /**
-     * Hunts the closet prey to the animal
-     * @param world the world which the animal is on
-     * @return weather or not the animal hunted something
+     * @throws IllegalArgumentException if radius is less then 2
+     * Finds the nearest object of the type object to this animal
+     * @return the location of the nearest object (except itself) in radius, returns null if there is no such object
      */
-    protected boolean hunt(World world) {
-        return huntPrey(world,findPrey(world, 4));
-    }
+    protected Entity findNearestPrey(World world, int radius, Class<?> object) {
 
-    /**
-     * Makes the animal wander to a random tile next to the animal
-     * @param world the world the animal is in
-     */
-    protected void wander(World world) {
-        Set<Location> emptyTiles = world.getEmptySurroundingTiles(world.getLocation(this));
+        if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
 
-        if(emptyTiles.isEmpty()) return;
+        Set<Entity> surroundingEntities = Helper.getEntities(world, world.getCurrentLocation(), radius);
 
-        int random = new java.util.Random().nextInt(emptyTiles.size());
+        Entity nearestEntity = null;
+        double smallestDistance = Double.MAX_VALUE;
 
-        Location randomLocation = (Location) emptyTiles.toArray()[random];
+        for(Entity entity : surroundingEntities){
+            if(entity.equals(this)) continue;
+            if(!entity.getEntityClass().equals(object)) continue;
 
-        moveTowards(world, randomLocation);
+            double distance = Helper.distance(world.getLocation(this), world.getLocation(entity));
+            if(distance < smallestDistance){
+                smallestDistance = distance;
+                nearestEntity = entity;
+            }
+        }
+
+        return nearestEntity;
     }
 
     /**
@@ -268,34 +204,6 @@ public abstract class Animal extends MycoHost implements Spawnable {
             }
         }
         return true;
-    }
-
-    /**
-     * @throws IllegalArgumentException if radius is less then 2
-     * Finds the nearest object of the type object to this animal
-     * @return the location of the nearest object (except itself) in radius, returns null if there is no such object
-     */
-    protected Entity findNearestPrey(World world, int radius, Class<?> object) {
-
-        if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
-
-        Set<Entity> surroundingEntities = Helper.getEntities(world, world.getCurrentLocation(), radius);
-
-        Entity nearestEntity = null;
-        double smallestDistance = Double.MAX_VALUE;
-
-        for(Entity entity : surroundingEntities){
-            if(entity.equals(this)) continue;
-            if(!entity.getEntityClass().equals(object)) continue;
-
-            double distance = Helper.distance(world.getLocation(this), world.getLocation(entity));
-            if(distance < smallestDistance){
-                smallestDistance = distance;
-                nearestEntity = entity;
-            }
-        }
-
-        return nearestEntity;
     }
 
     /**
@@ -477,5 +385,88 @@ public abstract class Animal extends MycoHost implements Spawnable {
             return true;
         }
         return false;
+    }
+
+    /**
+     * @throws NullPointerException if food is null
+     * Check weather or not the animal can eat the food
+     * Adds energy if it can, and does nothing if not.
+     * Makes the food die
+     * @param food the food to be eaten
+     */
+    public void eat(World world, Organism food) {
+        if(canIEat(food.getEntityClass())){
+            if(food.getEnergy()>0){
+                addHunger(0.5*food.getEnergy());
+                food.removeEnergy(food.getEnergy());
+            }
+            food.die(world);
+        }
+    }
+
+    /**
+     * Checks if the object that the function is called from can eat a type of food
+     * Returns false if not and true if it can
+     * @param food The type of class that is trying to get eaten
+     * @return Weather or not the animal can it the food
+     */
+    public boolean canIEat(Class<? extends Consumable> food) {
+        return getCanEat().contains(food);
+    }
+
+    /**
+     * removes 10 health from the prey
+     * removes 10 energy from the animal
+     * @param world
+     * @param animal
+     */
+    public void attack(World world, Organism animal) {
+        animal.removeHealth(strength, world);
+        this.removeEnergy(10);
+    }
+
+    /**
+     * @return the strength of the animal
+     */
+    public int getStrength() {
+        return strength;
+    }
+
+    /**
+     * @return the hunger of the animal
+     */
+    public double getHunger() {
+        return hunger;
+    }
+
+    /**
+     * Sets the hunger of the animal
+     * @param hunger the new hunger of the animal
+     */
+    public void setHunger(double hunger) {
+        this.hunger = hunger;
+    }
+
+    /*
+     * Adds hunger to the animals hunger, with a max of 100
+     * @param hunger gets added to current hunger
+     */
+    public void addHunger(double hunger){
+        setHunger(Math.max(100, this.hunger + hunger));
+    }
+
+    /*
+     * Removes hunger
+     * @param hunger get subtracted from current hunger
+     */
+    public void removeHunger(double hunger){
+        setHunger(Math.max(0, this.hunger - hunger));
+    }
+
+    /*
+     * @return String array of canEat of the object
+     */
+    public Set<Class<? extends Consumable>> getCanEat(){
+        return canEat;
     }
 }

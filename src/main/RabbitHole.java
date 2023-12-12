@@ -5,10 +5,6 @@ import java.awt.Color;
 public class RabbitHole extends Hole {
     private final Burrow burrow;
 
-    /**
-     * Initialises the hole belonging to a burrow
-     * @param burrow the burrow the hole belongs to
-     */
     public RabbitHole(Burrow burrow) {
         this.burrow = burrow;
     }

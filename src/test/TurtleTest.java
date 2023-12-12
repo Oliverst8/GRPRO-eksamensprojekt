@@ -76,7 +76,7 @@ public class TurtleTest {
     @Test
     void testThatTurtleDoesNotTakeDamageWhileInShell() {
         world.setCurrentLocation(new Location(0,0));
-        turtle.act(world);
+
 
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,1), "Bear");
 

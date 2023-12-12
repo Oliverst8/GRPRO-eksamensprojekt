@@ -67,6 +67,10 @@ public abstract class NestAnimal extends Animal {
         if (getNest() != null) {
             moveTowardsNest(world);
         } else {
+            if(world.containsNonBlocking(world.getCurrentLocation())){
+                wander(world);
+                return;
+            }
             noNestBehavior(world);
         }
     }

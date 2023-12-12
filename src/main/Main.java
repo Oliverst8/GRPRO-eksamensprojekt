@@ -42,7 +42,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Input input = new Input("data/demo/d2.txt");
+        Input input = new Input("data/week3/tf3-3ab.txt");
         
         int delay = 250;
         int display_size = 1000;

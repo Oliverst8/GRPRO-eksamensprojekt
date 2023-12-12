@@ -306,7 +306,7 @@ public class Wolf extends NestAnimal {
 
     protected void moveTowardsNest(World world) {
         moveTowards(world, pack.getDenLocation(world));
-        if(pack.getDenLocation(world).equals(world.getCurrentLocation())) enterNest(world);
+        if(Helper.distance(world.getLocation(this), pack.getDenLocation(world)) < 2) enterNest(world);
     }
 
     protected Location getExitLocation(World world) {

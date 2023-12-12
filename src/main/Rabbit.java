@@ -100,7 +100,7 @@ public class Rabbit extends NestAnimal {
     protected void moveTowardsNest(World world) {
         Location nearestEntry = burrow.findNearestEntry(world, world.getCurrentLocation());
         if(Helper.distance(world.getLocation(this), nearestEntry) != 0) moveTowards(world, nearestEntry);
-        if(Helper.distance(world.getLocation(this), nearestEntry) == 0) enterNest(world);
+        if(Helper.distance(world.getLocation(this), nearestEntry) < 2) enterNest(world);
     }
 
     protected void produceOffSpring(World world) {

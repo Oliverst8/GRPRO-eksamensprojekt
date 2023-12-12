@@ -1,9 +1,6 @@
 package test;
 
-import main.Wolf;
-import main.Grass;
-import main.Burrow;
-import main.Rabbit;
+import main.*;
 
 import spawn.ObjectFactory;
 
@@ -225,7 +222,7 @@ class RabbitTest {
 
     @Test
     void testActDayBehaviorExpectsToMoveTowardsBurrowAndNotEnter() {
-        Burrow burrow = new Burrow(world, new Location(2,2));
+        Burrow burrow = new Burrow(world, new Location(3,3));
         Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         rabbit.setHunger(100);
@@ -240,7 +237,6 @@ class RabbitTest {
         Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         rabbit.setHunger(100);
-        program.simulate();
         program.simulate();
         assertTrue(rabbit.isInNest());
     }
@@ -345,7 +341,7 @@ class RabbitTest {
 
     @Test
     void testThatRabbitCantExitBurrowFromBlockedEntrance() {
-        Burrow burrow = (Burrow) ObjectFactory.generateOnMap(world, new Location(0, 0), "Burrow", world);
+        Burrow burrow = (Burrow) ObjectFactory.generateOnMap(world, new Location(0, 0), "Burrow", world, new Location(0,0));
 
         Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0, 0), "Rabbit");
         Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
@@ -353,15 +349,13 @@ class RabbitTest {
         rabbit2.setHunger(99); // Under 100 so it wants to exit burrow
         rabbit2.setEnergy(60); // Not more than 60 so it cant expand
 
-        for(Location location : world.getEmptySurroundingTiles(new Location(0, 0))) {
+        for(Location location : world.getEmptySurroundingTiles(new Location(0,0))) {
             ObjectFactory.generateOnMap(world, location, "Rabbit");
         }
 
-        rabbit1.skipTurn();
-        program.simulate(); //Wants to exit burrow
-        rabbit1.skipTurn();
-        program.simulate(); //Wants to exit burrow
-        
+        rabbit2.act(world);
+        rabbit2.act(world);
+
         assertTrue(rabbit2.isInNest());
     }
 

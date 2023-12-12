@@ -58,16 +58,6 @@ public class Turtle extends Animal implements Oviparous{
     }
 
     @Override
-    public Location getEggLocation(World world){
-
-        Set<Location> surrondingLocations = world.getEmptySurroundingTiles(world.getCurrentLocation());
-        List<Location> eggLocation = new ArrayList<>(surrondingLocations);
-
-        if(eggLocation.isEmpty()) return null;
-        else return eggLocation.get(0);
-    }
-
-    @Override
     protected void setupCanEat() {
         addCanEat(Grass.class);
         addCanEat(Berry.class);

@@ -12,6 +12,7 @@ import spawn.ObjectFactory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class TurtleTest {
 
@@ -28,7 +29,7 @@ public class TurtleTest {
         program = new Program(size, display_size, delay);
         world = program.getWorld();
 
-        turtle = (Turtle) ObjectFactory.generateOnMap(world, "Turtle");
+        turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,0), "Turtle");
     }
 
     @Test
@@ -55,10 +56,6 @@ public class TurtleTest {
 
     @Test
     void testThatTurtleDoesNotTakeDamageWhileInShell() {
-
-        world.delete(turtle);
-        Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,0), "Turtle");
-
         world.setCurrentLocation(new Location(0,0));
         turtle.act(world);
 
@@ -73,12 +70,7 @@ public class TurtleTest {
 
     @Test
     void testThatTurtleShellTakesDamageWhenAttacked() {
-
-        world.delete(turtle);
-        Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,0), "Turtle");
-
         world.setCurrentLocation(new Location(0,0));
-
 
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,1), "Bear");
 
@@ -91,8 +83,6 @@ public class TurtleTest {
 
     @Test
     void testTurtleLeavesShellAfter3TurnsInIt() {
-        world.delete(turtle);
-        Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,0), "Turtle");
 
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,1), "Bear");
         world.setCurrentLocation(new Location(0,1));
@@ -104,8 +94,42 @@ public class TurtleTest {
         }
 
         assertFalse(turtle.isInShell());
+    }
 
+    @Test
+    void testThatTurtleRunsAwayFormBear() {
 
+        Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,1), "Bear");
+
+        Location startingLocation = new Location(0,0);
+
+        assertEquals(startingLocation, world.getLocation(turtle));
+
+        world.setCurrentLocation(startingLocation);
+        turtle.act(world);
+
+        assertNotEquals(startingLocation, world.getLocation(turtle));
+
+    }
+
+    @Test
+    void testIfTurtleLaysEggsWhenNextToOtherTurtle(){
+
+        world.delete(turtle);
+
+        Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,0), "Turtle", 3);
+        Turtle turtle2 = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,1), "Turtle", 3);
+        turtle.setEnergy(100);
+        turtle2.setEnergy(100);
+
+        assertEquals(2, world.getEntities().size());
+
+        world.setCurrentLocation(new Location(0,0));
+        turtle.act(world);
+
+        assertEquals(3, world.getEntities().size());
+        assertTrue(100 > turtle.getEnergy());
+        assertTrue(100 > turtle2.getEnergy());
     }
 
 }

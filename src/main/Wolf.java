@@ -366,4 +366,19 @@ public class Wolf extends NestAnimal {
         return true;
     }
 
+    private void huntWolf(World world) {
+        Set<Entity> neighbors = Helper.getEntities(world, world.getLocation(this), 1);
+
+        Set<Entity> nearbyWolves = Helper.filterByClass(neighbors, getClass());
+
+        // If there are no nearby wolves, return.
+        if(nearbyWolves.isEmpty()) return;
+
+        Random random = new Random();
+        
+        int randomIndex = random.nextInt(nearbyWolves.size());
+        Wolf randomWolf = (Wolf) nearbyWolves.toArray()[randomIndex];
+
+        attack(world, randomWolf);
+    }
 }

@@ -143,6 +143,17 @@ public abstract class Animal extends MycoHost implements Spawnable {
     }
 
     /**
+     * removes 10 energy from the prey
+     * if it hits 0 energy die will be called from organism.java
+     * @param world
+     * @param animal
+     */
+    public void attack(World world, Organism animal) {
+        animal.removeHealth(strength, world);
+        this.removeEnergy(10);
+    }
+
+    /**
      * @param world the world the animal is in
      * @param radius the raidus to be looked for prey in
      * @return The closest prey of the animal
@@ -395,7 +406,7 @@ public abstract class Animal extends MycoHost implements Spawnable {
         sleeping = false;
     }
 
-    protected void addCanEat(Class<? extends Consumable> food){
+    protected void addCanEat(Class<? extends Consumable> food) {
         canEat.add(food);
     }
 
@@ -424,16 +435,5 @@ public abstract class Animal extends MycoHost implements Spawnable {
             return true;
         }
         return false;
-    }
-
-    /**
-     * removes 10 energy from the prey
-     * if it hits 0 energy die will be called from organism.java
-     * @param world
-     * @param animal
-     */
-    private void Attack(World world, Organism animal) {
-        animal.removeHealth(strength, world);
-        this.removeEnergy(10);
     }
 }

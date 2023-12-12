@@ -10,14 +10,15 @@ import itumulator.world.Location;
 public class Cordyceps implements Fungi {
     @Override
     public void hostDied(World world, MycoHost host) {
-        Animal newHost = (Animal) findNewHost(world, world.getLocation(host));
+        Location hostLocation = world.getLocation(host);
+
+        Animal newHost = (Animal) findNewHost(world, hostLocation);
 
         if(newHost != null) {
             newHost.setInfected(this);
         }
         else {
-            world.delete(this);
-            ObjectFactory.generateOnMap(world, world.getLocation(host), "Grass");
+            if(!world.containsNonBlocking(hostLocation)) ObjectFactory.generateOnMap(world, hostLocation, "Grass");
         }
 
         world.delete(host);

@@ -13,6 +13,7 @@ public class Ghoul extends Organism implements Spawnable, Fungi {
     public Ghoul() {
         super(-2);
         adultAge = 1;
+        maxEnergy = 500;
     }
 
     @Override
@@ -80,7 +81,7 @@ public class Ghoul extends Organism implements Spawnable, Fungi {
 
         super.die(world);
 
-        ObjectFactory.generateOnMap(world, location, "Grass");
+        if(!world.containsNonBlocking(location)) ObjectFactory.generateOnMap(world, location, "Grass");
     }
 
     /**

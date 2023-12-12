@@ -32,6 +32,7 @@ public class Turtle extends Animal implements Oviparous{
         this.age = age;
     }
 
+    //<editor-fold desc="Overriden public methods">
     @Override
     public String getType() {
         return "turtle";
@@ -56,6 +57,12 @@ public class Turtle extends Animal implements Oviparous{
     public Color getColor() {
         return new Color(144, 238, 144);
     }
+
+    @Override
+    public boolean isEatable(){
+        return !inShell;
+    }
+    //</editor-fold>
 
     @Override
     protected void setupCanEat() {
@@ -115,11 +122,6 @@ public class Turtle extends Animal implements Oviparous{
         } else{
             super.removeHealth(health, world);
         }
-    }
-
-    @Override
-    public boolean isEatable(){
-        return !inShell;
     }
 
     public int getShellHealth(){

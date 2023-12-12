@@ -55,6 +55,25 @@ public class TurtleTest {
     }
 
     @Test
+    void testRemoveHealthWithShellHealth() {
+        int expected = turtle.getShellHealth() - 10;
+
+        turtle.removeHealth(10, world);
+
+        assertEquals(expected, turtle.getShellHealth());
+    }
+
+    @Test
+    void testRemoveHealthWithoutShellHeath() {
+        int expected = turtle.getHealth() - 10;
+
+        turtle.removeHealth(turtle.getShellHealth(), world);
+        turtle.removeHealth(10, world);
+
+        assertEquals(expected, turtle.getHealth());
+    }
+
+    @Test
     void testThatTurtleDoesNotTakeDamageWhileInShell() {
         world.setCurrentLocation(new Location(0,0));
         turtle.act(world);

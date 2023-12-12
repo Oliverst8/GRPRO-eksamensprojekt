@@ -338,7 +338,7 @@ class RabbitTest {
 
     @Test
     void testThatRabbitCantExitBurrowFromBlockedEntrance() {
-        Burrow burrow = (Burrow) ObjectFactory.generateOnMap(world, new Location(0, 0), "Burrow", world, new Location(0,0));
+        Burrow burrow = (Burrow) ObjectFactory.generateOnMap(world, "Burrow", new Location(0,0));
 
         Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0, 0), "Rabbit");
         Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);

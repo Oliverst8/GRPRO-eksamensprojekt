@@ -166,7 +166,7 @@ public class Rabbit extends NestAnimal {
      *      *      * - Subtracts 25 energy
      */
     private void makeBurrow(World world) {
-        setBurrow((Burrow) ObjectFactory.generateOnMap(world,"Burrow", world, world.getCurrentLocation()));
+        setBurrow((Burrow) ObjectFactory.generateOnMap(world,"Burrow", world.getCurrentLocation()));
         removeEnergy(25);
     }
 

@@ -42,6 +42,11 @@ public abstract class Animal extends MycoHost implements Spawnable {
         isDying(world);
     }
 
+    /**
+     * Builds a string of path to the png file of the animal
+     * It determines weather or not the animal is adult, infected or sleeping
+     * @return the completed path to the png file of the animal
+     */
     @Override
     public String getPNGPath() {
         StringBuilder path = new StringBuilder();
@@ -58,6 +63,7 @@ public abstract class Animal extends MycoHost implements Spawnable {
     }
 
     /**
+     * If the animal is infected, it calls the supers die method
      * If the animal is in the world, it creates a carcuss of the animal in the animals location, and deletes the animal
      * otherwise it just deletes the animal
      * @param world current world
@@ -85,6 +91,7 @@ public abstract class Animal extends MycoHost implements Spawnable {
      * @throws NullPointerException if food is null
      * Check weather or not the animal can eat the food
      * Adds energy if it can, and does nothing if not.
+     * Makes the food die
      * @param food the food to be eaten
      */
     public void eat(World world, Organism food) {
@@ -97,20 +104,30 @@ public abstract class Animal extends MycoHost implements Spawnable {
         }
     }
 
+    /**
+     * @return the strength of the animal
+     */
     public int getStrength() {
         return strength;
     }
 
+    /**
+     * @return the hunger of the animal
+     */
     public double getHunger() {
         return hunger;
     }
 
+    /**
+     * Sets the hunger of the animal
+     * @param hunger the new hunger of the animal
+     */
     public void setHunger(double hunger) {
         this.hunger = hunger;
     }
 
     /*
-     * Adds hunger
+     * Adds hunger to the animals hunger, with a max of 100
      * @param hunger gets added to current hunger
      */
     public void addHunger(double hunger){
@@ -134,17 +151,17 @@ public abstract class Animal extends MycoHost implements Spawnable {
 
     /**
      * Checks if the object that the function is called from can eat a type of food
-     * Returns false if not
+     * Returns false if not and true if it can
      * @param food The type of class that is trying to get eaten
-     * @return true if the class is in the list of classes the animal can eat
+     * @return Weather or not the animal can it the food
      */
     public boolean canIEat(Class<? extends Consumable> food) {
         return getCanEat().contains(food);
     }
 
     /**
-     * removes 10 energy from the prey
-     * if it hits 0 energy die will be called from organism.java
+     * removes 10 health from the prey
+     * removes 10 energy from the animal
      * @param world
      * @param animal
      */
@@ -156,9 +173,9 @@ public abstract class Animal extends MycoHost implements Spawnable {
     /**
      * @param world the world the animal is in
      * @param radius the raidus to be looked for prey in
+     * An organism is only considered prey if its foodchainvalue is lower then the animal hunting for it, the animal eats that type of animal, and it is eatable
      * @return The closest prey of the animal
      * @return null if there is no prey ind a location of radius
-     * An organism is only considered prey if its foodchainvalue is lower then the animal hunting for it, and the animal its that type of organism
      */
     protected Organism findPrey(World world, int radius) {
         Map<Location, Organism> prey = new HashMap<>();
@@ -190,13 +207,18 @@ public abstract class Animal extends MycoHost implements Spawnable {
     }
 
     /**
-     Hunts the closet prey to the animal
+     * Hunts the closet prey to the animal
      * @param world the world which the animal is on
+     * @return weather or not the animal hunted something
      */
     protected boolean hunt(World world) {
         return huntPrey(world,findPrey(world, 4));
     }
 
+    /**
+     * Makes the animal wander to a random tile next to the animal
+     * @param world the world the animal is in
+     */
     protected void wander(World world) {
         Set<Location> emptyTiles = world.getEmptySurroundingTiles(world.getLocation(this));
 
@@ -214,12 +236,13 @@ public abstract class Animal extends MycoHost implements Spawnable {
      * If the prey has a foodchainvalue of -1 that means that the animal needs to stand on it to eat it
      * - If this is the case, checks if the animal is already on it, if it is it eats it, if not it moves towards it
      * If the prey has a foodchainvalue of -2 that means that the animal needs to stand next to it to eat it
-     * - if this is the case, it checks if it stands next to it, if it does it eats it, if not it moves towards it
+     * - if this is the case, it checks if it stands next to it or on it, if it does it eats it, if not it moves towards it
      * Otherwise it check if it is close enough to attack
-     * - If it is it does
+     * - If it is, it does
      * - otherwise it moves towards the prey
      * @param world the world the organisms are in
      * @param prey the prey to be hunted nothing happens if null
+     * @return weather or not the animal hunted something
      */
     protected boolean huntPrey(World world, Organism prey){
         if(prey == null) return false;
@@ -282,6 +305,9 @@ public abstract class Animal extends MycoHost implements Spawnable {
      * @throws CantReproduceException if the animals arent old if enough to breed
      * @throws CantReproduceException if the animals arent the same type of animals
      * @throws CantReproduceException if the animals dont have enough energy
+     * Removes 50 energy from both animals
+     * Skips the turn of the second animal
+     * Calls the produceOffSpring method
      */
     protected void reproduce(World world, Animal animal1, Animal animal2) throws CantReproduceException {
         if (animal1.getAge() < animal1.getAdultAge()) throw new CantReproduceException(animal1, animal2);
@@ -296,9 +322,7 @@ public abstract class Animal extends MycoHost implements Spawnable {
 
     /**
      * @throws IllegalArgumentException if the animal is already on the position;
-     * Returns without doing anything if the object is already standing on the location
-     * Moves towards location by one tile
-     * Remove 10 energy
+     * moves the animal one tile closer to the location
      */
     protected void moveTowards(World world, Location location) {
         moveTowards(world, location, 1, this);
@@ -338,6 +362,7 @@ public abstract class Animal extends MycoHost implements Spawnable {
 
     /**
      * Moves the animal on block away from a location
+     * Removes 10 energy from the animal
      * @param world the world of the animal
      * @param location the location to move away from
      */
@@ -346,8 +371,10 @@ public abstract class Animal extends MycoHost implements Spawnable {
         int y = makeNumberOneFurtherAway(world.getCurrentLocation().getY(), location.getY());
         x = validateCordinate(world, x);
         y = validateCordinate(world, y);
-        if(world.isTileEmpty(new Location(x,y))) world.move(this, new Location(x,y));
-        return;
+        if(world.isTileEmpty(new Location(x,y))) {
+            world.move(this, new Location(x,y));
+            this.removeEnergy(10);
+        }
     }
 
     /**
@@ -402,20 +429,35 @@ public abstract class Animal extends MycoHost implements Spawnable {
 
     }
 
+    /**
+     * Sets sleeping to false and wakes the animal up
+     */
     protected void wake() {
         sleeping = false;
     }
 
+    /**
+     * Adds a type of food to the list of food the animal can eat
+     * @param food
+     */
     protected void addCanEat(Class<? extends Consumable> food) {
         canEat.add(food);
     }
 
+    /**
+     * Sets the list of food the animal can eat
+     * @param canEat
+     */
     protected void setCanEat(Set<Class<? extends Consumable>> canEat) {
         this.canEat = canEat;
     }
 
     /**
      * Checks weather or not the animal should die or if it should go to sleep because of energi needs
+     * If the animal is and has a hunger over 0 it sleeps if it isnt the first step of the day
+     * Else if the animal has no energy and has a hunger over 1 it sleeps to regain hunger
+     * Else if the animal is sleeping and it is the first step of the day it wakes up
+     * Else if the animal has no health or energy it dies
      * @param world The world the animal is in
      * @return weather the animal is dying or having to sleep
      */

@@ -11,10 +11,7 @@ import itumulator.executable.Program;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class RabbitTest {
     Program program;
@@ -341,7 +338,7 @@ class RabbitTest {
 
     @Test
     void testThatRabbitCantExitBurrowFromBlockedEntrance() {
-        Burrow burrow = (Burrow) ObjectFactory.generateOnMap(world, new Location(0, 0), "Burrow", world, new Location(0,0));
+        Burrow burrow = (Burrow) ObjectFactory.generateOnMap(world, "Burrow", new Location(0,0));
 
         Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0, 0), "Rabbit");
         Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
@@ -369,5 +366,25 @@ class RabbitTest {
         program.simulate();
 
         assertEquals(0,burrow.getMembers().size());
+    }
+
+    @Test
+    void testThatRabbitDosentDigBurrowOnTileWhereThereIsANonBlockingObject() {
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0,0), "Rabbit");
+
+        ObjectFactory.generateOnMap(world, new Location(0,0), "Grass");
+
+        world.setCurrentLocation(world.getLocation(rabbit));
+        world.setNight();
+
+        rabbit.setEnergy(100);
+
+        Location rabbitStartLocation = world.getLocation(rabbit);
+
+        rabbit.act(world);
+
+        assertNotEquals(rabbitStartLocation, world.getLocation(rabbit));
+        assertInstanceOf(Grass.class, world.getTile(rabbitStartLocation));
+
     }
 }

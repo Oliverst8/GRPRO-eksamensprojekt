@@ -64,7 +64,7 @@ public class KravTest {
         Grass grass = (Grass) ObjectFactory.generateOnMap(world, "Grass");
         assertTrue(world.contains(grass));
 
-        grass.setEnergy(10);
+        grass.setEnergy(1);
         world.setNight();
         program.simulate();
         program.simulate();

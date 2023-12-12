@@ -146,4 +146,27 @@ public class GhoulTest {
         assertFalse(world.contains(carcass));
         assertEquals(100, ghoul.getEnergy());
     }
+
+    @Test
+    void testThatGhoulDosentSpawnGrassWhenItIsStadingOnGrass() {
+        Rabbit rabbit = new Rabbit();
+
+        carcass.setAnimal(rabbit);
+
+        Ghoul ghoul = (Ghoul) ObjectFactory.generateOffMap(world, "Ghoul");
+        ObjectFactory.generateOnMap(world, world.getLocation(carcass), "Grass");
+
+        carcass.setInfected(ghoul);
+
+        assertEquals(3, world.getEntities().size());
+
+        ghoul.setEnergy(100);
+
+        carcass.die(world);
+
+        ghoul.die(world);
+
+        assertEquals(1, world.getEntities().size());
+
+    }
 }

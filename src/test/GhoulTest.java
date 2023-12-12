@@ -78,9 +78,10 @@ public class GhoulTest {
     void testIfGhoulSpawnsInWorldWhenHostDies() {
         carcass.setInfected((Ghoul) ObjectFactory.generateOffMap(world, "Ghoul"));
 
-        carcass.setEnergy(0);
+        while(world.contains(carcass)){
+            program.simulate();
+        }
 
-        program.simulate();
 
         List<Object> entities = new ArrayList<>(world.getEntities().keySet());
 

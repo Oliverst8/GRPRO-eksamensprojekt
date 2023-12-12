@@ -6,22 +6,16 @@ import itumulator.world.World;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 
-public class Hole extends Inanimate implements NonBlocking {
+public abstract class Hole extends Inanimate implements NonBlocking {
+    /**
+     * @return the type of the hole
+     */
+    public abstract String getType();
+
     /**
      * @return the image of the hole
      */
-    @Override
-    public String getType() {
-        return "hole-large";
-    }
-
-    /**
-     * @return the color of the hole object
-     */
-    @Override
-    public Color getColor() {
-        return new Color(150, 75, 0);
-    }
+    public abstract Color getColor();
 
     /**
      * @return the location of the hole

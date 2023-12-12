@@ -42,7 +42,7 @@ public class Ghoul extends Organism implements Spawnable, Fungi {
 
         world.delete(host);
 
-        world.setTile(hostLocation, this);
+        if(getEnergy() > 20) world.setTile(hostLocation, this);
     }
 
     @Override

@@ -277,7 +277,7 @@ public class KravTest {
     @Test
     void K1_2g() {
         Location rabbit1Location = new Location(0,0);
-        Burrow burrow = new Burrow(world, new Location(2,2));
+        Burrow burrow = new Burrow(world, new Location(3,3));
         Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world,rabbit1Location, "Rabbit",3,burrow,false);
         world.setNight();
         program.simulate();
@@ -801,24 +801,28 @@ public class KravTest {
     @Test
     void K3_2a() {
         Boolean containsFungi = false;
-        Carcass carcass = null;
+
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,0), "Bear");
+        Bear bear2 = (Bear) ObjectFactory.generateOnMap(world, new Location(3,3), "Bear");
         bear.removeHealth(bear.getHealth(),world);
+        bear2.removeHealth(bear2.getHealth(),world);
 
 
         Map<Object, Location> entities = world.getEntities();
 
-        for(Object entity : entities.keySet()) {
-            if (entity.getClass().equals(Carcass.class)) {
-                carcass = (Carcass) entity;
-                break;
-            }
-        }
+        Carcass carcass = (Carcass) world.getTile(new Location(0,0));
+        Carcass carcass2 = (Carcass) world.getTile(new Location(3,3));
+
         while(!carcass.isInfected()){
             program.simulate();
-        }
-        while(world.contains(carcass)){
-            program.simulate();
+        } //both infected by now
+
+        carcass2.die(world);
+
+        if(!world.contains(carcass2)) {
+            while(world.contains(carcass)){
+                program.simulate();
+            }
         }
 
         List<Object> entities2 = new ArrayList<>(world.getEntities().keySet());
@@ -852,7 +856,10 @@ public class KravTest {
      */
     @Test
     void KF3_1a() {
-        throw new UnsupportedOperationException("Ikke lavet endnu");
+        Ghoul ghoul = (Ghoul) ObjectFactory.generateOnMap(world, new Location(0,0), "Ghoul");
+        ghoul.die(world);
+
+        assertInstanceOf(Grass.class, world.getTile(new Location(0,0)));
     }
 
     /**

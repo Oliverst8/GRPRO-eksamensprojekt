@@ -104,7 +104,9 @@ public class Turtle extends Animal implements Oviparous{
             }
         }
 
-        hunt(world);
+        if(hunt(world)) return;
+
+        wander(world);
 
     }
 

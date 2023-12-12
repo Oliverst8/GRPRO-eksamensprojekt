@@ -6,10 +6,10 @@ import itumulator.world.World;
 import itumulator.world.Location;
 
 public class Den extends Nest {
-    Hole den;
+    WolfHole den;
 
     public Den(World world, Location entry) {
-        den = (Hole) ObjectFactory.generateOnMap(world,entry,"Hole");
+        den = (WolfHole) ObjectFactory.generateOnMap(world,entry,"WolfHole");
     }
 
     public Location getLocation(World world) {

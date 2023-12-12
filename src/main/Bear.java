@@ -38,7 +38,7 @@ public class Bear extends Animal {
 
     @Override
     public String getType() {
-        return "bear";
+        return "Bear";
     }
 
     @Override

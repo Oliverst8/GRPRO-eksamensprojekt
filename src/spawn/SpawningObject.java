@@ -15,6 +15,7 @@ public class SpawningObject {
     public SpawningObject(String className, int amount, boolean infected) {
         this.className = className;
         this.amount = amount;
+        this.infected = infected;
     }
 
     /**
@@ -26,6 +27,7 @@ public class SpawningObject {
         this.className = className;
         this.amount = amount;
         this.location = location;
+        this.infected = infected;
     }
 
     /**

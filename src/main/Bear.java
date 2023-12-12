@@ -105,6 +105,7 @@ public class Bear extends Animal {
         addCanEat(Wolf.class);
         addCanEat(Rabbit.class);
         addCanEat(Bear.class);
+        addCanEat(Turtle.class);
     }
 
     private void initialize() {

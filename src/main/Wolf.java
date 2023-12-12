@@ -46,6 +46,13 @@ public class Wolf extends NestAnimal {
         initialise(age);
     }
 
+    public Wolf(Pack pack) {
+        super(1);
+        this.pack = pack;
+        pack.addMember(this);
+        initialise(age);
+    }
+
     /**
      * Creates a new wolf
      * Makes the wolf capable of eating rabbits
@@ -120,42 +127,11 @@ public class Wolf extends NestAnimal {
         else return huntingPack.getMembers().size();
     }
 
-    /**
-     * If its inside of its den, then sleep true and calls sleep
-     * If not it calls goToDen where it movestowards its den or digs one
-     * @param world
-     */
-    @Override
-    public void nightBehavior(World world) {
-        if(isInNest()) sleeping = true;
-        if(sleeping){
-            sleep();
-            return;
-        }
-        goToNest(world);
-    }
-
     @Override
     public void die(World world) {
         super.die(world);
         if(getHuntingPack() != null) getHuntingPack().removeMember(this);
         if(pack != null) pack.removeMember(this);
-    }
-
-    /**
-     * If the wolf is in its den
-     * - If the the wolf has more then 90 energy it tries to reproduce
-     * - If the wolf cant reproduce and its hunger is less then 100it leaves the den
-     * - If the wolfs hunger is maxed it goes to its den
-     * - If the wolf sees another wolf close by it moves away
-     * - If the wolf is in a hunting party it hunts
-     * - If it dosent hunt it checks if it can join a close by hunting party/create one
-     * Otherwise it goes to another wolf, if there are non other above ground in the pack it hunts alone
-     * @param world
-     */
-    @Override
-    public void dayBehavior(World world) {
-        super.dayBehavior(world);
     }
 
     /**
@@ -282,10 +258,8 @@ public class Wolf extends NestAnimal {
     }
 
     protected void hungryBehavior(World world) {
-
-        Wolf nearestWolf =  (Wolf) findNearestPrey(world, 3, Wolf.class);
-        if(nearestWolf != null){
-
+        Wolf nearestWolf = (Wolf) findNearestPrey(world, 3, Wolf.class);
+        if(nearestWolf != null) {
             if (!(nearestWolf.getPack()).equals(getPack())) {
                 moveAwayFrom(world, world.getLocation(nearestWolf));
                 return;
@@ -293,7 +267,6 @@ public class Wolf extends NestAnimal {
         }
 
         if(huntingPack != null) {
-
             hunt(world);
             return;
         }

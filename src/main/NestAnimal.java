@@ -29,7 +29,6 @@ public abstract class NestAnimal extends Animal {
 
     @Override
     protected void dayBehavior(World world) {
-
         if (isDying(world)) return;
 
         if (isInNest()) {
@@ -42,7 +41,18 @@ public abstract class NestAnimal extends Animal {
         } else {
             hungryBehavior(world);
         }
+    }
 
+    @Override
+    protected void nightBehavior(World world) {
+        if(isInNest()) sleeping = true;
+
+        if(sleeping){
+            sleep();
+            return;
+        }
+
+        goToNest(world);
     }
 
     public boolean isInNest() {
@@ -93,7 +103,6 @@ public abstract class NestAnimal extends Animal {
         getNest().removeMember(this);
         world.setTile(freeLocation, this);
     }
-
 
     protected boolean reproduceBehavior(World world) {
         if (getEnergy() > 80 && getNest().getAdultMembers().size() >= 2) {

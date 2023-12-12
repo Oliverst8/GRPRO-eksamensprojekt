@@ -2,6 +2,8 @@ package main;
 
 import java.util.Set;
 
+import spawn.ObjectFactory;
+
 import itumulator.world.World;
 import itumulator.world.Location;
 
@@ -10,12 +12,15 @@ public class Cordyceps implements Fungi {
     public void hostDied(World world, MycoHost host) {
         Animal newHost = (Animal) findNewHost(world, world.getLocation(host));
 
-        world.delete(host);
-
         if(newHost != null) {
             newHost.setInfected(this);
         }
-        else world.delete(this);
+        else {
+            world.delete(this);
+            ObjectFactory.generateOnMap(world, world.getLocation(host), "Grass");
+        }
+
+        world.delete(host);
     }
 
     @Override

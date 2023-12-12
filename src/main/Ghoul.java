@@ -74,6 +74,15 @@ public class Ghoul extends Organism implements Spawnable, Fungi {
         behavior(world);
     }
 
+    @Override
+    public void die(World world) {
+        Location location = world.getLocation(this);
+
+        super.die(world);
+
+        ObjectFactory.generateOnMap(world, location, "Grass");
+    }
+
     /**
      * Drains the host's energy and health and adds it to the fungi
      * @param world The world the host is in

@@ -42,40 +42,6 @@ public class Rabbit extends NestAnimal {
         addCanEat(Grass.class);
     }
 
-    /**
-     * No test written
-     * If the bunny is sleeping make it run the sleep method
-     * If it does not have a burrow:
-     * - It checks what takes less energy, a make a burrow, or go to an exiting one (If they are equal it goes to the closest one)
-     * If it does have one it moves towards its burrow if it isnt in it, otherwise it does nothing
-     */
-    @Override
-    public void nightBehavior(World world) {
-        if(isInfected()){
-            fungi.infectedBehavior(world, this);
-            return;
-        }
-        if(isInNest()) sleeping = true;
-        if(sleeping){
-            sleep();
-            return;
-        }
-        goToNest(world);
-    }
-
-    /**
-     * - If its in a burrow, check if it can reproduce
-     * -    It can reproduce if there are two rabbits in the burrow, and they both have enough energy
-     * - If it cant reproduce it tries to dig more entries to the burrow (If it has enough energy)
-     * - If it exits burrow
-     * - If out of borrow and hunger isnt full moves towards grass
-     * - Otherwise
-     */
-    @Override
-    public void dayBehavior(World world) {
-        super.dayBehavior(world);
-    }
-
     @Override
     public void die(World world) {
         if(isInNest()) exitNest(world);
@@ -108,7 +74,14 @@ public class Rabbit extends NestAnimal {
                 }
             }
         }
-        hunt(world);
+
+        Organism closestPrey = findPrey(world, 4);
+
+        if (closestPrey != null) {
+            huntPrey(world, closestPrey);
+        } else {
+            wander(world);
+        }
     }
 
     public Nest getNest() {
@@ -133,7 +106,6 @@ public class Rabbit extends NestAnimal {
     protected void produceOffSpring(World world) {
         ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
     }
-
 
     protected void inNestBehavior(World world) {
         if(reproduceBehavior(world)) return;

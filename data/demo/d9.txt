@@ -1,0 +1,3 @@
+4
+wolf 3
+rabbit 1

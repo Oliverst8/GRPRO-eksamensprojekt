@@ -108,6 +108,10 @@ public class Bear extends Animal {
         addCanEat(Turtle.class);
     }
 
+    public Location  getTerritory(){
+        return  territory;
+    }
+
     private void initialize() {
         adultAge = 1;
 

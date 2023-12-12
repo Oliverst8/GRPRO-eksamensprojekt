@@ -182,8 +182,20 @@ public abstract class Animal extends MycoHost implements Spawnable {
      Hunts the closet prey to the animal
      * @param world the world which the animal is on
      */
-    protected void hunt(World world){
+    protected void hunt(World world) {
         huntPrey(world,findPrey(world, 4));
+    }
+
+    protected void wander(World world) {
+        Set<Location> emptyTiles = world.getEmptySurroundingTiles(world.getLocation(this));
+
+        if(emptyTiles.isEmpty()) return;
+
+        int random = new java.util.Random().nextInt(emptyTiles.size());
+
+        Location randomLocation = (Location) emptyTiles.toArray()[random];
+
+        moveTowards(world, randomLocation);
     }
 
     /**
@@ -322,8 +334,8 @@ public abstract class Animal extends MycoHost implements Spawnable {
         int y = makeNumberOneFurtherAway(world.getCurrentLocation().getY(), location.getY());
         x = validateCordinate(world, x);
         y = validateCordinate(world, y);
-
-        world.move(this, new Location(x,y));
+        if(world.isTileEmpty(new Location(x,y))) world.move(this, new Location(x,y));
+        return;
     }
 
     /**

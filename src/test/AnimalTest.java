@@ -102,8 +102,8 @@ public class AnimalTest {
         world = program.getWorld();
 
         Wolf wolf1 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf", wolf1.getPack(), 3, false);
-        Wolf wolf3 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", wolf1.getPack(), 3, false);
+        ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf", wolf1.getPack(), 3, false);
+        ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", wolf1.getPack(), 3, false);
         Wolf wolf4 = (Wolf) ObjectFactory.generateOnMap(world, new Location(15,15), "Wolf");
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (14,14),"Rabbit");
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(3,3), "Bear");

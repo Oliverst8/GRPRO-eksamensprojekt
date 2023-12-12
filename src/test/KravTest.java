@@ -805,7 +805,7 @@ public class KravTest {
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,0), "Bear");
         bear.removeHealth(bear.getHealth(),world);
 
-        System.out.println(world.getEntities());
+
         Map<Object, Location> entities = world.getEntities();
 
         for(Object entity : entities.keySet()) {

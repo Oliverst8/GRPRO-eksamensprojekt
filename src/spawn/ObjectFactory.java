@@ -22,6 +22,13 @@ public class ObjectFactory {
 
     private static String[] requiresWorld = {"Bear", "Burrow"};
 
+    /**
+     * Generates an object of the given class name off the map, and returns it.
+     * @param world the world the object is in.
+     * @param className the name of the class of the object.
+     * @param constructorArgs the arguments to pass to the constructor of the object.
+     * @return the generated object.
+     */
     public static Object generateOffMap(World world, String className, Object... constructorArgs) {
         if (Helper.doesArrayContain(requiresWorld, className)) {
             constructorArgs = prependArray(constructorArgs, world);
@@ -34,6 +41,13 @@ public class ObjectFactory {
         return object;
     }
 
+    /**
+     * Generates an object of the given class name on the map, and returns it.
+     * @param world the world the object is in.
+     * @param className the name of the class of the object.
+     * @param constructorArgs the arguments to pass to the constructor of the object.
+     * @return the generated object.
+     */
     public static Object generateOnMap(World world, String className, Object... constructorArgs) {
         if (Helper.doesArrayContain(requiresWorld, className)) {
             constructorArgs = prependArray(constructorArgs, world);
@@ -47,6 +61,14 @@ public class ObjectFactory {
         return object;
     }
 
+    /**
+     * Generates an object of the given class name on the map, with the given location, and returns it.
+     * @param world the world the object is in.
+     * @param location the location of the object.
+     * @param className the name of the class of the object.
+     * @param constructorArgs the arguments to pass to the constructor of the object.
+     * @return the generated object.
+     */
     public static Object generateOnMap(World world, Location location, String className, Object... constructorArgs) {
         if (Helper.doesArrayContain(requiresWorld, className)) {
             constructorArgs = prependArray(constructorArgs, world);
@@ -60,6 +82,12 @@ public class ObjectFactory {
         return object;
     }
 
+    /**
+     * Beforms the actual generation of the object.
+     * @param className the name of the class of the object.
+     * @param constructorArgs the arguments to pass to the constructor of the object.
+     * @return the generated object.
+     */
     private static Object generateHelper(String className, Object... constructorArgs) {
         className = "main." + className;
 
@@ -102,6 +130,11 @@ public class ObjectFactory {
         throw new RuntimeErrorException(null, "Could not generate object: " + className);
     }
 
+    /**
+     * Places the object in the world.
+     * @param world the world the object is in.
+     * @param object the object to place.
+     */
     private static void place(World world, Object object) {
         Location location;
 
@@ -111,10 +144,22 @@ public class ObjectFactory {
         world.setTile(location, object);
     }
 
+    /**
+     * Places the object in the world at the given location.
+     * @param world the world the object is in.
+     * @param object the object to place.
+     * @param location the location to place the object at.
+     */
     private static void place(World world, Object object, Location location) {
         world.setTile(location, object);
     }
 
+    /**
+     * Prepends the given object to the given array.
+     * @param array the array to prepend to.
+     * @param object the object to prepend.
+     * @return the new array with the object prepended.
+     */
     private static Object[] prependArray(Object[] array, Object object) {
         Object[] newArray = new Object[array.length + 1];
         newArray[0] = object;
@@ -126,6 +171,11 @@ public class ObjectFactory {
         return newArray;
     }
 
+    /**
+     * Converts the given class to its primitive type if there is one.
+     * @param preConvertedClass the class to convert.
+     * @return the converted class.
+     */
     private static Class<?> convertToPrimitiveTypeIfThereIsOne(Class<?> preConvertedClass){
         Map<Class<?>, Class<?>> classMap = new HashMap<>();
         classMap.put(Integer.class, int.class);

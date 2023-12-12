@@ -207,3 +207,35 @@
 
 - Når et dyr er inficeret med Cordyceps svampen, skal svampen overtage dyrets handlinger.
 - Dyret skal bevæge sig mod andre dyr af samme art, når det er inficeret med Cordyceps svampen.
+
+### Uge 4
+
+#### K4-1 | Vælg et valgfrit dyr og implementer dets karakteristika og adfærd i økosystemet. Dyret skal have mindst et unikt adfærd.
+
+- Vi har valgt at implementere en skildpadde.
+- Skildpadden skal kunne bevæge sig rundt på kortet.
+- Skildpadden skal kunne spise græs og bær.
+- Skildpadden skal sove i sit skjold om natten.
+- Skildpadden skal gemme sig i sit skjold hvis den bliver angrebet.
+- Skildpadden skal kunne reproducere sig. Den lægger æg i stedet for at føde levende unger.
+- Skildpadden skal kunne dø af sult.
+- Skildpadden skal kunne dø af alderdom.
+
+#### K4-2 | Dyret skal kunne interagere med eksisterende elementer i økosystemet, herunder ådsler, planter og andre dyr.
+
+- Skildpadden skal kunne spise græs og bær.
+- Skildpadden kan blive angrebet. Men den gemmer sig i sit skjold hvis den bliver angrebet.
+
+#### K4-3 | Simuler dyrets livscyklus, herunder fødsel, vækst, reproduktion og død.
+
+- Skildpadden har samme livscyklus som de andre dyr. Men den lægger æg i stedet for at føde levende unger.
+
+#### K4-4 | Implementer dyrets fødekæde og prædator-bytte forhold.
+
+- Skildpadden er et byttedyr for ulve og bjørne.
+- Skildpadden spiser græs og bær.
+
+#### K4-5 | Dyrets Clstedeværelse og adfærd skal kunne påvirke økosystemets balance og dynamik.
+
+- Den tager resourcer fra verdenen i form af græs og bær.
+- Den er et byttedyr for ulve og bjørne.

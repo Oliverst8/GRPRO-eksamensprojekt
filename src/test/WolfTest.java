@@ -67,8 +67,16 @@ public class WolfTest {
     void testDayBehaviorExpectsWolfToCreateAndEnterDen() {
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
         wolf.setHunger(100);
-        program.simulate();
+        world.setCurrentLocation(world.getLocation(wolf));
+        wolf.act(world); //dig nest enter den
+        wolf.setHunger(99); //below 0 will exit den
+        wolf.act(world); //out of den
+        world.move(wolf,new Location(0,1));
 
+        if(Objects.equals(world.getLocation(wolf), new Location(0, 1))){
+            wolf.setHunger(100);
+            wolf.act(world);
+        }
         assertTrue(wolf.isInNest());
     }
 

@@ -9,7 +9,6 @@ public abstract class Organism extends Entity implements Actor, Consumable {
     protected int energyLossPerDay;
     protected int maxHealth;
     protected int health;
-
     protected int energy;
     protected int maxEnergy;
     private boolean day;

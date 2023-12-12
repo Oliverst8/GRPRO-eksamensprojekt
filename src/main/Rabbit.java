@@ -42,26 +42,6 @@ public class Rabbit extends NestAnimal {
         addCanEat(Grass.class);
     }
 
-    /**
-     * If the bunny is sleeping make it run the sleep method
-     * If it does not have a burrow:
-     * - It checks what takes less energy, a make a burrow, or go to an exiting one (If they are equal it goes to the closest one)
-     * If it does have one it moves towards its burrow if it isnt in it, otherwise it does nothing
-     */
-    @Override
-    public void nightBehavior(World world) {
-        if(isInfected()){
-            fungi.infectedBehavior(world, this);
-            return;
-        }
-        if(isInNest()) sleeping = true;
-        if(sleeping){
-            sleep();
-            return;
-        }
-        goToNest(world);
-    }
-
     @Override
     public void die(World world) {
         if(isInNest()) exitNest(world);
@@ -120,13 +100,12 @@ public class Rabbit extends NestAnimal {
     protected void moveTowardsNest(World world) {
         Location nearestEntry = burrow.findNearestEntry(world, world.getCurrentLocation());
         if(Helper.distance(world.getLocation(this), nearestEntry) != 0) moveTowards(world, nearestEntry);
-        if(Helper.distance(world.getLocation(this), nearestEntry) == 0) enterNest(world);
+        if(Helper.distance(world.getLocation(this), nearestEntry) < 2) enterNest(world);
     }
 
     protected void produceOffSpring(World world) {
         ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
     }
-
 
     protected void inNestBehavior(World world) {
         if(reproduceBehavior(world)) return;

@@ -127,21 +127,6 @@ public class Wolf extends NestAnimal {
         else return huntingPack.getMembers().size();
     }
 
-    /**
-     * If its inside of its den, then sleep true and calls sleep
-     * If not it calls goToDen where it movestowards its den or digs one
-     * @param world
-     */
-    @Override
-    public void nightBehavior(World world) {
-        if(isInNest()) sleeping = true;
-        if(sleeping){
-            sleep();
-            return;
-        }
-        goToNest(world);
-    }
-
     @Override
     public void die(World world) {
         super.die(world);
@@ -170,14 +155,14 @@ public class Wolf extends NestAnimal {
     }
 
     @Override
-    protected void hunt(World world) {
+    protected boolean hunt(World world) {
 
         if(huntingPack != null){
             Organism prey = findPrey(world, 4);
 
             // Skip if a prey is from the same pack
             if(prey instanceof Wolf){
-                if(((Wolf) prey).getPack().equals(getPack())) return;
+                if(((Wolf) prey).getPack().equals(getPack())) return false;
             }
 
             for(Animal wolf : huntingPack.getMembers()){
@@ -189,8 +174,9 @@ public class Wolf extends NestAnimal {
             world.setCurrentLocation(world.getLocation(this));
             skipHuntingPacksTurn();
             setSkipTurn(false);
+            return true;
         } else{
-            super.hunt(world);
+            return super.hunt(world);
         }
     }
 
@@ -273,10 +259,8 @@ public class Wolf extends NestAnimal {
     }
 
     protected void hungryBehavior(World world) {
-
-        Wolf nearestWolf =  (Wolf) findNearestPrey(world, 3, Wolf.class);
-        if(nearestWolf != null){
-
+        Wolf nearestWolf = (Wolf) findNearestPrey(world, 3, Wolf.class);
+        if(nearestWolf != null) {
             if (!(nearestWolf.getPack()).equals(getPack())) {
                 moveAwayFrom(world, world.getLocation(nearestWolf));
                 return;
@@ -284,7 +268,6 @@ public class Wolf extends NestAnimal {
         }
 
         if(huntingPack != null) {
-
             hunt(world);
             return;
         }
@@ -323,7 +306,7 @@ public class Wolf extends NestAnimal {
 
     protected void moveTowardsNest(World world) {
         moveTowards(world, pack.getDenLocation(world));
-        if(pack.getDenLocation(world).equals(world.getCurrentLocation())) enterNest(world);
+        if(Helper.distance(world.getLocation(this), pack.getDenLocation(world)) < 2) enterNest(world);
     }
 
     protected Location getExitLocation(World world) {

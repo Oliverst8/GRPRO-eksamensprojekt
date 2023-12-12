@@ -1,7 +1,6 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 import main.*;
 
@@ -16,9 +15,8 @@ import itumulator.executable.Program;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class KravTest {
     Program program;
@@ -64,6 +62,8 @@ public class KravTest {
     @Test
     void K1_1b() {
         Grass grass = (Grass) ObjectFactory.generateOnMap(world, "Grass");
+        assertTrue(world.contains(grass));
+
         grass.setEnergy(10);
         world.setNight();
         program.simulate();
@@ -319,9 +319,12 @@ public class KravTest {
         rabbit1.setEnergy(100);
         rabbit1.setHunger(99);
 
+        Set<Location> possibleLocations = new HashSet<>(world.getEmptySurroundingTiles(world.getLocation(burrow.getEntries().iterator().next())));
+        possibleLocations.add(rabbit1Location);
+
         program.simulate();
 
-        assertEquals(world.getLocation(burrow.getEntries().iterator().next()),world.getLocation(rabbit1));
+        assertTrue(possibleLocations.contains(world.getLocation(rabbit1)));
     }
 
     /**
@@ -424,7 +427,53 @@ public class KravTest {
      */
     @Test
     void K2_2a() {
+        Rabbit rabbit = null;
+        Boolean allInSamePack = false;
+        int inSamePack = 0;
+        int amountOfLessHungryWolves = 0;
 
+        World world = generateWithInput(new Input("data/demo/d9.txt"));
+
+        Map<Object, Location> entities = world.getEntities();
+        List<Wolf> wolfList = new ArrayList<>();
+        List<Double> wolfHungerBefore = new ArrayList<>();
+
+        for(Object entity : entities.keySet()) {
+            if (entity.getClass().equals(Wolf.class)) {
+                wolfList.add((Wolf) entity);
+            }
+            if (entity.getClass().equals(Rabbit.class)){
+            rabbit = (Rabbit) entity;
+            }
+        }
+
+        for(Wolf wolf : wolfList){
+            if(wolf.getPack().getMembers().size() == wolfList.size()){
+                wolfHungerBefore.add(wolf.getHunger());
+                allInSamePack = true;
+            }
+        }
+
+        if(allInSamePack){
+
+            while(world.contains(rabbit)){
+                program.simulate();
+            }
+
+            for(Wolf wolf : wolfList){
+                while(wolf.getHuntingPack() != null){
+                    program.simulate();
+                }
+            }
+
+            for(int i = 0; i<wolfList.size();i++){
+            if(wolfList.get(i).getHunger() > wolfHungerBefore.get(i)){
+                amountOfLessHungryWolves++;
+                }
+            }
+        }
+
+        assertTrue(amountOfLessHungryWolves == wolfList.size());
     }
 
     /**
@@ -446,7 +495,6 @@ public class KravTest {
         if(wolf.isInNest()){
             wolf.setHunger(50);
             Wolf wolf2 = null;
-
             program.simulate();
 
             if(!wolf.isInNest()) {
@@ -457,10 +505,7 @@ public class KravTest {
                 program.simulate();
                 program.simulate();
                 program.simulate();
-                wolf.setEnergy(20);
-                wolf2.setEnergy(20);
-                wolf.setHunger(50);
-                wolf2.setHunger(50);
+
             }
 
             if(world.getEntities().size()>=4) {
@@ -469,14 +514,22 @@ public class KravTest {
                 wolf3.setHealth(200);
                 wolf3HealthBefore = wolf3.getHealth();
 
-                wolf3.skipTurn();
                 program.simulate();
-                wolf3.skipTurn();
-                program.simulate();
-                wolf3.skipTurn();
                 program.simulate();
 
-                wolf3HealthAfter = wolf3.getHealth();
+                if(!Objects.equals(world.getLocation(wolf3), new Location(0, 0))){
+                    wolf.setEnergy(20);
+                    wolf2.setEnergy(20);
+                    wolf.setHunger(50);
+                    wolf2.setHunger(50);
+                    wolf3.skipTurn();
+                    program.simulate();
+                    wolf3.skipTurn();
+                    program.simulate();
+                    wolf3.skipTurn();
+                    program.simulate();
+                    wolf3HealthAfter = wolf3.getHealth();
+                }
             }
         }
         assertTrue(wolf3HealthBefore>wolf3HealthAfter);
@@ -549,8 +602,8 @@ public class KravTest {
      */
     @Test
     void K2_6a() {
-
-        //Kunne placere en bjørn 0,0 og dernæst to kaniner en indenfor den radius og en udenfor og efter 6 simulates se at den anden ikke dør
+        Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,0), "Bear",new Location(0,0));
+        assertEquals(bear.getTerritory(),new Location(0,0));
     }
 
     /** 
@@ -567,9 +620,7 @@ public class KravTest {
 
         double before = 0;
 
-
-        world.setNight();
-        while(world.isNight()) {
+        while(bear.getAge()==0){
             program.simulate();
         }
 
@@ -616,7 +667,7 @@ public class KravTest {
      */
     @Test
     void KF2_1() {
-
+        throw new UnsupportedOperationException("Ikke lavet endnu");
     }
 
     /**
@@ -625,7 +676,29 @@ public class KravTest {
      */
     @Test
     void KF2_2() {
+        World world = generateWithInput(new Input("data/demo/d10.txt"));
 
+        List<Object> entities = new ArrayList<>(world.getEntities().keySet());
+        List<Bear> bearlist = new ArrayList<>();
+
+        for(Object object : entities){
+            if(object.getClass() == Bear.class){
+                bearlist.add((Bear) object);
+            }
+        }
+
+        while(!bearlist.get(0).isAdult()){
+            for(Bear bear : bearlist){
+                bear.setHunger(100);
+                bear.addEnergy(bear.getMaxEnergy());
+            }
+            program.simulate();
+        }
+        while(entities.size()==world.getEntities().size()){
+            program.simulate();
+            System.out.println(world.getEntities());
+        }
+        assertTrue(entities.size()<world.getEntities().size());
     }
 
     /**
@@ -634,7 +707,15 @@ public class KravTest {
      */
     @Test
     void KF2_3() {
-
+        Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,0), "Bear");
+        Bear bear2 = (Bear) ObjectFactory.generateOnMap(world, new Location(4,4), "Bear");
+        double hungerBefore = bear.getHunger();
+        while(world.contains(bear2)){
+            bear.setHealth(bear.getMaxHealth());
+            program.simulate();
+        }
+        program.simulate();
+        assertTrue(hungerBefore<bear.getHunger());
     }
 
     /**
@@ -719,6 +800,32 @@ public class KravTest {
      */
     @Test
     void K3_2a() {
+        Boolean containsFungi = false;
+        Carcass carcass = null;
+        Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,0), "Bear");
+        bear.removeHealth(bear.getHealth(),world);
+
+        System.out.println(world.getEntities());
+        Map<Object, Location> entities = world.getEntities();
+
+        for(Object entity : entities.keySet()) {
+            if (entity.getClass().equals(Carcass.class)) {
+                carcass = (Carcass) entity;
+                break;
+            }
+        }
+        while(!carcass.isInfected()){
+            program.simulate();
+        }
+        while(world.contains(carcass)){
+            program.simulate();
+        }
+
+        List<Object> entities2 = new ArrayList<>(world.getEntities().keySet());
+
+        assertEquals(1, entities2.size());
+        assertInstanceOf(Ghoul.class, entities2.get(0));
+        assertInstanceOf(Ghoul.class, world.getTile(new Location(0,0)));
 
     }
 
@@ -730,7 +837,12 @@ public class KravTest {
      */
     @Test
     void K3_2b() {
+        Carcass carcass = (Carcass) ObjectFactory.generateOnMap(world, new Location(2,2), "Carcass");
+        ObjectFactory.generateOnMap(world, new Location(1,1), "Ghoul");
 
+        program.simulate();
+
+        assertTrue(carcass.isInfected());
     }
 
 
@@ -740,7 +852,7 @@ public class KravTest {
      */
     @Test
     void KF3_1a() {
-
+        throw new UnsupportedOperationException("Ikke lavet endnu");
     }
 
     /**
@@ -754,7 +866,18 @@ public class KravTest {
      */
     @Test
     void KF3_2a() {
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0,0), "Rabbit");
+        Cordyceps cordyceps = new Cordyceps();
+        world.add(cordyceps);
 
+        rabbit.setInfected(cordyceps);
+        if(rabbit.isInfected()){
+            rabbit.setHealth(0);
+            program.simulate();
+        }
+
+        assertFalse(world.contains(rabbit));
+        assertFalse(world.contains(cordyceps));
     }
 
     /**
@@ -764,7 +887,18 @@ public class KravTest {
      */
     @Test
     void KF3_3a() {
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0,0), "Rabbit");
+        Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOnMap(world, new Location(2,2), "Rabbit");
+        Cordyceps cordyceps = new Cordyceps();
+        world.add(cordyceps);
 
+        rabbit.setInfected(cordyceps);
+        rabbit.setHealth(0);
+        program.simulate();
+
+
+        assertFalse(world.contains(rabbit));
+        assertEquals(cordyceps, rabbit2.getFungi());
     }
 
     /**
@@ -774,7 +908,14 @@ public class KravTest {
      */
     @Test
     void KF3_3b() {
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0,0), "Rabbit");
+        rabbit.setInfected(new Cordyceps());
+        ((Rabbit) ObjectFactory.generateOnMap(world, new Location(2,2), "Rabbit")).skipTurn();
+        ((Wolf) ObjectFactory.generateOnMap(world, new Location(1,2), "Wolf")).skipTurn();
 
+        program.simulate();
+
+        assertEquals(new Location(1,1), world.getLocation(rabbit));
     }
 
 
@@ -783,13 +924,32 @@ public class KravTest {
     /**
      * Useful methods that gets used
      */
-    private void generateObjects(World world, ArrayList<SpawningObject> objects) {
+    private static void generateObjects(World world, ArrayList<SpawningObject> objects) {
         for (SpawningObject object : objects) {
+            Pack pack = null;
+
+            // Create pack if spawning object is a wolf
+            if (object.getClassName().equals("Wolf")) pack = new Pack();
+
             for (int i = 0; i < object.getAmount(); i++) {
-                if(object.getLocation() != null) {
-                    ObjectFactory.generateOnMap(world, object.getLocation(), object.getClassName());
+                Object newObject = null;
+
+                // Generate object
+                if (object.getClassName().equals("Wolf")) {
+                    newObject = ObjectFactory.generateOnMap(world, object.getClassName(), pack);
+                } else if(object.getLocation() != null) {
+                    newObject = ObjectFactory.generateOnMap(world, object.getLocation(), object.getClassName(), object.getLocation());
                 } else {
-                    ObjectFactory.generateOnMap(world, object.getClassName());
+                    newObject = ObjectFactory.generateOnMap(world, object.getClassName());
+                }
+
+                // Set infected
+                if (object.isInfected()) {
+                    if (newObject instanceof Carcass) {
+                        ((Carcass) newObject).setInfected(new Ghoul());
+                    } else {
+                        ((Animal) newObject).setInfected(new Cordyceps());
+                    }
                 }
             }
         }
@@ -800,9 +960,12 @@ public class KravTest {
         int display_size = 1000;
         int size = input.getSize();
 
-        Program program = new Program(size, display_size, delay);
+        program = new Program(size, display_size, delay);
         World world = program.getWorld();
         generateObjects(world, input.getObjects());
+
         return world;
+
+
     }
 }

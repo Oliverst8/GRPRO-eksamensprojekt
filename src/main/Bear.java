@@ -38,7 +38,7 @@ public class Bear extends Animal {
 
     @Override
     public String getType() {
-        return "bear";
+        return "Bear";
     }
 
     @Override
@@ -105,6 +105,11 @@ public class Bear extends Animal {
         addCanEat(Wolf.class);
         addCanEat(Rabbit.class);
         addCanEat(Bear.class);
+        addCanEat(Turtle.class);
+    }
+
+    public Location  getTerritory(){
+        return  territory;
     }
 
     private void initialize() {

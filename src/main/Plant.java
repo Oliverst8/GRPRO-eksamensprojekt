@@ -2,7 +2,7 @@ package main;
 
 import error.IllegalOperationException;
 
-public abstract class Plant extends Organism implements Spawnable {
+public abstract class Plant extends Organism {
     public Plant(int defaultStenght) {
         super(defaultStenght);
         adultAge = 0;

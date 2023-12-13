@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import itumulator.world.World;
 
-public class Carcass extends MycoHost implements Spawnable {
+public class Carcass extends MycoHost {
 
     private Animal animal;
     private boolean spawned = false;

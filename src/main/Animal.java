@@ -11,7 +11,7 @@ import error.CantReproduceException;
 import itumulator.world.World;
 import itumulator.world.Location;
 
-public abstract class Animal extends MycoHost implements Spawnable {
+public abstract class Animal extends MycoHost{
     protected boolean sleeping;
     protected int strength;
     private double hunger; //0 is empty, and 100 is full

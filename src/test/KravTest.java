@@ -555,6 +555,52 @@ public class KravTest {
     }
 
     /**
+     * Ulve og deres flok, tilhører en ulvehule, det er også her de formerer sig.
+     */
+    @Test
+    void K2_3a_0(){
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf",5);
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", wolf.getPack(), 5, false);
+        wolf.setHunger(100);
+        wolf2.setHunger(100);
+        program.simulate();//Dig
+        program.simulate();//enter
+        program.simulate();//recreate
+        assertTrue(wolf.getPack().getMembers().size()>2);
+    }
+
+    /**
+     *  Ulve ’bygger’ selv deres huler. Ulve kan ikke lide andre ulveflokke og deres huler.
+     */
+    @Test
+    void K2_3a_1(){
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf",5);
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", wolf.getPack(), 5, false);
+        wolf.setHunger(100);
+        wolf2.setHunger(100);
+        program.simulate();//Dig
+        program.simulate();//enter
+        Wolf wolf3 = (Wolf) ObjectFactory.generateOnMap(world, world.getLocation(wolf.getNest()), "Wolf", 5);
+        wolf.skipTurn();
+        wolf2.skipTurn();
+        program.simulate();
+        assertTrue(Helper.distance(world.getLocation(wolf3),world.getLocation(wolf.getNest())) >= 1);
+    }
+
+    /**
+     *  De prøver således at undgå andre grupper. Møder en ulv en ulv fra en anden flok, kæmper de mod hinanden.
+     */
+    @Test
+    void K2_3a_2(){
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf",5);
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(3,3), "Wolf", wolf.getPack(), 5, false);
+        Wolf wolf3 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", 5);
+        int healthBefore = wolf3.getHealth();
+
+        assertTrue(healthBefore>wolf3.getHealth());
+    }
+
+    /**
      * Kaniner frygter ulve og forsøger så vidt muligt at løbe fra dem.
      */
     @Test

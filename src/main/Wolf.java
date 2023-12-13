@@ -76,7 +76,6 @@ public class Wolf extends NestAnimal {
     @Override
     protected void setupCanEat() {
         addCanEat(Bear.class);
-        addCanEat(Wolf.class);
         addCanEat(Rabbit.class);
         addCanEat(Carcass.class);
     }

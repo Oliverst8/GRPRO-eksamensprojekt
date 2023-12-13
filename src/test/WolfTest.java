@@ -143,14 +143,11 @@ public class WolfTest {
 
     @Test
     void testDayBehaviorExpectsWolfToRunAwayFromOtherWolfInSideWorld() {
-        System.out.print(world.getEntities());
         ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
-        System.out.print(world.getEntities());
         Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,2), "Wolf");
-        System.out.print(world.getEntities());
+
         program.simulate();
 
-        System.out.print(world.getEntities());
         assertEquals(new Location(3,3),world.getLocation(wolf2));
     }
 

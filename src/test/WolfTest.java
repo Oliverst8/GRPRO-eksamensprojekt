@@ -143,11 +143,15 @@ public class WolfTest {
 
     @Test
     void testDayBehaviorExpectsWolfToRunAwayFromOtherWolfInSideWorld() {
+        System.out.print(world.getEntities());
         ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf");
+        System.out.print(world.getEntities());
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,2), "Wolf");
+        System.out.print(world.getEntities());
         program.simulate();
 
-        assertEquals(new Location(2,2),world.getLocation(wolf2));
+        System.out.print(world.getEntities());
+        assertEquals(new Location(3,3),world.getLocation(wolf2));
     }
 
     @Test
@@ -204,15 +208,21 @@ public class WolfTest {
         rabbit.die(world);
         program.simulate();
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,1), "Wolf");
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,1), "Wolf", wolf.getPack());
         wolf.setHunger(50);
         wolf2.setHunger(50);
         program.simulate();
-        double expectedEnergyWolf1 = Math.min(200, wolf.getEnergy()+rabbit.getEnergy());
-        double expectedEnergyWolf2 = Math.min(200, wolf2.getEnergy()+rabbit.getEnergy());
+        program.simulate();
 
-        assertEquals(expectedEnergyWolf1, wolf.getEnergy());
-        assertEquals(expectedEnergyWolf2, wolf2.getEnergy());
+        System.out.println(world.getEntities());
+
+        double expectedHungerWolf1 = Math.min(100, wolf.getHunger()+(0.5* rabbit.getEnergy()));
+        double expectedHungerWolf2 = Math.min(100, wolf2.getHunger()+(0.5* rabbit.getEnergy()));
+
+
+
+        assertEquals(expectedHungerWolf1, wolf.getHunger());
+        assertEquals(expectedHungerWolf2, wolf2.getHunger());
     }
 
     @Test

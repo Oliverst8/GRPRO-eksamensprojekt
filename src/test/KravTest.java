@@ -873,18 +873,33 @@ public class KravTest {
      */
     @Test
     void KF3_2a() {
+
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0,0), "Rabbit");
+
         Cordyceps cordyceps = new Cordyceps();
         world.add(cordyceps);
 
         rabbit.setInfected(cordyceps);
-        if(rabbit.isInfected()){
-            rabbit.setHealth(0);
-            program.simulate();
+
+        world.setCurrentLocation(world.getLocation(rabbit));
+
+        rabbit.die(world);
+
+        Set<Entity> surroundingEntities = Helper.getEntities(world, new Location(0,0), 3);
+
+        surroundingEntities.add((Entity) world.getTile(new Location(0,0)));
+        surroundingEntities = Helper.filterByClass(surroundingEntities, MycoHost.class);
+
+        for(Entity animal : surroundingEntities){
+            MycoHost animal1 = (MycoHost) animal;
+            if(!animal1.isInfected()){
+                surroundingEntities.remove(animal);
+            }
         }
 
         assertFalse(world.contains(rabbit));
-        assertFalse(world.contains(cordyceps));
+        assertTrue(surroundingEntities.isEmpty());
+
     }
 
     /**

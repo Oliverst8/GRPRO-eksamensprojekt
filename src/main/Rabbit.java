@@ -13,7 +13,7 @@ import itumulator.world.World;
 import itumulator.world.Location;
 
 public class Rabbit extends NestAnimal {
-    private Burrow burrow;
+    private Burrow burrow; //The burrow the rabbit object belongs to
 
     /**
      * Initilises the food to the bunny can eat to plant and fruits
@@ -25,6 +25,13 @@ public class Rabbit extends NestAnimal {
         initialize();
     }
 
+    /**
+     *
+     * @param age initialises age of the rabbit
+     * @param burrow initialises the burrow that the rabbit belongs to
+     * @param inBurrow parameter to determine if the rabbit should be initialised inside of the burrow
+     * if inburrow is true, calls setInNest(true) and adds rabbit to a member of the burrow
+     */
     public Rabbit(int age, Burrow burrow, boolean inBurrow) {
         super(0);
         setBurrow(burrow);
@@ -37,11 +44,18 @@ public class Rabbit extends NestAnimal {
         }
     }
 
+    /**
+     * adds grass to the list of things that the rabbit can eat.
+     */
     @Override
     protected void setupCanEat() {
         addCanEat(Grass.class);
     }
 
+    /**
+     * Kills the rabbit and the removes it from the list of members of the burrow
+     * @param world current world
+     */
     @Override
     public void die(World world) {
         if(isInNest()) exitNest(world);
@@ -50,16 +64,31 @@ public class Rabbit extends NestAnimal {
         if(burrow != null) burrow.removeMember(this);
     }
 
+    /**
+     * returns the type that the rabbit is as a string
+     * @return "rabbit"
+     */
     @Override
     public String getType() {
         return "rabbit";
     }
 
+    /**
+     * @return the color red
+     */
     @Override
     public Color getColor() {
         return Color.red;
     }
 
+    /**
+     * checks if there are objects in the rabbits surroundingTiles
+     * if so, gets object and checks if the rabbit can be eaten by the object nearby, and if it can it moves away
+     * else it check if nearest grass is within a 4 radius distance
+     * if so it hunts it down and consumes it
+     * else it moves around randomly
+     * @param world
+     */
     @Override
     protected void hungryBehavior(World world) {
         if (world.getSurroundingTiles(world.getLocation(this)).size() > world.getEmptySurroundingTiles(world.getLocation(this)).size()) {
@@ -84,10 +113,18 @@ public class Rabbit extends NestAnimal {
         }
     }
 
+    /**
+     * @return the nest/burrow that the rabbit belongs to
+     */
     public Nest getNest() {
         return burrow;
     }
 
+    /**
+     * Is called if rabbit has no nest, if rabbit should dig and its energy is over 25, it digs a burrow
+     * else it joins a nearby burrow that has a entry from withing a 5 radius distance of its current location and goes to it.
+     * @param world Takes world as a parameter
+     */
     protected void noNestBehavior(World world) {
         if (shouldRabbitDig(world) && getEnergy() > 25) {
             dig(world);
@@ -97,16 +134,35 @@ public class Rabbit extends NestAnimal {
         }
     }
 
+    /**
+     * Calls findNearestEntry from the rabbits location to get the location of the nearest entry of the burrow
+     * if the distance is more or equal to 2 it moves towards the entry
+     * if it is below 2 it enters the burrow
+     * @param world
+     */
     protected void moveTowardsNest(World world) {
         Location nearestEntry = burrow.findNearestEntry(world, world.getCurrentLocation());
-        if(Helper.distance(world.getLocation(this), nearestEntry) != 0) moveTowards(world, nearestEntry);
+        if(Helper.distance(world.getLocation(this), nearestEntry) >= 2) moveTowards(world, nearestEntry);
         if(Helper.distance(world.getLocation(this), nearestEntry) < 2) enterNest(world);
     }
 
+    /**
+     * Is called when rabbit reproduces
+     * Generates a new rabbit belonging to the same burrow as the rabbits that contributed to its creation
+     * Spawns it inside of the burrow and initialises the age to 0
+     * @param world
+     */
     protected void produceOffSpring(World world) {
         ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
     }
 
+    /**
+     * Behavior made for rabbits inside of a burrow
+     * if it can reproduce it does so and returns
+     * if it has more than 60 energy it expands the burrow with a new entry
+     * if its hunger is under 100 it exits burrow to go hunt
+     * @param world
+     */
     protected void inNestBehavior(World world) {
         if(reproduceBehavior(world)) return;
         if(getEnergy() > 60) {
@@ -116,6 +172,13 @@ public class Rabbit extends NestAnimal {
         if(getHunger() < 100) exitNest(world);
     }
 
+    /**
+     * Gets the list of locations that the rabbit can exit the hole to.
+     * The list consists of all emptylocation around the hole and the location of the hole itself if it empty
+     * returns a random location from the list
+     * @param world
+     * @return
+     */
     protected Location getExitLocation(World world) {
         Set<RabbitHole> entries = burrow.getEntries();
         Location freeLocation = null;
@@ -132,6 +195,12 @@ public class Rabbit extends NestAnimal {
         return freeLocation;
     }
 
+    /**
+     * Called in constructor
+     * Initializes alot of values for the rabbit, such as:
+     * Adultage, maxenergy, sets energy as maxenergy, strength, maxhealth, health set as maxhealth
+     *
+     */
     private void initialize() {
         adultAge = 3;
         maxEnergy = 100;
@@ -141,6 +210,12 @@ public class Rabbit extends NestAnimal {
         health = maxHealth;
     }
 
+    /**
+     * Determines if rabbit should dig or not, by checking if there are any nearby entries and if so it joins the burrow that the hole belongs to instead
+     * Returns true if there are no burrowentries from within a distance of 5
+     * @param world
+     * @return
+     */
     private boolean shouldRabbitDig(World world) {
         RabbitHole nearestBurrowEntry = (RabbitHole) findNearestPrey(world, 5, RabbitHole.class);
         if(nearestBurrowEntry == null) return true;

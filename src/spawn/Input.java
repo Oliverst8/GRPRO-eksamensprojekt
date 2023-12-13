@@ -14,6 +14,7 @@ public class Input {
     private ArrayList<SpawningObject> objects;
 
     /**
+     * Reads the input from a file and stores it in the object
      * @param filePath the path to the file that contains the input
      */
     public Input(String filePath) {
@@ -59,6 +60,11 @@ public class Input {
         }
     }
 
+    /**
+     * Parses the amount of objects to spawn
+     * @param amount the amount to parse. Can be a range.
+     * @return the amount of objects to spawn.
+     */
     private int parseAmount(String amount) {
         if (amount.contains("-")) { // If the amount is a range
             String[] range = amount.split("-");
@@ -72,6 +78,11 @@ public class Input {
         return Integer.parseInt(amount);
     }
 
+    /**
+     * Parses the location of the object
+     * @param location the location to parse.
+     * @return the location of the object.
+     */
     private Location parseLocation(String location) {
         String[] coordinates = location.substring(1, location.length() - 1).split(",");
 

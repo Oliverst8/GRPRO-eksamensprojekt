@@ -1,2 +1,2 @@
 5
-hole 2-4
+burrow 2-4

@@ -12,6 +12,12 @@ import itumulator.world.Location;
 public class Helper {
     private Helper() {}
 
+    /**
+     * Checks if an array contains a given value.
+     * @param array the array that needs to be checked.
+     * @param value the value that needs to be checked.
+     * @return true if the array contains the value. Otherwise false.
+     */
     public static boolean doesArrayContain(Object[] array, Object value) {
         for(Object arrayValue : array) {
             if(arrayValue.equals(value)) return true;
@@ -29,6 +35,12 @@ public class Helper {
         return findNonFilledLocation(world, false);
     }
 
+    /**
+     * Checks if there is an empty location in the world.
+     * @param world the world that needs to be looked in.
+     * @param nonBlockingNotAllowed if true there cant be a non blocking object on the location either.
+     * @return true if there is an empty location. Otherwise false.
+     */
     public static boolean isThereAnEmptyLocationInWorld(World world, boolean nonBlockingNotAllowed) {
         Object[][][] worldTiles = world.getTiles();
         

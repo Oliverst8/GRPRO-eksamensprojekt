@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CordycepsTest {
     Program program;
@@ -82,5 +83,27 @@ public class CordycepsTest {
 
         assertFalse(world.contains(rabbit));
         assertEquals(cordyceps, rabbit2.getFungi());
+    }
+
+    @Test
+    void testCordycepsDiesWhenItCantSpread() {
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, "Rabbit");
+
+        rabbit.setInfected(new Cordyceps());
+
+        rabbit.die(world);
+
+        assertEquals(1,world.getEntities().size());
+    }
+
+    @Test
+    void testCordycepsDosentSpawnGrassWhenItDiesIfItOnAGrassBlock() {
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, "Rabbit");
+        ObjectFactory.generateOnMap(world, world.getLocation(rabbit), "Grass");
+        rabbit.setInfected(new Cordyceps());
+
+        rabbit.die(world);
+
+        assertEquals(1,world.getEntities().size());
     }
 }

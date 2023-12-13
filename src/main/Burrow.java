@@ -9,7 +9,7 @@ import spawn.ObjectFactory;
 import itumulator.world.World;
 import itumulator.world.Location;
 
-public class Burrow extends Nest{
+public class Burrow extends Community implements Nest{
     private final Set<RabbitHole> entries;
 
     /**
@@ -45,13 +45,6 @@ public class Burrow extends Nest{
     }
 
     /**
-     * @return a list of Locations of the entries the burrow has
-     */
-    public Set<RabbitHole> getEntries() {
-        return entries;
-    }
-
-    /**
      * Throws IllegalArgumentException if argument is null
      * Otherwise makes a hole and adds it to the list of entries
      * @param entry
@@ -70,5 +63,12 @@ public class Burrow extends Nest{
      */
     public Location findNearestEntry(World world, Location rabbitLocation) {
         return findNearestEntity(world, rabbitLocation, entries);
+    }
+
+    /**
+     * @return a list of Locations of the entries the burrow has
+     */
+    public Set<RabbitHole> getEntries() {
+        return entries;
     }
 }

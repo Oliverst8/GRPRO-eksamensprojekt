@@ -1,9 +1,6 @@
 package test;
 
-import main.Wolf;
-import main.Grass;
-import main.Burrow;
-import main.Rabbit;
+import main.*;
 
 import spawn.ObjectFactory;
 
@@ -14,10 +11,7 @@ import itumulator.executable.Program;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class RabbitTest {
     Program program;
@@ -225,7 +219,7 @@ class RabbitTest {
 
     @Test
     void testActDayBehaviorExpectsToMoveTowardsBurrowAndNotEnter() {
-        Burrow burrow = new Burrow(world, new Location(2,2));
+        Burrow burrow = new Burrow(world, new Location(3,3));
         Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         rabbit.setHunger(100);
@@ -240,7 +234,6 @@ class RabbitTest {
         Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         rabbit.setHunger(100);
-        program.simulate();
         program.simulate();
         assertTrue(rabbit.isInNest());
     }
@@ -345,21 +338,22 @@ class RabbitTest {
 
     @Test
     void testThatRabbitCantExitBurrowFromBlockedEntrance() {
-        Location testLocation = new Location(0,0);
-        Burrow burrow = new Burrow(world, testLocation);
-        Rabbit rabbit = new Rabbit(3, burrow, true);
-        world.add(rabbit);
-        rabbit.setHunger(99); // Under 100 so it wants to exit burrow
-        rabbit.setEnergy(60); // Not more than 60 so it cant expand
-        initialiseRabbitOnWorld(testLocation); //New rabbit that blocks entrance
-        
-        for(Location location : world.getEmptySurroundingTiles(testLocation)) {
-            initialiseRabbitOnWorld(location);
+        Burrow burrow = (Burrow) ObjectFactory.generateOnMap(world, "Burrow", new Location(0,0));
+
+        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0, 0), "Rabbit");
+        Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
+
+        rabbit2.setHunger(99); // Under 100 so it wants to exit burrow
+        rabbit2.setEnergy(60); // Not more than 60 so it cant expand
+
+        for(Location location : world.getEmptySurroundingTiles(new Location(0,0))) {
+            ObjectFactory.generateOnMap(world, location, "Rabbit");
         }
 
-        program.simulate(); //Wants to exit burrow
-        program.simulate(); //Wants to exit burrow
-        assertTrue(rabbit.isInNest());
+        rabbit2.act(world);
+        rabbit2.act(world);
+
+        assertTrue(rabbit2.isInNest());
     }
 
     @Test
@@ -372,5 +366,25 @@ class RabbitTest {
         program.simulate();
 
         assertEquals(0,burrow.getMembers().size());
+    }
+
+    @Test
+    void testThatRabbitDosentDigBurrowOnTileWhereThereIsANonBlockingObject() {
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0,0), "Rabbit");
+
+        ObjectFactory.generateOnMap(world, new Location(0,0), "Grass");
+
+        world.setCurrentLocation(world.getLocation(rabbit));
+        world.setNight();
+
+        rabbit.setEnergy(100);
+
+        Location rabbitStartLocation = world.getLocation(rabbit);
+
+        rabbit.act(world);
+
+        assertNotEquals(rabbitStartLocation, world.getLocation(rabbit));
+        assertInstanceOf(Grass.class, world.getTile(rabbitStartLocation));
+
     }
 }

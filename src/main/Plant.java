@@ -2,7 +2,14 @@ package main;
 
 import error.IllegalOperationException;
 
-public abstract class Plant extends Organism implements Spawnable {
+public abstract class Plant extends Organism {
+
+    /**
+     * creates new plant
+     * calls organism constructor with the following parameter
+     * @param defaultStenght
+     * initialises adulgtage, maxenergy and sets energy as maxenergy
+     */
     public Plant(int defaultStenght) {
         super(defaultStenght);
         adultAge = 0;
@@ -11,16 +18,15 @@ public abstract class Plant extends Organism implements Spawnable {
     }
 
     /**
-     * Degrades the current health by 10
+     * Degrades the energy of the plant.
      */
     protected void decay() {
         removeEnergy(5);
     }
 
     /**
-     * Check if its day, if its day ->
-     * Add 10 energy
-     * else do nothing
+     * Check if it is day. If it is, add energy to the plant.
+     * Else, throw an exception.
      */
     protected void photosynthesis() {
         if(!isDay()) throw new IllegalOperationException("Cant make photosynthesis in the night");

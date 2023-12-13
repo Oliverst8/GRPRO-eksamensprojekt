@@ -13,6 +13,7 @@ public class Ghoul extends Organism implements Spawnable, Fungi {
     public Ghoul() {
         super(-2);
         adultAge = 1;
+        maxEnergy = 500;
     }
 
     @Override
@@ -42,7 +43,7 @@ public class Ghoul extends Organism implements Spawnable, Fungi {
 
         world.delete(host);
 
-        world.setTile(hostLocation, this);
+        if(getEnergy() > 20) world.setTile(hostLocation, this);
     }
 
     @Override
@@ -80,14 +81,10 @@ public class Ghoul extends Organism implements Spawnable, Fungi {
 
         super.die(world);
 
-        ObjectFactory.generateOnMap(world, location, "Grass");
+        if(!world.containsNonBlocking(location)) ObjectFactory.generateOnMap(world, location, "Grass");
     }
 
-    /**
-     * Drains the host's energy and health and adds it to the fungi
-     * @param world The world the host is in
-     * @param host The host to drain
-     */
+    @Override
     public void drain(World world, MycoHost host) {
         maxHealth += 5;
         maxEnergy += 5;
@@ -96,6 +93,10 @@ public class Ghoul extends Organism implements Spawnable, Fungi {
         host.removeEnergy(5);
     }
 
+    /**
+     * Determines the behavior of the fungi.
+     * @param world the world which the fungi is in.
+     */
     private void behavior(World world) {
         if(!world.isOnTile(this)) return;
 
@@ -104,6 +105,10 @@ public class Ghoul extends Organism implements Spawnable, Fungi {
         removeHealth(10, world);
     }
 
+    /**
+     * Spreads the fungi to a new host.
+     * @param world the world which the fungi is in.
+     */
     private void spread(World world) {
         MycoHost newHost = findNewHost(world, world.getLocation(this));
         if(newHost == null) return;
@@ -112,6 +117,11 @@ public class Ghoul extends Organism implements Spawnable, Fungi {
         newHost.setInfected(newFungi);
     }
 
+    /**
+     * Spreads the fungi to a new host.
+     * @param world the world which the fungi is in.
+     * @param host the host which the fungi is in.
+     */
     private void spread(World world, MycoHost host) {
         MycoHost newHost = findNewHost(world, world.getLocation(host));
         if(newHost == null) return;

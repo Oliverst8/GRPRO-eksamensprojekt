@@ -157,6 +157,7 @@ public class Canvas extends JPanel {
                     graphics.drawImage(future.get(), 0, 0,null);
                     this.queue.add(img);
                     repaint(); // bad practice, but appears to help rendering time on windows machines
+
                 }
                 System.gc();
             } catch (Exception e) {

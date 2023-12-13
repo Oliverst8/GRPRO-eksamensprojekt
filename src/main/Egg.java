@@ -7,7 +7,7 @@ import spawn.ObjectFactory;
 import itumulator.world.Location;
 import itumulator.world.World;
 
-public class Egg extends Organism {
+public class Egg extends Organism implements Spawnable {
     private final Class<? extends Oviparous> parentSpecies;
     private int hatchPercentage;
 

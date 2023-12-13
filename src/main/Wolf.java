@@ -24,7 +24,7 @@ public class Wolf extends NestAnimal {
      * Makes the wolf capable of eating rabbits
      * Sets the wolfs, default food chain value to 1
      * creates a pack for the wolf
-     * calles initialise with a age of 0
+     * calls initialise with a age of 0
      */
     public Wolf() {
         super(1);
@@ -38,7 +38,7 @@ public class Wolf extends NestAnimal {
      * Makes the wolf capable of eating rabbits
      * Sets the wolfs, default food chain value to 1
      * @param age the starting age of the wolf
-     * calles initialise with a age of the parameter
+     * calls initialise with a age of the parameter
      */
     public Wolf(int age) {
         super(1);
@@ -47,6 +47,13 @@ public class Wolf extends NestAnimal {
         initialise(age);
     }
 
+    /**
+     * Creates a new wolf
+     * Makes the wolf capable of eating rabbits
+     * Sets the wolfs, default food chain value to 1
+     * @param pack the pack that the wolf belongs to
+     * calls initialise with a age of the parameter
+     */
     public Wolf(Pack pack) {
         super(1);
         this.pack = pack;
@@ -73,6 +80,10 @@ public class Wolf extends NestAnimal {
         }
     }
 
+    /**
+     * adds the following to a list of what the wolf can eat:
+     * bears, rabbits, carcasses
+     */
     @Override
     protected void setupCanEat() {
         addCanEat(Bear.class);
@@ -102,7 +113,7 @@ public class Wolf extends NestAnimal {
     }
 
     /**
-     * @return the type of animal this is
+     * @return the type of animal this is, which is wolf
      */
     @Override
     public String getType() {
@@ -110,7 +121,7 @@ public class Wolf extends NestAnimal {
     }
 
     /**
-     * @return the default color for this animal
+     * @return the default color for this animal, which is gray for wolf
      */
     @Override
     public Color getColor() {
@@ -128,6 +139,12 @@ public class Wolf extends NestAnimal {
         else return huntingPack.getMembers().size();
     }
 
+    /**
+     * When called calls super.die which kills the wolf
+     * If its a member of a huntingpack, it gets removed from the list of members of it
+     * If its a member of a pack, it gets removed from the list of members of it
+     * @param world current world
+     */
     @Override
     public void die(World world) {
         super.die(world);
@@ -155,6 +172,16 @@ public class Wolf extends NestAnimal {
         ObjectFactory.generateOffMap(world, "Wolf",this.getPack(), 0, true);
     }
 
+    /**
+     * hunt function
+     * if huntingpack is null it calls, super.hunt from animal
+     * if huntingpack exist
+     * returns false if the prey is a part of the same pack as the wolf
+     * else all of the members of the wolfs huntingpack will hunt the prey
+     *
+     * @param world the world which the animal is on
+     * @return true
+     */
     @Override
     protected boolean hunt(World world) {
 
@@ -181,6 +208,13 @@ public class Wolf extends NestAnimal {
         }
     }
 
+    /**
+     *
+     * @param world the world the animal is in
+     * @param radius the raidus to be looked for prey in
+     * An organism is only considered prey if its foodchainvalue is lower than the animal hunting for it, the animal eats that type of animal, and it is eatable
+     * @return
+     */
     @Override
     protected Organism findPrey(World world, int radius) {
         Map<Location, Organism> prey = new HashMap<>();
@@ -222,6 +256,9 @@ public class Wolf extends NestAnimal {
         return pack;
     }
 
+    /**
+     * skips turn, skips calls for 1 tick for all huntingpackmembers
+     */
     public void skipHuntingPacksTurn() {
         for (Animal wolf: huntingPack.getMembers()) {
             wolf.skipTurn();
@@ -255,10 +292,24 @@ public class Wolf extends NestAnimal {
         }
     }
 
+    /**
+     * @return the nest of the pack that the wolf belongs to
+     */
     public Nest getNest() {
         return pack.getDen();
     }
 
+    /**
+     * Hungrybehaviour for wolf
+     * if it can attack a nearby wolf it returns
+     * if the wolf is a part of a active huntingpack it hunts
+     * if there createorjoinhuntingpack in a 3 distance radius isnt true, find the nearestwolf of the same pack
+     * If there is a wolf within the a raidus of 3 it moves towards it
+     * if not it hunts
+     *
+     * in the end the wolf will try to run away from other wolfs and their den
+     * @param world
+     */
     protected void hungryBehavior(World world) {
         if(attackNearbyWolf(world)) return;
 
@@ -276,6 +327,11 @@ public class Wolf extends NestAnimal {
         evadeOtherWolfs(world);
     }
 
+    /**
+     * If the wolf can reproduce it returns
+     * if the wolfs hunger is below 100 it exits the nest
+     * @param world
+     */
     protected void inNestBehavior(World world) {
         if(reproduceBehavior(world)) return;
         if(getHunger() < 100) {
@@ -285,7 +341,7 @@ public class Wolf extends NestAnimal {
 
     /**
      * Removes the wolf from its huntingpack
-     * Calls go to nest
+     * then makes the wolf go to its nest
      */
     protected void goToNest(World world) {
         if(huntingPack != null){
@@ -296,16 +352,33 @@ public class Wolf extends NestAnimal {
         super.goToNest(world);
     }
 
+    /**
+     * nonestbehaviour is called if the wolf has no nest
+     * it creates a den for the pack and enters it
+     * @param world
+     */
     protected void noNestBehavior(World world) {
         pack.createDen(world, world.getCurrentLocation());
         enterNest(world);
     }
 
+    /**
+     * Makes the wolf move towards the nest that belongs to the pack that the wolf is a member of
+     * @param world
+     */
     protected void moveTowardsNest(World world) {
         moveTowards(world, pack.getDenLocation(world));
         if(Helper.distance(world.getLocation(this), pack.getDenLocation(world)) < 2) enterNest(world);
     }
 
+    /**
+     * gets the location that the wolf can exit to from its nest.
+     * adds all empty tiles surrounding the exit and the exit itself to a list, if the exit itself also is empty
+     * if the list is empty the function returns with a null
+     * else it returns random location from the list
+     * @param world
+     * @return
+     */
     protected Location getExitLocation(World world) {
         List<Location> exitLocations = new ArrayList<>(world.getEmptySurroundingTiles(pack.getDenLocation(world)));
         if(world.isTileEmpty(pack.getDenLocation(world))) exitLocations.add(pack.getDenLocation(world));
@@ -320,6 +393,8 @@ public class Wolf extends NestAnimal {
      * Sets the starting values of the wolf
      * huntingpack to null
      * adultage to 5
+     * initialises the following
+     * age, setinnest(false),maxenergy, energy as maxenergy, maxhealth, health as maxhealth, strength
      * @param age the age of the wolf
      */
     private void initialise(int age) {
@@ -334,6 +409,15 @@ public class Wolf extends NestAnimal {
         strength = 100;
     }
 
+    /**
+     * gets the surroundingtiles, if the surroundingtiles contains a wolf that isnt a part of a huntingpack already
+     * it gets added to a list, if the other wolf has a huntingpack the wolf gets added to that huntingpack and returns true.
+     * if the list is empty, it returns false
+     * every wolf in the list gets added to the huntingpack and returns true
+     * @param world
+     * @param radius
+     * @return
+     */
     private boolean createOrJoinHuntingPack(World world, int radius) {
         Set<Location> surroundingLocations = world.getSurroundingTiles(radius);
         List<Wolf> foundWolfes = new ArrayList<>();
@@ -363,6 +447,12 @@ public class Wolf extends NestAnimal {
         return true;
     }
 
+    /**
+     * check surrounding tiles for wolves, if the surrounding wolf is not a part of the same pack as the wolf it gets added to the list of targets.
+     * if the list is empty the function returns with a false, otherwise it will attack a random targetwolf from the list
+     * @param world
+     * @return
+     */
     private boolean attackNearbyWolf(World world) {
         Set<Entity> neighbors = Helper.getEntities(world, world.getLocation(this), 1);
 
@@ -389,6 +479,13 @@ public class Wolf extends NestAnimal {
         return true;
     }
 
+    /**
+     * finds the nearest wolf from within a 3 distance radius in the wolrd
+     * if there is a wolf from within that radius that isnt in the same pack as the wolf that the function is called from
+     * it moves away from it
+     * @param world
+     * @return
+     */
     private boolean evadeOtherWolfs(World world) {
         Wolf nearestWolf = (Wolf) findNearestPrey(world, 3, Wolf.class);
         if(nearestWolf != null) {

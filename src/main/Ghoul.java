@@ -9,7 +9,7 @@ import spawn.ObjectFactory;
 import itumulator.world.World;
 import itumulator.world.Location;
 
-public class Ghoul extends Organism implements Fungi {
+public class Ghoul extends Organism implements Spawnable, Fungi {
     public Ghoul() {
         super(-2);
         adultAge = 1;

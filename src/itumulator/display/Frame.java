@@ -1,17 +1,11 @@
 package itumulator.display;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,8 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JToolTip;
-import javax.swing.ToolTipManager;
 import javax.swing.WindowConstants;
 
 import itumulator.display.overlay.OverlayCanvas;
@@ -42,11 +34,9 @@ public class Frame extends JFrame {
     private DayNightHelper dayNightHelper;
     private OverlayCanvas overlayCanvas;
 
-
     public Frame(Canvas canvas, Simulator simulator, int pixel_size, boolean startIso) {
         dayNightHelper = new DayNightHelper();
         overlayCanvas = new OverlayCanvas(pixel_size, startIso);
-        
 
         // Setup Frame
         setResizable(false);
@@ -54,13 +44,9 @@ public class Frame extends JFrame {
         setSize(pixel_size+16, pixel_size+36);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        ToolTipManager.sharedInstance().setInitialDelay(1);
-        ToolTipManager.sharedInstance().setDismissDelay(3000);
         // Set layered pane
         layeredPane = new JLayeredPane();
         add(layeredPane);
-
-        setLayout(new GridLayout());
 
         // Setup Canvas/Renderer
         layeredPane.add(canvas, JLayeredPane.DEFAULT_LAYER);
@@ -75,7 +61,7 @@ public class Frame extends JFrame {
         uiPanel.setLayout(uiLayout);
         layeredPane.add(uiPanel, JLayeredPane.POPUP_LAYER);
 
-        textField = createTooltipTextField("How many iterations the simulation has run");
+        textField = new JTextField();
         textField.setBackground(null);
         textField.setBorder(null);
         textField.setFont(new Font("CourierNew", Font.PLAIN, 16));
@@ -85,7 +71,7 @@ public class Frame extends JFrame {
         setTextFieldWidth(textField);
 
         // Initialize play/pause button
-        JButton runButton = createTooltipButton("Play/Pause", "play",  "Start / Stop");
+        JButton runButton = new JButton("Play/Pause");
         runButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -98,7 +84,7 @@ public class Frame extends JFrame {
         });
         
         // Initialize Step button
-        JButton stepButton = createTooltipButton("step", "step", "Step");
+        JButton stepButton = new JButton("Step");
         stepButton.addActionListener((e) -> {
             if (!simulator.isRunning())
                 simulator.simulate();
@@ -109,7 +95,7 @@ public class Frame extends JFrame {
         dayNightLabel.setVisible(!startIso);
 
         // Initialize Swap Render Button
-        JButton swapButton = createTooltipButton("Swap", "basic-display", "Change view");
+        JButton swapButton = new JButton("Swap");
         swapButton.addActionListener((e) -> {
             canvas.setIsomorphic(!canvas.isIsomorphic());
             if (canvas.isIsomorphic()){
@@ -121,6 +107,9 @@ public class Frame extends JFrame {
             }
             canvas.paintImage();
         });
+        setButtonImage(runButton, "play");
+        setButtonImage(stepButton, "step");
+        setButtonImage(swapButton, "basic-display");
 
         uiPanel.setBounds(0, 0, pixel_size, UI_HEIGHT+20);
         uiPanel.add(textField);
@@ -152,64 +141,16 @@ public class Frame extends JFrame {
         uiPanel.repaint();
     }
 
-    private JButton createTooltipButton(String name, String imageKey, String tooltip){
-        JButton b = new ReactingImageButton(name, imageKey);
-        b.setToolTipText(tooltip);
-        return b;
-    }
-
-    private JTextField createTooltipTextField(String tooltip){
-        JTextField t = new JTextField(){
-
-            public JToolTip createToolTip(){
-                JToolTip tip = super.createToolTip();
-                tip.setBackground(Color.WHITE);
-                return tip;
-            }
-        };
-        t.setToolTipText(tooltip);
-        return t;
-    }
-
-    private class ReactingImageButton extends JButton{
-        float alpha = 1f;
-
-        public ReactingImageButton(String name, String imageKey){
-            super(name);
-            BufferedImage img = ImageResourceCache.Instance().getImage(imageKey);
-            double ratio = (UI_HEIGHT * 1.0) / img.getHeight();
-            BufferedImage scaledImg = ImageUtility.getScaledImage(img, (int)(ratio * img.getWidth()), UI_HEIGHT);
-            ImageIcon imgIcon = new ImageIcon(scaledImg);
-            setIcon(imgIcon);
-            setOpaque(false);
-            setContentAreaFilled(false);
-            setBorderPainted(false);
-            setBorder(null);
-            setText("");
-
-            addMouseListener(new MouseAdapter() {
-                public void mouseEntered(MouseEvent e){
-                    alpha = 0.5f;
-                    repaint();
-                }
-                
-                public void mouseExited(MouseEvent e){
-                    alpha = 1f;
-                    repaint();
-                }
-            });
-        }
-
-        public JToolTip createToolTip(){
-                JToolTip tip = super.createToolTip();
-                tip.setBackground(Color.WHITE);
-                return tip;
-        }
-
-        public void paintComponent(Graphics g){
-            Graphics2D g2 = (Graphics2D)g;
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-            super.paintComponent(g);
-        }
+    private void setButtonImage(JButton button, String imageKey){
+        BufferedImage img = ImageResourceCache.Instance().getImage(imageKey);
+        double ratio = (UI_HEIGHT * 1.0) / img.getHeight();
+        BufferedImage scaledImg = ImageUtility.getScaledImage(img, (int)(ratio * img.getWidth()), UI_HEIGHT);
+        ImageIcon imgIcon = new ImageIcon(scaledImg);
+        button.setIcon(imgIcon);
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setBorder(null);
+        button.setText("");
     }
 }

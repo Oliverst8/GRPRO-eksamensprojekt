@@ -38,7 +38,7 @@ public class Bear extends Animal {
 
     @Override
     public String getType() {
-        return "bear";
+        return "Bear";
     }
 
     @Override
@@ -93,7 +93,7 @@ public class Bear extends Animal {
     protected void produceOffSpring(World world) {
         Location territoryLocation = Helper.findEmptyLocation(world);
 
-        ObjectFactory.generateOnMap(world, territoryLocation, "Bear");
+        ObjectFactory.generateOnMap(world, territoryLocation, getType());
     }
 
 

@@ -3,6 +3,13 @@ package main;
 import error.IllegalOperationException;
 
 public abstract class Plant extends Organism {
+
+    /**
+     * creates new plant
+     * calls organism constructor with the following parameter
+     * @param defaultStenght
+     * initialises adulgtage, maxenergy and sets energy as maxenergy
+     */
     public Plant(int defaultStenght) {
         super(defaultStenght);
         adultAge = 0;

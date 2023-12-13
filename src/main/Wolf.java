@@ -78,6 +78,7 @@ public class Wolf extends NestAnimal {
         addCanEat(Bear.class);
         addCanEat(Rabbit.class);
         addCanEat(Carcass.class);
+        addCanEat(Egg.class);
     }
 
     /**

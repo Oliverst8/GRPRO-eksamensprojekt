@@ -9,7 +9,7 @@ import spawn.ObjectFactory;
 import itumulator.world.World;
 import itumulator.world.Location;
 
-public class Burrow extends Nest{
+public class Burrow extends Community implements Nest{
     private final Set<RabbitHole> entries;
 
     /**

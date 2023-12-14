@@ -2,9 +2,10 @@ package main;
 
 import java.awt.Color;
 
+import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.world.World;
 
-public class Carcass extends MycoHost implements Spawnable {
+public class Carcass extends MycoHost implements DynamicDisplayInformationProvider {
 
     private Animal animal;
     private boolean spawned = false;

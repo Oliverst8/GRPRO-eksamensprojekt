@@ -1,6 +1,8 @@
 package main;
 
-public abstract class Inanimate extends Entity implements Spawnable {
+import itumulator.executable.DynamicDisplayInformationProvider;
+
+public abstract class Inanimate extends Entity implements DynamicDisplayInformationProvider {
     @Override
     public String getPNGPath() {
         return getType();

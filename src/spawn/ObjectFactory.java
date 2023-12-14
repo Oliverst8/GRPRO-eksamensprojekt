@@ -11,7 +11,6 @@ import java.util.HashMap;
 
 import main.Entity;
 import main.Helper;
-import main.Spawnable;
 
 import itumulator.world.World;
 import itumulator.world.Location;
@@ -55,8 +54,7 @@ public class ObjectFactory {
 
         Object object = generateHelper(className, constructorArgs);
 
-        if(object instanceof Entity) world.add(object);
-        if (object instanceof Spawnable) place(world, object);
+        if (object instanceof Entity) place(world, object);
 
         return object;
     }
@@ -76,8 +74,7 @@ public class ObjectFactory {
         
         Object object = generateHelper(className, constructorArgs);
 
-        if(object instanceof Entity) world.add(object);
-        if (object instanceof Spawnable) place(world, object, location);
+        if (object instanceof Entity) place(world, object, location);
         
         return object;
     }

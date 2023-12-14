@@ -55,6 +55,7 @@ public class KravTest {
 
     /**
      * Græs kan nedbryde og forsvinde
+     *
      * setEnergy 10 so it low
      * setNight so grass doesnt make photosynthesis
      * Call program.simulate twice so it calls decay twice and removes 5 energy times two
@@ -74,6 +75,7 @@ public class KravTest {
 
     /**
      * Græs kan sprede sig
+     *
      * Creates grass, sets its energy to 75 which is required in its dayBehaviour to spread
      */
     @Test
@@ -86,6 +88,7 @@ public class KravTest {
 
     /**
      * Dyr kan stå på græs uden der sker noget med græsset.
+     *
      * Create both object at the same place
      * Set rabbit to skip turn so it doesnt eat the grass.
      * assert true that their locations equal eachother
@@ -125,6 +128,7 @@ public class KravTest {
 
     /**
      * Kaniner kan dø, hvilket resulterer I at de fjernes fra verdenen.
+     *
      * Spawn rabbit on world
      * set energy and hunger to 0 so it call die in daybehaviour
      * Assert that the object doesnt exist within the world
@@ -140,6 +144,7 @@ public class KravTest {
 
     /**
      * Kaniner lever af græs som de spiser i løbet af dagen, uden mad dør en kanin.
+     *
      * Create rabbit and grass. Observe if rabbit eats grass by comparing hunger
      * while(world doesnt contain grass and world contains rabbit) program.simulate
      * Assert that rabbit doesnt exist within the world.
@@ -188,6 +193,7 @@ public class KravTest {
 
     /**
      * Kaniner kan reproducere.
+     *
      * Generates two rabbits. Gives them enough energy to call reproduce
      * Expects that burrow.getMembers.size gets larger by 1
      */
@@ -205,66 +211,66 @@ public class KravTest {
     }
 
     /**
-     * Kaniner kan grave huller, eller dele eksisterende huller med andre kaniner. Kaniner kan kun være knyttet til et hul.
-     * Rabbit bliver spawnet, hopper ned i eget hul.
-     * Rabbit graver et nyt hul
-     * ________________________
-     * Hvis flere huller eksisterer end dem vi instantierede så vi instantierer vi rabbit2
-     * Så længe at rabbit2 ikke er i en burrow vil den simulerer, den energi er sat til 25 så den kan ikke grave sin egen
-     * Når den er i en burrow tjekkes noget nyt
-     * ________________________
-     * Hvis mængden af alle indgange til burrowen er ligeså stor som mængden af alle entities på kortet minus 2 (de to kaniner)
-     * Har vi sikret os at den ikke har gravet sin egen burrow
-     * Nu lader vi den så grave sit eget hul, ved at sætte dens energi til 100 og skipturn for rabbit1
-     * Vi har tallet fra før programmet blev simuleret på antallet af indgange for den burrow, nu har vi det nye
-     * Hvis det nye er højere end det gamle, sæt boolean til true
-     * ________________________
-     * Hvis true kør alle entities igennem for hvis hullet findes i entities i++
-     * ________________________
-     * World entities - 2 == i
+     * Kaniner kan grave huller
+     *
      */
     @Test
-    void K1_2f() {
+    void K1_2f_0(){
         Location rabbit1Location = new Location(0,0);
-        Burrow burrow = new Burrow(world, rabbit1Location);
-        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world,rabbit1Location, "Rabbit",3,burrow,false);
-        Rabbit rabbit2 = null;
+        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world,rabbit1Location, "Rabbit");
         rabbit1.setHunger(100);
         rabbit1.setEnergy(100);
-        System.out.println(world.getEntities());
-        program.simulate(); //Enters burrow
-        program.simulate(); //dig another hole
+        program.simulate();
 
-        if(world.getEntities().size()>2){
-            Location rabbit2Location = new Location(2,2);
-            rabbit2 = (Rabbit) ObjectFactory.generateOnMap(world,rabbit2Location, "Rabbit");
-            rabbit2.setHunger(100);
-            rabbit2.setEnergy(25); //cant dig burrow
-            while(!rabbit2.isInNest()){
-                rabbit1.skipTurn();
-                program.simulate();
-            }
-        }
+        assertNotNull(rabbit1.getNest());
 
-        boolean rabbit2DigsAnotherHole = false;
-        if(burrow.getEntries().size()==world.getEntities().size()-2 && rabbit2.isInNest()){
-            int currentEntries = burrow.getEntries().size();
+    }
+
+    /**
+     * Kaniner kan dele eksisterende huller med andre kaniner.
+     *
+     */
+    @Test
+    void K1_2f_1(){
+        Location rabbit1Location = new Location(0,0);
+        Burrow burrow = new Burrow(world, rabbit1Location);
+        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOffMap(world, "Rabbit",3,burrow,true);
+        Location rabbit2Location = new Location(2,2);
+        Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOnMap(world,rabbit2Location, "Rabbit");
+        rabbit2.setHunger(100);
+        rabbit2.setEnergy(25); //cant dig burrow
+        while(!rabbit2.isInNest()){
             rabbit1.skipTurn();
-            rabbit2.setEnergy(100);
             program.simulate();
-            if(currentEntries<burrow.getEntries().size()){
-                rabbit2DigsAnotherHole = true;
-            }
         }
-        int i = 0;
+        assertEquals(rabbit1.getNest(),rabbit2.getNest());
 
-        if(rabbit2DigsAnotherHole){
-            for(Hole hole : burrow.getEntries()){
-                if(world.getEntities().containsKey(hole)) i++;
-            }
-        }
+    }
 
-        assertEquals(i, world.getEntities().size()-2);
+    /**
+     * Kaniner kan kun være knyttet til et hul.little drop of white pixels
+     *
+     */
+    @Test
+    void K1_2f_2(){
+        Location rabbit1Location = new Location(0,0);
+        Location rabbit2Location = new Location(3,3);
+
+        Burrow burrow1 = new Burrow(world, rabbit1Location);
+        Burrow burrow2 = new Burrow(world, rabbit2Location);
+
+        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world,rabbit2Location, "Rabbit",3,burrow1,false);
+        Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOnMap(world,rabbit1Location, "Rabbit",3,burrow2,false);
+
+        rabbit1.setEnergy(25);
+        rabbit2.setEnergy(25);
+
+        world.setNight();
+        program.simulate();
+        program.simulate();
+
+        assertFalse(rabbit1.isInNest());
+        assertFalse(rabbit2.isInNest());
     }
 
     /**
@@ -327,34 +333,53 @@ public class KravTest {
         assertTrue(possibleLocations.contains(world.getLocation(rabbit1)));
     }
 
+
     /**
-     * Huller består altid minimum af en indgang, der kan dog være flere indgange som sammen former én kanin tunnel. Kaniner kan kun grave nye udgange mens de er i deres huller.
-     * Kaninen har nok energi til at grave et hul mere, men er ikke nede i burrow da den har 99 i hunger og skal jage
-     * Hvis den ikke er i burrow, simuler, sethunger 100, simuler
-     * Hvis den nu er i burrow, noter entries før
-     * Simuler
-     * Assert that entries before is less than burrow.getEntries.size at the current moment
+     * Huller består altid minimum af en indgang.
      */
     @Test
-    void KF1_1() {
+    void KF1_1_0(){
         Location rabbit1Location = new Location(0,0);
         Burrow burrow = new Burrow(world, rabbit1Location);
-        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world,rabbit1Location, "Rabbit",3,burrow,false);
-        rabbit1.setEnergy(100);
-        rabbit1.setHunger(99);
-        program.simulate();
-        if(!rabbit1.isInNest()){
-            program.simulate();
-            rabbit1.setHunger(100);
-            program.simulate();
-        }
+        assertEquals(burrow.getEntries().size(),1);
+    }
 
-        int entriesBefore = 0;
-        if(rabbit1.isInNest()){
-            entriesBefore = burrow.getEntries().size();
-            program.simulate();
-        }
-        assertTrue(burrow.getEntries().size()>entriesBefore);
+    /**
+     * Huller kan dog være flere indgange som sammen former én kanin tunnel.
+     */
+    @Test
+    void KF1_1_1(){
+        Location rabbit1Location = new Location(0,0);
+
+        Burrow burrow = new Burrow(world, rabbit1Location);
+        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOffMap(world, "Rabbit",3,burrow,true);
+
+        rabbit1.setEnergy(100);
+        rabbit1.setHunger(100);
+
+        program.simulate();
+        program.simulate();
+
+        assertEquals(burrow.getEntries().size(),2);
+    }
+
+    /**
+     * Kaniner kan kun grave nye udgange mens de er i deres huller.
+     */
+    @Test
+    void KF1_1_2(){
+        Location rabbit1Location = new Location(0,0);
+
+        Burrow burrow = new Burrow(world, rabbit1Location);
+        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world, rabbit1Location,"Rabbit",3,burrow,false);
+
+        rabbit1.setEnergy(100);
+        rabbit1.setHunger(99); // nok til at grave, ikke nok til at gå ind i burrow
+
+        program.simulate();
+        program.simulate(); //et par simulations
+
+        assertEquals(burrow.getEntries().size(),1);
     }
 
     /**
@@ -387,16 +412,16 @@ public class KravTest {
     @Test
     void K2_1b() {
         Location location = new Location(0,0);
+
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, location, "Wolf");
+
         wolf.setHealth(100);
-        wolf.removeHealth(100,world);
         wolf.setEnergy(100);
+        wolf.removeHealth(100,world);
+
         program.simulate();
-        int indeholderCarcass = 0;
-        if(world.getTile(location).getClass() == Carcass.class){
-            indeholderCarcass++;
-        }
-        assertEquals(world.getEntities().size(), indeholderCarcass);
+
+        assertSame(world.getTile(location).getClass(), Carcass.class);
     }
 
     /**
@@ -409,72 +434,66 @@ public class KravTest {
     void K2_1c() {
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(4,4), "Wolf");
         ObjectFactory.generateOnMap(world,new Location(0,0), "Rabbit");
+        double hungerBeforeConsuming = wolf.getHunger();
+
         program.simulate(); //4,4 - 3,3
         program.simulate(); //3,3 - 2,2
-        double hungerBeforeConsuming = wolf.getHunger();
-        Location expectedLocation = new Location(2,2);
-        if(world.getLocation(wolf).equals(expectedLocation)){
-            program.simulate();
-            program.simulate();
-            program.simulate();
-        }
+        program.simulate(); //2,2 - 1,1
+        program.simulate(); // kill
+        program.simulate(); //eat
+
         assertTrue(hungerBeforeConsuming<wolf.getHunger());
     }
 
     /**
      * Ulve er et flokdyr. De søger konstant mod andre ulve i flokken, og derigennem ’jager’ sammen.
+     */
+    @Test
+    void K2_2a_0(){
+        Wolf wolf1 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf", wolf1.getPack(), 3, false);
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location (3,3),"Rabbit");
+
+        rabbit.skipTurn();
+        program.simulate();
+        rabbit.skipTurn();
+        program.simulate();
+
+        Location wolf1Location = world.getLocation(wolf1);
+        Location wolf2Location = world.getLocation(wolf2);
+        Location predictedWolf1Location1 = new Location(2,1);
+        Location predictedWolf1Locaiton2 = new Location(2,2);
+        boolean isAtPredictedLocation = false;
+
+        if(Objects.equals(wolf1Location, predictedWolf1Location1) || Objects.equals(wolf1Location, predictedWolf1Locaiton2)) {
+            isAtPredictedLocation = true;
+        }
+        Location predictedWolf2Location = new Location(3,2);
+
+        assertTrue(isAtPredictedLocation);
+        assertEquals(predictedWolf2Location,wolf2Location);
+    }
+
+    /**
      * Når inputfilen beskriver (på en enkelt linje) at der skal placeres flereulve, bør disse automatisk være i samme flok.
      */
     @Test
-    void K2_2a() {
-        Rabbit rabbit = null;
-        Boolean allInSamePack = false;
-        int inSamePack = 0;
-        int amountOfLessHungryWolves = 0;
-
+    void K2_2a_1(){
         World world = generateWithInput(new Input("data/demo/d9.txt"));
 
         Map<Object, Location> entities = world.getEntities();
         List<Wolf> wolfList = new ArrayList<>();
-        List<Double> wolfHungerBefore = new ArrayList<>();
+        int packsize = 0;
 
         for(Object entity : entities.keySet()) {
             if (entity.getClass().equals(Wolf.class)) {
                 wolfList.add((Wolf) entity);
-            }
-            if (entity.getClass().equals(Rabbit.class)){
-            rabbit = (Rabbit) entity;
+                packsize = ((Wolf) entity).getPack().getMembers().size();
             }
         }
-
-        for(Wolf wolf : wolfList){
-            if(wolf.getPack().getMembers().size() == wolfList.size()){
-                wolfHungerBefore.add(wolf.getHunger());
-                allInSamePack = true;
-            }
-        }
-
-        if(allInSamePack){
-
-            while(world.contains(rabbit)){
-                program.simulate();
-            }
-
-            for(Wolf wolf : wolfList){
-                while(wolf.getHuntingPack() != null){
-                    program.simulate();
-                }
-            }
-
-            for(int i = 0; i<wolfList.size();i++){
-            if(wolfList.get(i).getHunger() > wolfHungerBefore.get(i)){
-                amountOfLessHungryWolves++;
-                }
-            }
-        }
-
-        assertTrue(amountOfLessHungryWolves == wolfList.size());
+        assertEquals(packsize,world.getEntities().size());
     }
+
 
     /**
      * Ulve og deres flok, tilhører en ulvehule, det er også her de formerer sig.
@@ -533,6 +552,52 @@ public class KravTest {
             }
         }
         assertTrue(wolf3HealthBefore>wolf3HealthAfter);
+    }
+
+    /**
+     * Ulve og deres flok, tilhører en ulvehule, det er også her de formerer sig.
+     */
+    @Test
+    void K2_3a_0(){
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf",5);
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", wolf.getPack(), 5, false);
+        wolf.setHunger(100);
+        wolf2.setHunger(100);
+        program.simulate();//Dig
+        program.simulate();//enter
+        program.simulate();//recreate
+        assertTrue(wolf.getPack().getMembers().size()>2);
+    }
+
+    /**
+     *  Ulve ’bygger’ selv deres huler. Ulve kan ikke lide andre ulveflokke og deres huler.
+     */
+    @Test
+    void K2_3a_1(){
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf",5);
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", wolf.getPack(), 5, false);
+        wolf.setHunger(100);
+        wolf2.setHunger(100);
+        program.simulate();//Dig
+        program.simulate();//enter
+        Wolf wolf3 = (Wolf) ObjectFactory.generateOnMap(world, world.getLocation(wolf.getNest()), "Wolf", 5);
+        wolf.skipTurn();
+        wolf2.skipTurn();
+        program.simulate();
+        assertTrue(Helper.distance(world.getLocation(wolf3),world.getLocation(wolf.getNest())) >= 1);
+    }
+
+    /**
+     *  De prøver således at undgå andre grupper. Møder en ulv en ulv fra en anden flok, kæmper de mod hinanden.
+     */
+    @Test
+    void K2_3a_2(){
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf",5);
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(3,3), "Wolf", wolf.getPack(), 5, false);
+        Wolf wolf3 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", 5);
+        int healthBefore = wolf3.getHealth();
+
+        assertTrue(healthBefore>wolf3.getHealth());
     }
 
     /**
@@ -848,7 +913,6 @@ public class KravTest {
 
         assertTrue(carcass.isInfected());
     }
-
 
     /**
      * Når en svamp dør, er jorden ekstra gunstig. Derfor opstår græs på sådanne

@@ -35,12 +35,10 @@ public class Burrow extends Community implements Nest{
      */
     public Burrow(World world) {
         super();
-
         entries = new HashSet<>();
 
         Random random = new Random();
-        Location entryLocation = new Location(random.nextInt(world.getSize()), random.nextInt(world.getSize()));
-        
+        Location entryLocation = Helper.findNonBlockingEmptyLocation(world);
         addEntry(world, entryLocation);
     }
 

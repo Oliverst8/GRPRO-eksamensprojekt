@@ -1,6 +1,6 @@
 package main;
 
-public abstract class Entity {
+public abstract class Entity implements Spawnable{
     /**
      * @return the class of the entity
      */

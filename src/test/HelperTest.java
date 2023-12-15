@@ -10,7 +10,6 @@ import main.Rabbit;
 import main.Helper;
 import main.Carcass;
 import main.Organism;
-import error.NoEmptyLocationException;
 
 import spawn.ObjectFactory;
 
@@ -21,11 +20,7 @@ import itumulator.executable.Program;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class HelperTest {
     Program program;
@@ -123,7 +118,7 @@ class HelperTest {
     }
 
     @Test
-    void findEmptyLocationWhereThereIsNoneExpectsNoEmptyLocationException() {
+    void findEmptyLocationWhereThereIsNoneExpectsNull() {
         int size = 1; // Size of the world
         int delay = 1; // Delay between each turn (in ms)
         int display_size = 800; // Size of the display
@@ -132,13 +127,11 @@ class HelperTest {
         world = program.getWorld();
         ObjectFactory.generateOnMap(world, "Rabbit");
 
-        assertThrows(NoEmptyLocationException.class, () -> {
-           Helper.findEmptyLocation(world);
-        });
+        assertNull(Helper.findEmptyLocation(world));
     }
 
     @Test
-    void findNonBlockingEmptyLocationWhereThereIsNoneExpectsNoEmptyLocationException() {
+    void findNonBlockingEmptyLocationWhereThereIsNoneExpectsNull() {
         int size = 1; // Size of the world
         int delay = 1; // Delay between each turn (in ms)
         int display_size = 800; // Size of the display
@@ -147,9 +140,7 @@ class HelperTest {
         world = program.getWorld();
         ObjectFactory.generateOnMap(world, "Grass");
 
-        assertThrows(NoEmptyLocationException.class, () -> {
-            Helper.findNonBlockingEmptyLocation(world);
-        });
+        assertNull(Helper.findNonBlockingEmptyLocation(world));
     }
 
     @Test

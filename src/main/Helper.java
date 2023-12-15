@@ -4,8 +4,6 @@ import java.util.Set;
 import java.util.Random;
 import java.util.HashSet;
 
-import error.NoEmptyLocationException;
-
 import itumulator.world.World;
 import itumulator.world.Location;
 
@@ -80,10 +78,10 @@ public class Helper {
      * @param world the world that needs to be looked in
      * @param nonBlockingNotAllowed if true there cant be a non blocking object on the location either
      * @return a location where there is no object
-     * @throws NoEmptyLocationException if there is no empty location
+     * @return null if there is no empty location in the world
      */
     private static Location findNonFilledLocation(World world, boolean nonBlockingNotAllowed) {
-        if(!isThereAnEmptyLocationInWorld(world, nonBlockingNotAllowed)) throw new NoEmptyLocationException();
+        if(!isThereAnEmptyLocationInWorld(world, nonBlockingNotAllowed)) return null;
 
         Random r = new Random();
         Location location;

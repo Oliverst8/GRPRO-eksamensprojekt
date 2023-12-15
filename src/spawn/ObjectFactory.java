@@ -1,6 +1,5 @@
 package spawn;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.management.RuntimeErrorException;
@@ -89,17 +88,17 @@ public class ObjectFactory {
         className = "main." + className;
 
         try {
+            // Get the requested class.
             Class<?> objectClass = Class.forName(className);
 
+            // Get the parameters of the constructor.
             Class<?>[] parameters = new Class[constructorArgs.length];
             for(int i = 0; i < parameters.length; i++){
                 parameters[i] = convertToPrimitiveTypeIfThereIsOne(constructorArgs[i].getClass());
             }
 
-            Constructor<?> objectConstructor = objectClass.getConstructor(parameters);
-
-            return objectConstructor.newInstance(constructorArgs);
-
+            // return new instance of the requested class.
+            return objectClass.getDeclaredConstructor(parameters).newInstance(constructorArgs);
         } catch (ClassNotFoundException e) {
             System.out.println("Class not found: " + className);
         } catch (NoSuchMethodException e) {

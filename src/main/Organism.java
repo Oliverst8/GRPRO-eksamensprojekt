@@ -3,7 +3,7 @@ package main;
 import itumulator.world.World;
 import itumulator.simulator.Actor;
 
-public abstract class Organism extends Entity implements Actor, Consumable {
+public abstract class Organism extends Entity implements Actor {
     protected int age;
     protected int adultAge;
     protected int energyLossPerDay;

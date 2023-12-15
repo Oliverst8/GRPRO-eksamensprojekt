@@ -15,7 +15,7 @@ public abstract class Animal extends MycoHost {
     protected boolean sleeping;
     protected int strength;
     private double hunger; //0 is empty, and 100 is full
-    private Set<Class<? extends Consumable>> canEat; //Holdes the types of classes the animal can eat
+    private Set<Class<? extends Organism>> canEat; //Holdes the types of classes the animal can eat
 
     /**
      * Initialises hunger to 50
@@ -111,32 +111,19 @@ public abstract class Animal extends MycoHost {
      * @return null if there is no prey ind a location of radius
      */
     protected Organism findPrey(World world, int radius) {
-        Map<Location, Organism> prey = new HashMap<>();
+        Set<Organism> prey = new HashSet<>();
 
         for(Entity entity : Helper.getEntities(world, world.getLocation(this),radius)) {
             if(getCanEat().contains(entity.getEntityClass())) {
                 Organism currentPrey = (Organism) entity;
 
                 if(getFoodChainValue() >= currentPrey.getFoodChainValue() && currentPrey.isEatable()) {
-                    prey.put(world.getLocation(entity), currentPrey);
+                    prey.add(currentPrey);
                 }
             }
         }
 
-        if(prey.isEmpty()) return null;
-        
-        Location closestPrey = null;
-
-        double closestDist = Double.MAX_VALUE;
-        for(Location currentPreyLocation : prey.keySet()){
-            double dist = Helper.distance(world.getLocation(this), currentPreyLocation);
-            if(closestDist > dist){
-                closestPrey = currentPreyLocation;
-                closestDist = dist;
-            }
-        }
-        
-        return prey.get(closestPrey);
+        return (Organism) Helper.findNearest(world, world.getLocation(this), prey);
     }
 
     /**
@@ -348,7 +335,7 @@ public abstract class Animal extends MycoHost {
      * Adds a type of food to the list of food the animal can eat
      * @param food
      */
-    protected void addCanEat(Class<? extends Consumable> food) {
+    protected void addCanEat(Class<? extends Organism> food) {
         canEat.add(food);
     }
 
@@ -356,7 +343,7 @@ public abstract class Animal extends MycoHost {
      * Sets the list of food the animal can eat
      * @param canEat
      */
-    protected void setCanEat(Set<Class<? extends Consumable>> canEat) {
+    protected void setCanEat(Set<Class<? extends Organism>> canEat) {
         this.canEat = canEat;
     }
 
@@ -410,7 +397,7 @@ public abstract class Animal extends MycoHost {
      * @param food The type of class that is trying to get eaten
      * @return Weather or not the animal can it the food
      */
-    public boolean canIEat(Class<? extends Consumable> food) {
+    public boolean canIEat(Class<? extends Organism> food) {
         return getCanEat().contains(food);
     }
 
@@ -466,7 +453,7 @@ public abstract class Animal extends MycoHost {
     /*
      * @return String array of canEat of the object
      */
-    public Set<Class<? extends Consumable>> getCanEat(){
+    public Set<Class<? extends Organism>> getCanEat(){
         return canEat;
     }
 }

@@ -1,11 +1,11 @@
 package test;
 
 import main.Grass;
-import main.Consumable;
 
 import itumulator.world.World;
 import itumulator.executable.Program;
 
+import main.Organism;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -29,6 +29,6 @@ class PlantTest {
     void testPlantConstructor() {
         Grass grass = new Grass();
 
-        assertInstanceOf(Consumable.class, grass);
+        assertInstanceOf(Organism.class, grass);
     }
 }

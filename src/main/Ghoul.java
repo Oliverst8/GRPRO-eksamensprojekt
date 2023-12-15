@@ -4,13 +4,12 @@ import java.awt.Color;
 
 import java.util.Set;
 
-import itumulator.executable.DynamicDisplayInformationProvider;
 import spawn.ObjectFactory;
 
 import itumulator.world.World;
 import itumulator.world.Location;
 
-public class Ghoul extends Organism implements Fungi, DynamicDisplayInformationProvider {
+public class Ghoul extends Organism implements Fungi {
     public Ghoul() {
         super(-2);
         adultAge = 1;

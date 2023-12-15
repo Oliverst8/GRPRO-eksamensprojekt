@@ -1,7 +1,6 @@
 package main;
 
 import java.util.Set;
-import java.util.Random;
 import java.util.HashSet;
 
 import spawn.ObjectFactory;
@@ -37,7 +36,6 @@ public class Burrow extends Community implements Nest{
         super();
         entries = new HashSet<>();
 
-        Random random = new Random();
         Location entryLocation = Helper.findNonBlockingEmptyLocation(world);
         addEntry(world, entryLocation);
     }

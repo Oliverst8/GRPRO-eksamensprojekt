@@ -112,32 +112,19 @@ public abstract class Animal extends MycoHost implements DynamicDisplayInformati
      * @return null if there is no prey ind a location of radius
      */
     protected Organism findPrey(World world, int radius) {
-        Map<Location, Organism> prey = new HashMap<>();
+        Set<Organism> prey = new HashSet<>();
 
         for(Entity entity : Helper.getEntities(world, world.getLocation(this),radius)) {
             if(getCanEat().contains(entity.getEntityClass())) {
                 Organism currentPrey = (Organism) entity;
 
                 if(getFoodChainValue() >= currentPrey.getFoodChainValue() && currentPrey.isEatable()) {
-                    prey.put(world.getLocation(entity), currentPrey);
+                    prey.add(currentPrey);
                 }
             }
         }
 
-        if(prey.isEmpty()) return null;
-        
-        Location closestPrey = null;
-
-        double closestDist = Double.MAX_VALUE;
-        for(Location currentPreyLocation : prey.keySet()){
-            double dist = Helper.distance(world.getLocation(this), currentPreyLocation);
-            if(closestDist > dist){
-                closestPrey = currentPreyLocation;
-                closestDist = dist;
-            }
-        }
-        
-        return prey.get(closestPrey);
+        return (Organism) Helper.findNearest(world, world.getLocation(this), prey);
     }
 
     /**

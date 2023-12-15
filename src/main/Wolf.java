@@ -209,47 +209,6 @@ public class Wolf extends NestAnimal {
     }
 
     /**
-     *
-     * @param world the world the animal is in
-     * @param radius the raidus to be looked for prey in
-     * An organism is only considered prey if its foodchainvalue is lower than the animal hunting for it, the animal eats that type of animal, and it is eatable
-     * @return
-     */
-    @Override
-    protected Organism findPrey(World world, int radius) {
-        Map<Location, Organism> prey = new HashMap<>();
-
-        for(Entity entity : Helper.getEntities(world, world.getLocation(this), radius)) {
-
-            if(getCanEat().contains(entity.getEntityClass())){
-                Organism currentPrey = (Organism) entity;
-
-                if(getFoodChainValue() >= currentPrey.getFoodChainValue() &&
-                        currentPrey.isEatable() && !pack.contains(currentPrey)) {
-                    prey.put(world.getLocation(entity), currentPrey);
-                }
-
-            }
-        }
-
-        if(prey.isEmpty()) return null;
-
-        Location closestPrey = null;
-
-        double closestDist = Double.MAX_VALUE;
-        for(Location currentPreyLocation : prey.keySet()){
-            double dist = Helper.distance(world.getLocation(this), currentPreyLocation);
-            if(closestDist > dist){
-                closestPrey = currentPreyLocation;
-                closestDist = dist;
-            }
-        }
-
-
-        return prey.get(closestPrey);
-    }
-
-    /**
      * @return the pack the wolf is part off
      */
     public Pack getPack() {

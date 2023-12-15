@@ -16,7 +16,7 @@ public abstract class Animal extends MycoHost implements DynamicDisplayInformati
     protected boolean sleeping;
     protected int strength;
     private double hunger; //0 is empty, and 100 is full
-    private Set<Class<? extends Consumable>> canEat; //Holdes the types of classes the animal can eat
+    private Set<Class<? extends Organism>> canEat; //Holdes the types of classes the animal can eat
 
     /**
      * Initialises hunger to 50
@@ -349,7 +349,7 @@ public abstract class Animal extends MycoHost implements DynamicDisplayInformati
      * Adds a type of food to the list of food the animal can eat
      * @param food
      */
-    protected void addCanEat(Class<? extends Consumable> food) {
+    protected void addCanEat(Class<? extends Organism> food) {
         canEat.add(food);
     }
 
@@ -357,7 +357,7 @@ public abstract class Animal extends MycoHost implements DynamicDisplayInformati
      * Sets the list of food the animal can eat
      * @param canEat
      */
-    protected void setCanEat(Set<Class<? extends Consumable>> canEat) {
+    protected void setCanEat(Set<Class<? extends Organism>> canEat) {
         this.canEat = canEat;
     }
 
@@ -411,7 +411,7 @@ public abstract class Animal extends MycoHost implements DynamicDisplayInformati
      * @param food The type of class that is trying to get eaten
      * @return Weather or not the animal can it the food
      */
-    public boolean canIEat(Class<? extends Consumable> food) {
+    public boolean canIEat(Class<? extends Organism> food) {
         return getCanEat().contains(food);
     }
 
@@ -467,7 +467,7 @@ public abstract class Animal extends MycoHost implements DynamicDisplayInformati
     /*
      * @return String array of canEat of the object
      */
-    public Set<Class<? extends Consumable>> getCanEat(){
+    public Set<Class<? extends Organism>> getCanEat(){
         return canEat;
     }
 }

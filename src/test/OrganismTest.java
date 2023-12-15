@@ -1,9 +1,6 @@
 package test;
 
-import main.Grass;
-import main.Burrow;
-import main.Rabbit;
-import main.Consumable;
+import main.*;
 
 import spawn.ObjectFactory;
 
@@ -63,7 +60,7 @@ public class OrganismTest {
      */
     @Test
     void testOrganismFoodType() {
-        assertInstanceOf(Consumable.class, rabbit);
+        assertInstanceOf(Organism.class, rabbit);
     }
 
     /**

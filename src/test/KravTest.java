@@ -1,8 +1,28 @@
 package test;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.List;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.ArrayList;
 
-import main.*;
+import main.Egg;
+import main.Pack;
+import main.Wolf;
+import main.Bear;
+import main.Grass;
+import main.Ghoul;
+import main.Rabbit;
+import main.Burrow;
+import main.Helper;
+import main.Animal;
+import main.Entity;
+import main.Turtle;
+import main.Carcass;
+import main.MycoHost;
+import main.Cordyceps;
+import main.RabbitHole;
 
 import spawn.Input;
 import spawn.ObjectFactory;
@@ -15,7 +35,11 @@ import itumulator.executable.Program;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class KravTest {
@@ -592,12 +616,13 @@ public class KravTest {
      */
     @Test
     void K2_3a_2(){
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf",5);
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(3,3), "Wolf", wolf.getPack(), 5, false);
-        Wolf wolf3 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", 5);
-        int healthBefore = wolf3.getHealth();
+        ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf",5);
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", 5);
+        int healthBefore = wolf2.getHealth();
 
-        assertTrue(healthBefore>wolf3.getHealth());
+        program.simulate();
+
+        assertTrue(healthBefore>wolf2.getHealth());
     }
 
     /**
@@ -681,20 +706,17 @@ public class KravTest {
     void K2_7a() {
         boolean bearHasEaten = false;
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(2,1), "Bear");
-        Berry berry = (Berry) ObjectFactory.generateOnMap(world, "Berry");
+        ObjectFactory.generateOnMap(world, "Berry");
 
         double before = 0;
 
-        while(bear.getAge()==0){
+        while(bear.getAge() < bear.getAdultAge()) {
             program.simulate();
         }
 
-
-        for(int i = 0; i<3;i++) {
+        for(int i = 0; i < 3; i++) {
             program.simulate();
         }
-
-
 
         if(before < bear.getHunger()) {
             bearHasEaten = true;
@@ -865,15 +887,10 @@ public class KravTest {
      */
     @Test
     void K3_2a() {
-        Boolean containsFungi = false;
-
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,0), "Bear");
         Bear bear2 = (Bear) ObjectFactory.generateOnMap(world, new Location(3,3), "Bear");
         bear.removeHealth(bear.getHealth(),world);
         bear2.removeHealth(bear2.getHealth(),world);
-
-
-        Map<Object, Location> entities = world.getEntities();
 
         Carcass carcass = (Carcass) world.getTile(new Location(0,0));
         Carcass carcass2 = (Carcass) world.getTile(new Location(3,3));
@@ -895,7 +912,6 @@ public class KravTest {
         assertEquals(1, entities2.size());
         assertInstanceOf(Ghoul.class, entities2.get(0));
         assertInstanceOf(Ghoul.class, world.getTile(new Location(0,0)));
-
     }
 
     /**
@@ -1039,10 +1055,13 @@ public class KravTest {
     @Test
     void K4_2(){
         Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,0), "Turtle", 3);
-        Grass grass = (Grass) ObjectFactory.generateOnMap(world,new Location(1,0),"Grass");
+        ObjectFactory.generateOnMap(world,new Location(1,0),"Grass");
+
         double hungerBefore = turtle.getHunger();
+
         program.simulate();
         program.simulate();
+
         assertTrue(hungerBefore<turtle.getHunger());
     }
 
@@ -1114,10 +1133,13 @@ public class KravTest {
     @Test
     void K4_4(){
         Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,0), "Turtle", 3);
-        Grass grass = (Grass) ObjectFactory.generateOnMap(world,new Location(1,0),"Grass");
+        ObjectFactory.generateOnMap(world,new Location(1,0),"Grass");
+
         double hungerBefore = turtle.getHunger();
+
         program.simulate();
         program.simulate();
+
         assertTrue(hungerBefore<turtle.getHunger());
     }
 

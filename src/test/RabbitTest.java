@@ -1,6 +1,9 @@
 package test;
 
-import main.*;
+import main.Wolf;
+import main.Grass;
+import main.Rabbit;
+import main.Burrow;
 
 import spawn.ObjectFactory;
 
@@ -11,7 +14,12 @@ import itumulator.executable.Program;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 class RabbitTest {
     Program program;
@@ -340,7 +348,7 @@ class RabbitTest {
     void testThatRabbitCantExitBurrowFromBlockedEntrance() {
         Burrow burrow = (Burrow) ObjectFactory.generateOnMap(world, "Burrow", new Location(0,0));
 
-        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0, 0), "Rabbit");
+        ObjectFactory.generateOnMap(world, new Location(0, 0), "Rabbit");
         Rabbit rabbit2 = (Rabbit) ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
 
         rabbit2.setHunger(99); // Under 100 so it wants to exit burrow

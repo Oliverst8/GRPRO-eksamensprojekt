@@ -1,17 +1,20 @@
 package test;
 
-import itumulator.executable.Program;
-import itumulator.world.Location;
-import itumulator.world.World;
 import main.Bear;
 import main.Turtle;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
+
 import spawn.ObjectFactory;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import itumulator.world.World;
+import itumulator.world.Location;
+import itumulator.executable.Program;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class TurtleTest {
@@ -77,8 +80,7 @@ public class TurtleTest {
     void testThatTurtleDoesNotTakeDamageWhileInShell() {
         world.setCurrentLocation(new Location(0,0));
 
-
-        Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,1), "Bear");
+        ObjectFactory.generateOnMap(world, new Location(0,1), "Bear");
 
         int expected = turtle.getHealth();
 
@@ -102,7 +104,6 @@ public class TurtleTest {
 
     @Test
     void testTurtleLeavesShellAfter3TurnsInIt() {
-
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,1), "Bear");
         world.setCurrentLocation(new Location(0,1));
         bear.act(world);
@@ -118,7 +119,7 @@ public class TurtleTest {
     @Test
     void testThatTurtleRunsAwayFormBear() {
 
-        Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,1), "Bear");
+        ObjectFactory.generateOnMap(world, new Location(0,1), "Bear");
 
         Location startingLocation = new Location(0,0);
 

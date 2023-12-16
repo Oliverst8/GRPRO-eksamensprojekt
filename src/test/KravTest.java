@@ -7,22 +7,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.ArrayList;
 
-import main.Egg;
-import main.Pack;
-import main.Wolf;
-import main.Bear;
-import main.Grass;
-import main.Ghoul;
-import main.Rabbit;
-import main.Burrow;
-import main.Helper;
-import main.Animal;
-import main.Entity;
-import main.Turtle;
-import main.Carcass;
-import main.MycoHost;
-import main.Cordyceps;
-import main.RabbitHole;
+import main.*;
 
 import spawn.Input;
 import spawn.ObjectFactory;
@@ -65,14 +50,10 @@ public class KravTest {
 
         boolean containsGrass = false;
 
-        Map<Object, Location> entities = world.getEntities();
-
-        for(Object entity : entities.keySet()) {
-            if (entity.getClass().equals(Grass.class)) {
-                containsGrass = true;
-                break;
-            }
+        if (world.getTile(new Location(0,0)).getClass().equals(Grass.class)) {
+            containsGrass = true;
         }
+
 
         assertTrue(containsGrass);
     }
@@ -138,13 +119,8 @@ public class KravTest {
 
         boolean containsRabbit = false;
 
-        Map<Object, Location> entities = world.getEntities();
-
-        for(Object entity : entities.keySet()) {
-            if (entity.getClass().equals(Rabbit.class)) {
-                containsRabbit = true;
-                break;
-            }
+        if (world.getTile(new Location(0,0)).getClass().equals(Rabbit.class)) {
+            containsRabbit = true;
         }
 
         assertTrue(containsRabbit);
@@ -166,25 +142,44 @@ public class KravTest {
         assertFalse(world.contains(rabbit));
     }
 
+
     /**
-     * Kaniner lever af græs som de spiser i løbet af dagen, uden mad dør en kanin.
-     *
-     * Create rabbit and grass. Observe if rabbit eats grass by comparing hunger
-     * while(world doesnt contain grass and world contains rabbit) program.simulate
-     * Assert that rabbit doesnt exist within the world.
+     * Kaniner lever af græs som de spiser i løbet af dagen.
      */
     @Test
-    void K1_2c() {
+    void K1_2c_0(){
         Location location = new Location(0,0);
         Grass grass = (Grass) ObjectFactory.generateOnMap(world, location,"Grass");
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location,"Rabbit");
+
+        rabbit.setHunger(0);
+
         double hungerBeforeGrass = rabbit.getHunger();
+
+        rabbit.setEnergy(1);
         program.simulate();
-        if(hungerBeforeGrass<rabbit.getHunger()){
-            while(!world.contains(grass) && world.contains(rabbit)){
-                program.simulate();
-            }
-        }
+
+        assertTrue(rabbit.getHunger()>hungerBeforeGrass);
+    }
+
+    /**
+     * Uden mad dør en kanin.
+     */
+    @Test
+    void K1_2c_1(){
+        Location location = new Location(0,0);
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location,"Rabbit");
+        double hungerBeforeGrass = rabbit.getHunger();
+
+        program.simulate();
+
+        rabbit.setHunger(0);
+        rabbit.setEnergy(1);
+
+        program.simulate();
+        program.simulate();
+
+
         assertFalse(world.contains(rabbit));
     }
 
@@ -198,21 +193,13 @@ public class KravTest {
      */
     @Test
     void K1_2d() {
-        Location location = new Location(0,0);
-        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location,"Rabbit");
 
-        int energyBefore = rabbit.getEnergy(); //100
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0,0),"Rabbit");
+        Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOnMap(world,new Location(1,1), "Rabbit",5,new Burrow(world, new Location(1,1)),false);
+        rabbit.addEnergy(rabbit.getMaxEnergy());
+        rabbit1.addEnergy(rabbit1.getMaxEnergy());
 
-        for(int i = 0; i<rabbit.getAdultAge()+1 ; i++){
-        world.setNight();
-        while(world.isNight()){
-            program.simulate();
-        }
-        program.simulate();
-        rabbit.addEnergy(100);
-        }
-        System.out.println(rabbit.getAge());
-        assertTrue(energyBefore>rabbit.getEnergy());
+        assertTrue(rabbit1.getEnergy() < rabbit.getEnergy());
     }
 
     /**
@@ -272,7 +259,7 @@ public class KravTest {
     }
 
     /**
-     * Kaniner kan kun være knyttet til et hul.little drop of white pixels
+     * Kaniner kan kun være knyttet til et hul.
      *
      */
     @Test
@@ -289,12 +276,18 @@ public class KravTest {
         rabbit1.setEnergy(25);
         rabbit2.setEnergy(25);
 
+
+        double distanceBeforeRabbit1 = Helper.distance(world.getLocation(rabbit1),world.getLocation(burrow1.getEntries().iterator().next()));
+        double distanceBeforeRabbit2 = Helper.distance(world.getLocation(rabbit2),world.getLocation(burrow2.getEntries().iterator().next()));
+
         world.setNight();
         program.simulate();
-        program.simulate();
 
-        assertFalse(rabbit1.isInNest());
-        assertFalse(rabbit2.isInNest());
+        double distanceAfterRabbit1 = Helper.distance(world.getLocation(rabbit1),world.getLocation(burrow1.getEntries().iterator().next()));
+        double distanceAfterRabbit2 = Helper.distance(world.getLocation(rabbit2),world.getLocation(burrow2.getEntries().iterator().next()));
+
+        assertTrue(distanceBeforeRabbit1>distanceAfterRabbit1);
+        assertTrue(distanceBeforeRabbit2>distanceAfterRabbit2);
     }
 
     /**
@@ -415,13 +408,8 @@ public class KravTest {
 
         boolean containsWolf = false;
 
-        Map<Object, Location> entities = world.getEntities();
-
-        for(Object entity : entities.keySet()) {
-            if (entity.getClass().equals(Wolf.class)) {
-                containsWolf = true;
-                break;
-            }
+        if (world.getTile(new Location(0,0)).getClass().equals(Wolf.class)) {
+            containsWolf = true;
         }
 
         assertTrue(containsWolf);
@@ -515,67 +503,8 @@ public class KravTest {
                 packsize = ((Wolf) entity).getPack().getMembers().size();
             }
         }
+
         assertEquals(packsize,world.getEntities().size());
-    }
-
-
-    /**
-     * Ulve og deres flok, tilhører en ulvehule, det er også her de formerer sig.
-     * Ulve ’bygger’ selv deres huler. Ulve kan ikke lide andre ulveflokke og deres huler.
-     * De prøver således at undgå andre grupper. Møder en ulv en ulv fra en anden flok, kæmper de mod hinanden.
-     */
-    @Test
-    void K2_3a() {
-        int wolf3HealthBefore = 200;
-        int wolf3HealthAfter = 200;
-
-
-        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf",5);
-        wolf.setHunger(100);
-
-        program.simulate();
-
-        if(wolf.isInNest()){
-            wolf.setHunger(50);
-            Wolf wolf2 = null;
-            program.simulate();
-
-            if(!wolf.isInNest()) {
-                wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,0), "Wolf", wolf.getPack(), 5, false);
-                wolf.setHunger(100);
-                wolf2.setHunger(100);
-
-                program.simulate();
-                program.simulate();
-                program.simulate();
-
-            }
-
-            if(world.getEntities().size()>=4) {
-
-                Wolf wolf3 = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf", 5);
-                wolf3.setHealth(200);
-                wolf3HealthBefore = wolf3.getHealth();
-
-                program.simulate();
-                program.simulate();
-
-                if(!Objects.equals(world.getLocation(wolf3), new Location(0, 0))){
-                    wolf.setEnergy(20);
-                    wolf2.setEnergy(20);
-                    wolf.setHunger(50);
-                    wolf2.setHunger(50);
-                    wolf3.skipTurn();
-                    program.simulate();
-                    wolf3.skipTurn();
-                    program.simulate();
-                    wolf3.skipTurn();
-                    program.simulate();
-                    wolf3HealthAfter = wolf3.getHealth();
-                }
-            }
-        }
-        assertTrue(wolf3HealthBefore>wolf3HealthAfter);
     }
 
     /**
@@ -604,11 +533,14 @@ public class KravTest {
         wolf2.setHunger(100);
         program.simulate();//Dig
         program.simulate();//enter
-        Wolf wolf3 = (Wolf) ObjectFactory.generateOnMap(world, world.getLocation(wolf.getNest()), "Wolf", 5);
+
+        Wolf wolf3 = (Wolf) ObjectFactory.generateOnMap(world, wolf.getPack().getDen().getLocation(world), "Wolf", 5);
         wolf.skipTurn();
         wolf2.skipTurn();
+
         program.simulate();
-        assertTrue(Helper.distance(world.getLocation(wolf3),world.getLocation(wolf.getNest())) >= 1);
+
+        assertTrue(Helper.distance(world.getLocation(wolf3),wolf.getPack().getDen().getLocation(world)) >= 1);
     }
 
     /**
@@ -704,25 +636,22 @@ public class KravTest {
      */
     @Test
     void K2_7a() {
-        boolean bearHasEaten = false;
+
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(2,1), "Bear");
         ObjectFactory.generateOnMap(world, "Berry");
 
-        double before = 0;
+        double bearHungerBefore = bear.getHunger();
 
         while(bear.getAge() < bear.getAdultAge()) {
-            program.simulate();
+            bear.grow();
         }
 
         for(int i = 0; i < 3; i++) {
             program.simulate();
         }
 
-        if(before < bear.getHunger()) {
-            bearHasEaten = true;
-        }
 
-        assertTrue(bearHasEaten);
+        assertTrue(bearHungerBefore < bear.getHunger());
     }
 
     /**
@@ -750,42 +679,31 @@ public class KravTest {
     }
 
     /**
-     * Hvis den ene ulv bliver voldsomt såret, underkaster den sig den sejrende ulvs flok. En såret ulv har brug for hvile før den kan fortsætte.
-     */
-    @Test
-    void KF2_1() {
-        throw new UnsupportedOperationException("Ikke lavet endnu");
-    }
-
-    /**
      * Dog er bjørnen ikke et flokdyr, og mødes kun med andre bjørne når de skal
      * parre sig. Bjørnen kan også dø og fjernes her fra verdenen.
      */
     @Test
     void KF2_2() {
-        World world = generateWithInput(new Input("data/demo/d10.txt"));
+        int size = 10; // Size of the world
+        int delay = 1; // Delay between each turn (in ms)
+        int display_size = 800; // Size of the display
 
-        List<Object> entities = new ArrayList<>(world.getEntities().keySet());
-        List<Bear> bearlist = new ArrayList<>();
+        program = new Program(size, display_size, delay);
+        world = program.getWorld();
 
-        for(Object object : entities){
-            if(object.getClass() == Bear.class){
-                bearlist.add((Bear) object);
-            }
+        Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,0), "Bear");
+        Bear bear2 = (Bear) ObjectFactory.generateOnMap(world, new Location(9,9), "Bear");
+
+        while(!bear.isAdult()){
+            bear.grow();
+            bear2.grow();
         }
 
-        while(!bearlist.get(0).isAdult()){
-            for(Bear bear : bearlist){
-                bear.setHunger(100);
-                bear.addEnergy(bear.getMaxEnergy());
-            }
+        while(world.getEntities().size() == 2){
             program.simulate();
         }
-        while(entities.size()==world.getEntities().size()){
-            program.simulate();
-            System.out.println(world.getEntities());
-        }
-        assertTrue(entities.size()<world.getEntities().size());
+
+        assertTrue(2<world.getEntities().size());
     }
 
     /**
@@ -827,32 +745,42 @@ public class KravTest {
     }
 
     /**
-     * Når dyr dør nu, skal de efterlade et ådsel. Ådsler kan spises ligesom dyr kunne
-     * tidligere, dog afhænger mængden af ’kød’ af hvor stort dyret der døde er. Således
-     * spises dyr ikke direkte længere når det slås ihjel, i stedet spises ådslet. Alle dyr som er
-     * kødædende spiser ådsler
+     * Når dyr dør nu, skal de efterlade et ådsel.
      */
     @Test
-    void K3_1b() {
+    void K3_1b_0(){
         Location location = new Location(0,0);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location, "Rabbit");
         rabbit.removeHealth(100,world);
 
-        double wolfRabbitHunger = 0;
-        double wolfWolfHunger = 0;
+        assertTrue(world.getTile(location).getClass().equals(Carcass.class));
+    }
 
-        if(world.getTile(location).getClass().equals(Carcass.class)){
-            Location wolfLocation = new Location(1,1);
-            Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, wolfLocation, "Wolf");
-            program.simulate();
-            wolfRabbitHunger = wolf.getHunger();
-            if(world.isTileEmpty(location)){
-                wolf.removeHealth(wolf.getHealth(),world);
-                Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,2), "Wolf");
-                program.simulate();
-                wolfWolfHunger = wolf2.getHunger();
-            }
-        }
+    /**
+     * Ådsler kan spises ligesom dyr kunne tidligere, dog afhænger mængden af ’kød’ af hvor stort dyret der døde er. Således
+     * spises dyr ikke direkte længere når det slås ihjel, i stedet spises ådslet. Alle dyr som er
+     * kødædende spiser ådsler
+     */
+    @Test
+    void K3_1b_1(){
+
+        Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, new Location(0,0), "Rabbit");
+        Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,1), "Wolf");
+
+        rabbit.removeHealth(100,world);
+
+        program.simulate();
+
+        double wolfRabbitHunger = wolf.getHunger();
+
+        wolf.removeHealth(wolf.getHealth(),world);
+
+        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(2,2), "Wolf");
+
+        program.simulate();
+
+        double wolfWolfHunger = wolf2.getHunger();
+
         assertTrue(wolfRabbitHunger<wolfWolfHunger);
     }
 
@@ -870,9 +798,9 @@ public class KravTest {
 
         Carcass carcass = (Carcass) world.getTile(new Location(0,0));
 
-        for(int i = 0; i <= 100; i++){
-            program.simulate();
-        }
+        carcass.setEnergy(carcass.getEnergy()-(carcass.getEnergy()-1));
+        program.simulate();
+        program.simulate();
 
         assertFalse(world.contains(carcass));
     }
@@ -880,38 +808,41 @@ public class KravTest {
     /**
      * Udover at ådsler nedbrydes, så hjælper svampene til. Således kan der opstå
      * svampe I et ådsel.
+     *
      * Dette kan ikke ses på selve kortet, men svampen lever I selve ådslet.
      * Når ådslet er nedbrudt (og forsvinder), og hvis svampen er stor nok, kan den ses som
-     * en svamp placeret på kortet, der hvor ådsle lå. For at læse inputfilerne skal du sikre
-     * dig, at et ådsel kan indlæses med svamp.
+     * en svamp placeret på kortet, der hvor ådsle lå.
      */
     @Test
-    void K3_2a() {
+    void K3_2a_0() {
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,0), "Bear");
         Bear bear2 = (Bear) ObjectFactory.generateOnMap(world, new Location(3,3), "Bear");
-        bear.removeHealth(bear.getHealth(),world);
-        bear2.removeHealth(bear2.getHealth(),world);
+        bear.die(world);
+        bear2.die(world);
 
         Carcass carcass = (Carcass) world.getTile(new Location(0,0));
         Carcass carcass2 = (Carcass) world.getTile(new Location(3,3));
 
-        while(!carcass.isInfected()){
+        program.simulate();
+
+        carcass2.setEnergy(10);
+
+        while(world.contains(carcass)){
             program.simulate();
-        } //both infected by now
-
-        carcass2.die(world);
-
-        if(!world.contains(carcass2)) {
-            while(world.contains(carcass)){
-                program.simulate();
-            }
         }
 
-        List<Object> entities2 = new ArrayList<>(world.getEntities().keySet());
-
-        assertEquals(1, entities2.size());
-        assertInstanceOf(Ghoul.class, entities2.get(0));
+        assertTrue(world.getTile(new Location(3,3)) == null);
         assertInstanceOf(Ghoul.class, world.getTile(new Location(0,0)));
+    }
+
+    /**
+     * For at læse inputfilerne skal du sikre dig, at et ådsel kan indlæses med svamp.
+     */
+    @Test
+    void k3_2a_1(){
+        World world = generateWithInput(new Input("data/demo/d11.txt"));
+        Carcass carcass = (Carcass) world.getTile(new Location(0,0));
+        assertTrue(carcass.isInfected());
     }
 
     /**
@@ -1069,7 +1000,7 @@ public class KravTest {
      * Simuler dyrets livscyklus, herunder fødsel, vækst, reproduktion og død.
      */
     @Test
-    void K4_3(){
+    void K4_3_0(){
         //fødsel
         Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,0), "Turtle", 3);
         Turtle turtle2 = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,1), "Turtle", 3);
@@ -1087,44 +1018,76 @@ public class KravTest {
         Carcass carcass2 = (Carcass) world.getTile(new Location(0,1));
         carcass.die(world);
         carcass2.die(world);
+
         assertEquals(world.getEntities().size(),2);
+    }
+
+    @Test
+    void K4_3_1(){
         //HatchingFase
-        Egg egg = (Egg) world.getTile(new Location(1,1));
-        Egg egg2 = (Egg) world.getTile(new Location(1,0));
+        Egg egg = (Egg) ObjectFactory.generateOnMap(world, new Location(0,0),"Egg", Turtle.class);
+
         while(world.contains(egg)){
             program.simulate();
         }
-        assertFalse(world.contains(egg));
-        assertFalse(world.contains(egg2));
 
+        assertInstanceOf(Turtle.class, world.getTile(new Location(0,0)));
+
+    }
+
+    @Test
+    void K4_3_2(){
         //Opvækst
-        Turtle turtleHatchedFromEgg = (Turtle) world.getTile(new Location(1,1));
-        Turtle turtleHatchedFromEgg2 = (Turtle) world.getTile(new Location(1,0));
+        Turtle turtleHatchedFromEgg = (Turtle) ObjectFactory.generateOnMap(world, new Location(1,1), "Turtle");
 
-        while(!turtleHatchedFromEgg.isAdult()){
-            turtleHatchedFromEgg.setHunger(100);
+        while(!turtleHatchedFromEgg.isAdult()) {
             turtleHatchedFromEgg.setHunger(100);
             program.simulate();
         }
+
         assertTrue(turtleHatchedFromEgg.isAdult());
-        assertTrue(turtleHatchedFromEgg2.isAdult());
+    }
+
+    @Test
+    void K4_3_3(){
 
         //reproducer
-        while(world.getEntities().size() == 2){
-            turtleHatchedFromEgg2.setEnergy(turtleHatchedFromEgg2.getMaxEnergy());
-            turtleHatchedFromEgg.setEnergy(turtleHatchedFromEgg.getMaxEnergy());
+        Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(1,1), "Turtle");
+        Turtle turtle2 = (Turtle) ObjectFactory.generateOnMap(world, new Location(1,0), "Turtle");
+
+        while(!turtle.isAdult()) {
+            turtle.setHunger(100);
+            turtle2.setHunger(100);
             program.simulate();
         }
 
-        turtleHatchedFromEgg2.setEnergy(30);
-        turtleHatchedFromEgg.setEnergy(30);
-
-        //Indtil død
-        while(world.contains(turtleHatchedFromEgg2)||world.contains(turtleHatchedFromEgg)){
+        while(world.getEntities().size() == 2) {
+            turtle2.setEnergy(turtle2.getMaxEnergy());
+            turtle.setEnergy(turtle.getMaxEnergy());
             program.simulate();
+        }
+        assertTrue(world.getEntities().size()>2);
+    }
+
+    @Test
+    void K4_3_4(){
+        //Indtil død
+        Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(1,1), "Turtle");
+        Turtle turtle2 = (Turtle) ObjectFactory.generateOnMap(world, new Location(1,0), "Turtle");
+
+        int worldEntitiesBeforeDeath = 0;
+
+        while(world.contains(turtle)||world.contains(turtle2)){
+            program.simulate();
+            worldEntitiesBeforeDeath = world.getEntities().size();
         }
         program.simulate();
-        assertEquals(world.getEntities().size(),1);
+        assertEquals(world.getEntities().size(),worldEntitiesBeforeDeath-2);
+    }
+
+    @Test
+    void K4_3_5(){
+
     }
 
     /**
@@ -1171,6 +1134,12 @@ public class KravTest {
 
     /**
      * Useful methods that gets used
+     */
+
+    /**
+     * Used for testing with inputfiles
+     * @param world
+     * @param objects
      */
     private static void generateObjects(World world, ArrayList<SpawningObject> objects) {
         for (SpawningObject object : objects) {

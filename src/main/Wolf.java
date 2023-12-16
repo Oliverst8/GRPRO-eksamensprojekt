@@ -454,10 +454,14 @@ public class Wolf extends NestAnimal {
 
         WolfHole nearestWolfHole = (WolfHole) findNearestPrey(world, 3, WolfHole.class);
         if(nearestWolfHole != null) {
-            if(!pack.getDen().getLocation(world).equals(nearestWolfHole.getLocation(world))) {
-                moveAwayFrom(world, nearestWolfHole.getLocation(world));
-                return true;
+            if(this.getPack().getDen()!=null) {
+                if(!pack.getDen().getLocation(world).equals(nearestWolfHole.getLocation(world))) {
+                    moveAwayFrom(world, nearestWolfHole.getLocation(world));
+                    return true;
+                }
             }
+            moveAwayFrom(world, nearestWolfHole.getLocation(world));
+            return true;
         }
 
         return false;

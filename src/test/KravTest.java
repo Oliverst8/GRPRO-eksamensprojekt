@@ -149,7 +149,7 @@ public class KravTest {
     @Test
     void K1_2c_0(){
         Location location = new Location(0,0);
-        Grass grass = (Grass) ObjectFactory.generateOnMap(world, location,"Grass");
+        ObjectFactory.generateOnMap(world, location,"Grass");
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location,"Rabbit");
 
         rabbit.setHunger(0);
@@ -169,7 +169,6 @@ public class KravTest {
     void K1_2c_1(){
         Location location = new Location(0,0);
         Rabbit rabbit = (Rabbit) ObjectFactory.generateOnMap(world, location,"Rabbit");
-        double hungerBeforeGrass = rabbit.getHunger();
 
         program.simulate();
 
@@ -178,7 +177,6 @@ public class KravTest {
 
         program.simulate();
         program.simulate();
-
 
         assertFalse(world.contains(rabbit));
     }
@@ -234,7 +232,6 @@ public class KravTest {
         program.simulate();
 
         assertNotNull(rabbit1.getNest());
-
     }
 
     /**
@@ -255,7 +252,6 @@ public class KravTest {
             program.simulate();
         }
         assertEquals(rabbit1.getNest(),rabbit2.getNest());
-
     }
 
     /**
@@ -275,7 +271,6 @@ public class KravTest {
 
         rabbit1.setEnergy(25);
         rabbit2.setEnergy(25);
-
 
         double distanceBeforeRabbit1 = Helper.distance(world.getLocation(rabbit1),world.getLocation(burrow1.getEntries().iterator().next()));
         double distanceBeforeRabbit2 = Helper.distance(world.getLocation(rabbit2),world.getLocation(burrow2.getEntries().iterator().next()));

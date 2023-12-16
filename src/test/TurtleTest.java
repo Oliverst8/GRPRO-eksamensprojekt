@@ -134,7 +134,6 @@ public class TurtleTest {
 
     @Test
     void testIfTurtleLaysEggsWhenNextToOtherTurtle(){
-
         world.delete(turtle);
 
         Turtle turtle = (Turtle) ObjectFactory.generateOnMap(world, new Location(0,0), "Turtle", 3);
@@ -151,5 +150,4 @@ public class TurtleTest {
         assertTrue(100 > turtle.getEnergy());
         assertTrue(100 > turtle2.getEnergy());
     }
-
 }

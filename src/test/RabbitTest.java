@@ -242,7 +242,10 @@ class RabbitTest {
         Rabbit rabbit = new Rabbit(3, burrow, false);
         world.setTile(new Location(0,0),rabbit);
         rabbit.setHunger(100);
+        
         program.simulate();
+        program.simulate();
+
         assertTrue(rabbit.isInNest());
     }
 

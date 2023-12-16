@@ -1,12 +1,13 @@
 package main;
 
-import itumulator.world.Location;
-import itumulator.world.World;
+import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
+
 import spawn.ObjectFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import itumulator.world.World;
+import itumulator.world.Location;
 
 public interface Oviparous {
     default Location getEggLocation(World world){
@@ -14,7 +15,7 @@ public interface Oviparous {
         List<Location> eggLocation = new ArrayList<>(surrondingLocations);
 
         if(eggLocation.isEmpty()) return null;
-        else return eggLocation.getFirst();
+        else return eggLocation.get(0);
     }
 
     default void layEgg(World world){
@@ -22,5 +23,4 @@ public interface Oviparous {
         if(eggLocation == null) return;
         ObjectFactory.generateOnMap(world, eggLocation, "Egg", this.getClass());
     }
-
 }

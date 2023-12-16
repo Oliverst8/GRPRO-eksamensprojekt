@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.HashSet;
 
 import spawn.ObjectFactory;
+
 import error.CantReproduceException;
 
 import itumulator.world.World;
@@ -28,7 +29,15 @@ public abstract class Animal extends MycoHost {
         setupCanEat();
     }
 
+    /**
+     * Defines the food that the animal can eat.
+     */
     protected abstract void setupCanEat();
+
+    /**
+     * Produses an offspring of the given animal.
+     * @param world the world the animal is in.
+     */
     protected abstract void produceOffSpring(World world);
 
     @Override
@@ -51,26 +60,21 @@ public abstract class Animal extends MycoHost {
         return path.toString();
     }
 
-    /**
-     * If the animal is infected, it calls the supers die method
-     * If the animal is in the world, it creates a carcuss of the animal in the animals location, and deletes the animal
-     * otherwise it just deletes the animal
-     * @param world current world
-     */
     @Override
-    public void die(World world){
-        if(isInfected()){
+    public void die(World world) {
+        // Handles the case where the animal is infected.
+        if(isInfected()) {
             super.die(world);
             return;
         }
 
+        // If the animal is in the world, it creates a carcuss of the animal in the animals location, and deletes the animal.
         if(world.isOnTile(this)) {
             Location carcassLocation = world.getLocation(this);
             world.delete(this);
 
             Carcass carcass = (Carcass) ObjectFactory.generateOnMap(world, carcassLocation, "Carcass");
             carcass.setAnimal(this);
-
         } else {
             super.die(world);
         }

@@ -13,16 +13,40 @@ public abstract class NestAnimal extends Animal {
         super(defualtFoodChainValue);
     }
 
+    /**
+     * @return the nest that the animal belongs to.
+     */
     abstract Nest getNest();
 
+    /**
+     * Moves the animal towards its nest.
+     * @param world the world the animal is in.
+     */
     protected abstract void moveTowardsNest(World world);
 
+    /**
+     * The behavior of the animal when it has no nest.
+     * @param world the world the animal is in.
+     */
     protected abstract void noNestBehavior(World world);
 
+    /**
+     * Get a random exit location from the nest.
+     * @param world the world the animal is in.
+     * @return a random exit location from the nest.
+     */
     protected abstract Location getExitLocation(World world);
 
+    /**
+     * The behavior of the animal when it is hungry.
+     * @param world the world the animal is in.
+     */
     protected abstract void hungryBehavior(World world);
 
+    /**
+     * The behavior of the animal when it is in its nest.
+     * @param world the world the animal is in.
+     */
     protected abstract void inNestBehavior(World world);
 
     @Override

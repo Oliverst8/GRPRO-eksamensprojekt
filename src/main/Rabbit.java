@@ -44,57 +44,41 @@ public class Rabbit extends NestAnimal {
         }
     }
 
-    /**
-     * adds grass to the list of things that the rabbit can eat.
-     */
     @Override
     protected void setupCanEat() {
         addCanEat(Grass.class);
     }
 
-    /**
-     * Kills the rabbit and the removes it from the list of members of the burrow
-     * @param world current world
-     */
     @Override
     public void die(World world) {
+        // If the rabbit is in a burrow, it exits the burrow. (This is to be able to spawn a carcass)
         if(isInNest()) exitNest(world);
         super.die(world);
 
+        // Removes the rabbit from the burrow it belongs to.
         if(burrow != null) burrow.removeMember(this);
     }
 
-    /**
-     * returns the type that the rabbit is as a string
-     * @return "rabbit"
-     */
     @Override
     public String getType() {
         return "rabbit";
     }
 
-    /**
-     * @return the color red
-     */
     @Override
     public Color getColor() {
         return Color.red;
     }
 
-    /**
-     * checks if there are objects in the rabbits surroundingTiles
-     * if so, gets object and checks if the rabbit can be eaten by the object nearby, and if it can it moves away
-     * else it check if nearest grass is within a 4 radius distance
-     * if so it hunts it down and consumes it
-     * else it moves around randomly
-     * @param world
-     */
     @Override
     protected void hungryBehavior(World world) {
+        // If there are animals that can eat the rabbit nearby, it moves away from them.
         if (world.getSurroundingTiles(world.getLocation(this)).size() > world.getEmptySurroundingTiles(world.getLocation(this)).size()) {
             for (Location location : world.getSurroundingTiles(world.getLocation(this))) {
+
                 if (world.isTileEmpty(location)) continue;
+
                 Object object = world.getTile(location);
+
                 if (object instanceof Animal) {
                     if (((Animal) object).canIEat(this.getClass())) {
                         moveAwayFrom(world, location);
@@ -104,8 +88,10 @@ public class Rabbit extends NestAnimal {
             }
         }
 
+        // Find the closest pray.
         Organism closestPrey = findPrey(world, 4);
 
+        // If there is a prey nearby, it hunts it. Else it wanders around.
         if (closestPrey != null) {
             huntPrey(world, closestPrey);
         } else {
@@ -113,85 +99,81 @@ public class Rabbit extends NestAnimal {
         }
     }
 
-    /**
-     * @return the nest/burrow that the rabbit belongs to
-     */
+    @Override
     public Nest getNest() {
         return burrow;
     }
 
-    /**
-     * Is called if rabbit has no nest, if rabbit should dig and its energy is over 25, it digs a burrow
-     * else it joins a nearby burrow that has a entry from withing a 5 radius distance of its current location and goes to it.
-     * @param world Takes world as a parameter
-     */
+    @Override
     protected void noNestBehavior(World world) {
+        // If rabbit should dig and its energy is over 25, it digs a burrow.
         if (shouldRabbitDig(world) && getEnergy() > 25) {
             dig(world);
-        } else {
+        } else { // Joins a nearby burrow that has a entry from withing a 5 radius.
             setBurrow(((RabbitHole) findNearestPrey(world, 5, RabbitHole.class)).getBurrow());
             goToNest(world);
         }
     }
 
-    /**
-     * Calls findNearestEntry from the rabbits location to get the location of the nearest entry of the burrow
-     * if the distance is more or equal to 2 it moves towards the entry
-     * if it is below 2 it enters the burrow
-     * @param world
-     */
+    @Override
     protected void moveTowardsNest(World world) {
         Location nearestEntry = burrow.findNearestEntry(world, world.getCurrentLocation());
-        if(Helper.distance(world.getLocation(this), nearestEntry) >= 2) moveTowards(world, nearestEntry);
-        if(Helper.distance(world.getLocation(this), nearestEntry) < 2) enterNest(world);
+
+        // If the rabbit is not at the entry, it moves towards it.
+        if(Helper.distance(world.getLocation(this), nearestEntry) >= 2) {
+            moveTowards(world, nearestEntry);
+        } else if(Helper.distance(world.getLocation(this), nearestEntry) < 2) { // If the rabbit is at the entry, it enters the burrow.
+            enterNest(world);
+        }
     }
 
-    /**
-     * Is called when rabbit reproduces
-     * Generates a new rabbit belonging to the same burrow as the rabbits that contributed to its creation
-     * Spawns it inside of the burrow and initialises the age to 0
-     * @param world
-     */
+    @Override
     protected void produceOffSpring(World world) {
+        // The rabbit belongs to the same burrow as the parents. And is spawned inside of the burrow.
         ObjectFactory.generateOffMap(world, "Rabbit", 0, burrow, true);
     }
 
-    /**
-     * Behavior made for rabbits inside of a burrow
-     * if it can reproduce it does so and returns
-     * if it has more than 60 energy it expands the burrow with a new entry
-     * if its hunger is under 100 it exits burrow to go hunt
-     * @param world
-     */
+    @Override
     protected void inNestBehavior(World world) {
+        // If the rabbit can reproduce, it does so.
         if(reproduceBehavior(world)) return;
+
+        // If the rabbit has more than 60 energy, it expands the burrow with a new entry.
         if(getEnergy() > 60) {
             expandBurrow(world);
             return;
         }
+
+        // If the rabbit is hungry, it exits the burrow to hunt.
         if(getHunger() < 100) exitNest(world);
     }
 
-    /**
-     * Gets the list of locations that the rabbit can exit the hole to.
-     * The list consists of all emptylocation around the hole and the location of the hole itself if it empty
-     * returns a random location from the list
-     * @param world
-     * @return
-     */
+    @Override
     protected Location getExitLocation(World world) {
         Set<RabbitHole> entries = burrow.getEntries();
         Location freeLocation = null;
 
-        for(Hole tempHole : entries) {
-            if(!(freeLocation == null)) break;
+        for(Hole entry : entries) {
             List<Location> emptyLocations = new ArrayList<>();
-            if(world.isTileEmpty(tempHole.getLocation(world))) emptyLocations.add(tempHole.getLocation(world)); //adds hole itself to list
-            emptyLocations.addAll(world.getEmptySurroundingTiles(tempHole.getLocation(world))); //adds empty sorrounding tiles to list
-            if(emptyLocations.isEmpty()) break;
+            
+            // If the entry is empty, it adds it to the list of empty locations.
+            if(world.isTileEmpty(entry.getLocation(world))) {
+                emptyLocations.add(entry.getLocation(world)); 
+            }
+
+            // Adds all empty surrounding tiles to the list of empty locations.
+            emptyLocations.addAll(world.getEmptySurroundingTiles(entry.getLocation(world)));
+
+            // If there are no empty locations, continue to the next entry.
+            if(emptyLocations.isEmpty()) continue;
+
+            // Picks a random location from the list of empty locations.
             int random = new Random().nextInt(emptyLocations.size());
             freeLocation = emptyLocations.get(random);
+
+            break; //breaks loop if freeLocation is found.
         }
+
         return freeLocation;
     }
 
@@ -268,5 +250,4 @@ public class Rabbit extends NestAnimal {
     private void setBurrow(Burrow burrow) {
         this.burrow = burrow;
     }
-
 }

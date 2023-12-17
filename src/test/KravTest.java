@@ -1078,11 +1078,6 @@ public class KravTest {
         assertEquals(world.getEntities().size(),worldEntitiesBeforeDeath-2);
     }
 
-    @Test
-    void K4_3_5(){
-
-    }
-
     /**
      * Implementer dyrets fødekæde og prædator-bytte forhold.
      */
@@ -1103,9 +1098,9 @@ public class KravTest {
      * Dyrets tilstedeværelse og adfærd skal kunne påvirke økosystemets balance og
      * dynamik.
      *
-     * Hvis dyr støder på dette dyr vil de forsøge at angribe det og blive ved med det
-     * Hvis de angriber en turtle så kommer det til at tage dem lang tid at gøre dette da shell har meget liv
-     * På den måde kan de ikke jage andre dyr og andre dyr kan dermed overleve eller bruge tiden på andet
+     * Hvis dyr støder på dette dyr vil de forsøge at angribe det, men skildpadden kan gå ind i sin shell
+     * Dyret vil dernæst opgive at blive ved med at angribe dyret og på den måde spilder dyret som minimum 1 tick
+     * på noget det ikke engang får mad ud af.
      */
     @Test
     void K4_5(){

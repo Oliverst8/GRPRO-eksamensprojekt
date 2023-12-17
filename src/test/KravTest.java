@@ -631,7 +631,6 @@ public class KravTest {
      */
     @Test
     void K2_7a() {
-
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(2,1), "Bear");
         ObjectFactory.generateOnMap(world, "Berry");
 
@@ -644,7 +643,6 @@ public class KravTest {
         for(int i = 0; i < 3; i++) {
             program.simulate();
         }
-
 
         assertTrue(bearHungerBefore < bear.getHunger());
     }

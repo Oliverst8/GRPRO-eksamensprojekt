@@ -157,7 +157,6 @@ public class Helper {
      * @return the nearest entity
      */
     public static Entity findNearest(World world, Location location ,Set<? extends Entity> entities) {
-
         Entity nearestEntity = null;
         double smallestDistance = Double.MAX_VALUE;
 

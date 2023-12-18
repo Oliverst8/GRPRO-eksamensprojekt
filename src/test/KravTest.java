@@ -465,6 +465,7 @@ public class KravTest {
             }
         }
 
+        assertTrue(world.getEntities().size()==3);
         assertEquals(packsize,world.getEntities().size());
     }
 

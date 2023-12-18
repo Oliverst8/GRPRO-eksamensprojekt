@@ -87,7 +87,7 @@ public class Turtle extends Animal implements Oviparous {
             Turtle turtle = (Turtle) findNearestPrey(world, 4, Turtle.class);
             if(turtle != null && turtle.getEnergy() > 70 && turtle.getAge() >= turtle.getAdultAge()) {
                 moveTowards(world, world.getLocation(turtle));
-                if(Helper.distance(world.getLocation(this),world.getLocation(turtle)) < 2){
+                if(Utility.distance(world.getLocation(this),world.getLocation(turtle)) < 2){
                     try{
                         reproduce(world,this,turtle);
                         return;

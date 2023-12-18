@@ -91,7 +91,7 @@ public class Bear extends Animal {
 
     @Override
     protected void produceOffSpring(World world) {
-        Location territoryLocation = Helper.findEmptyLocation(world);
+        Location territoryLocation = Utility.findEmptyLocation(world);
 
         ObjectFactory.generateOnMap(world, territoryLocation, "Bear");
     }
@@ -197,7 +197,7 @@ public class Bear extends Animal {
 
         Location location = world.getLocation(mate);
 
-        if(Helper.distance(world.getLocation(this), location) < 2) {
+        if(Utility.distance(world.getLocation(this), location) < 2) {
             try {
                 reproduce(world, this, (Animal) world.getTile(location));
                 decreaseMatingDesire(100);

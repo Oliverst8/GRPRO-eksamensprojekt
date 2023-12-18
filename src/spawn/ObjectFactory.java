@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import main.Entity;
-import main.Helper;
+import main.Utility;
 
 import itumulator.world.World;
 import itumulator.world.Location;
@@ -28,7 +28,7 @@ public class ObjectFactory {
      * @return the generated object.
      */
     public static Object generateOffMap(World world, String className, Object... constructorArgs) {
-        if (Helper.doesArrayContain(requiresWorld, className)) {
+        if (Utility.doesArrayContain(requiresWorld, className)) {
             constructorArgs = prependArray(constructorArgs, world);
         }
 
@@ -47,7 +47,7 @@ public class ObjectFactory {
      * @return the generated object.
      */
     public static Object generateOnMap(World world, String className, Object... constructorArgs) {
-        if (Helper.doesArrayContain(requiresWorld, className)) {
+        if (Utility.doesArrayContain(requiresWorld, className)) {
             constructorArgs = prependArray(constructorArgs, world);
         }
 
@@ -67,7 +67,7 @@ public class ObjectFactory {
      * @return the generated object.
      */
     public static Object generateOnMap(World world, Location location, String className, Object... constructorArgs) {
-        if (Helper.doesArrayContain(requiresWorld, className)) {
+        if (Utility.doesArrayContain(requiresWorld, className)) {
             constructorArgs = prependArray(constructorArgs, world);
         }
         
@@ -134,8 +134,8 @@ public class ObjectFactory {
     private static void place(World world, Object object) {
         Location location;
 
-        if(object instanceof NonBlocking) location = Helper.findNonBlockingEmptyLocation(world);
-        else location = Helper.findEmptyLocation(world);
+        if(object instanceof NonBlocking) location = Utility.findNonBlockingEmptyLocation(world);
+        else location = Utility.findEmptyLocation(world);
 
         world.setTile(location, object);
     }

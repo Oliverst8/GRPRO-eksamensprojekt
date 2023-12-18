@@ -36,7 +36,7 @@ public class Burrow extends Community implements Nest{
         super();
         entries = new HashSet<>();
 
-        Location entryLocation = Helper.findNonBlockingEmptyLocation(world);
+        Location entryLocation = Utility.findNonBlockingEmptyLocation(world);
         addEntry(world, entryLocation);
     }
 

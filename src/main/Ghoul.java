@@ -48,14 +48,14 @@ public class Ghoul extends Organism implements Fungi {
 
     @Override
     public MycoHost findNewHost(World world, Location location) {
-        Set<Entity> surroundingEntities = Helper.getEntities(world, location, 3);
+        Set<Entity> surroundingEntities = Utility.getEntities(world, location, 3);
         surroundingEntities.remove((Entity) world.getTile(location));
-        surroundingEntities = Helper.filterByClass(surroundingEntities, Carcass.class);
+        surroundingEntities = Utility.filterByClass(surroundingEntities, Carcass.class);
 
         Set<MycoHost> potentialHosts = filterNonInfectedMycoHosts(surroundingEntities);
         if(potentialHosts.isEmpty()) return null;
 
-        return (MycoHost) Helper.findNearest(world, location, potentialHosts);
+        return (MycoHost) Utility.findNearest(world, location, potentialHosts);
     }
 
     @Override

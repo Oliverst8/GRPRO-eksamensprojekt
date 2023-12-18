@@ -71,7 +71,7 @@ public abstract class Community {
         double minDist = Double.MAX_VALUE;
 
         for(Entity entity : enitities) {
-            double distance = Helper.distance(location, world.getLocation(entity));
+            double distance = Utility.distance(location, world.getLocation(entity));
             if(minDist > distance) {
                 minDist = distance;
                 closestEntityLocation = world.getLocation(entity);

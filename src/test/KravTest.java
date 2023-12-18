@@ -272,14 +272,14 @@ public class KravTest {
         rabbit1.setEnergy(25);
         rabbit2.setEnergy(25);
 
-        double distanceBeforeRabbit1 = Helper.distance(world.getLocation(rabbit1),world.getLocation(burrow1.getEntries().iterator().next()));
-        double distanceBeforeRabbit2 = Helper.distance(world.getLocation(rabbit2),world.getLocation(burrow2.getEntries().iterator().next()));
+        double distanceBeforeRabbit1 = Utility.distance(world.getLocation(rabbit1),world.getLocation(burrow1.getEntries().iterator().next()));
+        double distanceBeforeRabbit2 = Utility.distance(world.getLocation(rabbit2),world.getLocation(burrow2.getEntries().iterator().next()));
 
         world.setNight();
         program.simulate();
 
-        double distanceAfterRabbit1 = Helper.distance(world.getLocation(rabbit1),world.getLocation(burrow1.getEntries().iterator().next()));
-        double distanceAfterRabbit2 = Helper.distance(world.getLocation(rabbit2),world.getLocation(burrow2.getEntries().iterator().next()));
+        double distanceAfterRabbit1 = Utility.distance(world.getLocation(rabbit1),world.getLocation(burrow1.getEntries().iterator().next()));
+        double distanceAfterRabbit2 = Utility.distance(world.getLocation(rabbit2),world.getLocation(burrow2.getEntries().iterator().next()));
 
         assertTrue(distanceBeforeRabbit1>distanceAfterRabbit1);
         assertTrue(distanceBeforeRabbit2>distanceAfterRabbit2);
@@ -535,7 +535,7 @@ public class KravTest {
 
         program.simulate();
 
-        assertTrue(Helper.distance(world.getLocation(wolf3),wolf.getPack().getDen().getLocation(world)) >= 1);
+        assertTrue(Utility.distance(world.getLocation(wolf3),wolf.getPack().getDen().getLocation(world)) >= 1);
     }
 
     /**
@@ -889,10 +889,10 @@ public class KravTest {
 
         rabbit.die(world);
 
-        Set<Entity> surroundingEntities = Helper.getEntities(world, new Location(0,0), 3);
+        Set<Entity> surroundingEntities = Utility.getEntities(world, new Location(0,0), 3);
 
         surroundingEntities.add((Entity) world.getTile(new Location(0,0)));
-        surroundingEntities = Helper.filterByClass(surroundingEntities, MycoHost.class);
+        surroundingEntities = Utility.filterByClass(surroundingEntities, MycoHost.class);
 
         for(Entity animal : surroundingEntities){
             MycoHost animal1 = (MycoHost) animal;

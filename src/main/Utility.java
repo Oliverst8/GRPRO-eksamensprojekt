@@ -7,8 +7,8 @@ import java.util.HashSet;
 import itumulator.world.World;
 import itumulator.world.Location;
 
-public class Helper {
-    private Helper() {}
+public class Utility {
+    private Utility() {}
 
     /**
      * Checks if an array contains a given value.
@@ -129,7 +129,7 @@ public class Helper {
     public static Entity findNearest(World world, Object searchingObject , int radius, Class<?> object) {
         if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
 
-        Set<Entity> surroundingEntities = Helper.getEntities(world, world.getCurrentLocation(), radius);
+        Set<Entity> surroundingEntities = Utility.getEntities(world, world.getCurrentLocation(), radius);
 
         Entity nearestEntity = null;
         double smallestDistance = Double.MAX_VALUE;

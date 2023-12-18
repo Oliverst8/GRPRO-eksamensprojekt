@@ -120,9 +120,9 @@ public class Rabbit extends NestAnimal {
         Location nearestEntry = burrow.findNearestEntry(world, world.getCurrentLocation());
 
         // If the rabbit is not at the entry, it moves towards it.
-        if(Helper.distance(world.getLocation(this), nearestEntry) >= 2) {
+        if(Utility.distance(world.getLocation(this), nearestEntry) >= 2) {
             moveTowards(world, nearestEntry);
-        } else if(Helper.distance(world.getLocation(this), nearestEntry) < 2) { // If the rabbit is at the entry, it enters the burrow.
+        } else if(Utility.distance(world.getLocation(this), nearestEntry) < 2) { // If the rabbit is at the entry, it enters the burrow.
             enterNest(world);
         }
     }
@@ -202,7 +202,7 @@ public class Rabbit extends NestAnimal {
         RabbitHole nearestBurrowEntry = (RabbitHole) findNearestPrey(world, 5, RabbitHole.class);
         if(nearestBurrowEntry == null) return true;
 
-        return !(Helper.distance(world.getLocation(this), world.getLocation(nearestBurrowEntry)) * 5 > 25);
+        return !(Utility.distance(world.getLocation(this), world.getLocation(nearestBurrowEntry)) * 5 > 25);
     }
 
     /**
@@ -235,7 +235,7 @@ public class Rabbit extends NestAnimal {
      */
     private void expandBurrow(World world) {
         if(getEnergy()-50 > 0) {
-            Location location = Helper.findNonBlockingEmptyLocation(world);
+            Location location = Utility.findNonBlockingEmptyLocation(world);
             burrow.addEntry(world, location);
             removeEnergy(50);
         }

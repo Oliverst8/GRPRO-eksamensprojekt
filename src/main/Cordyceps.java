@@ -13,12 +13,12 @@ public class Cordyceps implements Fungi {
         drain(world, host);
         if(host.getEnergy() <= 0 || host.getHealth() <= 0) return;
 
-        Set<Entity> surrondingEntities = Helper.getEntities(world, world.getLocation(host), 3);
-        surrondingEntities = Helper.filterByClass(surrondingEntities, host.getClass());
+        Set<Entity> surrondingEntities = Utility.getEntities(world, world.getLocation(host), 3);
+        surrondingEntities = Utility.filterByClass(surrondingEntities, host.getClass());
 
         surrondingEntities.retainAll(filterNonInfectedMycoHosts(surrondingEntities));
 
-        Entity closetAnimalOfSameSpecies = Helper.findNearest(world, world.getLocation(host), surrondingEntities);
+        Entity closetAnimalOfSameSpecies = Utility.findNearest(world, world.getLocation(host), surrondingEntities);
         if(closetAnimalOfSameSpecies == null) return;
 
         Animal animalHost = (Animal) host;
@@ -48,13 +48,13 @@ public class Cordyceps implements Fungi {
 
     @Override
     public MycoHost findNewHost(World world, Location location) {
-        Set<Entity> surroundingEntities = Helper.getEntities(world, location, 3);
+        Set<Entity> surroundingEntities = Utility.getEntities(world, location, 3);
         surroundingEntities.remove((Entity) world.getTile(location));
-        surroundingEntities = Helper.filterByClass(surroundingEntities, Animal.class);
+        surroundingEntities = Utility.filterByClass(surroundingEntities, Animal.class);
 
         Set<MycoHost> potentialHosts = filterNonInfectedMycoHosts(surroundingEntities);
         if(potentialHosts.isEmpty()) return null;
 
-        return (MycoHost) Helper.findNearest(world, location, potentialHosts);
+        return (MycoHost) Utility.findNearest(world, location, potentialHosts);
     }
 }

@@ -5,11 +5,8 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.ArrayList;
 
-import main.Ghoul;
-import main.Entity;
-import main.Rabbit;
-import main.Helper;
-import main.Carcass;
+import main.*;
+import main.Utility;
 
 import spawn.ObjectFactory;
 
@@ -47,14 +44,14 @@ public class GhoulTest {
     void testGhoulSpawnsInCarcussAfter53Steps() {
         for (int i = 0; i < 53; i++) {
             program.simulate();
-            Set<Entity> entitiesInWorld = Helper.getEntities(world, new Location(2,2), 5);
-            assertTrue(Helper.filterByClass(entitiesInWorld, Ghoul.class).isEmpty());
+            Set<Entity> entitiesInWorld = Utility.getEntities(world, new Location(2,2), 5);
+            assertTrue(Utility.filterByClass(entitiesInWorld, Ghoul.class).isEmpty());
         }
 
         program.simulate();
-        Set<Entity> entitiesInWorld = Helper.getEntities(world, new Location(2,2), 5);
+        Set<Entity> entitiesInWorld = Utility.getEntities(world, new Location(2,2), 5);
         
-        assertFalse(Helper.filterByClass(entitiesInWorld, Ghoul.class).isEmpty());
+        assertFalse(Utility.filterByClass(entitiesInWorld, Ghoul.class).isEmpty());
     }
 
     @Test
@@ -71,7 +68,7 @@ public class GhoulTest {
             entities.add((Entity) entity);
         }
 
-        assertEquals(2, Helper.filterByClass(entities, Ghoul.class).size());
+        assertEquals(2, Utility.filterByClass(entities, Ghoul.class).size());
     }
 
     @Test

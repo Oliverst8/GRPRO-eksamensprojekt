@@ -325,7 +325,7 @@ public class Wolf extends NestAnimal {
      */
     protected void moveTowardsNest(World world) {
         moveTowards(world, pack.getDenLocation(world));
-        if(Helper.distance(world.getLocation(this), pack.getDenLocation(world)) < 2) enterNest(world);
+        if(Utility.distance(world.getLocation(this), pack.getDenLocation(world)) < 2) enterNest(world);
     }
 
     /**
@@ -411,9 +411,9 @@ public class Wolf extends NestAnimal {
      * @return
      */
     private boolean attackNearbyWolf(World world) {
-        Set<Entity> neighbors = Helper.getEntities(world, world.getLocation(this), 1);
+        Set<Entity> neighbors = Utility.getEntities(world, world.getLocation(this), 1);
 
-        Set<Entity> nearbyWolves = Helper.filterByClass(neighbors, getClass());
+        Set<Entity> nearbyWolves = Utility.filterByClass(neighbors, getClass());
 
         Set<Wolf> targetWolves = new HashSet<>();
 

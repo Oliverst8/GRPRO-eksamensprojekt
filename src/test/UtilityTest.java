@@ -3,13 +3,8 @@ package test;
 import java.util.HashSet;
 import java.util.Set;
 
-import main.Wolf;
-import main.Animal;
-import main.Entity;
-import main.Rabbit;
-import main.Helper;
-import main.Carcass;
-import main.Organism;
+import main.*;
+import main.Utility;
 
 import spawn.ObjectFactory;
 
@@ -22,7 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class HelperTest {
+class UtilityTest {
     Program program;
     World world;
 
@@ -38,32 +33,32 @@ class HelperTest {
 
     @Test
     void testDoesArrayContainItDoesMultipleElements() {
-        assertTrue(Helper.doesArrayContain(new Object[]{"27",3},"27"));
+        assertTrue(Utility.doesArrayContain(new Object[]{"27",3},"27"));
     }
 
     @Test
     void testDoesArrayContainItDoesOneElements() {
-        assertTrue(Helper.doesArrayContain(new Object[]{"27"},"27"));
+        assertTrue(Utility.doesArrayContain(new Object[]{"27"},"27"));
     }
 
     @Test
     void testDoesArrayContainItDoesNotMultipleElements() {
-        assertFalse(Helper.doesArrayContain(new Object[]{"27",3},"28"));
+        assertFalse(Utility.doesArrayContain(new Object[]{"27",3},"28"));
     }
 
     @Test
     void testDoesArrayContainItDoesNooneElements() {
-        assertFalse(Helper.doesArrayContain(new Object[]{"27"},"28"));
+        assertFalse(Utility.doesArrayContain(new Object[]{"27"},"28"));
     }
 
     @Test
     void testDoesArrayContainItDoesNoElements() {
-        assertFalse(Helper.doesArrayContain(new Object[]{},"28"));
+        assertFalse(Utility.doesArrayContain(new Object[]{},"28"));
     }
 
     @Test
     void isThereAnEmptyLocationInWorldAllowNonBlockingWtihNoObjectsInWorldExpectsTrue() {
-        assertTrue(Helper.isThereAnEmptyLocationInWorld(world, false));
+        assertTrue(Utility.isThereAnEmptyLocationInWorld(world, false));
     }
 
     @Test
@@ -71,14 +66,14 @@ class HelperTest {
 
         ObjectFactory.generateOnMap(world, "Grass");
 
-        assertTrue(Helper.isThereAnEmptyLocationInWorld(world, false));
+        assertTrue(Utility.isThereAnEmptyLocationInWorld(world, false));
     }
 
     @Test
     void isThereAnEmptyLocationInWorldDontAllowNonBlockingWtih1ObjectInWorldExpectsTrue() {
         ObjectFactory.generateOnMap(world, "Grass");
 
-        assertTrue(Helper.isThereAnEmptyLocationInWorld(world, false));
+        assertTrue(Utility.isThereAnEmptyLocationInWorld(world, false));
     }
 
     @Test
@@ -91,7 +86,7 @@ class HelperTest {
         world = program.getWorld();
         ObjectFactory.generateOnMap(world, "Grass");
 
-        assertFalse(Helper.isThereAnEmptyLocationInWorld(world, true));
+        assertFalse(Utility.isThereAnEmptyLocationInWorld(world, true));
     }
 
     @Test
@@ -100,7 +95,7 @@ class HelperTest {
             ObjectFactory.generateOnMap(world, "Grass");
         }
         
-        assertTrue(Helper.isThereAnEmptyLocationInWorld(world, true));
+        assertTrue(Utility.isThereAnEmptyLocationInWorld(world, true));
     }
 
     @Test
@@ -114,7 +109,7 @@ class HelperTest {
         entities.add(wolf);
         entities.add(carcass);
 
-        assertEquals(2, Helper.filterByClass(entities, Animal.class).size());
+        assertEquals(2, Utility.filterByClass(entities, Animal.class).size());
     }
 
     @Test
@@ -127,7 +122,7 @@ class HelperTest {
         world = program.getWorld();
         ObjectFactory.generateOnMap(world, "Rabbit");
 
-        assertNull(Helper.findEmptyLocation(world));
+        assertNull(Utility.findEmptyLocation(world));
     }
 
     @Test
@@ -140,17 +135,17 @@ class HelperTest {
         world = program.getWorld();
         ObjectFactory.generateOnMap(world, "Grass");
 
-        assertNull(Helper.findNonBlockingEmptyLocation(world));
+        assertNull(Utility.findNonBlockingEmptyLocation(world));
     }
 
     @Test
     void findNonBlockingEmptyLocationWhereThereIsOneExpectsReturnOfLocation() {
-        assertNotNull(Helper.findNonBlockingEmptyLocation(world));
+        assertNotNull(Utility.findNonBlockingEmptyLocation(world));
     }
 
     @Test
     void findEmptyLocationWhereThereIsOneExpectsReturnOfLocation() {
-        assertNotNull(Helper.findEmptyLocation(world));
+        assertNotNull(Utility.findEmptyLocation(world));
     }
     
     @Test
@@ -158,7 +153,7 @@ class HelperTest {
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf");
         Rabbit expected = (Rabbit) ObjectFactory.generateOnMap(world, "Rabbit");
         world.setCurrentLocation(new Location(0,0));
-        Rabbit actual = (Rabbit) Helper.findNearest(world, wolf, 5, Organism.class);
+        Rabbit actual = (Rabbit) Utility.findNearest(world, wolf, 5, Organism.class);
 
         assertEquals(expected, actual);
     }

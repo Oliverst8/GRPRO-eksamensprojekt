@@ -115,7 +115,7 @@ public abstract class Animal extends MycoHost {
     protected Organism findPrey(World world, int radius) {
         Set<Organism> prey = new HashSet<>();
 
-        for(Entity entity : Helper.getEntities(world, world.getLocation(this),radius)) {
+        for(Entity entity : Utility.getEntities(world, world.getLocation(this),radius)) {
             if(getCanEat().contains(entity.getEntityClass())) {
                 Organism currentPrey = (Organism) entity;
 
@@ -125,7 +125,7 @@ public abstract class Animal extends MycoHost {
             }
         }
 
-        return (Organism) Helper.findNearest(world, world.getLocation(this), prey);
+        return (Organism) Utility.findNearest(world, world.getLocation(this), prey);
     }
 
     /**
@@ -137,7 +137,7 @@ public abstract class Animal extends MycoHost {
 
         if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
 
-        Set<Entity> surroundingEntities = Helper.getEntities(world, world.getCurrentLocation(), radius);
+        Set<Entity> surroundingEntities = Utility.getEntities(world, world.getCurrentLocation(), radius);
 
         Entity nearestEntity = null;
         double smallestDistance = Double.MAX_VALUE;
@@ -146,7 +146,7 @@ public abstract class Animal extends MycoHost {
             if(entity.equals(this)) continue;
             if(!entity.getEntityClass().equals(object)) continue;
 
-            double distance = Helper.distance(world.getLocation(this), world.getLocation(entity));
+            double distance = Utility.distance(world.getLocation(this), world.getLocation(entity));
             if(distance < smallestDistance){
                 smallestDistance = distance;
                 nearestEntity = entity;
@@ -172,7 +172,7 @@ public abstract class Animal extends MycoHost {
     protected boolean huntPrey(World world, Organism prey){
         if(prey == null) return false;
         Location preyLocation = world.getLocation(prey);
-        double distanteToPrey = Helper.distance(world.getLocation(this),preyLocation);
+        double distanteToPrey = Utility.distance(world.getLocation(this),preyLocation);
         if(prey.getFoodChainValue() == -1) {
             if(distanteToPrey == 0){
                 eat(world, prey);

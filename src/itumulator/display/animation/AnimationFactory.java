@@ -147,7 +147,7 @@ public class AnimationFactory {
         return sets;
     }
 
-    //  Helper method for determining object information
+    //  Utility method for determining object information
     private ObjectInformation getObjectInformation(Object obj){
         ObjectInformation oi;
         if (objectMap.containsKey(obj)){

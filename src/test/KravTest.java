@@ -47,15 +47,7 @@ public class KravTest {
     @Test
     void K1_1a() {
         World world = generateWithInput(new Input("data/demo/d4.txt"));
-
-        boolean containsGrass = false;
-
-        if (world.getTile(new Location(0,0)).getClass().equals(Grass.class)) {
-            containsGrass = true;
-        }
-
-
-        assertTrue(containsGrass);
+        assertTrue(world.getTile(new Location(0,0)).getClass().equals(Grass.class));
     }
 
     /**
@@ -116,14 +108,7 @@ public class KravTest {
     @Test
     void K1_2a() {
         World world = generateWithInput(new Input("data/demo/d5.txt"));
-
-        boolean containsRabbit = false;
-
-        if (world.getTile(new Location(0,0)).getClass().equals(Rabbit.class)) {
-            containsRabbit = true;
-        }
-
-        assertTrue(containsRabbit);
+        assertTrue(world.getTile(new Location(0,0)).getClass().equals(Rabbit.class));
     }
 
     /**
@@ -309,19 +294,7 @@ public class KravTest {
     @Test
     void K1_3a() {
         World world = generateWithInput(new Input("data/demo/d8.txt"));
-
-        boolean containsHole = false;
-
-        Map<Object, Location> entities = world.getEntities();
-
-        for(Object entity : entities.keySet()) {
-            if (entity.getClass().equals(RabbitHole.class)) {
-                containsHole = true;
-                break;
-            }
-        }
-
-        assertTrue(containsHole);
+        assertTrue(world.getTile(new Location(0,0)).getClass().equals(RabbitHole.class));
     }
 
     /**
@@ -400,14 +373,7 @@ public class KravTest {
     @Test
     void K2_1a() {
         World world = generateWithInput(new Input("data/demo/d2.txt"));
-
-        boolean containsWolf = false;
-
-        if (world.getTile(new Location(0,0)).getClass().equals(Wolf.class)) {
-            containsWolf = true;
-        }
-
-        assertTrue(containsWolf);
+        assertTrue(world.getTile(new Location(0,0)).getClass().equals(Wolf.class));
     }
 
     /**
@@ -572,19 +538,7 @@ public class KravTest {
     @Test
     void K2_5a() {
         World world = generateWithInput(new Input("data/demo/d3.txt"));
-
-        boolean containsBear = false;
-
-        Map<Object, Location> entities = world.getEntities();
-
-        for(Object entity : entities.keySet()) {
-            if (entity.getClass().equals(Bear.class)) {
-                containsBear = true;
-                break;
-            }
-        }
-
-        assertTrue(containsBear);
+        assertTrue(world.getTile(new Location(0,0)).getClass().equals(Bear.class));
     }
 
     /**
@@ -627,10 +581,9 @@ public class KravTest {
      * Dertil spiser bjørne også bær fra buske (såsom blåbær og hindbær) når de gror i området.
      * Bær er en god ekstra form for næring for bjørnen (om end det ikke giver samme mængde energi som når de spiser kød)
      * men som det er med buske går der tid før bær gror tilbage.
-     * Bær skal indsættes på kortet når inputfilerne beskriver dette.
      */
     @Test
-    void K2_7a() {
+    void K2_7a_0() {
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(2,1), "Bear");
         ObjectFactory.generateOnMap(world, "Berry");
 
@@ -645,6 +598,16 @@ public class KravTest {
         }
 
         assertTrue(bearHungerBefore < bear.getHunger());
+    }
+
+    /**
+     * Bær skal indsættes på kortet når inputfilerne beskriver dette.
+     */
+    @Test
+    void K2_7a_1() {
+        World world = generateWithInput(new Input("data/demo/d12.txt"));
+        Berry berryBush = (Berry) world.getTile(new Location(0,0));
+        assertTrue(berryBush.containsBerries());
     }
 
     /**
@@ -722,19 +685,7 @@ public class KravTest {
     @Test
     void K3_1a() {
         World world = generateWithInput(new Input("data/demo/d7.txt"));
-
-        boolean containsCarcass = false;
-
-        Map<Object, Location> entities = world.getEntities();
-
-        for(Object entity : entities.keySet()) {
-            if (entity.getClass().equals(Carcass.class)) {
-                containsCarcass = true;
-                break;
-            }
-        }
-
-        assertTrue(containsCarcass);
+        assertTrue(world.getTile(new Location(0,0)).getClass().equals(Carcass.class));
     }
 
     /**

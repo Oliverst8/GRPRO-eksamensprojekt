@@ -12,7 +12,7 @@ import itumulator.world.Location;
 
 public abstract class Animal extends MycoHost {
     protected boolean sleeping;
-    protected int strength;
+    protected int damage;
     private double hunger; //0 is empty, and 100 is full
     private Set<Class<? extends Organism>> canEat; //Holdes the types of classes the animal can eat
 
@@ -119,7 +119,7 @@ public abstract class Animal extends MycoHost {
             if(getCanEat().contains(entity.getEntityClass())) {
                 Organism currentPrey = (Organism) entity;
 
-                if(getFoodChainValue() >= currentPrey.getFoodChainValue() && currentPrey.isEatable()) {
+                if(getStrength() >= currentPrey.getStrength() && currentPrey.isEatable()) {
                     prey.add(currentPrey);
                 }
             }
@@ -173,13 +173,13 @@ public abstract class Animal extends MycoHost {
         if(prey == null) return false;
         Location preyLocation = world.getLocation(prey);
         double distanteToPrey = Utility.distance(world.getLocation(this),preyLocation);
-        if(prey.getFoodChainValue() == -1) {
+        if(prey.getStrength() == -1) {
             if(distanteToPrey == 0){
                 eat(world, prey);
             } else {
                 moveTowards(world, preyLocation);
             }
-        } else if(prey.getFoodChainValue() == -2) {
+        } else if(prey.getStrength() == -2) {
             if(distanteToPrey < 2) {
                 eat(world, prey);
             } else {
@@ -410,15 +410,15 @@ public abstract class Animal extends MycoHost {
      * @param animal
      */
     public void attack(World world, Organism animal) {
-        animal.removeHealth(strength, world);
+        animal.removeHealth(damage, world);
         this.removeEnergy(10);
     }
 
     /**
      * @return the strength of the animal
      */
-    public int getStrength() {
-        return strength;
+    public int getDamage() {
+        return damage;
     }
 
     /**

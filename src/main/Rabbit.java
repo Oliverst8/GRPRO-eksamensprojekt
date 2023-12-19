@@ -187,7 +187,7 @@ public class Rabbit extends NestAnimal {
         adultAge = 3;
         maxEnergy = 100;
         energy = maxEnergy;
-        strength = 100;
+        damage = 100;
         maxHealth = 100;
         health = maxHealth;
     }

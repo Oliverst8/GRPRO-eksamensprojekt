@@ -132,8 +132,8 @@ public class Wolf extends NestAnimal {
      * If the wolf is in a hunting pack the food chain value is equal to its size, otherwise it return the default value for wolves
      */
     @Override
-    public int getFoodChainValue() {
-        if(huntingPack == null) return super.getFoodChainValue();
+    public int getStrength() {
+        if(huntingPack == null) return super.getStrength();
         else return huntingPack.getMembers().size();
     }
 
@@ -363,7 +363,7 @@ public class Wolf extends NestAnimal {
         energy = maxEnergy;
         maxHealth = 200;
         health = maxHealth;
-        strength = 100;
+        damage = 100;
     }
 
     /**

@@ -140,7 +140,7 @@ public class Turtle extends Animal implements Oviparous {
     private void initialize() {
         adultAge = 3;
 
-        strength = 1;
+        damage = 1;
 
         maxEnergy = 250;
         maxHealth = 50;

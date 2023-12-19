@@ -117,7 +117,7 @@ public class Bear extends Animal {
     private void initialize() {
         adultAge = 1;
 
-        strength = 125;
+        damage = 125;
 
         maxEnergy = 300;
         maxHealth = 350;

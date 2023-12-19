@@ -49,7 +49,7 @@ public class WolfTest {
     
     @Test
     void testWolfgetFoodChainValue() {
-        assertEquals(1, wolf.getFoodChainValue());
+        assertEquals(1, wolf.getStrength());
     }
 
     @Test
@@ -60,7 +60,7 @@ public class WolfTest {
         wolf2.setHunger(0);
         program.simulate();
 
-        assertEquals(2, wolf.getFoodChainValue());
+        assertEquals(2, wolf.getStrength());
     }
 
     @Test
@@ -233,7 +233,7 @@ public class WolfTest {
         program.simulate();
         rabbit.skipTurn();
         program.simulate();
-        assertEquals(rabbit.getMaxHealth()-wolf.getStrength(), rabbit.getHealth());
+        assertEquals(rabbit.getMaxHealth()-wolf.getDamage(), rabbit.getHealth());
         assertEquals(world.getTile(new Location(3,3)).getClass(), Carcass.class);
     }
 

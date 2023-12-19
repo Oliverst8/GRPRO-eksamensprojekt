@@ -46,7 +46,7 @@ public class KravTest {
      */
     @Test
     void K1_1a() {
-        World world = generateWithInput(new Input("data/demo/d4.txt"));
+        World world = generateWithInput(new Input("data/test/d4.txt"));
 
         boolean containsGrass = false;
 
@@ -115,7 +115,7 @@ public class KravTest {
      */
     @Test
     void K1_2a() {
-        World world = generateWithInput(new Input("data/demo/d5.txt"));
+        World world = generateWithInput(new Input("data/test/d5.txt"));
 
         boolean containsRabbit = false;
 
@@ -308,7 +308,7 @@ public class KravTest {
      */
     @Test
     void K1_3a() {
-        World world = generateWithInput(new Input("data/demo/d8.txt"));
+        World world = generateWithInput(new Input("data/test/d8.txt"));
 
         boolean containsHole = false;
 
@@ -399,7 +399,7 @@ public class KravTest {
      */
     @Test
     void K2_1a() {
-        World world = generateWithInput(new Input("data/demo/d2.txt"));
+        World world = generateWithInput(new Input("data/test/d2.txt"));
 
         boolean containsWolf = false;
 
@@ -486,7 +486,7 @@ public class KravTest {
      */
     @Test
     void K2_2a_1(){
-        World world = generateWithInput(new Input("data/demo/d9.txt"));
+        World world = generateWithInput(new Input("data/test/d9.txt"));
 
         Map<Object, Location> entities = world.getEntities();
         List<Wolf> wolfList = new ArrayList<>();
@@ -571,7 +571,7 @@ public class KravTest {
      */
     @Test
     void K2_5a() {
-        World world = generateWithInput(new Input("data/demo/d3.txt"));
+        World world = generateWithInput(new Input("data/test/d3.txt"));
 
         boolean containsBear = false;
 
@@ -721,7 +721,7 @@ public class KravTest {
      */
     @Test
     void K3_1a() {
-        World world = generateWithInput(new Input("data/demo/d7.txt"));
+        World world = generateWithInput(new Input("data/test/d7.txt"));
 
         boolean containsCarcass = false;
 
@@ -833,7 +833,7 @@ public class KravTest {
      */
     @Test
     void k3_2a_1(){
-        World world = generateWithInput(new Input("data/demo/d11.txt"));
+        World world = generateWithInput(new Input("data/test/d11.txt"));
         Carcass carcass = (Carcass) world.getTile(new Location(0,0));
         assertTrue(carcass.isInfected());
     }

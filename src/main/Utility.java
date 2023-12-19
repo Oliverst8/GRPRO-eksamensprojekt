@@ -7,7 +7,7 @@ import java.util.HashSet;
 import itumulator.world.World;
 import itumulator.world.Location;
 
-public class Utility {
+public final class Utility {
     private Utility() {}
 
     /**

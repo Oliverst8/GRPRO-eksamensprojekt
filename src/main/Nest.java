@@ -17,13 +17,13 @@ public interface Nest{
 
     /**
      * gets Members from the nest
-     * @return a Set containing all of the members of the nest
+     * @return a Set containing all the members of the nest
      */
     abstract Set<Animal> getMembers();
 
     /**
      * Gets adult members from the nest
-     * @return a Set containing all of the adult members of the nest
+     * @return a Set containing all the adult members of the nest
      */
     abstract Set<Animal> getAdultMembers();
 }

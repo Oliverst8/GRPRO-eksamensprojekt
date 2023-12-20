@@ -3,10 +3,10 @@ package spawn;
 import itumulator.world.Location;
 
 public class SpawningObject {
-    private String className;
-    private int amount;
+    private final String className;
+    private final int amount;
     private Location location;
-    private boolean infected;
+    private final boolean infected;
 
     /**
      * @param className the type of the object

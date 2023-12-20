@@ -10,6 +10,10 @@ import itumulator.world.World;
 import itumulator.world.Location;
 
 public class Ghoul extends Organism implements Fungi {
+
+    /**
+     * Creates a new ghoul;
+     */
     public Ghoul() {
         super(-2);
         adultAge = 1;
@@ -95,7 +99,7 @@ public class Ghoul extends Organism implements Fungi {
 
     /**
      * Determines the behavior of the fungi.
-     * @param world the world which the fungi is in.
+     * @param world the world which the fungi are in.
      */
     private void behavior(World world) {
         if(!world.isOnTile(this)) return;
@@ -107,7 +111,7 @@ public class Ghoul extends Organism implements Fungi {
 
     /**
      * Spreads the fungi to a new host.
-     * @param world the world which the fungi is in.
+     * @param world the world which the fungi are in.
      */
     private void spread(World world) {
         MycoHost newHost = findNewHost(world, world.getLocation(this));
@@ -119,8 +123,8 @@ public class Ghoul extends Organism implements Fungi {
 
     /**
      * Spreads the fungi to a new host.
-     * @param world the world which the fungi is in.
-     * @param host the host which the fungi is in.
+     * @param world the world which the fungi are in.
+     * @param host the host which the fungi are in.
      */
     private void spread(World world, MycoHost host) {
         MycoHost newHost = findNewHost(world, world.getLocation(host));

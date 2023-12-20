@@ -13,7 +13,7 @@ public abstract class Entity implements DynamicDisplayInformationProvider {
     public abstract String getType();
 
     /**
-     * @return the color of the object, used when in top down view.
+     * @return the color of the object, used when in top-down view.
      */
     public abstract Color getColor();
 

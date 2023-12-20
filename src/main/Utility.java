@@ -14,7 +14,7 @@ public final class Utility {
      * Checks if an array contains a given value.
      * @param array the array that needs to be checked.
      * @param value the value that needs to be checked.
-     * @return true if the array contains the value. Otherwise false.
+     * @return true if the array contains the value. Otherwise, false.
      */
     public static boolean doesArrayContain(Object[] array, Object value) {
         for(Object arrayValue : array) {
@@ -41,12 +41,12 @@ public final class Utility {
      */
     public static boolean isThereAnEmptyLocationInWorld(World world, boolean nonBlockingNotAllowed) {
         Object[][][] worldTiles = world.getTiles();
-        
-        for (int i = 0; i < worldTiles.length; i++) {
-            for (int j = 0; j < worldTiles[i].length; j++) {
-                if(nonBlockingNotAllowed){
-                    if(worldTiles[i][j][0] == null && worldTiles[i][j][1] == null) return true;
-                } else if(worldTiles[i][j][1] == null) {
+
+        for (Object[][] worldTile : worldTiles) {
+            for (Object[] objects : worldTile) {
+                if (nonBlockingNotAllowed) {
+                    if (objects[0] == null && objects[1] == null) return true;
+                } else if (objects[1] == null) {
                     return true;
                 }
             }
@@ -67,7 +67,7 @@ public final class Utility {
      * Finds the distance between two objects
      * @param location1 the first location
      * @param location2 the location of the second object
-     * @return the distance between two object
+     * @return the distance between two objects
      */
     public static double distance(Location location1, Location location2) {
         return Math.sqrt(Math.pow(Math.abs(location1.getX() - location2.getX()), 2) + Math.pow(Math.abs(location1.getY() - location2.getY()), 2));
@@ -77,8 +77,7 @@ public final class Utility {
      * Finds a location where there is no object
      * @param world the world that needs to be looked in
      * @param nonBlockingNotAllowed if true there cant be a non blocking object on the location either
-     * @return a location where there is no object
-     * @return null if there is no empty location in the world
+     * @return a location where there is no object or null if there is no empty location in the world
      */
     private static Location findNonFilledLocation(World world, boolean nonBlockingNotAllowed) {
         if(!isThereAnEmptyLocationInWorld(world, nonBlockingNotAllowed)) return null;
@@ -177,10 +176,10 @@ public final class Utility {
      * @param filterClass the class that the entities need to be filtered by
      * @return a set of entities that are of the class
      */
-    public static Set<Entity> filterByClass(Set<Entity> entities, Class<?> filterClass) {
-        Set<Entity> filteredEntities = new HashSet<Entity>();
+    public static <T> Set<T> filterByClass(Set<T> entities, Class<?> filterClass) {
+        Set<T> filteredEntities = new HashSet<T>();
 
-        for(Entity entity : entities){
+        for(T entity : entities){
             if(filterClass.isAssignableFrom(entity.getClass())){
                 filteredEntities.add(entity);
             }

@@ -11,7 +11,7 @@ import itumulator.executable.Program;
 
 public class Main {
     /**
-     * Generates objects from given list of spawning objects.
+     * Generates objects from a given list of spawning objects.
      * @param world the world to generate objects in.
      * @param objects the list of spawning objects.
      */
@@ -19,7 +19,7 @@ public class Main {
         for (SpawningObject object : objects) {
             Pack pack = null;
 
-            // Create pack if spawning object is a wolf
+            // Create a pack if spawning object is a wolf
             if (object.getClassName().equals("Wolf")) pack = new Pack();
 
             // Iterate over amount of objects
@@ -62,6 +62,6 @@ public class Main {
         program.getCanvas().setIsomorphic(true);
         program.show();
 
-        //while(true) program.simulate();
+        while(true) program.simulate();
     }
 }

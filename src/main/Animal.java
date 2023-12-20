@@ -35,7 +35,7 @@ public abstract class Animal extends MycoHost {
     protected abstract void setupCanEat();
 
     /**
-     * Produses an offspring of the given animal.
+     * Produces an offspring of the given animal.
      * @param world the world the animal is in.
      */
     protected abstract void produceOffSpring(World world);
@@ -107,10 +107,9 @@ public abstract class Animal extends MycoHost {
 
     /**
      * @param world the world the animal is in
-     * @param radius the raidus to be looked for prey in
-     * An organism is only considered prey if its foodchainvalue is lower then the animal hunting for it, the animal eats that type of animal, and it is eatable
-     * @return The closest prey of the animal
-     * @return null if there is no prey ind a location of radius
+     * @param radius the radius to be looked for prey in
+     * An organism is only considered prey if its strength is lower than the animal hunting for it, the animal eats that type of animal, and it is eatable
+     * @return The closest prey of the animal or null if there is no prey ind a location of radius
      */
     protected Organism findPrey(World world, int radius) {
         Set<Organism> prey = new HashSet<>();
@@ -129,12 +128,11 @@ public abstract class Animal extends MycoHost {
     }
 
     /**
-     * @throws IllegalArgumentException if radius is less then 2
      * Finds the nearest object of the type object to this animal
      * @return the location of the nearest object (except itself) in radius, returns null if there is no such object
+     * @throws IllegalArgumentException if radius is less than 2
      */
     protected Entity findNearestPrey(World world, int radius, Class<?> object) {
-
         if(radius < 2) throw new IllegalArgumentException("Radius cant be less then 2");
 
         Set<Entity> surroundingEntities = Utility.getEntities(world, world.getCurrentLocation(), radius);
@@ -158,9 +156,9 @@ public abstract class Animal extends MycoHost {
 
     /**
      * Check weather or not the prey is something to be fought, or can already be eaten
-     * If the prey has a foodchainvalue of -1 that means that the animal needs to stand on it to eat it
+     * If the prey has a strength of -1 that means that the animal needs to stand on it to eat it
      * - If this is the case, checks if the animal is already on it, if it is it eats it, if not it moves towards it
-     * If the prey has a foodchainvalue of -2 that means that the animal needs to stand next to it to eat it
+     * If the prey has a strength of -2 that means that the animal needs to stand next to it to eat it
      * - if this is the case, it checks if it stands next to it or on it, if it does it eats it, if not it moves towards it
      * Otherwise it check if it is close enough to attack
      * - If it is, it does
@@ -207,10 +205,14 @@ public abstract class Animal extends MycoHost {
      * Calls the produceOffSpring method
      */
     protected void reproduce(World world, Animal animal1, Animal animal2) throws CantReproduceException {
+        //Makes sure the animals are old enough to breed
         if (animal1.getAge() < animal1.getAdultAge()) throw new CantReproduceException(animal1, animal2);
         if (animal2.getAge() < animal2.getAdultAge()) throw new CantReproduceException(animal1, animal2);
+        //Makes sure the animals are the same type
         if (!animal1.getEntityClass().equals(animal2.getEntityClass())) throw new CantReproduceException(animal1, animal2);
+        //Makes sure the animals have enough energy
         if (!(animal1.getEnergy() > 50 && animal2.getEnergy() > 50)) throw new CantReproduceException(animal1, animal2);
+
         animal1.removeEnergy(50);
         animal2.removeEnergy(50);
         animal2.skipTurn();
@@ -266,8 +268,8 @@ public abstract class Animal extends MycoHost {
     protected void moveAwayFrom(World world, Location location) {
         int x = makeNumberOneFurtherAway(world.getCurrentLocation().getX(), location.getX());
         int y = makeNumberOneFurtherAway(world.getCurrentLocation().getY(), location.getY());
-        x = validateCordinate(world, x);
-        y = validateCordinate(world, y);
+        x = validateCoordinate(world, x);
+        y = validateCoordinate(world, y);
         if(world.isTileEmpty(new Location(x,y))) {
             world.move(this, new Location(x,y));
             this.removeEnergy(10);
@@ -280,7 +282,7 @@ public abstract class Animal extends MycoHost {
      * @param coordinate the coordinate to be checked
      * @return the new coordinate that is in the world
      */
-    protected int validateCordinate(World world, int coordinate){
+    protected int validateCoordinate(World world, int coordinate){
      int returnNumber = Math.min(world.getSize()-1, coordinate);
      returnNumber = Math.max(0, returnNumber);
      return returnNumber;
@@ -289,7 +291,7 @@ public abstract class Animal extends MycoHost {
     /**
      * Makes a number one further away from another
      * @param actual the current number
-     * @param target the target to get furhter away from
+     * @param target the target to get further away from
      * @return the new number
      */
     protected int makeNumberOneFurtherAway(int actual, int target){
@@ -323,7 +325,6 @@ public abstract class Animal extends MycoHost {
             removeHunger(hunger);
             addEnergy((int)hunger);
         }
-
     }
 
     /**
@@ -335,7 +336,7 @@ public abstract class Animal extends MycoHost {
 
     /**
      * Adds a type of food to the list of food the animal can eat
-     * @param food
+     * @param food the type of food to be added
      */
     protected void addCanEat(Class<? extends Organism> food) {
         canEat.add(food);
@@ -343,7 +344,7 @@ public abstract class Animal extends MycoHost {
 
     /**
      * Sets the list of food the animal can eat
-     * @param canEat
+     * @param canEat the new set of food the animal can eat
      */
     protected void setCanEat(Set<Class<? extends Organism>> canEat) {
         this.canEat = canEat;
@@ -351,9 +352,9 @@ public abstract class Animal extends MycoHost {
 
     /**
      * Checks weather or not the animal should die or if it should go to sleep because of energi needs
-     * If the animal is and has a hunger over 0 it sleeps if it isnt the first step of the day
+     * If the animal is and has a hunger over 0 it sleeps if it isn't the first step of the day
      * Else if the animal has no energy and has a hunger over 1 it sleeps to regain hunger
-     * Else if the animal is sleeping and it is the first step of the day it wakes up
+     * Else if the animal is sleeping, and it is the first step of the day it wakes up
      * Else if the animal has no health or energy it dies
      * @param world The world the animal is in
      * @return weather the animal is dying or having to sleep
@@ -406,8 +407,8 @@ public abstract class Animal extends MycoHost {
     /**
      * removes 10 health from the prey
      * removes 10 energy from the animal
-     * @param world
-     * @param animal
+     * @param world the world the animal is in
+     * @param animal the animal to be attacked
      */
     public void attack(World world, Organism animal) {
         animal.removeHealth(damage, world);

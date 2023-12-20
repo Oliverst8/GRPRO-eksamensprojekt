@@ -5,8 +5,12 @@ import itumulator.world.World;
 public abstract class MycoHost extends Organism {
     Fungi fungi;
 
-    public MycoHost(int defualtFoodChainValue) {
-        super(defualtFoodChainValue);
+    /**
+     * Creates a new host with the given default strength.
+     * @param defaultStrength the default strength of this host.
+     */
+    public MycoHost(int defaultStrength) {
+        super(defaultStrength);
         fungi = null;
     }
 
@@ -27,16 +31,16 @@ public abstract class MycoHost extends Organism {
     }
 
     /**
-     * Sets the fungi that is infecting this host.
-     * @param fungi the fungi that is infecting this host.
+     * Sets the fungi that are infecting this host.
+     * @param fungi the fungi that are infecting this host.
      */
     public void setInfected(Fungi fungi) {
         this.fungi = fungi;
     }
 
     /**
-     * Gets the fungi that is infecting this host.
-     * @return the fungi that is infecting this host.
+     * Gets the fungi that are infecting this host.
+     * @return the fungi that are infecting this host.
      */
     public Fungi getFungi() {
         return fungi;

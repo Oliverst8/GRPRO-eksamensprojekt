@@ -22,30 +22,30 @@ public abstract class Organism extends Entity implements Actor {
      * Initialises the food type
      * Initialises energy to 100
      */
-    public Organism(int defualtFoodChainValue) {
+    public Organism(int defaultStrength) {
         isNight = false;
         age = 0;
         energyLossPerDay = 5;
         health = 100;
-        setStrength(defualtFoodChainValue);
+        setStrength(defaultStrength);
     }
 
     /**
-     * Determines the behavior of the animal during the day
+     * Determines the behavior of the Organism during the day
      * @param world the world which the animal is in
      */
     abstract void dayBehavior(World world);
 
     /**
-     * Determines the behavior of the animal during the night
-     * @param world the world which the animal is in
+     * Determines the behavior of the Organism during the night
+     * @param world the world which the Organism is in
      */
     abstract void nightBehavior(World world);
 
     /**
-     * The act of the organism, gets called every tick
-     * sets day if it is day, calls doesage and if the organism has skipturn it sets it to false and returns
-     * if it is day it calls daybehaviour and if it is night it calls nightbehavior
+     * The act of the organism gets called every tick.
+     * Sets day if it is day, calls doesage, and if the organism has skipturn it sets it to false and returns
+     * If it is day it calls daybehaviour and if it is night it calls nightbehavior
      * @param world providing details of the position on which the actor is currently located and much more.
      */
     @Override
@@ -59,7 +59,6 @@ public abstract class Organism extends Entity implements Actor {
 
         if(isDay()) dayBehavior(world);
         else nightBehavior(world);
-
     }
 
     /**
@@ -79,7 +78,7 @@ public abstract class Organism extends Entity implements Actor {
 
     /**
      * Kills this organism.
-     * @param world current world the organism is in.
+     * @param world the current world the organism is in.
      */
     public void die(World world) {
         world.delete(this);
@@ -94,7 +93,7 @@ public abstract class Organism extends Entity implements Actor {
 
     /**
      * Sets the energy of the organism to the value given by the following:
-     * @param energy
+     * @param energy the new energy value
      */
     public void setEnergy(int energy) {
         int newEnergy = (energy - (energyLossPerDay * (Math.max(0,getAge() - getAdultAge()))));
@@ -117,7 +116,7 @@ public abstract class Organism extends Entity implements Actor {
 
     /**
      * removes the amount of health from organism as given from the following parameter:
-     * @param health
+     * @param health the amount of health to be removed
      * @param world if the amount of health removed is more that its current health resulting in 0 health, then the organism dies from this world
      */
     public void removeHealth(int health, World world) {
@@ -133,8 +132,8 @@ public abstract class Organism extends Entity implements Actor {
     }
 
     /**
-     * Removes energy
-     * @param amount
+     * Removes energy from the organism as given from the following parameter:
+     * @param amount the amount of energy to be removed
      */
     public void removeEnergy(int amount) {
         setEnergy(Math.max(0, getEnergy() - amount));
@@ -157,7 +156,7 @@ public abstract class Organism extends Entity implements Actor {
 
     /**
      * sets day if it isDay
-     * @param day
+     * @param day the value of day
      */
     public void setDay(boolean day) {
         this.day = day;
@@ -171,7 +170,7 @@ public abstract class Organism extends Entity implements Actor {
     }
 
     /**
-     * @return the food chain value of the animal
+     * @return the food chain value of the Organism
      */
     public int getStrength() {
         return strength;
@@ -193,14 +192,14 @@ public abstract class Organism extends Entity implements Actor {
 
     /**
      * sets global skipturn value to skipturns current value
-     * @param skipTurn
+     * @param skipTurn the value of skipturn
      */
     public void setSkipTurn(boolean skipTurn) {
         this.skipTurn = skipTurn;
     }
 
     /**
-     * @return wether or not it gets skipped this turn
+     * @return weather or not it gets skipped this turn
      */
     public boolean isTurnSkipped() {
         return skipTurn;
@@ -249,7 +248,7 @@ public abstract class Organism extends Entity implements Actor {
     }
 
     /**
-     * @return true if the organism has a age bigger or equal to its adultage
+     * @return true, if the organism has an age bigger or equal to its adultage
      */
     public boolean isAdult() {
         return age >= adultAge;
@@ -269,8 +268,8 @@ public abstract class Organism extends Entity implements Actor {
     }
 
     /**
-     * sets the foodchainvalue of the organism to the value of the param
-     * @param strength
+     * sets the strength of the organism to the value of the param
+     * @param strength the value of the strength
      */
     protected void setStrength(int strength) {
         this.strength = strength;

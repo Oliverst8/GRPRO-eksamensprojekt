@@ -14,7 +14,7 @@ public class Burrow extends Community implements Nest{
     /**
      * @throws IllegalArgumentException if entry is null or world is null
      * Initialises the list of entries
-     * Initialises the list of rabbitsinside
+     * Initialises the list of rabbits inside
      * Creates a hole with the entry, and adds it to the list
      * @param entry The first entry location of the burrow
      */
@@ -28,7 +28,7 @@ public class Burrow extends Community implements Nest{
 
     /**
      * Initialises the list of entries
-     * Initialises the list of rabbitsinside
+     * Initialises the list of rabbits inside
      * Creates a random location
      * Makes a hole with the location, and adds it to the list
      */
@@ -43,7 +43,7 @@ public class Burrow extends Community implements Nest{
     /**
      * Throws IllegalArgumentException if argument is null
      * Otherwise makes a hole and adds it to the list of entries
-     * @param entry
+     * @param entry the location of the entry
      */
     public void addEntry(World world, Location entry) {
         RabbitHole hole = (RabbitHole) ObjectFactory.generateOnMap(world,entry,"RabbitHole", this);
@@ -55,7 +55,7 @@ public class Burrow extends Community implements Nest{
      *
      * @param rabbitLocation the location of the rabbit
      * @return the closest entry, returns null if there is no entry found
-     * returns closestEntryLocation if there is a entrance
+     * returns closestEntryLocation if there is an entrance
      */
     public Location findNearestEntry(World world, Location rabbitLocation) {
         Entity nearestEntry = Utility.findNearest(world, rabbitLocation, entries);
@@ -63,7 +63,7 @@ public class Burrow extends Community implements Nest{
     }
 
     /**
-     * @return a list of Locations of the entries the burrow has
+     * @return a set of Locations of the entries the burrow has
      */
     public Set<RabbitHole> getEntries() {
         return entries;

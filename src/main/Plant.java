@@ -7,11 +7,11 @@ public abstract class Plant extends Organism {
     /**
      * creates new plant
      * calls organism constructor with the following parameter
-     * @param defaultStenght
+     * @param defaultStrength
      * initialises adulgtage, maxenergy and sets energy as maxenergy
      */
-    public Plant(int defaultStenght) {
-        super(defaultStenght);
+    public Plant(int defaultStrength) {
+        super(defaultStrength);
         adultAge = 0;
         maxEnergy = 100;
         energy = maxEnergy;

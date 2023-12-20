@@ -8,6 +8,11 @@ import itumulator.world.Location;
 public class Den extends Community implements Nest {
     WolfHole hole;
 
+    /**
+     * Creates a new den at the given location.
+     * @param world the world the den is in.
+     * @param entry the location of the den.
+     */
     public Den(World world, Location entry) {
         hole = (WolfHole) ObjectFactory.generateOnMap(world,entry,"WolfHole");
     }

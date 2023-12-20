@@ -9,8 +9,8 @@ import error.CantReproduceException;
 public abstract class NestAnimal extends Animal {
     private boolean inNest = false;
 
-    public NestAnimal(int defualtFoodChainValue) {
-        super(defualtFoodChainValue);
+    public NestAnimal(int defaultStrength) {
+        super(defaultStrength);
     }
 
     /**
@@ -99,7 +99,7 @@ public abstract class NestAnimal extends Animal {
 
     /**
      * Throws Error.IllegalOperationException if the NestAnimal is a nest or if the NestAnimal has No Nest
-     * Throws IllegalArgumentException if world is null
+     * Throws IllegalArgumentException if the world is null
      * Sets inBurrow to true
      * removes the bunny from the world
      * When entering a burrow the rabbit goes to sleep

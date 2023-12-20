@@ -11,6 +11,10 @@ public class Egg extends Organism {
     private final Class<? extends Oviparous> parentSpecies;
     private int hatchPercentage;
 
+    /**
+     * Creates an egg with the given parent species.
+     * @param parentSpecies the parent species of the egg.
+     */
     public Egg(Class<? extends Oviparous> parentSpecies) {
         super(-2);
         this.parentSpecies = parentSpecies;

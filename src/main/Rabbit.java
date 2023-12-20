@@ -16,7 +16,7 @@ public class Rabbit extends NestAnimal {
     private Burrow burrow; //The burrow the rabbit object belongs to
 
     /**
-     * Initilises the food to the bunny can eat to plant and fruits
+     * Initializes the food to the bunny can eat to plant and fruits
      * Initialises inBurrow to false
      */
     public Rabbit() {
@@ -195,8 +195,8 @@ public class Rabbit extends NestAnimal {
     /**
      * Determines if rabbit should dig or not, by checking if there are any nearby entries and if so it joins the burrow that the hole belongs to instead
      * Returns true if there are no burrowentries from within a distance of 5
-     * @param world
-     * @return
+     * @param world the world in which the rabbit is in
+     * @return true if there are no burrowentries from within a distance of 5 else false
      */
     private boolean shouldRabbitDig(World world) {
         RabbitHole nearestBurrowEntry = (RabbitHole) findNearestPrey(world, 5, RabbitHole.class);
@@ -219,8 +219,9 @@ public class Rabbit extends NestAnimal {
 
     /**
      * - Makes a burrow at the current location
-     *      *      * - Initialises burrow variable to newly created burrow
-     *      *      * - Subtracts 25 energy
+     * - Initialises burrow variable to newly created burrow
+     * - Subtracts 25 energy
+     * @param world the world in which the rabbit is in
      */
     private void makeBurrow(World world) {
         setBurrow((Burrow) ObjectFactory.generateOnMap(world,"Burrow", world.getCurrentLocation()));

@@ -7,7 +7,7 @@ import itumulator.world.World;
 import itumulator.world.Location;
 
 public abstract class Community {
-    private Set<Animal> members;
+    private final Set<Animal> members;
 
     public Community(){
         members = new HashSet<>();
@@ -15,7 +15,7 @@ public abstract class Community {
 
     /**
      * Add a member to the Community
-     * @param member
+     * @param member the member to add
      */
     public void addMember(Animal member) {
         members.add(member);
@@ -29,14 +29,14 @@ public abstract class Community {
     }
 
     /**
-     * @return the list of members in the community
+     * @return the set of members in the community
      */
     public Set<Animal> getMembers() {
         return members;
     }
 
     /**
-     * @return the list of adult members in the community
+     * @return the set of adult members in the community
      */
     public Set<Animal> getAdultMembers() {
         Set<Animal> adultMembers = new HashSet<>();

@@ -18,7 +18,7 @@ import itumulator.world.NonBlocking;
 public class ObjectFactory {
     private ObjectFactory() {}
 
-    private static String[] requiresWorld = {"Bear", "Burrow"};
+    private static final String[] requiresWorld = {"Bear", "Burrow"};
 
     /**
      * Generates an object of the given class name off the map, and returns it.
@@ -94,7 +94,7 @@ public class ObjectFactory {
             // Get the parameters of the constructor.
             Class<?>[] parameters = new Class[constructorArgs.length];
             for(int i = 0; i < parameters.length; i++){
-                parameters[i] = convertToPrimitiveTypeIfThereIsOne(constructorArgs[i].getClass());
+                parameters[i] = convertToPrimitive(constructorArgs[i].getClass());
             }
 
             // return new instance of the requested class.
@@ -172,7 +172,7 @@ public class ObjectFactory {
      * @param preConvertedClass the class to convert.
      * @return the converted class.
      */
-    private static Class<?> convertToPrimitiveTypeIfThereIsOne(Class<?> preConvertedClass){
+    private static Class<?> convertToPrimitive(Class<?> preConvertedClass){
         Map<Class<?>, Class<?>> classMap = new HashMap<>();
         classMap.put(Integer.class, int.class);
         classMap.put(Boolean.class, boolean.class);

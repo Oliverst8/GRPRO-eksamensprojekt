@@ -18,7 +18,6 @@ public abstract class Hole extends Inanimate implements NonBlocking {
     public abstract Color getColor();
 
     /**
-     * @return the location of the hole
      * @param world the world the hole is in
      * @return the location of the hole
      */

@@ -33,11 +33,6 @@ public class Carcass extends MycoHost {
     }
 
     @Override
-    public int getEnergy() {
-        return energy;
-    }
-
-    @Override
     public String getType() {
         return "carcass";
     }
@@ -70,11 +65,11 @@ public class Carcass extends MycoHost {
     }
 
     /**
-     * Is the behaviour for the carcuss both day and night
-     * Removes 1 energy pr tick, so 20 per fulldaycycle
+     * Is the behaviour for the carcass both day and night
+     * Removes 1 energy pr tick, so 20 per full day cycle
      * 100 ticks does not equal 100 energy taken since carcass also ages
-     * maxiamal Energy that the organism can have gets less and less pr age
-     * @param world
+     * maximal Energy that the organism can have gets less and less pr age
+     * @param world the world that the organism is in
      */
     private void carcassBehaviour(World world) {
         if(isDying(world)) return;

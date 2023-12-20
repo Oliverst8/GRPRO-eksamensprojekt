@@ -66,7 +66,7 @@ public class Bear extends Animal {
             }
         }
 
-        partrolTerritory(world);
+        patrolTerritory(world);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class Bear extends Animal {
      * Otherwise, it will move to a random location in its territory.
      * @param world the world the bear is in.
      */
-    private void partrolTerritory(World world) {
+    private void patrolTerritory(World world) {
         Random random = new Random();
 
         // Get the bounds of the territory.

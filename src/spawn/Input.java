@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import java.util.Scanner;
-
 import java.util.ArrayList;
 
 import itumulator.world.Location;
@@ -33,7 +32,7 @@ public class Input {
                 String line = sc.nextLine();
                 line = line.toLowerCase();
 
-                if (line.equals("")) continue; // Skip if line is blank
+                if (line.isEmpty()) continue; // Skip if line is blank
 
                 // Check if the object is infected
                 if (line.contains("fungi") || line.contains("cordyceps")) {
@@ -42,7 +41,7 @@ public class Input {
                     line = line.replaceAll("fungi |cordyceps ", "");
                 }
 
-                String object[] = line.split(" ");
+                String[] object = line.split(" ");
 
                 object[0] = object[0].substring(0, 1).toUpperCase() + object[0].substring(1); // Capitalize the first letter
 

@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.util.Set;
 import java.util.List;
 import java.util.Random;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import spawn.ObjectFactory;
 
@@ -65,7 +65,7 @@ public class Grass extends Plant implements NonBlocking {
         if(getEnergy() < 25) throw new IllegalOperationException("Grass doesnt have energy to spread");
         
         Set<Location> surroundingTiles = world.getEmptySurroundingTiles();
-        List<Location> locationsList = new LinkedList<>(surroundingTiles);
+        List<Location> locationsList = new ArrayList<>(surroundingTiles);
         int randomIndex;
         Location randomLocation;
 

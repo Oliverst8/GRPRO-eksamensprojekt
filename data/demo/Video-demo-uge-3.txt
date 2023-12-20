@@ -1,0 +1,5 @@
+7
+carcuss fungi 1
+cordyceps rabbit 1
+rabbit 2
+wolf 3

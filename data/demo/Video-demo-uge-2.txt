@@ -1,0 +1,6 @@
+7
+grass 5
+rabbit 2
+burrow 1
+wolf 2
+bear 1 (0,0)

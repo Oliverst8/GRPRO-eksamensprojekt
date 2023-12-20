@@ -48,10 +48,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Input input = new Input("data/demo/frontpageImage.txt");
+        Input input = new Input("data/demo/Video-demo.txt");
         
         int delay = 250;
-        int display_size = 1000;
+        int display_size = 600;
         int size = input.getSize();
         
         Program program = new Program(size, display_size, delay);
@@ -62,6 +62,7 @@ public class Main {
         program.getCanvas().setIsomorphic(true);
         program.show();
 
-        while(true) program.simulate();
+        //while(true) program.simulate();
+        for (int i = 0; i < 200; i++) program.simulate();
     }
 }

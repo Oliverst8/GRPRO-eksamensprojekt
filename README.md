@@ -239,3 +239,10 @@
 
 - Den tager resourcer fra verdenen i form af græs og bær.
 - Den er et byttedyr for ulve og bjørne.
+
+## Credits
+
+### Turtle images
+
+- Small turtle:
+- Large turtle:

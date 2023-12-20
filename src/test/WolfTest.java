@@ -301,8 +301,4 @@ public class WolfTest {
         assertEquals(expectedMembers, wolf2.getHuntingPack().getMembers().size());
     }
 
-    @Test
-    void testThatWolvesInAnWolfpackWith3OrMoreMemebersAttackBear(){
-    //rykket til K2_8a
-    }
 }

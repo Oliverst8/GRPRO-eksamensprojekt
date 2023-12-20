@@ -237,6 +237,9 @@ public class Rabbit extends NestAnimal {
     private void expandBurrow(World world) {
         if(getEnergy()-50 > 0) {
             Location location = Utility.findNonBlockingEmptyLocation(world);
+
+            if (location == null) return; // If there is no empty location, it returns.
+
             burrow.addEntry(world, location);
             removeEnergy(50);
         }

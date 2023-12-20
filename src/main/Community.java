@@ -3,9 +3,6 @@ package main;
 import java.util.Set;
 import java.util.HashSet;
 
-import itumulator.world.World;
-import itumulator.world.Location;
-
 public abstract class Community {
     private final Set<Animal> members;
 

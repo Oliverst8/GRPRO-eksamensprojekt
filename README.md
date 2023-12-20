@@ -242,7 +242,7 @@
 
 ## Credits
 
-### Turtle images
+### Images
 
 - Egg: https://www.istockphoto.com/photo/isolated-egg-gm185127074-19440742
 - Small turtle: https://pngtree.com/freepng/simple-flat-hand-draw-cute-cartoon-turtle-vector_9053052.html

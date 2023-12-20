@@ -95,7 +95,7 @@ public class TurtleTest {
 
         Bear bear = (Bear) ObjectFactory.generateOnMap(world, new Location(0,1), "Bear");
 
-        int expected = turtle.getShellHealth()-bear.getStrength();
+        int expected = turtle.getShellHealth()-bear.getDamage();
 
         bear.act(world);
 

@@ -250,11 +250,6 @@ class RabbitTest {
     }
 
     @Test
-    void testDayBehaviorWhereRabbitIsInBurrowExpectsRabbitToReproduce() {
-       //rykket til KravTest K1_2e
-    }
-
-    @Test
     void testDayBehaviorWhereRabbitIsInBurrowExpectsRabbitThatCallsToReproduceAndLoseEnergy() {
         burrow = new Burrow(world, new Location(0,0));
         Rabbit rabbit1 = (Rabbit) ObjectFactory.generateOffMap(world, "Rabbit", 3, burrow, true);

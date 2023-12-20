@@ -13,7 +13,7 @@ public abstract class Organism extends Entity implements Actor {
     protected int maxEnergy;
     private boolean day;
     private boolean skipTurn = false;
-    private int foodChainValue;
+    private int strength;
     private boolean isNight;
 
     /**
@@ -27,7 +27,7 @@ public abstract class Organism extends Entity implements Actor {
         age = 0;
         energyLossPerDay = 5;
         health = 100;
-        setFoodChainValue(defualtFoodChainValue);
+        setStrength(defualtFoodChainValue);
     }
 
     /**
@@ -173,8 +173,8 @@ public abstract class Organism extends Entity implements Actor {
     /**
      * @return the food chain value of the animal
      */
-    public int getFoodChainValue() {
-        return foodChainValue;
+    public int getStrength() {
+        return strength;
     }
 
     /**
@@ -270,9 +270,9 @@ public abstract class Organism extends Entity implements Actor {
 
     /**
      * sets the foodchainvalue of the organism to the value of the param
-     * @param foodChainValue
+     * @param strength
      */
-    protected void setFoodChainValue(int foodChainValue) {
-        this.foodChainValue = foodChainValue;
+    protected void setStrength(int strength) {
+        this.strength = strength;
     }
 }

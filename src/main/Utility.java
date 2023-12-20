@@ -162,7 +162,7 @@ public final class Utility {
 
         for(Entity entity : entities){
             double distance = distance(location, world.getLocation(entity));
-            if(distance < smallestDistance){
+            if(smallestDistance > distance ){
                 smallestDistance = distance;
                 nearestEntity = entity;
             }

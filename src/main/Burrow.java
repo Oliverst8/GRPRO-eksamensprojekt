@@ -58,7 +58,8 @@ public class Burrow extends Community implements Nest{
      * returns closestEntryLocation if there is a entrance
      */
     public Location findNearestEntry(World world, Location rabbitLocation) {
-        return findNearestEntity(world, rabbitLocation, entries);
+        Entity nearestEntry = Utility.findNearest(world, rabbitLocation, entries);
+        return world.getLocation(nearestEntry);
     }
 
     /**

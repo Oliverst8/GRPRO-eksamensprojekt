@@ -49,6 +49,11 @@ public class Pack extends Community {
         Set<Animal> wolvesAboveGround = new HashSet<>(getMembers());
         wolvesAboveGround.remove(wolf);
         if(den != null) wolvesAboveGround.removeAll(den.getMembers());
-        return findNearestEntity(world, wolfLocation, wolvesAboveGround);
+
+        Entity nearestMember = Utility.findNearest(world, wolfLocation, wolvesAboveGround);
+
+        if (nearestMember == null) return null;
+
+        return world.getLocation(nearestMember);
     }
 }

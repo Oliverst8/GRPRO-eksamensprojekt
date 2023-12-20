@@ -58,25 +58,4 @@ public abstract class Community {
     public boolean contains(Organism animal) {
         return members.contains(animal);
     }
-
-    /**
-     * Find nearest entity from a set of entities.
-     * @param world the world to look in.
-     * @param location the location to look around.
-     * @param enitities the set of entities to look through.
-     * @return the location of the nearest entity.
-     */
-    protected Location findNearestEntity(World world, Location location, Set<? extends Entity> enitities) {
-        Location closestEntityLocation = null;
-        double minDist = Double.MAX_VALUE;
-
-        for(Entity entity : enitities) {
-            double distance = Utility.distance(location, world.getLocation(entity));
-            if(minDist > distance) {
-                minDist = distance;
-                closestEntityLocation = world.getLocation(entity);
-            }
-        }
-        return closestEntityLocation;
-    }
 }

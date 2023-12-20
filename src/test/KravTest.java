@@ -490,15 +490,12 @@ public class KravTest {
     @Test
     void K2_3a_1(){
         Wolf wolf = (Wolf) ObjectFactory.generateOnMap(world, new Location(0,0), "Wolf",5);
-        Wolf wolf2 = (Wolf) ObjectFactory.generateOnMap(world, new Location(1,0), "Wolf", wolf.getPack(), 5, false);
         wolf.setHunger(100);
-        wolf2.setHunger(100);
         program.simulate();//Dig
         program.simulate();//enter
 
         Wolf wolf3 = (Wolf) ObjectFactory.generateOnMap(world, wolf.getPack().getDen().getLocation(world), "Wolf", 5);
         wolf.skipTurn();
-        wolf2.skipTurn();
 
         program.simulate();
 

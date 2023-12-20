@@ -146,7 +146,7 @@ public class Turtle extends Animal implements Oviparous {
         maxHealth = 50;
 
         inShell = false;
-        maxShellHealth = 2000;
+        maxShellHealth = 450;
         timeInShell = 0;
 
         energy = maxEnergy;

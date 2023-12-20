@@ -211,7 +211,7 @@ public abstract class Animal extends MycoHost {
         //Makes sure the animals are the same type
         if (!animal1.getEntityClass().equals(animal2.getEntityClass())) throw new CantReproduceException(animal1, animal2);
         //Makes sure the animals have enough energy
-        if (!(animal1.getEnergy() > 50 && animal2.getEnergy() > 50)) throw new CantReproduceException(animal1, animal2);
+        if (!(animal1.getEnergy() >= 50 && animal2.getEnergy() >= 50)) throw new CantReproduceException(animal1, animal2);
 
         animal1.removeEnergy(50);
         animal2.removeEnergy(50);
@@ -238,7 +238,6 @@ public abstract class Animal extends MycoHost {
 
         for(int i = 0; i < amountOfSteps; i++) {
             if (newTile.getX() == location.getX() && newTile.getY() == location.getY()) {
-                System.out.println("Animal is already on the location");
                 return;
             }
 

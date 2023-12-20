@@ -83,10 +83,11 @@ public class TurtleTest {
         ObjectFactory.generateOnMap(world, new Location(0,1), "Bear");
 
         int expected = turtle.getHealth();
-
+        int expectedShellHealth = turtle.getShellHealth();
         program.simulate();
 
         assertEquals(expected, turtle.getHealth());
+        assertTrue(turtle.getShellHealth() < expectedShellHealth);
     }
 
     @Test

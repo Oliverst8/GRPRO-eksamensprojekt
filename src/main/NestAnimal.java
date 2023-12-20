@@ -131,8 +131,9 @@ public abstract class NestAnimal extends Animal {
     }
 
     protected boolean reproduceBehavior(World world) {
+        if(!isAdult()) return false;
         if (getEnergy() > 80 && getNest().getAdultMembers().size() >= 2) {
-            for (Animal otherNestAnimal : getNest().getMembers()) {
+            for (Animal otherNestAnimal : getNest().getAdultMembers()) {
                 if (otherNestAnimal != this && otherNestAnimal.getEnergy() > 80) {
                     try {
                         reproduce(world, this, otherNestAnimal);

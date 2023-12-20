@@ -50,7 +50,7 @@ public class Main {
     public static void main(String[] args) {
         Input input = new Input("data/demo/Video-demo.txt");
         
-        int delay = 250;
+        int delay = 100;
         int display_size = 600;
         int size = input.getSize();
         
@@ -63,6 +63,6 @@ public class Main {
         program.show();
 
         //while(true) program.simulate();
-        for (int i = 0; i < 200; i++) program.simulate();
+        for (int i = 0; i < 1000; i++) program.simulate();
     }
 }

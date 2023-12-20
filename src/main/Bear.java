@@ -59,7 +59,7 @@ public class Bear extends Animal {
         if(isAdult()) {
             increaseMatingDesire(50);
 
-            if(matingDesire >= 100) {
+            if(matingDesire >= 100 && energy >= 50) {
                 boolean attemptingToMate = seekMate(world);
 
                 if(attemptingToMate) return;
@@ -191,9 +191,9 @@ public class Bear extends Animal {
      * @return true if the bear is attempting to mate, otherwise false.
      */
     private boolean seekMate(World world) {
-        Object mate = findNearestPrey(world, 10, this.getClass());
+        Bear mate = (Bear) findNearestPrey(world, 10, this.getClass());
 
-        if(mate == null) return false;
+        if(mate == null || mate.getEnergy() <= 50 || !mate.isAdult()) return false;
 
         Location location = world.getLocation(mate);
 
